@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="FacilityDocuService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:51256/FacilityDocuService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:51256/FacilityDocuService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:51256/FacilityDocuService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:51256/FacilityDocuService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/FacilityDoc.DTO" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IFacilityDocuService_Login_InputMessage">
+    <wsdl:part name="parameters" element="tns:Login" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_Login_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_IsSync_InputMessage">
+    <wsdl:part name="parameters" element="tns:IsSync" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_IsSync_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IsSyncResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_GetProjectDetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetProjectDetails" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_GetProjectDetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetProjectDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_UpdateProject_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateProject" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_UpdateProject_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateProjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_GetModules_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetModules" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_GetModules_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetModulesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_GetSteps_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSteps" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_GetSteps_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetStepsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_GetActions_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetActions" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_GetActions_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetActionsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IFacilityDocuService">
+    <wsdl:operation name="Login">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/Login" message="tns:IFacilityDocuService_Login_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/LoginResponse" message="tns:IFacilityDocuService_Login_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IsSync">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/IsSync" message="tns:IFacilityDocuService_IsSync_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/IsSyncResponse" message="tns:IFacilityDocuService_IsSync_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectDetails">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/GetProjectDetails" message="tns:IFacilityDocuService_GetProjectDetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/GetProjectDetailsResponse" message="tns:IFacilityDocuService_GetProjectDetails_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateProject">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/UpdateProject" message="tns:IFacilityDocuService_UpdateProject_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/UpdateProjectResponse" message="tns:IFacilityDocuService_UpdateProject_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetModules">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/GetModules" message="tns:IFacilityDocuService_GetModules_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/GetModulesResponse" message="tns:IFacilityDocuService_GetModules_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSteps">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/GetSteps" message="tns:IFacilityDocuService_GetSteps_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/GetStepsResponse" message="tns:IFacilityDocuService_GetSteps_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetActions">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/GetActions" message="tns:IFacilityDocuService_GetActions_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/GetActionsResponse" message="tns:IFacilityDocuService_GetActions_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IFacilityDocuService" type="tns:IFacilityDocuService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Login">
+      <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/Login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsSync">
+      <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/IsSync" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectDetails">
+      <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/GetProjectDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateProject">
+      <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/UpdateProject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetModules">
+      <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/GetModules" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSteps">
+      <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/GetSteps" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetActions">
+      <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/GetActions" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="FacilityDocuService">
+    <wsdl:port name="BasicHttpBinding_IFacilityDocuService" binding="tns:BasicHttpBinding_IFacilityDocuService">
+      <soap:address location="http://localhost:51256/FacilityDocuService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

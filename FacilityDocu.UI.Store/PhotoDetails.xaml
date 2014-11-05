@@ -1,0 +1,36 @@
+﻿<Page
+    x:Class="Tablet_App.PhotoDetails"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Tablet_App"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Loaded="Page_Loaded_1">
+
+    <Grid Background="#FF064591">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="92*"/>
+            <RowDefinition Height="635*"/>
+            <RowDefinition Height="41*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="93*"/>
+            <ColumnDefinition Width="686*"/>
+            <ColumnDefinition Width="547*"/>
+            <ColumnDefinition Width="40*"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="backButton" Margin="33,32,0,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
+    		Style="{StaticResource NavigationBackButtonNormalStyle}"
+    		VerticalAlignment="Top"
+    		AutomationProperties.Name="Back"
+    		AutomationProperties.AutomationId="BackButton"
+    		AutomationProperties.ItemType="Navigation Button" Tapped="backButton_Tapped"  />
+        <Image x:Name="img" HorizontalAlignment="Left" Height="516" Margin="12,4,0,0" VerticalAlignment="Top" Width="650" Grid.Column="1" Grid.Row="1" Stretch="UniformToFill"/>
+        <TextBox x:Name="tagtext" HorizontalAlignment="Left" Margin="1,403,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="125" Width="544" FontSize="25" AcceptsReturn="True" ToolTipService.ToolTip="" PlaceholderText="Write Tags" Grid.Column="2" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+        <TextBox x:Name="descriptiontext" HorizontalAlignment="Left" Margin="1,4,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="216" Width="544" FontSize="25" AcceptsReturn="True" PlaceholderText="Image Description" Grid.Column="2" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+        <Button FontFamily="Segoe UI Symbol" FontSize="60" Content="&#xE10B;"  Height="96" Tapped="Button_Click" Background="#FF23236A" Foreground="White" Width="151" Margin="390,533,0,6" Grid.Column="2" Grid.Row="1" BorderBrush="#33F17B7B" />
+        <TextBox x:Name="commenttext" HorizontalAlignment="Left" Margin="1,224,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="174" Width="544" FontSize="25" AcceptsReturn="True" PlaceholderText="Write Comment" Grid.Column="2" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+        <Button x:Name="aphoto" Content="Add New Photo" HorizontalAlignment="Left" Height="94" Margin="9,530,0,0" VerticalAlignment="Top" Width="655" FontSize="35" Background="#FF23236A" Tapped="Button_Tapped" Grid.Column="1" Foreground="White" FontWeight="Normal" Grid.Row="1" BorderBrush="#33000000"/>
+
+    </Grid>
+</Page>

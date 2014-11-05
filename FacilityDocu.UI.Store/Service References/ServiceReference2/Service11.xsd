@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/FacilityDocu.Data" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/FacilityDocu.Data" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ArrayOfProject">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Project" nillable="true" type="tns:Project" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfProject" nillable="true" type="tns:ArrayOfProject" />
+  <xs:complexType name="Project">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreationDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LastUpdatedAt" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="LastUpdatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProjectDetails" nillable="true" type="tns:ArrayOfProjectDetail" />
+      <xs:element minOccurs="0" name="ProjectID" type="xs:int" />
+      <xs:element minOccurs="0" name="ProjectModuleResources" nillable="true" type="tns:ArrayOfProjectModuleResource" />
+      <xs:element minOccurs="0" name="ProjectRiskAnalysis" nillable="true" type="tns:ArrayOfProjectRiskAnalysi" />
+      <xs:element minOccurs="0" name="Template" type="xs:boolean" />
+      <xs:element minOccurs="0" name="User" nillable="true" type="tns:User" />
+      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Project" nillable="true" type="tns:Project" />
+  <xs:complexType name="ArrayOfProjectDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ProjectDetail" nillable="true" type="tns:ProjectDetail" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfProjectDetail" nillable="true" type="tns:ArrayOfProjectDetail" />
+  <xs:complexType name="ProjectDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Action" nillable="true" type="tns:Action" />
+      <xs:element minOccurs="0" name="ActionID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Module" nillable="true" type="tns:Module" />
+      <xs:element minOccurs="0" name="ModuleID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Project" nillable="true" type="tns:Project" />
+      <xs:element minOccurs="0" name="ProjectActionDimensions" nillable="true" type="tns:ArrayOfProjectActionDimension" />
+      <xs:element minOccurs="0" name="ProjectActionImages" nillable="true" type="tns:ArrayOfProjectActionImage" />
+      <xs:element minOccurs="0" name="ProjectActionRisks" nillable="true" type="tns:ArrayOfProjectActionRisk" />
+      <xs:element minOccurs="0" name="ProjectActionTools" nillable="true" type="tns:ArrayOfProjectActionTool" />
+      <xs:element minOccurs="0" name="ProjectDetailID" type="xs:int" />
+      <xs:element minOccurs="0" name="ProjectID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="RigType" nillable="true" type="tns:RigType" />
+      <xs:element minOccurs="0" name="RigTypeID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Step" nillable="true" type="tns:Step" />
+      <xs:element minOccurs="0" name="StepID" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProjectDetail" nillable="true" type="tns:ProjectDetail" />
+  <xs:complexType name="Action">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ActionID" type="xs:int" />
+      <xs:element minOccurs="0" name="ActionName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProjectDetails" nillable="true" type="tns:ArrayOfProjectDetail" />
+      <xs:element minOccurs="0" name="StepActions" nillable="true" type="tns:ArrayOfStepAction" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Action" nillable="true" type="tns:Action" />
+  <xs:complexType name="ArrayOfStepAction">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="StepAction" nillable="true" type="tns:StepAction" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfStepAction" nillable="true" type="tns:ArrayOfStepAction" />
+  <xs:complexType name="StepAction">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Action" nillable="true" type="tns:Action" />
+      <xs:element minOccurs="0" name="ActionID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ID" type="xs:int" />
+      <xs:element minOccurs="0" name="Step" nillable="true" type="tns:Step" />
+      <xs:element minOccurs="0" name="StepID" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="StepAction" nillable="true" type="tns:StepAction" />
+  <xs:complexType name="Step">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ModuleSteps" nillable="true" type="tns:ArrayOfModuleStep" />
+      <xs:element minOccurs="0" name="ProjectDetails" nillable="true" type="tns:ArrayOfProjectDetail" />
+      <xs:element minOccurs="0" name="StepActions" nillable="true" type="tns:ArrayOfStepAction" />
+      <xs:element minOccurs="0" name="StepID" type="xs:int" />
+      <xs:element minOccurs="0" name="StepName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Step" nillable="true" type="tns:Step" />
+  <xs:complexType name="ArrayOfModuleStep">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ModuleStep" nillable="true" type="tns:ModuleStep" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfModuleStep" nillable="true" type="tns:ArrayOfModuleStep" />
+  <xs:complexType name="ModuleStep">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ID" type="xs:int" />
+      <xs:element minOccurs="0" name="Module" nillable="true" type="tns:Module" />
+      <xs:element minOccurs="0" name="ModuleID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Step" nillable="true" type="tns:Step" />
+      <xs:element minOccurs="0" name="StepID" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ModuleStep" nillable="true" type="tns:ModuleStep" />
+  <xs:complexType name="Module">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ModuleID" type="xs:int" />
+      <xs:element minOccurs="0" name="ModuleName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ModuleSteps" nillable="true" type="tns:ArrayOfModuleStep" />
+      <xs:element minOccurs="0" name="ProjectDetails" nillable="true" type="tns:ArrayOfProjectDetail" />
+      <xs:element minOccurs="0" name="ProjectModuleResources" nillable="true" type="tns:ArrayOfProjectModuleResource" />
+      <xs:element minOccurs="0" name="RiskAnalysis" nillable="true" type="tns:ArrayOfRiskAnalysi" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Module" nillable="true" type="tns:Module" />
+  <xs:complexType name="ArrayOfProjectModuleResource">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ProjectModuleResource" nillable="true" type="tns:ProjectModuleResource" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfProjectModuleResource" nillable="true" type="tns:ArrayOfProjectModuleResource" />
+  <xs:complexType name="ProjectModuleResource">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ID" type="xs:int" />
+      <xs:element minOccurs="0" name="Module" nillable="true" type="tns:Module" />
+      <xs:element minOccurs="0" name="ModuleID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Project" nillable="true" type="tns:Project" />
+      <xs:element minOccurs="0" name="ProjectID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Resource" nillable="true" type="tns:Resource" />
+      <xs:element minOccurs="0" name="ResourceCount" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ResourceID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="RigType" nillable="true" type="tns:RigType" />
+      <xs:element minOccurs="0" name="RigTypeID" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProjectModuleResource" nillable="true" type="tns:ProjectModuleResource" />
+  <xs:complexType name="Resource">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ProjectModuleResources" nillable="true" type="tns:ArrayOfProjectModuleResource" />
+      <xs:element minOccurs="0" name="ResourceID" type="xs:int" />
+      <xs:element minOccurs="0" name="ResourceName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Resource" nillable="true" type="tns:Resource" />
+  <xs:complexType name="RigType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProjectDetails" nillable="true" type="tns:ArrayOfProjectDetail" />
+      <xs:element minOccurs="0" name="ProjectModuleResources" nillable="true" type="tns:ArrayOfProjectModuleResource" />
+      <xs:element minOccurs="0" name="RigTypeID" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RigType" nillable="true" type="tns:RigType" />
+  <xs:complexType name="ArrayOfRiskAnalysi">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RiskAnalysi" nillable="true" type="tns:RiskAnalysi" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRiskAnalysi" nillable="true" type="tns:ArrayOfRiskAnalysi" />
+  <xs:complexType name="RiskAnalysi">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Activity" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="B" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="B_" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Controls" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Danger" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="E" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="E_" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="K" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="K_" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Module" nillable="true" type="tns:Module" />
+      <xs:element minOccurs="0" name="ModuleID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ProjectRiskAnalysis" nillable="true" type="tns:ArrayOfProjectRiskAnalysi" />
+      <xs:element minOccurs="0" name="Risk" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="RiskAnalysisID" type="xs:int" />
+      <xs:element minOccurs="0" name="RiskType" nillable="true" type="tns:RiskType" />
+      <xs:element minOccurs="0" name="RiskTypeID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Risk_" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RiskAnalysi" nillable="true" type="tns:RiskAnalysi" />
+  <xs:complexType name="ArrayOfProjectRiskAnalysi">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ProjectRiskAnalysi" nillable="true" type="tns:ProjectRiskAnalysi" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfProjectRiskAnalysi" nillable="true" type="tns:ArrayOfProjectRiskAnalysi" />
+  <xs:complexType name="ProjectRiskAnalysi">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ID" type="xs:int" />
+      <xs:element minOccurs="0" name="Project" nillable="true" type="tns:Project" />
+      <xs:element minOccurs="0" name="ProjectID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="RiskAnalysi" nillable="true" type="tns:RiskAnalysi" />
+      <xs:element minOccurs="0" name="RiskAnalysisID" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProjectRiskAnalysi" nillable="true" type="tns:ProjectRiskAnalysi" />
+  <xs:complexType name="RiskType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RiskAnalysis" nillable="true" type="tns:ArrayOfRiskAnalysi" />
+      <xs:element minOccurs="0" name="RiskTypeID" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RiskType" nillable="true" type="tns:RiskType" />
+  <xs:complexType name="ArrayOfProjectActionDimension">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ProjectActionDimension" nillable="true" type="tns:ProjectActionDimension" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfProjectActionDimension" nillable="true" type="tns:ArrayOfProjectActionDimension" />
+  <xs:complexType name="ProjectActionDimension">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Dimensions" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ID" type="xs:int" />
+      <xs:element minOccurs="0" name="ProjectDetail" nillable="true" type="tns:ProjectDetail" />
+      <xs:element minOccurs="0" name="ProjectDetailID" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProjectActionDimension" nillable="true" type="tns:ProjectActionDimension" />
+  <xs:complexType name="ArrayOfProjectActionImage">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ProjectActionImage" nillable="true" type="tns:ProjectActionImage" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfProjectActionImage" nillable="true" type="tns:ArrayOfProjectActionImage" />
+  <xs:complexType name="ProjectActionImage">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ID" type="xs:int" />
+      <xs:element minOccurs="0" name="Image" nillable="true" type="tns:Image" />
+      <xs:element minOccurs="0" name="ImageID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ProjectDetail" nillable="true" type="tns:ProjectDetail" />
+      <xs:element minOccurs="0" name="ProjectDetailID" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProjectActionImage" nillable="true" type="tns:ProjectActionImage" />
+  <xs:complexType name="Image">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CreationDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ImageDetailComments" nillable="true" type="tns:ArrayOfImageDetailComment" />
+      <xs:element minOccurs="0" name="ImageDetails" nillable="true" type="tns:ArrayOfImageDetail" />
+      <xs:element minOccurs="0" name="ImageID" type="xs:int" />
+      <xs:element minOccurs="0" name="ImagePath" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProjectActionImages" nillable="true" type="tns:ArrayOfProjectActionImage" />
+      <xs:element minOccurs="0" name="Tags" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Image" nillable="true" type="tns:Image" />
+  <xs:complexType name="ArrayOfImageDetailComment">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ImageDetailComment" nillable="true" type="tns:ImageDetailComment" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfImageDetailComment" nillable="true" type="tns:ArrayOfImageDetailComment" />
+  <xs:complexType name="ImageDetailComment">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Date" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ID" type="xs:int" />
+      <xs:element minOccurs="0" name="Image" nillable="true" type="tns:Image" />
+      <xs:element minOccurs="0" name="ImageID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Text" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ImageDetailComment" nillable="true" type="tns:ImageDetailComment" />
+  <xs:complexType name="ArrayOfImageDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ImageDetail" nillable="true" type="tns:ImageDetail" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfImageDetail" nillable="true" type="tns:ArrayOfImageDetail" />
+  <xs:complexType name="ImageDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Comment" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Datetime" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Image" nillable="true" type="tns:Image" />
+      <xs:element minOccurs="0" name="ImageDetailID" type="xs:int" />
+      <xs:element minOccurs="0" name="ImageID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Tags" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ImageDetail" nillable="true" type="tns:ImageDetail" />
+  <xs:complexType name="ArrayOfProjectActionRisk">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ProjectActionRisk" nillable="true" type="tns:ProjectActionRisk" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfProjectActionRisk" nillable="true" type="tns:ArrayOfProjectActionRisk" />
+  <xs:complexType name="ProjectActionRisk">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ID" type="xs:int" />
+      <xs:element minOccurs="0" name="ProjectDetail" nillable="true" type="tns:ProjectDetail" />
+      <xs:element minOccurs="0" name="ProjectDetailID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Risks" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProjectActionRisk" nillable="true" type="tns:ProjectActionRisk" />
+  <xs:complexType name="ArrayOfProjectActionTool">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ProjectActionTool" nillable="true" type="tns:ProjectActionTool" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfProjectActionTool" nillable="true" type="tns:ArrayOfProjectActionTool" />
+  <xs:complexType name="ProjectActionTool">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ID" type="xs:int" />
+      <xs:element minOccurs="0" name="ProjectDetail" nillable="true" type="tns:ProjectDetail" />
+      <xs:element minOccurs="0" name="ProjectDetailID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Tool" nillable="true" type="tns:Tool" />
+      <xs:element minOccurs="0" name="ToolID" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProjectActionTool" nillable="true" type="tns:ProjectActionTool" />
+  <xs:complexType name="Tool">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ProjectActionTools" nillable="true" type="tns:ArrayOfProjectActionTool" />
+      <xs:element minOccurs="0" name="ToolID" type="xs:int" />
+      <xs:element minOccurs="0" name="ToolName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Tool" nillable="true" type="tns:Tool" />
+  <xs:complexType name="User">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Projects" nillable="true" type="tns:ArrayOfProject" />
+      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="User" nillable="true" type="tns:User" />
+</xs:schema>

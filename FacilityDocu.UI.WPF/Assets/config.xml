@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<config>
+  <paths>
+    <xmlp>C:\FacilityDocu\</xmlp>
+    <datap>C:\</datap>
+    <backp>D:\</backp>
+  </paths>
+</config>

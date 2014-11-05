@@ -1,0 +1,558 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Name="homePage" x:Class="FacilityDocLaptop.HomePage"
+        Title="FacilityDocu - Home" Height="763" Width="1366">
+
+
+    <Grid x:Name="grid" Margin="1,0,-1,0" Background="#FF0D5887">
+        <Grid x:Name="grdViewLogin" Background="#FF0D5887" Visibility="Collapsed">
+            <Button HorizontalAlignment="Left" Height="148" Margin="915,58,0,0" VerticalAlignment="Top" Width="189">
+                <Path Data="F1M484.766,361.437C484.766,361.272 484.766,361.044 484.766,360.702 484.766,354.202 473.334,347.86 463.161,344.493 462.697,344.342 459.766,343.021 461.598,337.451L461.572,337.451C466.346,332.535 469.995,324.617 469.995,316.825 469.995,304.846 462.027,298.566 452.769,298.566 443.505,298.566 435.583,304.846 435.583,316.825 435.583,324.647 439.212,332.596 444.014,337.502 445.887,342.413 442.538,344.236 441.837,344.493 432.143,348 420.766,354.392 420.766,360.702 420.766,361.044 420.766,361.272 420.766,361.437L484.766,361.437z" Stretch="Uniform" Fill="#FFFFFFFF" RenderTransformOrigin="0.5,0.5" Height="123.82" Width="130.373">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="0" />
+                            <ScaleTransform ScaleX="1" ScaleY="1" />
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                </Path>
+            </Button>
+            <TextBlock HorizontalAlignment="Left" Margin="273,366,0,0" TextWrapping="Wrap" Text="Password:" VerticalAlignment="Top" FontSize="40" Foreground="White"/>
+            <TextBox x:Name="userName" HorizontalAlignment="Left" Height="58" Margin="502,276,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="602" FontSize="45"/>
+            <TextBlock HorizontalAlignment="Left" Margin="262,281,0,0" TextWrapping="Wrap" Text="Username:" VerticalAlignment="Top" FontSize="40" Foreground="White"/>
+            <PasswordBox x:Name="password" FontSize="45" HorizontalAlignment="Left" Height="58" Margin="502,361,0,0" VerticalAlignment="Top" Width="602" />
+            <Button Content="Login" HorizontalAlignment="Left" Margin="913,454,0,0" VerticalAlignment="Top" Width="191" Click="login_Click" FontSize="30" Height="44"/>
+            <TextBlock HorizontalAlignment="Left" Margin="63,58,0,0" TextWrapping="Wrap" Text="FacilityDocu" FontSize="70" VerticalAlignment="Top" Foreground="#FFD5DEF0"/>
+            <TextBlock HorizontalAlignment="Left" Margin="148,156,0,0" TextWrapping="Wrap" Text="Welcome" VerticalAlignment="Top" FontSize="40" Foreground="#FFADDDFF"/>
+
+        </Grid>
+        <Grid x:Name="gridHomePage" HorizontalAlignment="Left" Height="732" VerticalAlignment="Top" Width="1358" Visibility="Visible">
+            <Border BorderThickness="1" HorizontalAlignment="Left" Height="275" Margin="179,178,0,0" VerticalAlignment="Top" Width="282" Background="#FF396591" RenderTransformOrigin="0.5,0.5"/>
+
+            <Button x:Name="NewProject_btn" HorizontalAlignment="Left" Height="195" Margin="206,197,0,0" VerticalAlignment="Top" Width="214" Click="NewProject_btn_Click">
+                <Path Data="M26.283646,18.626712C25.578564,18.625717 24.870488,18.877655 24.305667,19.389528 23.101716,20.477525 23.00672,22.33552 24.098676,23.539514 25.18563,24.74451 27.043555,24.836511 28.250504,23.747514 29.454455,22.658518 29.546452,20.798525 28.456496,19.594528 27.87799,18.953842 27.08274,18.627839 26.283646,18.626712z M26.285584,16.825022C27.575473,16.828347 28.859135,17.354848 29.791442,18.386532 31.274381,20.027527 31.394376,22.415519 30.229424,24.179512L33.069306,27.318502C33.50929,27.803501 33.468293,28.551498 32.98531,28.987497 32.50533,29.423496 31.756362,29.388496 31.319379,28.900497L28.477496,25.762508C26.606572,26.745504 24.242669,26.388506 22.76073,24.745512 21.003802,22.807518 21.153796,19.805526 23.093716,18.050533 24.00446,17.226473 25.147446,16.82209 26.285584,16.825022z M9.136998,7.8089907C8.6249979,7.8089907 8.209998,8.1949904 8.209998,8.6719892 8.209998,9.1459892 8.6249979,9.5319884 9.136998,9.5319884L17.588,9.5319884C18.098,9.5319884 18.513001,9.1459892 18.513001,8.6719892 18.513001,8.1949904 18.098,7.8089907 17.588,7.8089907z M9.0219982,4.120995C8.4969986,4.120995 8.0719984,4.5219945 8.0719984,5.016994 8.0719984,5.5119934 8.4969986,5.912993 9.0219982,5.9129932L17.668999,5.9129932C18.192,5.912993 18.617001,5.5119934 18.617001,5.016994 18.617001,4.6389943 18.368001,4.3149948 18.017001,4.1839948L18.017001,4.1829947 18.012,4.1829947C17.905,4.1429949,17.79,4.120995,17.668999,4.120995z M0,3.3599535L4.6150001,3.3599535 4.6150001,7.1138582 4.6150001,10.08395 4.6150001,20.706871C4.6150001,21.943931 3.5819965,22.442953 2.3090032,22.442953 1.0350024,22.442953 0,21.439903 0,20.202842L0,10.08395 0,7.1138582z M6.820998,0L25.574002,0 25.579003,15.224982C22.379002,15.350981 19.823001,17.981979 19.823001,21.213976 19.823001,21.638975 19.868001,22.051973 19.951001,22.451973L6.820998,22.451973z" Stretch="Uniform" Fill="#FFAB45E7" Width="206.373" Height="162.476" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="0" />
+                            <ScaleTransform ScaleX="1" ScaleY="1" />
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                </Path>
+            </Button>
+
+
+            <Button x:Name="LoadProject_btn" HorizontalAlignment="Left" Height="192" Margin="497,197,0,0" VerticalAlignment="Top" Width="220" Click="LoadProject_btn_Click" Visibility="Collapsed">
+
+                <Path Data="M0,33.900097L4.4802456,33.900097 4.4802456,44.68066 48.912678,44.68066 48.912678,33.900097 53.33292,33.900097 53.33292,49.110893 0,49.110893z M26.667967,0L29.257553,2.5996125 40.425962,13.757443 40.326002,13.857523 35.326733,13.857523 28.497655,7.0287185 28.497655,31.643999 24.82827,31.643999 24.82827,7.0287185 17.999192,13.857523 12.999924,13.857523 12.899963,13.757443z" Stretch="Uniform" Fill="#FFAB45E7" Width="198" Height="142.896" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="0" />
+                            <ScaleTransform ScaleX="1" ScaleY="1" />
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                </Path>
+            </Button>
+            <Button x:Name="ImportPhoto_btn" HorizontalAlignment="Left" Height="185" Margin="210,431,0,0" VerticalAlignment="Top" Width="210" Click="ImportPhoto_btn_Click" Visibility="Collapsed">
+                <Path Data="M27.187227,8.4450006L27.187227,16.512667C61.32288,16.512667 64,36.689709 64,40.721001 56.637947,24.585644 27.187227,32.648121 27.187227,32.648121L27.187227,40.721001 10.122,25.598541z M0,0L42.667,0 42.667,4.2655888 42.667,8.5337868 38.401371,8.5337868 38.401371,4.2655888 4.2656202,4.2655888 4.2656202,46.934441 38.401371,46.934441 38.401371,42.666283 42.667,42.666283 42.667,46.934441 42.667,51.200001 38.401371,51.200001 0,51.200001 0,46.934441 0,4.2655888z" Stretch="Uniform" Fill="#FFAB45E7" Width="171.343" Height="195.06" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5" Visibility="Collapsed">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="0" />
+                            <ScaleTransform ScaleX="1" ScaleY="1" />
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                </Path>
+            </Button>
+            <Button x:Name="LastProject_btn" HorizontalAlignment="Left" Height="185" Margin="501,431,0,0" VerticalAlignment="Top" Width="220" Click="LastProject_btn_Click" Visibility="Collapsed">
+                <Path Data="M27.187227,8.4450006L27.187227,16.512667C61.32288,16.512667 64,36.689709 64,40.721001 56.637947,24.585644 27.187227,32.648121 27.187227,32.648121L27.187227,40.721001 10.122,25.598541z M0,0L42.667,0 42.667,4.2655888 42.667,8.5337868 38.401371,8.5337868 38.401371,4.2655888 4.2656202,4.2655888 4.2656202,46.934441 38.401371,46.934441 38.401371,42.666283 42.667,42.666283 42.667,46.934441 42.667,51.200001 38.401371,51.200001 0,51.200001 0,46.934441 0,4.2655888z" Stretch="Uniform" Fill="#FFAB45E7" Width="167.85" Height="161.642" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="0" />
+                            <ScaleTransform ScaleX="1" ScaleY="1" />
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                </Path>
+            </Button>
+            <TextBlock HorizontalAlignment="Left" Margin="232,392,0,0" TextWrapping="Wrap" Text="New Project" VerticalAlignment="Top" Width="148" FontSize="24" Height="39" Foreground="White"/>
+            <TextBlock HorizontalAlignment="Left" Margin="540,389,0,0" TextWrapping="Wrap" Text="Load Project" VerticalAlignment="Top" FontSize="24" Height="37" Width="161" Foreground="White" Visibility="Collapsed"/>
+            <TextBlock HorizontalAlignment="Left" Margin="526,621,0,0" TextWrapping="Wrap" Text="Last Project" VerticalAlignment="Top" Width="161" FontSize="24" Height="38" Foreground="White" Visibility="Collapsed"/>
+            <TextBlock HorizontalAlignment="Left" Margin="232,625,0,0" TextWrapping="Wrap" Text="Import Photos" VerticalAlignment="Top" Width="158" Height="34" FontSize="24" Foreground="White" Visibility="Collapsed"/>
+            <Path Data="M19.833,0L32.5,0 32.5,19.833999 52.334,19.833999 52.334,32.500999 32.5,32.500999 32.5,52.333 19.833,52.333 19.833,32.500999 0,32.500999 0,19.833999 19.833,19.833999z" Stretch="Uniform" Fill="#FFAB45E7" Margin="367.849,210.438,953.407,484.963" RenderTransformOrigin="0.5,0.5">
+                <Path.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="0" />
+                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                    </TransformGroup>
+                </Path.RenderTransform>
+            </Path>
+            <TextBlock HorizontalAlignment="Left" Margin="206,46,0,0" TextWrapping="Wrap" Text="HOME" FontSize="80" VerticalAlignment="Top" Width="279" Height="103" Foreground="#FFCBD6DA"/>
+            <Path Data="M31.427649,15.523999L53.103002,34.871683 53.103002,59.723391C53.088601,60.666094 52.466603,61.263796 51.961408,61.544996 51.426911,61.845797 50.850717,61.972101 50.232221,61.976L38.688001,61.976C38.2909,61.976 37.902205,61.821096 37.619008,61.544996 37.340407,61.272898 37.179908,60.890093 37.179908,60.502092L37.179908,48.548944 25.677389,48.548944 25.677389,60.502092C25.677389,60.890093 25.514991,61.272898 25.235993,61.544996 24.953094,61.821096 24.564398,61.976 24.1673,61.976L12.622781,61.976C12.008585,61.972101 11.428489,61.845797 10.895992,61.544996 10.390396,61.263796 9.7670005,60.666094 9.752,59.723391L9.752,34.871683z M31.430007,0C32.412786,0,33.395349,0.34765434,34.172341,1.0429621L61.536054,25.469772C63.191937,26.947757 63.306836,29.45413 61.791253,31.072613 60.273667,32.685896 57.703996,32.796495 56.048413,31.31991L31.427569,9.3424339 6.8067472,31.31991C6.0245249,32.015303 5.0434551,32.358999 4.0678854,32.358999 2.9643769,32.358999 1.8680081,31.925505 1.0659571,31.072613L1.0623569,31.066113C-0.44769764,29.45413,-0.33539391,26.945057,1.3191938,25.469772L28.686399,1.0429621C29.46424,0.34765434,30.44723,0,31.430007,0z" Stretch="Uniform" Fill="#FFCFA1EA" Margin="92.327,0,1172,599.928" RenderTransformOrigin="0.5,0.5" Height="103.456" VerticalAlignment="Bottom"/>
+        </Grid>
+
+
+        <Grid x:Name="newProject_grid" Background="#FF0D5887" Visibility="Collapsed" Margin="-10,0,10,0">
+            <TextBlock HorizontalAlignment="Left" Margin="42,29,0,0" TextWrapping="Wrap" Text="New Project" VerticalAlignment="Top" FontSize="50" Foreground="#FFBEC7D8"/>
+            <TextBlock HorizontalAlignment="Left" Margin="210,111,0,0" TextWrapping="Wrap" Text="All Projects" VerticalAlignment="Top" Foreground="White" FontSize="20" FontWeight="Bold"/>
+            <ComboBox HorizontalAlignment="Left" Margin="210,139,0,0" VerticalAlignment="Top" Width="273" Height="31" Name="AllProject_ListBox" SelectionChanged="AllProject_ListBox_SelectionChanged"/>
+            <TextBlock HorizontalAlignment="Left" Margin="597,111,0,0" TextWrapping="Wrap" Text="Project Name:" VerticalAlignment="Top" Foreground="White" FontSize="20" FontWeight="Bold"/>
+            <TextBox x:Name="ProjectName" HorizontalAlignment="Left" Height="28" Margin="597,143,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="197"/>
+            <Grid HorizontalAlignment="Left" Height="385" Margin="0,347,0,0" VerticalAlignment="Top" Width="1358">
+                <Grid.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF0D5887" Offset="0"/>
+                        <GradientStop Color="#FF23275F" Offset="0.916"/>
+                    </LinearGradientBrush>
+                </Grid.Background>
+                <TextBlock HorizontalAlignment="Left" Margin="55,93,0,0" TextWrapping="Wrap" Text="Desription:" VerticalAlignment="Top" FontSize="20" Foreground="White" Height="44" Width="139" FontWeight="Bold"/>
+                <TextBlock HorizontalAlignment="Left" Margin="625,33,0,0" TextWrapping="Wrap" Text="Creation Date:" VerticalAlignment="Top" FontSize="20" Foreground="White" Height="54" Width="183" FontWeight="Bold"/>
+                <TextBlock HorizontalAlignment="Left" Margin="625,106,0,0" TextWrapping="Wrap" Text="Created By:" VerticalAlignment="Top" FontSize="20" Foreground="White" Height="55" Width="145" FontWeight="Bold"/>
+                <TextBlock HorizontalAlignment="Left" Margin="625,173,0,0" TextWrapping="Wrap" Text="Last Updated By:" VerticalAlignment="Top" FontSize="20" Foreground="White" Height="56" Width="215" FontWeight="Bold"/>
+                <TextBlock HorizontalAlignment="Left" Margin="623,234,0,0" TextWrapping="Wrap" Text="Last Updated At:" VerticalAlignment="Top" FontSize="20" Foreground="White" Height="55" Width="213" FontWeight="Bold"/>
+                <TextBox Name="des_txtbox" HorizontalAlignment="Left" Height="179" Margin="168,95,0,0" VerticalAlignment="Top" Width="422"/>
+                <Rectangle HorizontalAlignment="Left" Height="48" Margin="834,24,0,0" VerticalAlignment="Top" Width="496" Fill="#FF8BB6B4" OpacityMask="#FFE6D8E0" Opacity="0.5"/>
+                <Rectangle HorizontalAlignment="Left" Height="50" Margin="834,91,0,0" VerticalAlignment="Top" Width="496" Fill="#FF8BB6B4" OpacityMask="#FFE6D8E0" Opacity="0.5"/>
+                <Rectangle HorizontalAlignment="Left" Height="50" Margin="834,159,0,0" VerticalAlignment="Top" Width="496" Fill="#FF8BB6B4" OpacityMask="#FFE6D8E0" Opacity="0.5"/>
+                <Rectangle HorizontalAlignment="Left" Height="52" Margin="834,226,0,0" VerticalAlignment="Top" Width="496" Fill="#FF8BB6B4" OpacityMask="#FFE6D8E0" Opacity="0.5"/>
+                <TextBlock Name="creationdate_txt" HorizontalAlignment="Left" Margin="840,25,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="45" Width="490" Foreground="White" FontSize="25"/>
+                <TextBlock x:Name="createdby_txt" HorizontalAlignment="Left" Margin="840,92,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="45" Width="490" Foreground="White" FontSize="25"/>
+                <TextBlock Name="updatedby_txt" HorizontalAlignment="Left" Margin="840,162,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="45" Width="490" Foreground="White" FontSize="25"/>
+                <TextBlock Name="updatedate_txt" HorizontalAlignment="Left" Margin="840,229,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="45" Width="490" Foreground="White" FontSize="25"/>
+                <TextBlock HorizontalAlignment="Left" Margin="55,36,0,0" TextWrapping="Wrap" Text="Project:" VerticalAlignment="Top" FontSize="20" Foreground="White" FontWeight="Bold"/>
+                <Rectangle HorizontalAlignment="Left" Height="48" Margin="168,26,0,0" VerticalAlignment="Top" Width="422" Fill="#FF8BB6B4" OpacityMask="#FFE6D8E0" Opacity="0.5"/>
+                <TextBlock x:Name="projectName_txt" HorizontalAlignment="Left" Margin="168,29,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="45" Width="422" MouseEnter="projectName_txt_MouseEnter"  MouseLeave="projectName_txt_MouseLeave"  Foreground="#FF412CA2" FontSize="28" TextDecorations="Underline" MouseLeftButtonDown="TextBlock_MouseLeftButtonDown"/>
+
+            </Grid>
+            <Button x:Name="ok_btn" Content="Ok" HorizontalAlignment="Left" Margin="681,190,0,0" VerticalAlignment="Top" Width="113" Height="24" FontSize="15" Click="ok_btn_Click"/>
+            <Button Content="Back" HorizontalAlignment="Left" Margin="168,634,0,0" VerticalAlignment="Top" Width="131" Height="29" FontSize="20" x:Name="newProject_back" Click="newProject_back_Click"/>
+
+        </Grid>
+
+
+
+        <Grid x:Name="loadProject_grid" Background="#FF0D5887" OpacityMask="#FF0D5887" Visibility="Hidden">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0*"/>
+                <ColumnDefinition Width="10*"/>
+                <ColumnDefinition Width="669*"/>
+            </Grid.ColumnDefinitions>
+            <ListBox x:Name="ProjectList" HorizontalAlignment="Left" Height="520" Margin="10,82,0,0" VerticalAlignment="Top" Width="375" Grid.Column="1" Grid.ColumnSpan="2" StylusInRange="ProjectList_StylusInRange" SelectionChanged="ProjectList_SelectionChanged">
+                <TextBlock TextWrapping="Wrap" Text=""/>
+            </ListBox>
+            <TextBlock HorizontalAlignment="Left" Margin="25.119,14,0,0" TextWrapping="Wrap" Text="Project Lists" VerticalAlignment="Top" Height="68" Width="306" FontSize="35" Foreground="#FFF7570D" FontWeight="Bold" Grid.Column="2"/>
+            <TextBlock x:Name="prj_Descriptiontxt" HorizontalAlignment="Left" Margin="414.119,82,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="645" Width="810" Grid.Column="2"/>
+            <TextBlock HorizontalAlignment="Left" Margin="475.119,14,0,0" TextWrapping="Wrap" Text="Description" VerticalAlignment="Top" Height="68" Width="306"  FontSize="35" Foreground="#FFF7570D" FontWeight="Bold" Grid.Column="2" />
+            <Button Content="Back" HorizontalAlignment="Left" Margin="81,642,0,0" VerticalAlignment="Top" Width="176" Height="52" FontSize="30" x:Name="loadProject_back" Click="loadProject_back_Click" Grid.Column="2"/>
+
+        </Grid>
+
+        <Grid x:Name="importPhotos_grid" Background="#FF0D5887" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Content="Import Image" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="399" Height="82" FontSize="30" Foreground="Red" RenderTransformOrigin="2.507,4.198" Grid.ColumnSpan="1" FontWeight="Bold"/>
+            <Image HorizontalAlignment="Left" Height="100" Margin="755,196,0,0" VerticalAlignment="Top" Width="100"/>
+            <Grid HorizontalAlignment="Left" Height="727" Margin="638,10,0,-5" VerticalAlignment="Top" Width="490">
+                <Image HorizontalAlignment="Left" Height="235" Margin="250,47,0,0" VerticalAlignment="Top" Width="240" RenderTransformOrigin="0.816,0.5"/>
+                <Image HorizontalAlignment="Left" Height="174" Margin="250,287,-51,0" VerticalAlignment="Top" Width="291"/>
+            </Grid>
+            <Image HorizontalAlignment="Left" Height="181" Margin="918,483,0,0" VerticalAlignment="Top" Width="210" />
+            <Button Content="Back" HorizontalAlignment="Left" Margin="93,612,0,0" VerticalAlignment="Top" Width="176" Height="52" FontSize="30" x:Name="importPhotos_back" Click="importPhotos_back_Click"/>
+        </Grid>
+
+
+
+        <Grid Background="#FF0D5887" x:Name="lastProject_grid" Visibility="Collapsed">
+            <Grid HorizontalAlignment="Left" Height="183" Margin="116,147,0,0" VerticalAlignment="Top" Width="218" Background="#FFBB8686"/>
+            <Grid HorizontalAlignment="Left" Height="188" Margin="436,147,0,0" VerticalAlignment="Top" Width="229" Background="#FFBB7878"/>
+            <Grid HorizontalAlignment="Left" Height="188" Margin="736,147,0,0" VerticalAlignment="Top" Width="229" Background="#FFCB6F6F"/>
+            <Grid HorizontalAlignment="Left" Height="183" Margin="1033,152,0,0" VerticalAlignment="Top" Width="220" Background="#FFB07979"/>
+            <TextBlock HorizontalAlignment="Left" Margin="53,42,0,0" TextWrapping="Wrap" Text="Last Projects" VerticalAlignment="Top" Height="100" Width="414" FontSize="70" Foreground="#FFE2E2E2"/>
+            <TextBlock HorizontalAlignment="Left" Margin="187,297,0,0" TextWrapping="Wrap" Text="Project 1" VerticalAlignment="Top" FontSize="20"/>
+            <TextBlock HorizontalAlignment="Left" Margin="513,297,0,0" TextWrapping="Wrap" Text="Project 2" VerticalAlignment="Top" FontSize="20"/>
+            <TextBlock HorizontalAlignment="Left" Margin="807,297,0,0" TextWrapping="Wrap" Text="Project 3" VerticalAlignment="Top" FontSize="20"/>
+            <TextBlock HorizontalAlignment="Left" Margin="1107,297,0,0" TextWrapping="Wrap" Text="Project 4" VerticalAlignment="Top" FontSize="20"/>
+            <Rectangle Fill="#FFDBDBF0" HorizontalAlignment="Left" Height="54" Margin="116,335,0,0" VerticalAlignment="Top" Width="218" Opacity="0.5"/>
+            <Rectangle Fill="#FFDBDBF0" HorizontalAlignment="Left" Height="54" Margin="436,340,0,0" VerticalAlignment="Top" Width="229" Opacity="0.5"/>
+            <Rectangle Fill="#FFDBDBF0" HorizontalAlignment="Left" Height="54" Margin="736,340,0,0" VerticalAlignment="Top" Width="229" Opacity="0.5"/>
+            <Rectangle Fill="#FFDBDBF0" HorizontalAlignment="Left" Height="54" Margin="1035,340,0,0" VerticalAlignment="Top" Width="218" Opacity="0.5"/>
+            <TextBlock HorizontalAlignment="Left" Margin="178,340,0,0" TextWrapping="Wrap" Text="DateTime" VerticalAlignment="Top" Height="28" Width="156" FontSize="20" FontFamily="Shruti" FontStyle="Italic"/>
+            <TextBlock HorizontalAlignment="Left" Margin="486,346,0,0" TextWrapping="Wrap" Text="DateTime" VerticalAlignment="Top" Height="28" Width="156" FontSize="20" FontFamily="Shruti" FontStyle="Italic"/>
+            <TextBlock HorizontalAlignment="Left" Margin="807,346,0,0" TextWrapping="Wrap" Text="DateTime" VerticalAlignment="Top" Height="28" Width="156" FontSize="20" FontFamily="Shruti" FontStyle="Italic"/>
+            <TextBlock HorizontalAlignment="Left" Margin="1097,346,0,0" TextWrapping="Wrap" Text="DateTime" VerticalAlignment="Top" Height="28" Width="156" FontSize="20" FontFamily="Shruti" FontStyle="Italic"/>
+            <Button Content="Back" x:Name="lastProject_back" FontSize="25" HorizontalAlignment="Left" Margin="102,611,0,0" VerticalAlignment="Top" Width="162" Height="52" Click="lastProject_back_Click"/>
+
+
+        </Grid>
+        <Grid x:Name="editPage_grid" HorizontalAlignment="Left" Height="732"  VerticalAlignment="Top" Width="1358"
+              Background="#FF0D5887" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="85*"/>
+                <RowDefinition Height="281*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="55*"/>
+                <ColumnDefinition Width="1303*"/>
+            </Grid.ColumnDefinitions>
+
+            <ListBox Margin="0,146,547,289" x:Name="listboxPicture" Grid.Column="1" Grid.Row="1">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+            </ListBox>
+
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="268" Margin="785,106,0,0" VerticalAlignment="Top" Width="454" Grid.Column="1" Grid.Row="1"/>
+            <Button x:Name="addPictures_btn" Content="Add Pictures" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Margin="676,116,0,0" Height="25" Click="addPictures_btn_Click" Grid.Column="1" Grid.Row="1"/>
+            <Grid HorizontalAlignment="Left" Height="343" Margin="808,83,0,0" VerticalAlignment="Top" Width="451" Grid.Column="1" Grid.Row="1">
+                <CheckBox x:Name="c1" Margin="0,33,193,284" FontSize="20">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Assets/1.png" Height="19" Width="22" Stretch="Fill"/>
+
+                        <TextBlock Text=" Driller" FontSize="15"/>
+
+                    </StackPanel>
+
+                </CheckBox>
+
+                <CheckBox x:Name="C2" Margin="0,64,204,255" FontSize="20">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Assets/0.png" Height="19" Width="22" Stretch="Fill"/>
+                        <TextBlock Text=" Assistant Driller" Width="111" FontSize="15"/>
+
+                    </StackPanel>
+
+                </CheckBox>
+
+                <CheckBox x:Name="C3" Margin="0,93,204,224" FontSize="20">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Assets/0.png" Height="19" Width="22" Stretch="Fill"/>
+                        <TextBlock Text=" Banks Man" FontSize="15"/>
+
+                    </StackPanel>
+
+                </CheckBox>
+
+                <CheckBox x:Name="C4" Margin="0,124,204,192" FontSize="20">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Assets/0.png" Height="19" Width="22" Stretch="Fill"/>
+                        <TextBlock Text=" Tool Pusher" FontSize="15"/>
+
+                    </StackPanel>
+
+                </CheckBox>
+
+                <CheckBox x:Name="C5" Margin="0,151,204,168" FontSize="20">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Assets/0.png" Height="19" Width="22" Stretch="Fill"/>
+                        <TextBlock Text=" Floor man" FontSize="15"/>
+
+                    </StackPanel>
+
+                </CheckBox>
+
+                <CheckBox x:Name="C6" Margin="0,180,204,142" FontSize="20">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Assets/0.png" Height="19" Width="22" Stretch="Fill"/>
+                        <TextBlock Text=" Derrick Man" FontSize="15"/>
+
+                    </StackPanel>
+
+                </CheckBox>
+
+                <CheckBox x:Name="C7" Margin="0,206,204,115" FontSize="20">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Assets/1.png" Height="19" Width="22" Stretch="Fill"/>
+                        <TextBlock Text=" Roustabout" FontSize="15"/>
+
+                    </StackPanel>
+
+                </CheckBox>
+                <CheckBox x:Name="C8" Margin="0,233,204,88" FontSize="20">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Assets/1.png" Height="19" Width="22" Stretch="Fill"/>
+                        <TextBlock Text=" Electrician" FontSize="15"/>
+
+                    </StackPanel>
+
+                </CheckBox>
+                <CheckBox x:Name="c1_Copy" Margin="0,259,193,67" FontSize="15">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Assets/1.png" Height="19" Width="22" Stretch="Fill"/>
+                        <TextBlock Text=" Mechanic"/>
+
+                    </StackPanel>
+
+                </CheckBox>
+                <CheckBox x:Name="C2_Copy" Margin="271,38,0,281" FontSize="20">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Assets/1.png" Height="19" Width="22" Stretch="Fill"/>
+                        <TextBlock Text="  70MT" FontSize="15"/>
+
+                    </StackPanel>
+
+                </CheckBox>
+                <CheckBox x:Name="C3_Copy" Margin="271,67,0,250" FontSize="20">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Assets/1.png" Height="19" Width="22" Stretch="Fill"/>
+                        <TextBlock Text=" Crane 90MT" FontSize="15"/>
+
+                    </StackPanel>
+
+                </CheckBox>
+                <CheckBox x:Name="C4_Copy" Margin="271,98,0,221" FontSize="20">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Assets/1.png" Height="19" Width="22" Stretch="Fill"/>
+                        <TextBlock Text=" Crane 90MT" FontSize="15"/>
+
+                    </StackPanel>
+
+                </CheckBox>
+                <CheckBox x:Name="C5_Copy" Margin="271,127,0,192" FontSize="20">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Assets/1.png" Height="19" Width="22" Stretch="Fill"/>
+                        <TextBlock Text=" Crane 100MT" FontSize="15"/>
+
+                    </StackPanel>
+
+                </CheckBox>
+                <CheckBox x:Name="C6_Copy" Margin="271,162,0,150" FontSize="20">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Assets/1.png" Height="19" Width="22" Stretch="Fill"/>
+                        <TextBlock Text=" Crane 140MT" FontSize="15"/>
+
+                    </StackPanel>
+
+                </CheckBox>
+                <CheckBox x:Name="C7_Copy" Margin="271,198,0,119" FontSize="20">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Assets/1.png" Height="19" Width="22" Stretch="Fill"/>
+                        <TextBlock Text=" Wheel Loader" FontSize="15"/>
+
+                    </StackPanel>
+
+                </CheckBox>
+                <CheckBox x:Name="C8_Copy" Margin="271,229,0,88" FontSize="20">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Assets/1.png" Height="19" Width="22" Stretch="Fill"/>
+                        <TextBlock Text=" Winch Truck" FontSize="15"/>
+
+                    </StackPanel>
+
+                </CheckBox>
+                <CheckBox x:Name="C8_Copy1" Margin="271,255,0,67" FontSize="20">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Assets/1.png" Height="19" Width="22" Stretch="Fill"/>
+                        <TextBlock Text=" Dolly" FontSize="15"/>
+
+                    </StackPanel>
+
+                </CheckBox>
+                <TextBlock HorizontalAlignment="Left" Margin="-26,-9,0,0" TextWrapping="Wrap" Text="Resources" VerticalAlignment="Top" FontSize="25" Width="146" FontWeight="Bold"/>
+
+
+
+
+
+            </Grid>
+            <Grid Height="136" Margin="0,346,89,80" Width="1220" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.ColumnSpan="2" Grid.Row="1">
+                <TextBlock HorizontalAlignment="Left" Margin="6,32,0,0" TextWrapping="Wrap" Text="Activity/Aspect" VerticalAlignment="Top" FontSize="18" Width="156" FontWeight="Bold"/>
+                <TextBox x:Name="txtActivity" HorizontalAlignment="Left" Height="60" Margin="6,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="166" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                <TextBlock HorizontalAlignment="Left" Margin="175,31,0,0" TextWrapping="Wrap" Text="Danger/Consequence" VerticalAlignment="Top" FontSize="18" Width="190" FontWeight="Bold"/>
+                <TextBox x:Name="txtDanger" HorizontalAlignment="Left" Height="60" Margin="175,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                <TextBlock HorizontalAlignment="Left" Margin="594,31,0,0" TextWrapping="Wrap" Text="Control Measure" VerticalAlignment="Top" FontSize="20" Width="150" FontWeight="Bold" Height="26"/>
+                <TextBox Name="txtControl" HorizontalAlignment="Left" Height="59" Margin="594,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="268" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                <TextBox Name="txtE" HorizontalAlignment="Left" Height="60" Margin="475,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="48" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                <TextBox Name="txtK" HorizontalAlignment="Left" Height="60" Margin="370,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="48" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" PreviewTextInput="txtK_PreviewTextInput" />
+                <TextBox Name="txtB" HorizontalAlignment="Left" Height="60" Margin="423,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="47" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                <TextBlock HorizontalAlignment="Left" Margin="370,31,0,0" TextWrapping="Wrap" Text="K" VerticalAlignment="Top" FontSize="20" Width="28" FontWeight="Bold"/>
+                <TextBlock HorizontalAlignment="Left" Margin="423,31,0,0" TextWrapping="Wrap" Text="B" VerticalAlignment="Top" FontSize="20" Width="28" FontWeight="Bold"/>
+                <TextBlock HorizontalAlignment="Left" Margin="475,30,0,0" TextWrapping="Wrap" Text="E" VerticalAlignment="Top" FontSize="20" Width="21" FontWeight="Bold"/>
+                <TextBox Name="txtRisk" HorizontalAlignment="Left" Height="60" Margin="528,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="61" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                <TextBlock HorizontalAlignment="Left" Margin="528,31,0,0" TextWrapping="Wrap" Text="Risk" VerticalAlignment="Top" FontSize="20" Width="44" FontWeight="Bold"/>
+                <TextBox Name="txt_E" HorizontalAlignment="Left" Height="60" Margin="1025,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                <TextBox Name="txt_K" HorizontalAlignment="Left" Height="60" Margin="867,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                <TextBox  HorizontalAlignment="Left" Height="60" Margin="946,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                <TextBlock HorizontalAlignment="Left" Margin="867,31,0,0" TextWrapping="Wrap" Text="K" VerticalAlignment="Top" FontSize="20" Width="28" RenderTransformOrigin="0.488,0.551" FontWeight="Bold"/>
+                <TextBlock HorizontalAlignment="Left" Margin="946,31,0,0" TextWrapping="Wrap" Text="B" VerticalAlignment="Top" FontSize="20" Width="28" FontWeight="Bold"/>
+                <TextBlock HorizontalAlignment="Left" Margin="1025,30,0,0" TextWrapping="Wrap" Text="E" VerticalAlignment="Top" FontSize="20" Width="28" FontWeight="Bold"/>
+                <TextBox Name="txt_Risk" HorizontalAlignment="Left" Height="60" Margin="1104,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="106" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                <TextBlock HorizontalAlignment="Left" Margin="1104,30,0,0" TextWrapping="Wrap" Text="Risk" VerticalAlignment="Top" FontSize="20" Width="44" FontWeight="Bold"/>
+            </Grid>
+            <Grid HorizontalAlignment="Left" Height="178" Margin="25,115,0,0" VerticalAlignment="Top" Width="1323" Grid.ColumnSpan="2" Grid.RowSpan="2">
+                <TextBlock HorizontalAlignment="Left" Margin="1070,26,0,0" TextWrapping="Wrap" Text="Risks" VerticalAlignment="Top" Width="70" FontSize="20" FontWeight="Bold"/>
+                <TextBlock HorizontalAlignment="Left" Margin="885,26,0,0" TextWrapping="Wrap" Text="Dimensions" VerticalAlignment="Top" Width="121" FontSize="20" FontWeight="Bold"/>
+                <TextBlock HorizontalAlignment="Left" Margin="685,29,0,0" TextWrapping="Wrap" Text="Tools" VerticalAlignment="Top" Width="62" FontSize="20" FontWeight="Bold"/>
+                <TextBlock HorizontalAlignment="Left" Margin="497,29,0,0" TextWrapping="Wrap" Text="Lifting Gears" VerticalAlignment="Top" Width="135" FontSize="20" Height="27" FontWeight="Bold"/>
+                <TextBlock HorizontalAlignment="Left" Margin="256,26,0,0" TextWrapping="Wrap" Text="Details" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"/>
+                <TextBox x:Name="txtAction" HorizontalAlignment="Left" Height="68" Margin="31,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                <TextBox x:Name="txtDetails" HorizontalAlignment="Left" Height="68" Margin="256,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="236" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                <ListBox x:Name="listboxTools" HorizontalAlignment="Left" Height="68" Margin="685,55,0,0" VerticalAlignment="Top" Width="195" SelectionChanged="listboxTools_SelectionChanged" />
+                <TextBox x:Name="txtDimensions" HorizontalAlignment="Left" Height="68" Margin="885,55,0,0"  VerticalAlignment="Top" Width="180" />
+                <Button x:Name="btnActionReset" Content="Reset" HorizontalAlignment="Left" Margin="31,126,0,0" VerticalAlignment="Top" Width="80" Height="25"/>
+                <Button x:Name="btnDetailsReset" Content="Reset" HorizontalAlignment="Left" Margin="256,126,0,0" VerticalAlignment="Top" Width="80" Height="25"/>
+                <TextBox x:Name="txtRisks" HorizontalAlignment="Left" Height="68" Margin="1069,55,0,0"  VerticalAlignment="Top" Width="166" />
+                <TextBlock HorizontalAlignment="Left" Margin="63,29,0,0" TextWrapping="Wrap" Text="Action" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"/>
+                <Button Name="btnActionLeft" FontFamily="Segoe UI Symbol" FontSize="20" Content="&#xE112;" Margin="29,0,1269,127" BorderBrush="{x:Null}" Height="25" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="#FFC6D625" Click="btnActionLeft_Click" Width="25"  />
+                <Button Name="btnActionRight" FontFamily="Segoe UI Symbol" FontSize="20" Content="&#xE111;" Margin="0,26,1167,126" BorderBrush="{x:Null}" Foreground="#FFB7C718" Background="{x:Null}" HorizontalAlignment="Right" Width="25" Click="btnActionRight_Click" Height="25" />
+            </Grid>
+            <Separator HorizontalAlignment="Left" Height="16" Margin="899,227,0,0" VerticalAlignment="Top" Width="242" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Grid.Row="1">
+                <Separator.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="90"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Separator.RenderTransform>
+            </Separator>
+            <Separator HorizontalAlignment="Left" Height="14" Margin="3,99,0,0" VerticalAlignment="Top" Width="758" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Grid.Row="1">
+                <Separator.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="180"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Separator.RenderTransform>
+            </Separator>
+            <Grid HorizontalAlignment="Left" Height="121" Margin="36,10,0,0" VerticalAlignment="Top" Width="1283" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="26*"/>
+                    <ColumnDefinition Width="1257*"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Fill="#FF7F7FDA" HorizontalAlignment="Left" Height="28" Margin="440,93,0,0" VerticalAlignment="Top" Width="408" Grid.Column="1"/>
+
+                <Rectangle Fill="#FF7F7FDA" HorizontalAlignment="Left" Height="28" Margin="439.836,63,0,0" VerticalAlignment="Top" Width="408" Grid.Column="1"/>
+
+                <Rectangle Fill="#FF7F7FDA" HorizontalAlignment="Left" Height="28" Margin="16,46,0,0" VerticalAlignment="Top" Width="344" Grid.ColumnSpan="2"/>
+
+                <Rectangle Fill="#FF7F7FDA" HorizontalAlignment="Left" Height="28" Margin="16,13,0,0" VerticalAlignment="Top" Width="344" Grid.ColumnSpan="2"/>
+
+                <TextBlock HorizontalAlignment="Left" Margin="20,16,0,0" TextWrapping="Wrap" Text="Project ID" VerticalAlignment="Top" FontSize="15" Width="73" FontWeight="Bold" Grid.ColumnSpan="2"/>
+                <TextBlock x:Name="txtProjectID" HorizontalAlignment="Left" Margin="71.836,16,0,0" TextWrapping="Wrap" Text="1234" VerticalAlignment="Top" FontSize="15" Width="262" Grid.Column="1" Foreground="White"/>
+                <TextBlock x:Name="txtRigType" HorizontalAlignment="Left" Margin="550.836,3,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="36" FontWeight="Bold" Width="125" Foreground="#FFFDFBFB" Grid.Column="1"/>
+                <TextBlock HorizontalAlignment="Left" Margin="444.836,63,0,0" TextWrapping="Wrap" Text="Chapter" VerticalAlignment="Top" FontSize="22" Width="95" FontWeight="Bold" Grid.Column="1"/>
+                <TextBlock x:Name="txtUser" HorizontalAlignment="Left" Margin="1007.836,16,0,0" TextWrapping="Wrap" Text="User" VerticalAlignment="Top" FontSize="15" Width="231" Grid.Column="1" Foreground="White"/>
+                <TextBlock HorizontalAlignment="Left" Margin="908.836,16,0,0" TextWrapping="Wrap" Text="Logged in as" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Grid.Column="1"/>
+                <Button x:Name="btnLogout" Content="Log Out" HorizontalAlignment="Left" Margin="908.836,41,0,0" VerticalAlignment="Top" Width="80" Height="25" Click="btnLogout_Click" Grid.Column="1"/>
+                <TextBlock x:Name="txtModule" HorizontalAlignment="Left" Margin="582,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="15" Width="267" Grid.Column="1" Foreground="White"/>
+                <TextBlock HorizontalAlignment="Left" Margin="20,51,0,0" TextWrapping="Wrap" Text="Project Description" VerticalAlignment="Top" FontSize="15" Width="142" FontWeight="Bold" Grid.ColumnSpan="2"/>
+                <TextBlock x:Name="txtProjectDescription" HorizontalAlignment="Left" Margin="135.836,51,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="15" Width="249" Grid.Column="1" Foreground="White"><Run Text="Dalamr Dubai"/></TextBlock>
+                <TextBlock x:Name="editHierarchy_btn" Text="Edit Hierarchy" HorizontalAlignment="Left" Margin="675.836,13,0,0" VerticalAlignment="Top" Width="132" Height="27" TextDecorations="Underline" FontSize="20" Foreground="#FFBADC1F" MouseEnter="editHierarchy_btn_MouseEnter_1"  MouseLeave="editHierarchy_btn_MouseLeave_1"  MouseLeftButtonDown="editHierarchy_btn_MouseLeftButtonDown" Grid.Column="1" />
+                <Button x:Name="btnModuleLeft" FontFamily="Segoe UI Symbol" FontSize="20" Content="&#xE112;" Margin="409,0,823,31" BorderBrush="{x:Null}" Height="25" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="#FFC6D625" Click="btnModuleLeft_Click_1" Grid.Column="1" Width="25"  />
+                <Button x:Name="btnModuleRight" FontFamily="Segoe UI Symbol" FontSize="20" Content="&#xE111;" Margin="852.836,56,363,24" BorderBrush="{x:Null}" Foreground="#FFB7C718" Background="{x:Null}" Click="btnModuleRight_Click_1" Grid.Column="1" Width="25" Height="25" />
+                <TextBlock HorizontalAlignment="Left" Margin="450,91,0,0" TextWrapping="Wrap" Text="Step:" VerticalAlignment="Top" FontSize="18" Width="46" FontWeight="Bold" Grid.Column="1"/>
+                <TextBlock x:Name="txtStepName" HorizontalAlignment="Left" Margin="535,91,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="13" Width="313" Height="30" Grid.Column="1" Foreground="White"/>
+                <Button x:Name="btnStepLeft" FontFamily="Segoe UI Symbol" FontSize="20" Content="&#xE112;" Margin="408,0,824,2" BorderBrush="{x:Null}" Height="25" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="#FFC6D625" Click="btnStepLeft_Click" Grid.Column="1" Width="25"  />
+                <Button x:Name="btnStepRight" FontFamily="Segoe UI Symbol" FontSize="20" Content="&#xE111;" Margin="842,83,359,-1" BorderBrush="{x:Null}" Foreground="#FFB7C718" Background="{x:Null}" Click="btnStepRight_Click" Grid.Column="1" Width="25" Height="25" />
+                <TextBlock  HorizontalAlignment="Left" Margin="484.836,3,0,0" TextWrapping="Wrap" Text="RIG" VerticalAlignment="Top" FontSize="36" FontWeight="Bold" Width="61" Foreground="#FFFDFBFB" Grid.Column="1"/>
+
+            </Grid>
+            <Button Name="btnUpNext" FontFamily="Segoe UI Symbol" FontSize="30" Content="&#xE112;" Margin="1214,0,15,42" BorderBrush="{x:Null}" Height="64" VerticalAlignment="Bottom" Background="Black" Foreground="White" RenderTransformOrigin="0.5,0.5" Grid.Column="1"  >
+                <Button.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="90.312"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Button.RenderTransform>
+            </Button>
+            <Button Name="btnDownNext" FontFamily="Segoe UI Symbol" FontSize="30" Content="&#xE112;" Margin="1213,0,16,92" BorderBrush="{x:Null}" Height="64" VerticalAlignment="Bottom" Background="Black" Foreground="White" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Grid.Row="1"  >
+                <Button.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="270.512"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Button.RenderTransform>
+            </Button>
+            <Button Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="0,477,0,0" VerticalAlignment="Top" Width="80" Height="25" Grid.Column="1" Grid.Row="1" Click="btnSave_Click"/>
+            <Button Name="btnPublish" Content="Publish" HorizontalAlignment="Left" Margin="85,477,0,0" VerticalAlignment="Top" Width="80" Height="25" Grid.Column="1" Grid.Row="1"/>
+            <Button Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="170,477,0,0" VerticalAlignment="Top" Width="80" Height="25" Grid.Column="1" Grid.Row="1"/>
+            <TextBlock HorizontalAlignment="Left" Margin="0,116,0,0" TextWrapping="Wrap" Text="Pictures Preview" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Grid.Column="1" Height="27" Width="155" Grid.Row="1"/>
+            <TextBlock Name="txtblockActivity" HorizontalAlignment="Left" Margin="209,339,0,0" TextWrapping="Wrap" Text="Add Risk Analysis Activity" VerticalAlignment="Top" TextDecorations="Underline" Foreground="#FFAADC22" FontSize="20" MouseEnter="txtblockActivity_MouseEnter" MouseLeave="txtblockActivity_MouseLeave" Grid.Column="1" Height="27" Width="223" Grid.Row="1"/>
+            <CheckBox Name="checkRiskAnalyis" Content="Risk Analysis" HorizontalAlignment="Left" Margin="0,330,0,0" VerticalAlignment="Top" FontSize="29" FontWeight="Bold" Grid.Column="1" Height="38" Width="195" Grid.Row="1"/>
+            <Button Name="btnNext" Content="Next" HorizontalAlignment="Left" Margin="405,10,0,0" VerticalAlignment="Top" Width="80" Click="btnNext_Click" Height="25" Grid.Column="1"/>
+            <Button Name="btnPrev" Content="Previous" HorizontalAlignment="Left" Margin="405,0,0,112" VerticalAlignment="Bottom" Width="80" Click="btnPrev_Click" Height="25" Grid.Column="1"/>
+            <Button x:Name="editRisk_btn" Content="Edit Risks" HorizontalAlignment="Left" Margin="365,477,0,0" VerticalAlignment="Top" Width="80" Height="25" Click="editRisk_btn_Click" Grid.Column="1" Grid.Row="1"/>
+            <TextBlock x:Name="txtModuleID" Grid.Column="1" HorizontalAlignment="Left" Margin="539,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="25" Width="41" FontSize="22" Foreground="White"/>
+            <TextBlock x:Name="txtStepNumber" Grid.Column="1" HorizontalAlignment="Left" Margin="508,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="42" Height="24" Foreground="White"/>
+            <TextBlock x:Name="txtActionNumber" HorizontalAlignment="Left" Margin="-4,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Height="43" Width="65" Grid.ColumnSpan="2" FontSize="15">
+                <TextBlock.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="89.407"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </TextBlock.RenderTransform>
+            </TextBlock>
+            <TextBox x:Name="txtGears" Grid.Column="1" HorizontalAlignment="Left" Height="69" Margin="465,0,0,0" VerticalAlignment="Top" Width="187" Grid.Row="1"/>
+        </Grid>
+        <Grid x:Name="grid_EditHierarchy" Background="#FFCF4343" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="34*"/>
+                <ColumnDefinition Width="243*"/>
+                <ColumnDefinition Width="205*"/>
+                <ColumnDefinition Width="248*"/>
+
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="39*"/>
+                <RowDefinition Height="108*"/>
+                <RowDefinition Height="220*"/>
+                <RowDefinition Height="51*"/>
+            </Grid.RowDefinitions>
+            <TextBlock HorizontalAlignment="Left" Margin="10,183,0,0" TextWrapping="Wrap" Text="Modules" VerticalAlignment="Top" Height="27" Width="83" Grid.Row="2" FontSize="20" Grid.Column="1"/>
+
+            <TextBlock HorizontalAlignment="Left" Margin="10,183,0,0" TextWrapping="Wrap" Text="Steps" VerticalAlignment="Top" Grid.Row="2" Height="30" Width="52" FontSize="20" Grid.Column="2"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,180,0,0" TextWrapping="Wrap" Text="Actions" VerticalAlignment="Top" Grid.Row="2" Height="33" Width="70" FontSize="20" Grid.Column="3"/>
+            <Button Content="Save" HorizontalAlignment="Left" Margin="104,19,0,0" VerticalAlignment="Top" Width="75" Grid.Row="3" Grid.Column="3" Height="35"/>
+            <StackPanel Grid.Column="1" HorizontalAlignment="Left" Height="148" Margin="10,7,0,0" VerticalAlignment="Top" Width="223" Grid.Row="2">
+                <ListBox x:Name="listboxModules" Height="146"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="2" HorizontalAlignment="Left" Height="145" Margin="0,10,0,0" VerticalAlignment="Top" Width="199" Grid.Row="2">
+                <ListBox x:Name="listboxSteps" Height="144"/>
+            </StackPanel>
+            <Button Content="Cancel" Grid.Column="3" HorizontalAlignment="Left" Margin="10,20,0,0" Grid.Row="3" VerticalAlignment="Top" Width="70" Height="35"/>
+            <StackPanel Grid.Column="3" HorizontalAlignment="Left" Height="145" Margin="10,10,0,0" VerticalAlignment="Top" Width="199" Grid.Row="2">
+                <ListBox x:Name="listboxActions" Height="145"/>
+            </StackPanel>
+            <ComboBox x:Name="dropdownModules" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="10,98,0,0" Grid.Row="1"  VerticalAlignment="Top" Width="120"/>
+            <ComboBox x:Name="dropdownSteps" Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="10,97,0,0" Grid.Row="1"  VerticalAlignment="Top" Width="120"/>
+            <ComboBox x:Name="dropdownActions" Grid.Column="3" HorizontalAlignment="Left" Height="23" Margin="10,97,0,0" Grid.Row="1"  VerticalAlignment="Top" Width="120"/>
+            <Button Content="Add" Grid.Column="1" HorizontalAlignment="Left" Margin="146,101,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75"/>
+            <Button Content="Add" Grid.Column="2" HorizontalAlignment="Left" Margin="144,100,0,0" Grid.Row="1" VerticalAlignment="Top" Width="60"/>
+            <Button Content="Add" Grid.Column="3" HorizontalAlignment="Left" Margin="151,97,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75"/>
+            <Button Content="Reser" Grid.Column="3" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Grid.Row="1"/>
+            <Button Content="Cancel" Grid.Column="3" HorizontalAlignment="Left" Margin="173,10,0,0" VerticalAlignment="Top" Width="75" Grid.Row="1"/>
+            <Button Content="Save" Grid.Column="3" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="75" Grid.Row="1"/>
+
+        </Grid>
+
+
+    </Grid>
+
+
+</Window>
