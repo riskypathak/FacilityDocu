@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using FacilityDocu.UI.Utilities.Services;
+using System.IO;
 
 namespace FacilityDocu.UI.Utilities
 {
     public static class ProjectXmlWriter
     {
-        public static void Write(ProjectDTO project)
+        public static void Write(ProjectDTO project, string projectXMLPath)
         {
             XElement xProject = new XElement("Project");
 
@@ -23,6 +24,8 @@ namespace FacilityDocu.UI.Utilities
             xProject.Add(new XElement("updateby", project.LastUpdatedBy));
 
             WriteRig(project.RigTypes.ToList(), xProject);
+
+            xProject.Save(Path.Combine(Path.GetFullPath(projectXMLPath), string.Format("{0}.xml",project.ProjectID)));
         }
 
         private static void WriteRig(IList<RigTypeDTO> rigTypes, XElement xProject)
@@ -91,13 +94,47 @@ namespace FacilityDocu.UI.Utilities
                 xStepAction.Add(new XElement("number", stepAction.ActionID));
                 xStepAction.Add(new XElement("name", stepAction.Name));
                 xStepAction.Add(new XElement("description", stepAction.Description));
-                xStepAction.Add(new XElement("risks", stepAction.Description));
+                xStepAction.Add(new XElement("risks", stepAction.Risks));
                 xStepAction.Add(new XElement("liftinggears", stepAction.LiftingGears));
                 xStepAction.Add(new XElement("dimensions", stepAction.Dimensions));
 
-                WriteImage(stepAction.Images, xStep);
+                WriteImage(stepAction.Images, xStepAction);
+                WriteTools(stepAction.Tools, xStepAction);
+                WriteResources(stepAction.Resources, xStepAction);
             }
         }
+
+        private static void WriteTools(IList<ToolDTO> tools, XElement xAction)
+        {
+            XElement xTools = new XElement("tools");
+            xAction.Add(xTools);
+
+            foreach (ToolDTO tool in tools)
+            {
+                XElement xTool = new XElement("tool");
+                xTools.Add(xTool);
+
+                xTool.Add(new XElement("id", tool.ToolID));
+                xTool.Add(new XElement("name", tool.Name));
+            }
+        }
+
+        private static void WriteResources(IList<ResourceDTO> resources, XElement xAction)
+        {
+            XElement xResources = new XElement("resources");
+            xAction.Add(xResources);
+
+            foreach (ResourceDTO resource in resources)
+            {
+                XElement xResource = new XElement("resource");
+                xResources.Add(xResource);
+
+                xResource.Add(new XElement("id", resource.ResourceID));
+                xResource.Add(new XElement("name", resource.Name));
+                xResource.Add(new XElement("count", resource.ResourceCount));
+            }
+        }
+
 
         private static void WriteImage(IList<ImageDTO> images, XElement xAction)
         {
@@ -115,6 +152,24 @@ namespace FacilityDocu.UI.Utilities
                 xImage.Add(new XElement("description", image.Description));
                 xImage.Add(new XElement("path", image.Path));
                 xImage.Add(new XElement("tags", image.Tags));
+
+                WriteImageComments(image.Comments, xImage);
+            }
+        }
+
+        private static void WriteImageComments(IList<CommentDTO> comments, XElement xImage)
+        {
+            XElement xComments = new XElement("comments");
+            xImage.Add(xComments);
+
+            foreach (CommentDTO comment in comments)
+            {
+                XElement xComment = new XElement("comment");
+                xComments.Add(xComment);
+
+                xComment.Add(new XElement("text", comment.Text));
+                xComment.Add(new XElement("date", comment.CommentedAt));
+                xComment.Add(new XElement("user", comment.User));
             }
         }
     }

@@ -33,5 +33,14 @@ namespace FacilityDocu.DTO
 
         [DataMember]
         public IList<ImageDTO> Images { get; set; }
+
+        [DataMember]
+        public IList<ResourceDTO> Resources { get; set; }
+
+        [DataMember]
+        public IList<ToolDTO> Tools { get; set; }
+
+        [DataMember]
+        public IList<RiskAnalysisDTO> RiskAnalysis { get; set; }
     }
 }

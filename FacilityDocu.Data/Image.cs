@@ -21,7 +21,7 @@ public partial class Image
     public Image()
     {
 
-        this.ImageDetailComments = new HashSet<ImageDetailComment>();
+        this.ImageComments = new HashSet<ImageComment>();
 
         this.ProjectActionImages = new HashSet<ProjectActionImage>();
 
@@ -40,7 +40,7 @@ public partial class Image
 
 
 
-    public virtual ICollection<ImageDetailComment> ImageDetailComments { get; set; }
+    public virtual ICollection<ImageComment> ImageComments { get; set; }
 
     public virtual ICollection<ProjectActionImage> ProjectActionImages { get; set; }
 

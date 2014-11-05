@@ -40,7 +40,7 @@ public partial class TabletApp_DatabaseEntities : DbContext
 
     public virtual DbSet<Image> Images { get; set; }
 
-    public virtual DbSet<ImageDetailComment> ImageDetailComments { get; set; }
+    public virtual DbSet<ImageComment> ImageComments { get; set; }
 
     public virtual DbSet<Module> Modules { get; set; }
 

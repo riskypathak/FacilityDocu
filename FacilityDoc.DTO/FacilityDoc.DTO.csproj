@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="ActionDTO.cs" />
     <Compile Include="CommentDTO.cs" />
+    <Compile Include="RiskAnalysisDTO.cs" />
     <Compile Include="ToolDTO.cs" />
     <Compile Include="ResourceDTO.cs" />
     <Compile Include="ImageDTO.cs" />

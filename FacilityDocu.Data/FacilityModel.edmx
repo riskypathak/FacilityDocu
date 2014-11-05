@@ -39,14 +39,14 @@
           <Property Name="Tags" Type="varchar" MaxLength="500" />
           <Property Name="CreationDate" Type="datetime" />
         </EntityType>
-        <EntityType Name="ImageDetailComment">
+        <EntityType Name="ImageComment">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="ImageCommentID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ImageCommentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ImageID" Type="int" />
           <Property Name="Text" Type="varchar(max)" />
-          <Property Name="Date" Type="datetime" />
+          <Property Name="CreationDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Module">
           <Key>
@@ -219,14 +219,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ImageDeta__Image__398D8EEE">
+        <Association Name="FK__ImageComm__Image__6FE99F9F">
           <End Role="Image" Type="Self.Image" Multiplicity="0..1" />
-          <End Role="ImageDetailComment" Type="Self.ImageDetailComment" Multiplicity="*" />
+          <End Role="ImageComment" Type="Self.ImageComment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Image">
               <PropertyRef Name="ImageID" />
             </Principal>
-            <Dependent Role="ImageDetailComment">
+            <Dependent Role="ImageComment">
               <PropertyRef Name="ImageID" />
             </Dependent>
           </ReferentialConstraint>
@@ -500,7 +500,7 @@
           <EntitySet Name="ActionAttachment" EntityType="Self.ActionAttachment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Attachment" EntityType="Self.Attachment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Image" EntityType="Self.Image" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ImageDetailComment" EntityType="Self.ImageDetailComment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ImageComment" EntityType="Self.ImageComment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Module" EntityType="Self.Module" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ModuleStep" EntityType="Self.ModuleStep" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
@@ -525,9 +525,9 @@
             <End Role="Attachment" EntitySet="Attachment" />
             <End Role="ActionAttachment" EntitySet="ActionAttachment" />
           </AssociationSet>
-          <AssociationSet Name="FK__ImageDeta__Image__398D8EEE" Association="Self.FK__ImageDeta__Image__398D8EEE">
+          <AssociationSet Name="FK__ImageComm__Image__6FE99F9F" Association="Self.FK__ImageComm__Image__6FE99F9F">
             <End Role="Image" EntitySet="Image" />
-            <End Role="ImageDetailComment" EntitySet="ImageDetailComment" />
+            <End Role="ImageComment" EntitySet="ImageComment" />
           </AssociationSet>
           <AssociationSet Name="FK__Module__RigTypeI__571DF1D5" Association="Self.FK__Module__RigTypeI__571DF1D5">
             <End Role="RigType" EntitySet="RigType" />
@@ -627,7 +627,7 @@
           <EntitySet Name="ActionAttachments" EntityType="TabletApp_DatabaseModel.ActionAttachment" />
           <EntitySet Name="Attachments" EntityType="TabletApp_DatabaseModel.Attachment" />
           <EntitySet Name="Images" EntityType="TabletApp_DatabaseModel.Image" />
-          <EntitySet Name="ImageDetailComments" EntityType="TabletApp_DatabaseModel.ImageDetailComment" />
+          <EntitySet Name="ImageComments" EntityType="TabletApp_DatabaseModel.ImageComment" />
           <EntitySet Name="Modules" EntityType="TabletApp_DatabaseModel.Module" />
           <EntitySet Name="ModuleSteps" EntityType="TabletApp_DatabaseModel.ModuleStep" />
           <EntitySet Name="Projects" EntityType="TabletApp_DatabaseModel.Project" />
@@ -660,9 +660,9 @@
             <End Role="Attachment" EntitySet="Attachments" />
             <End Role="ActionAttachment" EntitySet="ActionAttachments" />
           </AssociationSet>
-          <AssociationSet Name="FK__ImageDeta__Image__398D8EEE" Association="TabletApp_DatabaseModel.FK__ImageDeta__Image__398D8EEE">
+          <AssociationSet Name="FK__ImageComm__Image__6FE99F9F" Association="TabletApp_DatabaseModel.FK__ImageComm__Image__6FE99F9F">
             <End Role="Image" EntitySet="Images" />
-            <End Role="ImageDetailComment" EntitySet="ImageDetailComments" />
+            <End Role="ImageComment" EntitySet="ImageComments" />
           </AssociationSet>
           <AssociationSet Name="FK__ProjectAc__Image__3D5E1FD2" Association="TabletApp_DatabaseModel.FK__ProjectAc__Image__3D5E1FD2">
             <End Role="Image" EntitySet="Images" />
@@ -784,18 +784,18 @@
           <Property Name="ImagePath" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Tags" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="CreationDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="ImageDetailComments" Relationship="TabletApp_DatabaseModel.FK__ImageDeta__Image__398D8EEE" FromRole="Image" ToRole="ImageDetailComment" />
+          <NavigationProperty Name="ImageComments" Relationship="TabletApp_DatabaseModel.FK__ImageComm__Image__6FE99F9F" FromRole="Image" ToRole="ImageComment" />
           <NavigationProperty Name="ProjectActionImages" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Image__3D5E1FD2" FromRole="Image" ToRole="ProjectActionImage" />
         </EntityType>
-        <EntityType Name="ImageDetailComment">
+        <EntityType Name="ImageComment">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="ImageCommentID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ImageCommentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ImageID" Type="Int32" />
           <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Date" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Image" Relationship="TabletApp_DatabaseModel.FK__ImageDeta__Image__398D8EEE" FromRole="ImageDetailComment" ToRole="Image" />
+          <Property Name="CreationDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Image" Relationship="TabletApp_DatabaseModel.FK__ImageComm__Image__6FE99F9F" FromRole="ImageComment" ToRole="Image" />
         </EntityType>
         <EntityType Name="Module">
           <Key>
@@ -1033,14 +1033,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ImageDeta__Image__398D8EEE">
+        <Association Name="FK__ImageComm__Image__6FE99F9F">
           <End Type="TabletApp_DatabaseModel.Image" Role="Image" Multiplicity="0..1" />
-          <End Type="TabletApp_DatabaseModel.ImageDetailComment" Role="ImageDetailComment" Multiplicity="*" />
+          <End Type="TabletApp_DatabaseModel.ImageComment" Role="ImageComment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Image">
               <PropertyRef Name="ImageID" />
             </Principal>
-            <Dependent Role="ImageDetailComment">
+            <Dependent Role="ImageComment">
               <PropertyRef Name="ImageID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1329,13 +1329,13 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ImageDetailComments">
-            <EntityTypeMapping TypeName="TabletApp_DatabaseModel.ImageDetailComment">
-              <MappingFragment StoreEntitySet="ImageDetailComment">
-                <ScalarProperty Name="Date" ColumnName="Date" />
+          <EntitySetMapping Name="ImageComments">
+            <EntityTypeMapping TypeName="TabletApp_DatabaseModel.ImageComment">
+              <MappingFragment StoreEntitySet="ImageComment">
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
                 <ScalarProperty Name="Text" ColumnName="Text" />
                 <ScalarProperty Name="ImageID" ColumnName="ImageID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ImageCommentID" ColumnName="ImageCommentID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

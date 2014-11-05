@@ -25,11 +25,13 @@ namespace FacilityDocu.Services.EntityDTOConverter
 
             projectDTO.Description = project.Description;
             projectDTO.ProjectID = project.ProjectID.ToString();
+            projectDTO.CreationDate = project.CreationDate.Value;
+            projectDTO.LastUpdatedAt = project.LastUpdatedAt.Value;
+
+            projectDTO.CreatedBy = ToUserDTO(project.User);
+            projectDTO.LastUpdatedBy = ToUserDTO(project.User1);
 
             projectDTO.RigTypes = ToRigTypesDTO(project.ProjectDetails);
-
-            //TODO
-            //projectDTO.CreatedBy = project.CreatedBy;
             return projectDTO;
         }
 
@@ -78,8 +80,6 @@ namespace FacilityDocu.Services.EntityDTOConverter
                 StepDTO stepDTO = new StepDTO();
                 stepDTO.Name = projectDetail.Step.StepName;
                 stepDTO.StepID = projectDetail.Step.StepID;
-                //TODO
-                //stepDTO.Number = projectDetail.Step.
 
                 stepsDTO.Add(stepDTO);
                 stepDTO.Actions = ToActionDTO(projectDetails.Where(x => x.StepID.Value == stepDTO.StepID));
@@ -103,12 +103,13 @@ namespace FacilityDocu.Services.EntityDTOConverter
                 actionDTO.ActionID = projectDetail.ActionID.GetValueOrDefault().ToString();
                 actionDTO.Description = projectDetail.Action.Description;
                 actionDTO.Name = projectDetail.Action.ActionName;
-                //TODO
-                //actionDTO.Number =  projectDetail.Action
-
-                actionsDTO.Add(actionDTO);
+                actionDTO.Risks = projectDetail.Risks;
+                actionDTO.LiftingGears = projectDetail.LiftingGears;
+                actionDTO.Dimensions = projectDetail.Dimensions;
 
                 actionDTO.Images = TOImagesDTO(projectDetails.Where(x => x.ActionID.Value == projectDetail.ActionID));
+                actionDTO.Resources = ToResourcesDTO(projectDetails.Where(x => x.ActionID.Value == projectDetail.ActionID));
+                actionDTO.Tools = ToToolsDTO(projectDetails.Where(x => x.ActionID.Value == projectDetail.ActionID));
 
                 actionsDTO.Add(actionDTO);
 
@@ -120,6 +121,39 @@ namespace FacilityDocu.Services.EntityDTOConverter
 
         }
 
+        private static IList<ResourceDTO> ToResourcesDTO(IEnumerable<ProjectDetail> resources)
+        {
+            IList<ResourceDTO> resourcesDTO = new List<ResourceDTO>();
+
+            foreach (var resource in resources.Select(x => x.ProjectActionResources).FirstOrDefault())
+            {
+                ResourceDTO resourceDTO = new ResourceDTO();
+                resourceDTO.Name = resource.Resource.ResourceName;
+                resourceDTO.ResourceID = Convert.ToString(resource.ResourceID);
+                resourceDTO.ResourceCount = Convert.ToString(resource.ResourceCount);
+
+                resourcesDTO.Add(resourceDTO);
+            }
+
+            return resourcesDTO;
+        }
+
+        private static IList<ToolDTO> ToToolsDTO(IEnumerable<ProjectDetail> tools)
+        {
+            IList<ToolDTO> toolsDTO = new List<ToolDTO>();
+
+            foreach (var tool in tools.Select(x => x.ProjectActionTools).FirstOrDefault())
+            {
+                ToolDTO toolDTO = new ToolDTO();
+                toolDTO.Name = tool.Tool.ToolName;
+                toolDTO.ToolID = Convert.ToString(tool.ToolID);
+
+                toolsDTO.Add(toolDTO);
+            }
+
+            return toolsDTO;
+        }
+
         private static IList<ImageDTO> TOImagesDTO(IEnumerable<ProjectDetail> enumerable)
         {
             IList<ImageDTO> ImageDTOs = new List<ImageDTO>();
@@ -129,17 +163,11 @@ namespace FacilityDocu.Services.EntityDTOConverter
                 ImageDTO imageDTO = new ImageDTO();
                 imageDTO.ImageID = projectDetail.ImageID.GetValueOrDefault().ToString();
                 imageDTO.Description = projectDetail.Image.Description;
-                imageDTO.Path = projectDetail.Image.ImagePath;
+                imageDTO.Path = GetImageActualPath(projectDetail.Image.ImagePath);
                 imageDTO.CreationDate = projectDetail.Image.CreationDate.GetValueOrDefault();
-                imageDTO.Tags = projectDetail.Image.Tags.Split(',');
+                imageDTO.Tags = projectDetail.Image.Tags.Split(';');
 
-
-                //TODO
-                //imageDTO.Name = projectDetail.Image
-
-
-
-                imageDTO.Comments = TOCommentDTO(projectDetail.Image.ImageDetailComments);
+                imageDTO.Comments = TOCommentDTO(projectDetail.Image.ImageComments);
 
                 ImageDTOs.Add(imageDTO);
 
@@ -148,45 +176,22 @@ namespace FacilityDocu.Services.EntityDTOConverter
 
         }
 
-        //private static IList<ImageDTO> TOImagesDTO(ICollection<ProjectActionImage> ProjectActionImages)
-        //{
-        //    IList<ImageDTO> ImageDTOs = new List<ImageDTO>();
+        private static string GetImageActualPath(string imagePath)
+        {
+            int lastIndex = System.ServiceModel.OperationContext.Current.RequestContext.RequestMessage.Headers.To.ToString().LastIndexOf('/');
+            return string.Format("{0}/Data/Images/{1}", System.ServiceModel.OperationContext.Current.RequestContext.RequestMessage.Headers.To.ToString().Substring(0, lastIndex), imagePath);
+        }
 
-        //    foreach (var projectDetail in ProjectActionImages)
-        //    {
-        //        ImageDTO imageDTO = new ImageDTO();
-        //        imageDTO.ImageID = projectDetail.ImageID.GetValueOrDefault().ToString();
-        //        imageDTO.Description = projectDetail.Image.Description;
-        //        imageDTO.Path = projectDetail.Image.ImagePath;
-        //        imageDTO.CreationDate = projectDetail.Image.CreationDate.GetValueOrDefault();
-        //        imageDTO.Tags = projectDetail.Image.Tags.Split(',');
-
-
-        //        //TODO
-        //        //imageDTO.Name = projectDetail.Image
-
-
-
-        //        imageDTO.Comments = TOCommentDTO(projectDetail.Image.ImageDetailComments);
-
-        //        ImageDTOs.Add(imageDTO);
-
-        //    }
-        //    return ImageDTOs;
-
-        //}
-
-        private static IList<CommentDTO> TOCommentDTO(ICollection<ImageDetailComment> ImageComments)
+        private static IList<CommentDTO> TOCommentDTO(ICollection<ImageComment> ImageComments)
         {
             List<CommentDTO> imageComments = new List<CommentDTO>();
             foreach (var imgComments in ImageComments)
             {
                 CommentDTO commnet = new CommentDTO();
 
-                commnet.CommentedAt = imgComments.Date.GetValueOrDefault();
+                commnet.CommentedAt = imgComments.CreationDate.GetValueOrDefault();
                 commnet.Text = imgComments.Text;
-                //TODO
-                //commnet.User = imgComments.Date
+
                 imageComments.Add(commnet);
 
             }
@@ -196,18 +201,19 @@ namespace FacilityDocu.Services.EntityDTOConverter
 
         }
 
-
-
-
-        private static UserDTO ToUserDTO(User userDTO)
+        private static UserDTO ToUserDTO(User user)
         {
-            //TODO
-            throw new NotImplementedException();
+            UserDTO userDTO = new UserDTO();
 
+            if (user != null)
+            {
+                userDTO.Name = user.Name;
+                userDTO.UserName = user.UserName;
+            }
+
+            return userDTO;
 
         }
-
-
 
         internal static StepDTO ToStepDTO(Step step)
         {

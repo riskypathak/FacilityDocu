@@ -23,6 +23,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacilityDocLaptop", "Facili
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacilityDocu.Services", "FacilityDocu.Services\FacilityDocu.Services.csproj", "{A7BFCC4F-B24B-4716-849E-18811CE08112}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacilityDocu.Test.Console", "FacilityDocu.Test.Console\FacilityDocu.Test.Console.csproj", "{2C8FD3B3-EBBF-497B-BD37-0599294EBEFF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A7BFCC4F-B24B-4716-849E-18811CE08112} = {A7BFCC4F-B24B-4716-849E-18811CE08112}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +100,16 @@ Global
 		{A7BFCC4F-B24B-4716-849E-18811CE08112}.Release|ARM.ActiveCfg = Release|Any CPU
 		{A7BFCC4F-B24B-4716-849E-18811CE08112}.Release|x64.ActiveCfg = Release|Any CPU
 		{A7BFCC4F-B24B-4716-849E-18811CE08112}.Release|x86.ActiveCfg = Release|Any CPU
+		{2C8FD3B3-EBBF-497B-BD37-0599294EBEFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C8FD3B3-EBBF-497B-BD37-0599294EBEFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C8FD3B3-EBBF-497B-BD37-0599294EBEFF}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{2C8FD3B3-EBBF-497B-BD37-0599294EBEFF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2C8FD3B3-EBBF-497B-BD37-0599294EBEFF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2C8FD3B3-EBBF-497B-BD37-0599294EBEFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C8FD3B3-EBBF-497B-BD37-0599294EBEFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C8FD3B3-EBBF-497B-BD37-0599294EBEFF}.Release|ARM.ActiveCfg = Release|Any CPU
+		{2C8FD3B3-EBBF-497B-BD37-0599294EBEFF}.Release|x64.ActiveCfg = Release|Any CPU
+		{2C8FD3B3-EBBF-497B-BD37-0599294EBEFF}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

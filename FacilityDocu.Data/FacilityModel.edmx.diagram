@@ -9,20 +9,20 @@
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.Action" Width="1.5" PointX="0.75" PointY="5.375" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.ActionAttachment" Width="1.5" PointX="6" PointY="1.375" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.Attachment" Width="1.5" PointX="3.75" PointY="12" />
-        <EntityTypeShape EntityType="TabletApp_DatabaseModel.Image" Width="1.5" PointX="6" PointY="13.25" />
-        <EntityTypeShape EntityType="TabletApp_DatabaseModel.ImageDetailComment" Width="1.5" PointX="8.25" PointY="22.375" />
+        <EntityTypeShape EntityType="TabletApp_DatabaseModel.Image" Width="1.5" PointX="6" PointY="15.25" />
+        <EntityTypeShape EntityType="TabletApp_DatabaseModel.ImageComment" Width="1.5" PointX="8.25" PointY="21.375" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.Module" Width="1.5" PointX="0.75" PointY="11.25" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.ModuleStep" Width="1.5" PointX="3" PointY="8.375" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.Project" Width="1.5" PointX="3.75" PointY="0.75" />
-        <EntityTypeShape EntityType="TabletApp_DatabaseModel.ProjectActionImage" Width="1.5" PointX="8.25" PointY="8.375" />
-        <EntityTypeShape EntityType="TabletApp_DatabaseModel.ProjectActionResource" Width="1.5" PointX="8.25" PointY="11.375" />
+        <EntityTypeShape EntityType="TabletApp_DatabaseModel.ProjectActionImage" Width="1.5" PointX="8.25" PointY="11.375" />
+        <EntityTypeShape EntityType="TabletApp_DatabaseModel.ProjectActionResource" Width="1.5" PointX="8.25" PointY="8.375" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.ProjectActionTool" Width="1.5" PointX="8.25" PointY="5.375" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.ProjectDetail" Width="1.5" PointX="6" PointY="7.25" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.ProjectRiskAnalysi" Width="1.5" PointX="11.25" PointY="8.625" />
-        <EntityTypeShape EntityType="TabletApp_DatabaseModel.Resource" Width="1.5" PointX="6" PointY="16.5" />
+        <EntityTypeShape EntityType="TabletApp_DatabaseModel.Resource" Width="1.5" PointX="6" PointY="12.5" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.RigType" Width="1.5" PointX="1.5" PointY="14.5" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.RiskAnalysi" Width="1.5" PointX="9" PointY="14.25" />
-        <EntityTypeShape EntityType="TabletApp_DatabaseModel.RiskType" Width="1.5" PointX="6.75" PointY="19.625" />
+        <EntityTypeShape EntityType="TabletApp_DatabaseModel.RiskType" Width="1.5" PointX="6.75" PointY="18.625" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.Step" Width="1.5" PointX="0.75" PointY="8.375" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.StepAction" Width="1.5" PointX="3" PointY="5.375" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.Tool" Width="1.5" PointX="6" PointY="4.625" />
@@ -31,7 +31,7 @@
         <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectDe__Actio__4222D4EF" />
         <AssociationConnector Association="TabletApp_DatabaseModel.FK__StepActio__Actio__4D94879B" />
         <AssociationConnector Association="TabletApp_DatabaseModel.FK__ActionAtt__Attac__5629CD9C" />
-        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ImageDeta__Image__398D8EEE" />
+        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ImageComm__Image__6FE99F9F" />
         <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectAc__Image__3D5E1FD2" />
         <AssociationConnector Association="TabletApp_DatabaseModel.FK__Module__RigTypeI__571DF1D5" />
         <AssociationConnector Association="TabletApp_DatabaseModel.FK__ModuleSte__Modul__3A81B327" />

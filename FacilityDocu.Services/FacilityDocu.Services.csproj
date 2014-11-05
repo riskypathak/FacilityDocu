@@ -68,6 +68,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\Images\1.PNG" />
+    <Content Include="Data\Images\2.PNG" />
+    <Content Include="Data\Images\3.PNG" />
     <Content Include="FacilityDocuService.svc" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -83,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Data\Documents\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>

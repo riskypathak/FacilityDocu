@@ -77,7 +77,7 @@
     <Compile Include="Image.cs">
       <DependentUpon>FacilityModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="ImageDetailComment.cs">
+    <Compile Include="ImageComment.cs">
       <DependentUpon>FacilityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Module.cs">

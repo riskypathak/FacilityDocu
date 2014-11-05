@@ -15,16 +15,16 @@ namespace FacilityDocu.Data
 using System;
     using System.Collections.Generic;
     
-public partial class ImageDetailComment
+public partial class ImageComment
 {
 
-    public int ID { get; set; }
+    public int ImageCommentID { get; set; }
 
     public Nullable<int> ImageID { get; set; }
 
     public string Text { get; set; }
 
-    public Nullable<System.DateTime> Date { get; set; }
+    public Nullable<System.DateTime> CreationDate { get; set; }
 
 
 

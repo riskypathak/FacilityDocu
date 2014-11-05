@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FacilityDocu.UI.Utilities.Services {
+namespace FacilityDocu.Test.Console.Services {
     using System.Runtime.Serialization;
     using System;
     
@@ -23,7 +23,7 @@ namespace FacilityDocu.UI.Utilities.Services {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private FacilityDocu.UI.Utilities.Services.UserDTO CreatedByField;
+        private FacilityDocu.Test.Console.Services.UserDTO CreatedByField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.DateTime CreationDateField;
@@ -35,13 +35,13 @@ namespace FacilityDocu.UI.Utilities.Services {
         private System.DateTime LastUpdatedAtField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private FacilityDocu.UI.Utilities.Services.UserDTO LastUpdatedByField;
+        private FacilityDocu.Test.Console.Services.UserDTO LastUpdatedByField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string ProjectIDField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private FacilityDocu.UI.Utilities.Services.RigTypeDTO[] RigTypesField;
+        private FacilityDocu.Test.Console.Services.RigTypeDTO[] RigTypesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool TemplateField;
@@ -57,7 +57,7 @@ namespace FacilityDocu.UI.Utilities.Services {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public FacilityDocu.UI.Utilities.Services.UserDTO CreatedBy {
+        public FacilityDocu.Test.Console.Services.UserDTO CreatedBy {
             get {
                 return this.CreatedByField;
             }
@@ -109,7 +109,7 @@ namespace FacilityDocu.UI.Utilities.Services {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public FacilityDocu.UI.Utilities.Services.UserDTO LastUpdatedBy {
+        public FacilityDocu.Test.Console.Services.UserDTO LastUpdatedBy {
             get {
                 return this.LastUpdatedByField;
             }
@@ -135,7 +135,7 @@ namespace FacilityDocu.UI.Utilities.Services {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public FacilityDocu.UI.Utilities.Services.RigTypeDTO[] RigTypes {
+        public FacilityDocu.Test.Console.Services.RigTypeDTO[] RigTypes {
             get {
                 return this.RigTypesField;
             }
@@ -273,7 +273,7 @@ namespace FacilityDocu.UI.Utilities.Services {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private FacilityDocu.UI.Utilities.Services.ModuleDTO[] ModulesField;
+        private FacilityDocu.Test.Console.Services.ModuleDTO[] ModulesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NameField;
@@ -292,7 +292,7 @@ namespace FacilityDocu.UI.Utilities.Services {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public FacilityDocu.UI.Utilities.Services.ModuleDTO[] Modules {
+        public FacilityDocu.Test.Console.Services.ModuleDTO[] Modules {
             get {
                 return this.ModulesField;
             }
@@ -359,7 +359,7 @@ namespace FacilityDocu.UI.Utilities.Services {
         private string NumberField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private FacilityDocu.UI.Utilities.Services.StepDTO[] StepsField;
+        private FacilityDocu.Test.Console.Services.StepDTO[] StepsField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -411,7 +411,7 @@ namespace FacilityDocu.UI.Utilities.Services {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public FacilityDocu.UI.Utilities.Services.StepDTO[] Steps {
+        public FacilityDocu.Test.Console.Services.StepDTO[] Steps {
             get {
                 return this.StepsField;
             }
@@ -443,7 +443,7 @@ namespace FacilityDocu.UI.Utilities.Services {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private FacilityDocu.UI.Utilities.Services.ActionDTO[] ActionsField;
+        private FacilityDocu.Test.Console.Services.ActionDTO[] ActionsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NameField;
@@ -465,7 +465,7 @@ namespace FacilityDocu.UI.Utilities.Services {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public FacilityDocu.UI.Utilities.Services.ActionDTO[] Actions {
+        public FacilityDocu.Test.Console.Services.ActionDTO[] Actions {
             get {
                 return this.ActionsField;
             }
@@ -545,7 +545,7 @@ namespace FacilityDocu.UI.Utilities.Services {
         private string DimensionsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private FacilityDocu.UI.Utilities.Services.ImageDTO[] ImagesField;
+        private FacilityDocu.Test.Console.Services.ImageDTO[] ImagesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string LiftingGearsField;
@@ -557,16 +557,16 @@ namespace FacilityDocu.UI.Utilities.Services {
         private string NumberField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private FacilityDocu.UI.Utilities.Services.ResourceDTO[] ResourcesField;
+        private FacilityDocu.Test.Console.Services.ResourceDTO[] ResourcesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private FacilityDocu.UI.Utilities.Services.RiskAnalysisDTO[] RiskAnalysisField;
+        private FacilityDocu.Test.Console.Services.RiskAnalysisDTO[] RiskAnalysisField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string RisksField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private FacilityDocu.UI.Utilities.Services.ToolDTO[] ToolsField;
+        private FacilityDocu.Test.Console.Services.ToolDTO[] ToolsField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -618,7 +618,7 @@ namespace FacilityDocu.UI.Utilities.Services {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public FacilityDocu.UI.Utilities.Services.ImageDTO[] Images {
+        public FacilityDocu.Test.Console.Services.ImageDTO[] Images {
             get {
                 return this.ImagesField;
             }
@@ -670,7 +670,7 @@ namespace FacilityDocu.UI.Utilities.Services {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public FacilityDocu.UI.Utilities.Services.ResourceDTO[] Resources {
+        public FacilityDocu.Test.Console.Services.ResourceDTO[] Resources {
             get {
                 return this.ResourcesField;
             }
@@ -683,7 +683,7 @@ namespace FacilityDocu.UI.Utilities.Services {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public FacilityDocu.UI.Utilities.Services.RiskAnalysisDTO[] RiskAnalysis {
+        public FacilityDocu.Test.Console.Services.RiskAnalysisDTO[] RiskAnalysis {
             get {
                 return this.RiskAnalysisField;
             }
@@ -709,7 +709,7 @@ namespace FacilityDocu.UI.Utilities.Services {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public FacilityDocu.UI.Utilities.Services.ToolDTO[] Tools {
+        public FacilityDocu.Test.Console.Services.ToolDTO[] Tools {
             get {
                 return this.ToolsField;
             }
@@ -741,7 +741,7 @@ namespace FacilityDocu.UI.Utilities.Services {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private FacilityDocu.UI.Utilities.Services.CommentDTO[] CommentsField;
+        private FacilityDocu.Test.Console.Services.CommentDTO[] CommentsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.DateTime CreationDateField;
@@ -772,7 +772,7 @@ namespace FacilityDocu.UI.Utilities.Services {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public FacilityDocu.UI.Utilities.Services.CommentDTO[] Comments {
+        public FacilityDocu.Test.Console.Services.CommentDTO[] Comments {
             get {
                 return this.CommentsField;
             }
@@ -1373,43 +1373,43 @@ namespace FacilityDocu.UI.Utilities.Services {
         System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<int, bool>> IsSyncAsync(System.Collections.Generic.Dictionary<int, System.DateTime> ProjectsData);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetProjectDetails", ReplyAction="http://tempuri.org/IFacilityDocuService/GetProjectDetailsResponse")]
-        FacilityDocu.UI.Utilities.Services.ProjectDTO[] GetProjectDetails(int[] ProjectIDs);
+        FacilityDocu.Test.Console.Services.ProjectDTO[] GetProjectDetails(int[] ProjectIDs);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetProjectDetails", ReplyAction="http://tempuri.org/IFacilityDocuService/GetProjectDetailsResponse")]
-        System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ProjectDTO[]> GetProjectDetailsAsync(int[] ProjectIDs);
+        System.Threading.Tasks.Task<FacilityDocu.Test.Console.Services.ProjectDTO[]> GetProjectDetailsAsync(int[] ProjectIDs);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateProject", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateProjectResponse")]
-        void UpdateProject(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO);
+        void UpdateProject(FacilityDocu.Test.Console.Services.ProjectDTO projectDTO);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateProject", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateProjectResponse")]
-        System.Threading.Tasks.Task UpdateProjectAsync(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO);
+        System.Threading.Tasks.Task UpdateProjectAsync(FacilityDocu.Test.Console.Services.ProjectDTO projectDTO);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetModules", ReplyAction="http://tempuri.org/IFacilityDocuService/GetModulesResponse")]
-        FacilityDocu.UI.Utilities.Services.ModuleDTO[] GetModules(int RigTypeID);
+        FacilityDocu.Test.Console.Services.ModuleDTO[] GetModules(int RigTypeID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetModules", ReplyAction="http://tempuri.org/IFacilityDocuService/GetModulesResponse")]
-        System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ModuleDTO[]> GetModulesAsync(int RigTypeID);
+        System.Threading.Tasks.Task<FacilityDocu.Test.Console.Services.ModuleDTO[]> GetModulesAsync(int RigTypeID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetSteps", ReplyAction="http://tempuri.org/IFacilityDocuService/GetStepsResponse")]
-        FacilityDocu.UI.Utilities.Services.StepDTO[] GetSteps(int ModuleID);
+        FacilityDocu.Test.Console.Services.StepDTO[] GetSteps(int ModuleID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetSteps", ReplyAction="http://tempuri.org/IFacilityDocuService/GetStepsResponse")]
-        System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.StepDTO[]> GetStepsAsync(int ModuleID);
+        System.Threading.Tasks.Task<FacilityDocu.Test.Console.Services.StepDTO[]> GetStepsAsync(int ModuleID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetActions", ReplyAction="http://tempuri.org/IFacilityDocuService/GetActionsResponse")]
-        FacilityDocu.UI.Utilities.Services.ActionDTO[] GetActions(int ActionID);
+        FacilityDocu.Test.Console.Services.ActionDTO[] GetActions(int ActionID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetActions", ReplyAction="http://tempuri.org/IFacilityDocuService/GetActionsResponse")]
-        System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ActionDTO[]> GetActionsAsync(int ActionID);
+        System.Threading.Tasks.Task<FacilityDocu.Test.Console.Services.ActionDTO[]> GetActionsAsync(int ActionID);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IFacilityDocuServiceChannel : FacilityDocu.UI.Utilities.Services.IFacilityDocuService, System.ServiceModel.IClientChannel {
+    public interface IFacilityDocuServiceChannel : FacilityDocu.Test.Console.Services.IFacilityDocuService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class FacilityDocuServiceClient : System.ServiceModel.ClientBase<FacilityDocu.UI.Utilities.Services.IFacilityDocuService>, FacilityDocu.UI.Utilities.Services.IFacilityDocuService {
+    public partial class FacilityDocuServiceClient : System.ServiceModel.ClientBase<FacilityDocu.Test.Console.Services.IFacilityDocuService>, FacilityDocu.Test.Console.Services.IFacilityDocuService {
         
         public FacilityDocuServiceClient() {
         }
@@ -1446,43 +1446,43 @@ namespace FacilityDocu.UI.Utilities.Services {
             return base.Channel.IsSyncAsync(ProjectsData);
         }
         
-        public FacilityDocu.UI.Utilities.Services.ProjectDTO[] GetProjectDetails(int[] ProjectIDs) {
+        public FacilityDocu.Test.Console.Services.ProjectDTO[] GetProjectDetails(int[] ProjectIDs) {
             return base.Channel.GetProjectDetails(ProjectIDs);
         }
         
-        public System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ProjectDTO[]> GetProjectDetailsAsync(int[] ProjectIDs) {
+        public System.Threading.Tasks.Task<FacilityDocu.Test.Console.Services.ProjectDTO[]> GetProjectDetailsAsync(int[] ProjectIDs) {
             return base.Channel.GetProjectDetailsAsync(ProjectIDs);
         }
         
-        public void UpdateProject(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO) {
+        public void UpdateProject(FacilityDocu.Test.Console.Services.ProjectDTO projectDTO) {
             base.Channel.UpdateProject(projectDTO);
         }
         
-        public System.Threading.Tasks.Task UpdateProjectAsync(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO) {
+        public System.Threading.Tasks.Task UpdateProjectAsync(FacilityDocu.Test.Console.Services.ProjectDTO projectDTO) {
             return base.Channel.UpdateProjectAsync(projectDTO);
         }
         
-        public FacilityDocu.UI.Utilities.Services.ModuleDTO[] GetModules(int RigTypeID) {
+        public FacilityDocu.Test.Console.Services.ModuleDTO[] GetModules(int RigTypeID) {
             return base.Channel.GetModules(RigTypeID);
         }
         
-        public System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ModuleDTO[]> GetModulesAsync(int RigTypeID) {
+        public System.Threading.Tasks.Task<FacilityDocu.Test.Console.Services.ModuleDTO[]> GetModulesAsync(int RigTypeID) {
             return base.Channel.GetModulesAsync(RigTypeID);
         }
         
-        public FacilityDocu.UI.Utilities.Services.StepDTO[] GetSteps(int ModuleID) {
+        public FacilityDocu.Test.Console.Services.StepDTO[] GetSteps(int ModuleID) {
             return base.Channel.GetSteps(ModuleID);
         }
         
-        public System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.StepDTO[]> GetStepsAsync(int ModuleID) {
+        public System.Threading.Tasks.Task<FacilityDocu.Test.Console.Services.StepDTO[]> GetStepsAsync(int ModuleID) {
             return base.Channel.GetStepsAsync(ModuleID);
         }
         
-        public FacilityDocu.UI.Utilities.Services.ActionDTO[] GetActions(int ActionID) {
+        public FacilityDocu.Test.Console.Services.ActionDTO[] GetActions(int ActionID) {
             return base.Channel.GetActions(ActionID);
         }
         
-        public System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ActionDTO[]> GetActionsAsync(int ActionID) {
+        public System.Threading.Tasks.Task<FacilityDocu.Test.Console.Services.ActionDTO[]> GetActionsAsync(int ActionID) {
             return base.Channel.GetActionsAsync(ActionID);
         }
     }
