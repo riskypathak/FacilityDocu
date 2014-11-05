@@ -10,10 +10,10 @@ namespace FacilityDocu.UI.Utilities
 {
     public class SyncManager
     {
-        public string XmlPath { get; set; }
+        public string ProjectXmlFolderPath { get; set; }
         public IList<int> ProjectIDs { get; set; }
 
-        public SyncManager(IList<int> projectIDs)
+        public SyncManager(IList<int> projectIDs): this()
         {
             this.ProjectIDs = projectIDs;
 
@@ -25,8 +25,11 @@ namespace FacilityDocu.UI.Utilities
             {
                 Directory.CreateDirectory("Data\\ProjectXml");
             }
+        }
 
-            this.XmlPath = Path.GetFullPath("Data\\ProjectXml");
+        public SyncManager()
+        {
+            this.ProjectXmlFolderPath = Path.GetFullPath("Data\\ProjectXml");
         }
 
         public void UpdateProjectXml()
@@ -34,15 +37,42 @@ namespace FacilityDocu.UI.Utilities
             IFacilityDocuService service = new FacilityDocuServiceClient();
             ProjectDTO[] projects = service.GetProjectDetails(ProjectIDs.ToArray());
 
-            projects.ToList().ForEach(p => ProjectXmlWriter.Write(p, XmlPath));
+            projects.ToList().ForEach(p => ProjectXmlWriter.Write(p, ProjectXmlFolderPath));
         }
 
-        public void UpdateDatabase()
+        public void UpdateDatabase(int projectID, bool isInsert)
         {
-            ProjectDTO project = ProjectXmlReader.ReadProjectXml(string.Empty);
+            string projectPath = Path.Combine(this.ProjectXmlFolderPath, string.Format("{0}.xml", projectID));
+            ProjectDTO project = ProjectXmlReader.ReadProjectXml(projectPath, false);
+
+            if (isInsert)
+            {
+                project.ProjectID = "0";
+            }
 
             IFacilityDocuService service = new FacilityDocuServiceClient();
             service.UpdateProject(project);
+        }
+
+        public IList<int> IsSyncRequired()
+        {
+            DirectoryInfo rootFolder = new DirectoryInfo(this.ProjectXmlFolderPath);
+            FileInfo[] Files = rootFolder.GetFiles("*.xml");
+
+            Dictionary<int, DateTime> projectIDs = new Dictionary<int,DateTime>();
+
+            foreach (FileInfo file in Files)
+            {
+                string projectPath = Path.Combine(this.ProjectXmlFolderPath, string.Format("{0}", file.Name));
+                ProjectDTO project = ProjectXmlReader.ReadProjectXml(projectPath, false);
+
+                projectIDs.Add(Convert.ToInt32(project.ProjectID), project.LastUpdatedAt);
+            }
+
+            IFacilityDocuService service = new FacilityDocuServiceClient();
+            Dictionary<int, bool> result = service.IsSync(projectIDs);
+
+            return result.Where(r => r.Value).Select(r => r.Key).ToList();
         }
     }
 }

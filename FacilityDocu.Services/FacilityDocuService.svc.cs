@@ -17,15 +17,10 @@ namespace FacilityDocu.Services
     {
         public Dictionary<int, bool> IsSync(Dictionary<int, DateTime> ProjectsData)
         {
-
-
-
             Dictionary<int, bool> _statusData = new Dictionary<int, bool>();
 
             using (var _db = new TabletApp_DatabaseEntities())
             {
-
-
                 foreach (var item in ProjectsData)
                 {
 

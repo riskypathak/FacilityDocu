@@ -13,15 +13,15 @@ namespace FacilityDocu.UI.Utilities
     {
         public static void Write(ProjectDTO project, string projectXMLPath)
         {
-            XElement xProject = new XElement("Project");
+            XElement xProject = new XElement("project");
 
             xProject.Add(new XElement("id", project.ProjectID));
             xProject.Add(new XElement("template", project.Template));
-            xProject.Add(new XElement("createby", project.CreatedBy));
+            xProject.Add(new XElement("createdby", project.CreatedBy));
             xProject.Add(new XElement("createdtime", project.CreationDate));
             xProject.Add(new XElement("description", project.Description));
-            xProject.Add(new XElement("updatetime", project.LastUpdatedAt));
-            xProject.Add(new XElement("updateby", project.LastUpdatedBy));
+            xProject.Add(new XElement("updatedtime", project.LastUpdatedAt));
+            xProject.Add(new XElement("updatedby", project.LastUpdatedBy));
 
             WriteRig(project.RigTypes.ToList(), xProject);
 

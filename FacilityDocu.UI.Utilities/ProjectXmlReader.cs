@@ -10,7 +10,7 @@ namespace FacilityDocu.UI.Utilities
 {
     public static class ProjectXmlReader
     {
-        public static ProjectDTO ReadProjectXml(string xmlPath)
+        public static ProjectDTO ReadProjectXml(string xmlPath, bool onlyProjectAttributes)
         {
             XDocument xdoc = XDocument.Load(xmlPath);
 
@@ -18,19 +18,21 @@ namespace FacilityDocu.UI.Utilities
 
             XElement xProject = xdoc.Elements("project").Single();
 
-            project.CreatedBy = new UserDTO();
-            project.CreatedBy.UserName = xProject.Element("createdby").Value;
+            project.CreatedBy = new UserDTO() { UserName = xProject.Element("createdby").Value };
             project.CreationDate = Convert.ToDateTime(xProject.Element("createdtime").Value);
             project.Description = xProject.Element("description").Value;
-            project.LastUpdatedAt = Convert.ToDateTime(xProject.Element("updatetime").Value);
-            project.LastUpdatedBy.UserName = xProject.Element("updateby").Value;
+            project.LastUpdatedAt = Convert.ToDateTime(xProject.Element("updatedtime").Value);
+            project.LastUpdatedBy = new UserDTO() { UserName = xProject.Element("updatedby").Value };
 
             project.ProjectID = Convert.ToString(xProject.Element("id").Value);
             project.Template = Convert.ToBoolean(xProject.Element("template").Value);
 
-            IList<Services.RigTypeDTO> rigTypes = ReadRigTypes(project, xProject);
+            if (!onlyProjectAttributes)
+            {
+                IList<Services.RigTypeDTO> rigTypes = ReadRigTypes(project, xProject);
+                project.RigTypes = rigTypes.ToArray();
+            }
 
-            project.RigTypes = rigTypes.ToArray();
             return project;
         }
 
@@ -100,13 +102,48 @@ namespace FacilityDocu.UI.Utilities
                 action.Dimensions = Convert.ToString(xAction.Element("dimensions").Value);
 
                 IList<Services.ImageDTO> images = ReadImages(xAction);
-
                 action.Images = images.ToArray();
 
+                IList<Services.ResourceDTO> resources = ReadResources(xAction);
+                action.Resources = resources.ToArray();
+
+                IList<Services.ToolDTO> tools = ReadTools(xAction);
+                action.Tools = tools.ToArray();
 
                 actions.Add(action);
             }
             return actions;
+        }
+
+        private static IList<ToolDTO> ReadTools(XElement xAction)
+        {
+            IList<Services.ToolDTO> tools = new List<Services.ToolDTO>();
+
+            foreach (XElement xTool in xAction.Element("tools").Elements("tool"))
+            {
+                ToolDTO toole = new ToolDTO();
+                toole.ToolID = Convert.ToString(xTool.Element("id").Value);
+                toole.Name = Convert.ToString(xTool.Element("name").Value);
+
+                tools.Add(toole);
+            }
+            return tools;
+        }
+
+        private static IList<ResourceDTO> ReadResources(XElement xAction)
+        {
+            IList<Services.ResourceDTO> resources = new List<Services.ResourceDTO>();
+
+            foreach (XElement xResource in xAction.Element("resources").Elements("resource"))
+            {
+                ResourceDTO resource = new ResourceDTO();
+                resource.ResourceID = Convert.ToString(xResource.Element("id").Value);
+                resource.Name = Convert.ToString(xResource.Element("name").Value);
+                resource.ResourceCount = Convert.ToString(xResource.Element("count").Value);
+
+                resources.Add(resource);
+            }
+            return resources;
         }
 
         private static IList<ImageDTO> ReadImages(XElement xAction)
@@ -123,9 +160,28 @@ namespace FacilityDocu.UI.Utilities
                 image.Path = Convert.ToString(xImage.Element("path").Value);
                 image.Tags = Convert.ToString(xImage.Element("tags").Value).Split(';');
 
+                IList<Services.CommentDTO> comments = ReadComments(xImage);
+                image.Comments = comments.ToArray();
+
                 images.Add(image);
             }
             return images;
+        }
+
+        private static IList<CommentDTO> ReadComments(XElement xImage)
+        {
+            IList<Services.CommentDTO> comments = new List<Services.CommentDTO>();
+
+            foreach (XElement xComment in xImage.Element("comments").Elements("comment"))
+            {
+                CommentDTO comment = new CommentDTO();
+                comment.Text = Convert.ToString(xComment.Element("text").Value);
+                comment.User = Convert.ToString(xComment.Element("user").Value);
+                comment.CommentedAt = Convert.ToDateTime(xComment.Element("date").Value);
+
+                comments.Add(comment);
+            }
+            return comments;
         }
     }
 }
