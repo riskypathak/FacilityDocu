@@ -25,8 +25,6 @@ public partial class Module
 
         this.ProjectDetails = new HashSet<ProjectDetail>();
 
-        this.RiskAnalysis = new HashSet<RiskAnalysi>();
-
     }
 
 
@@ -43,8 +41,6 @@ public partial class Module
     public virtual ICollection<ModuleStep> ModuleSteps { get; set; }
 
     public virtual ICollection<ProjectDetail> ProjectDetails { get; set; }
-
-    public virtual ICollection<RiskAnalysi> RiskAnalysis { get; set; }
 
 }
 

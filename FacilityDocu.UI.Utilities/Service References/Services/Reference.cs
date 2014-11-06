@@ -23,6 +23,9 @@ namespace FacilityDocu.UI.Utilities.Services {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool ClosedField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private FacilityDocu.UI.Utilities.Services.UserDTO CreatedByField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -53,6 +56,19 @@ namespace FacilityDocu.UI.Utilities.Services {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Closed {
+            get {
+                return this.ClosedField;
+            }
+            set {
+                if ((this.ClosedField.Equals(value) != true)) {
+                    this.ClosedField = value;
+                    this.RaisePropertyChanged("Closed");
+                }
             }
         }
         
@@ -1002,16 +1018,13 @@ namespace FacilityDocu.UI.Utilities.Services {
         private double K_Field;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string ModuleField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private double RiskField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string RiskAnalysisIDField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string RiskTypeField;
+        private FacilityDocu.UI.Utilities.Services.RiskAnalysisTypeDTO RiskAnalysisTypeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private double Risk_Field;
@@ -1144,19 +1157,6 @@ namespace FacilityDocu.UI.Utilities.Services {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Module {
-            get {
-                return this.ModuleField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ModuleField, value) != true)) {
-                    this.ModuleField = value;
-                    this.RaisePropertyChanged("Module");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
         public double Risk {
             get {
                 return this.RiskField;
@@ -1183,14 +1183,14 @@ namespace FacilityDocu.UI.Utilities.Services {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string RiskType {
+        public FacilityDocu.UI.Utilities.Services.RiskAnalysisTypeDTO RiskAnalysisType {
             get {
-                return this.RiskTypeField;
+                return this.RiskAnalysisTypeField;
             }
             set {
-                if ((object.ReferenceEquals(this.RiskTypeField, value) != true)) {
-                    this.RiskTypeField = value;
-                    this.RaisePropertyChanged("RiskType");
+                if ((object.ReferenceEquals(this.RiskAnalysisTypeField, value) != true)) {
+                    this.RiskAnalysisTypeField = value;
+                    this.RaisePropertyChanged("RiskAnalysisType");
                 }
             }
         }
@@ -1358,6 +1358,67 @@ namespace FacilityDocu.UI.Utilities.Services {
                 if ((object.ReferenceEquals(this.UserField, value) != true)) {
                     this.UserField = value;
                     this.RaisePropertyChanged("User");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="RiskAnalysisTypeDTO", Namespace="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO")]
+    [System.SerializableAttribute()]
+    public partial class RiskAnalysisTypeDTO : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string RiskTypeIDField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Name {
+            get {
+                return this.NameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NameField, value) != true)) {
+                    this.NameField = value;
+                    this.RaisePropertyChanged("Name");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string RiskTypeID {
+            get {
+                return this.RiskTypeIDField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.RiskTypeIDField, value) != true)) {
+                    this.RiskTypeIDField = value;
+                    this.RaisePropertyChanged("RiskTypeID");
                 }
             }
         }

@@ -23,6 +23,8 @@ namespace FacilityDocu.Services.EntityDTOConverter
         {
             ProjectDTO projectDTO = new ProjectDTO();
 
+            projectDTO.Template = project.Template;
+            projectDTO.Closed = project.Close.Value;
             projectDTO.Description = project.Description;
             projectDTO.ProjectID = project.ProjectID.ToString();
             projectDTO.CreationDate = project.CreationDate.Value;
@@ -110,6 +112,7 @@ namespace FacilityDocu.Services.EntityDTOConverter
                 actionDTO.Images = TOImagesDTO(projectDetails.Where(x => x.ActionID.Value == projectDetail.ActionID));
                 actionDTO.Resources = ToResourcesDTO(projectDetails.Where(x => x.ActionID.Value == projectDetail.ActionID));
                 actionDTO.Tools = ToToolsDTO(projectDetails.Where(x => x.ActionID.Value == projectDetail.ActionID));
+                actionDTO.RiskAnalysis = ToRiskAnalysisDTO(projectDetails.Where(x => x.ActionID.Value == projectDetail.ActionID));
 
                 actionsDTO.Add(actionDTO);
 
@@ -119,6 +122,33 @@ namespace FacilityDocu.Services.EntityDTOConverter
             return actionsDTO;
 
 
+        }
+
+        private static IList<RiskAnalysisDTO> ToRiskAnalysisDTO(IEnumerable<ProjectDetail> analysiss)
+        {
+            IList<RiskAnalysisDTO> analysissDTO = new List<RiskAnalysisDTO>();
+
+            foreach (var analysis in analysiss.Select(x => x.ProjectRiskAnalysis).FirstOrDefault())
+            {
+                RiskAnalysisDTO analysisDTO = new RiskAnalysisDTO();
+                analysisDTO.Activity = analysis.RiskAnalysi.Activity;
+                analysisDTO.B = Convert.ToDouble(analysis.RiskAnalysi.B.Value);
+                analysisDTO.B_ = Convert.ToDouble(analysis.RiskAnalysi.B_);
+                analysisDTO.Controls = analysis.RiskAnalysi.Controls;
+                analysisDTO.Danger = analysis.RiskAnalysi.Danger;
+                analysisDTO.E = Convert.ToDouble(analysis.RiskAnalysi.E.Value);
+                analysisDTO.E_ = Convert.ToDouble(analysis.RiskAnalysi.E_);
+                analysisDTO.K = Convert.ToDouble(analysis.RiskAnalysi.K.Value);
+                analysisDTO.K_ = Convert.ToDouble(analysis.RiskAnalysi.K_);
+                analysisDTO.Risk = Convert.ToDouble(analysis.RiskAnalysi.Risk.Value);
+                analysisDTO.Risk_ = Convert.ToDouble(analysis.RiskAnalysi.Risk_);
+                analysisDTO.RiskAnalysisID = Convert.ToString(analysis.RiskAnalysi.RiskAnalysisID);
+                analysisDTO.RiskAnalysisType = new RiskAnalysisTypeDTO() { RiskTypeID = analysis.RiskAnalysi.RiskType.RiskTypeID.ToString(), Name = analysis.RiskAnalysi.RiskType.Description };
+
+                analysissDTO.Add(analysisDTO);
+            }
+
+            return analysissDTO;
         }
 
         private static IList<ResourceDTO> ToResourcesDTO(IEnumerable<ProjectDetail> resources)

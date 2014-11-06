@@ -20,13 +20,13 @@ public partial class ProjectRiskAnalysi
 
     public int ID { get; set; }
 
-    public Nullable<int> ProjectID { get; set; }
-
     public Nullable<int> RiskAnalysisID { get; set; }
 
+    public Nullable<int> ProjectDetailID { get; set; }
 
 
-    public virtual Project Project { get; set; }
+
+    public virtual ProjectDetail ProjectDetail { get; set; }
 
     public virtual RiskAnalysi RiskAnalysi { get; set; }
 

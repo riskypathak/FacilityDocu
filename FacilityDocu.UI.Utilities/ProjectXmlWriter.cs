@@ -18,11 +18,12 @@ namespace FacilityDocu.UI.Utilities
 
             xProject.Add(new XElement("id", project.ProjectID));
             xProject.Add(new XElement("template", project.Template));
-            xProject.Add(new XElement("createdby", project.CreatedBy));
+            xProject.Add(new XElement("closed", project.Closed));
+            xProject.Add(new XElement("createdby", project.CreatedBy.Name));
             xProject.Add(new XElement("createdtime", project.CreationDate));
             xProject.Add(new XElement("description", project.Description));
             xProject.Add(new XElement("updatedtime", project.LastUpdatedAt));
-            xProject.Add(new XElement("updatedby", project.LastUpdatedBy));
+            xProject.Add(new XElement("updatedby", project.LastUpdatedBy.Name));
 
             WriteRig(project.RigTypes.ToList(), xProject);
 
@@ -50,16 +51,18 @@ namespace FacilityDocu.UI.Utilities
             XElement xModules = new XElement("modules");
             xRig.Add(xModules);
 
+            int count = 1;
             foreach (ModuleDTO module in modules)
             {
                 XElement xModule = new XElement("module");
                 xModules.Add(xModule);
 
                 xModule.Add(new XElement("id", module.ModuleID));
-                xModule.Add(new XElement("number", module.ModuleID));
+                xModule.Add(new XElement("number", count.ToString("00")));
                 xModule.Add(new XElement("name", module.Name));
 
                 WriteStep(module.Steps, xModule);
+                count++;
             }
         }
 
@@ -68,16 +71,18 @@ namespace FacilityDocu.UI.Utilities
             XElement xSteps = new XElement("steps");
             xModule.Add(xSteps);
 
+            int count = 1;
             foreach (StepDTO step in steps)
             {
                 XElement xStep = new XElement("step");
                 xSteps.Add(xStep);
 
                 xStep.Add(new XElement("id", step.StepID));
-                xStep.Add(new XElement("number", step.StepID));
+                xStep.Add(new XElement("number", count.ToString("00")));
                 xStep.Add(new XElement("name", step.Name));
 
                 WriteAction(step.Actions, xStep);
+                count++;
             }
         }
 
@@ -86,13 +91,14 @@ namespace FacilityDocu.UI.Utilities
             XElement xStepActions = new XElement("actions");
             xStep.Add(xStepActions);
 
+            int count = 1;
             foreach (ActionDTO stepAction in actions)
             {
                 XElement xStepAction = new XElement("action");
                 xStepActions.Add(xStepAction);
 
                 xStepAction.Add(new XElement("id", stepAction.ActionID));
-                xStepAction.Add(new XElement("number", stepAction.ActionID));
+                xStepAction.Add(new XElement("number", count.ToString("00")));
                 xStepAction.Add(new XElement("name", stepAction.Name));
                 xStepAction.Add(new XElement("description", stepAction.Description));
                 xStepAction.Add(new XElement("risks", stepAction.Risks));
@@ -102,6 +108,35 @@ namespace FacilityDocu.UI.Utilities
                 WriteImage(stepAction.Images, xStepAction);
                 WriteTools(stepAction.Tools, xStepAction);
                 WriteResources(stepAction.Resources, xStepAction);
+                WriteRiskAnalysis(stepAction.RiskAnalysis, xStepAction);
+
+                count++;
+            }
+        }
+
+        private static void WriteRiskAnalysis(IList<RiskAnalysisDTO> riskAnalysiss, XElement xAction)
+        {
+            XElement xRiskAnalysiss = new XElement("risksAnalysis");
+            xAction.Add(xRiskAnalysiss);
+
+            foreach (RiskAnalysisDTO riskAnalysis in riskAnalysiss)
+            {
+                XElement xRiskAnalysis = new XElement("riskAnalysis");
+                xRiskAnalysiss.Add(xRiskAnalysis);
+
+                xRiskAnalysis.Add(new XElement("id", riskAnalysis.RiskAnalysisID));
+                xRiskAnalysis.Add(new XElement("type", riskAnalysis.RiskAnalysisType.Name));
+                xRiskAnalysis.Add(new XElement("activity", riskAnalysis.Activity));
+                xRiskAnalysis.Add(new XElement("danger", riskAnalysis.Danger));
+                xRiskAnalysis.Add(new XElement("k", riskAnalysis.K));
+                xRiskAnalysis.Add(new XElement("b", riskAnalysis.B));
+                xRiskAnalysis.Add(new XElement("e", riskAnalysis.E));
+                xRiskAnalysis.Add(new XElement("risk", riskAnalysis.Risk));
+                xRiskAnalysis.Add(new XElement("controls", riskAnalysis.Controls));
+                xRiskAnalysis.Add(new XElement("k_", riskAnalysis.K_));
+                xRiskAnalysis.Add(new XElement("b_", riskAnalysis.B_));
+                xRiskAnalysis.Add(new XElement("e_", riskAnalysis.E_));
+                xRiskAnalysis.Add(new XElement("risk_", riskAnalysis.Risk_));
             }
         }
 

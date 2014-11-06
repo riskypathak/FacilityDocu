@@ -27,6 +27,8 @@ public partial class ProjectDetail
 
         this.ProjectActionTools = new HashSet<ProjectActionTool>();
 
+        this.ProjectRiskAnalysis = new HashSet<ProjectRiskAnalysi>();
+
     }
 
 
@@ -65,6 +67,8 @@ public partial class ProjectDetail
     public virtual RigType RigType { get; set; }
 
     public virtual Step Step { get; set; }
+
+    public virtual ICollection<ProjectRiskAnalysi> ProjectRiskAnalysis { get; set; }
 
 }
 

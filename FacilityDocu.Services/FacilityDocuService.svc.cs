@@ -44,7 +44,6 @@ namespace FacilityDocu.Services
 
         public List<ProjectDTO> GetProjectDetails(IList<int> ProjectIDs)
         {
-
             var _projectData = new List<ProjectDTO>();
 
             using (var _db = new TabletApp_DatabaseEntities())
@@ -93,7 +92,6 @@ namespace FacilityDocu.Services
             //as projectid is strong in dto 
             if (string.IsNullOrEmpty(project.ProjectID) || project.ProjectID == "0")
             {
-
                 using (TabletApp_DatabaseEntities context = new TabletApp_DatabaseEntities())
                 {
                     Project DbProject = new Project();
@@ -239,7 +237,7 @@ namespace FacilityDocu.Services
                     if (DbProject != null)
                     {
                         context.ProjectDetails.RemoveRange(context.ProjectDetails.Where(x => x.ProjectID == Convert.ToInt32(project.ProjectID)).ToList());
-                        context.ProjectRiskAnalysis.RemoveRange(context.ProjectRiskAnalysis.Where(x => x.ProjectID == Convert.ToInt32(project.ProjectID)).ToList());
+                        context.ProjectRiskAnalysis.RemoveRange(context.ProjectRiskAnalysis.Where(x => x.ProjectDetailID == Convert.ToInt32(project.ProjectID)).ToList());
 
                         //TODO delete all other mappings
                         //TODO

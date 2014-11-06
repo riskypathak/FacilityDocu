@@ -9,6 +9,7 @@
   <xs:element name="ArrayOfProjectDTO" nillable="true" type="tns:ArrayOfProjectDTO" />
   <xs:complexType name="ProjectDTO">
     <xs:sequence>
+      <xs:element minOccurs="0" name="Closed" type="xs:boolean" />
       <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="tns:UserDTO" />
       <xs:element minOccurs="0" name="CreationDate" type="xs:dateTime" />
       <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
@@ -160,14 +161,20 @@
       <xs:element minOccurs="0" name="E_" type="xs:double" />
       <xs:element minOccurs="0" name="K" type="xs:double" />
       <xs:element minOccurs="0" name="K_" type="xs:double" />
-      <xs:element minOccurs="0" name="Module" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Risk" type="xs:double" />
       <xs:element minOccurs="0" name="RiskAnalysisID" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="RiskType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RiskAnalysisType" nillable="true" type="tns:RiskAnalysisTypeDTO" />
       <xs:element minOccurs="0" name="Risk_" type="xs:double" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="RiskAnalysisDTO" nillable="true" type="tns:RiskAnalysisDTO" />
+  <xs:complexType name="RiskAnalysisTypeDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RiskTypeID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RiskAnalysisTypeDTO" nillable="true" type="tns:RiskAnalysisTypeDTO" />
   <xs:complexType name="ArrayOfToolDTO">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="ToolDTO" nillable="true" type="tns:ToolDTO" />

@@ -33,6 +33,9 @@ namespace FacilityDocu.DTO
         public bool Template { get; set; }
 
         [DataMember]
+        public bool Closed { get; set; }
+
+        [DataMember]
         public IList<RigTypeDTO> RigTypes { get; set; }
     }
 }

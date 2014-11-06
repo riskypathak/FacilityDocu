@@ -7,5 +7,9 @@
   <description>Template - 2</description>
   <updatedtime>1900-01-01T00:00:00</updatedtime>
   <updatedby>FacilityDocu.UI.Utilities.Services.UserDTO</updatedby>
-  <rigs />
+  <rigs>
+    <rig type="Down"></rig>
+  </rigs>
+  
+  
 </project>

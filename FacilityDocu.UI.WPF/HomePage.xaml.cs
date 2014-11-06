@@ -1,4 +1,6 @@
-﻿using Microsoft.Win32;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -25,7 +27,7 @@ namespace FacilityDocLaptop
     public class conn
     {
         //WCF Added
-        Services.FacilityDocuServiceClient MyService;
+        ServiceReference2.Service1Client MyService;
     }
     public class TempSaveData
     {
@@ -86,14 +88,22 @@ namespace FacilityDocLaptop
         int riskindex = 0;
         int imageindex = 0;
         int liftinggearindex = 0;
+        string XMLPath;
+        string DATAPath;
+        string BACKUPPath ;
+        string pdf_ProjectName;
+        string pdf_RigType;
+        string pdf_Module;
 
         conn connectiondb = new conn();
         DataSet ds = new DataSet();
         SqlDataAdapter da = new SqlDataAdapter();
 
-        XElement xelement = XElement.Load("../../Assets/ProjectXML.xml");
+        XElement xelement;
+
 
         List<string> rigdata = new List<string>();
+        List<string> rigdata1 = new List<string>();
         List<string> moduledataname = new List<string>();
         List<string> moduledatanumber = new List<string>();
         List<string> moduleid = new List<string>();
@@ -111,18 +121,119 @@ namespace FacilityDocLaptop
         List<string> dimensiondata = new List<string>();
         List<string> riskdata = new List<string>();
         List<string> imagedata = new List<string>();
+        //PDF
+        List<string> pdf_imagedataid = new List<string>();
+        List<string> pdf_imagedataname = new List<string>();
 
+        public class Grid_XMLRead
+        {
+            public int projectID { get; set; }
+            public string projectName { get; set; }
+            public string description { get; set; }
+            public string createdBy { get; set; }
+            public string createdTime { get; set; }
+            public string updatedBy { get; set; }
+            public string updatedTime { get; set; }
+
+
+
+        }
         public HomePage()
         {
             InitializeComponent();
-            IEnumerable<XElement> name = xelement.Elements();
+           
+           
+             
         }
 
+
+        public void CreateListViewGrid()
+        {
+            this.listView.Items.Add(new Grid_XMLRead { projectID = 1, projectName = "Template1", description = "this is description", createdBy = "Risky", createdTime = "03:45", updatedBy = "Mohan", updatedTime = "07:45" });
+            this.listView.Items.Add(new Grid_XMLRead { projectID = 2, projectName = "Template2", description = "this is description", createdBy = "Risky", createdTime = "12:45", updatedBy = "Kishor", updatedTime = "17:06" });
+            this.listView.Items.Add(new Grid_XMLRead { projectID = 3, projectName = "Template3", description = "this is description", createdBy = "Risky", createdTime = "12:45", updatedBy = "Kishor", updatedTime = "17:06" });
+
+            GridView myGridView = new GridView();
+            myGridView.AllowsColumnReorder = true;
+            myGridView.ColumnHeaderToolTip = "Non-Template Projects";
+
+            myGridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Project ID",
+                DisplayMemberBinding = new Binding("projectID"),
+                Width = 150
+
+            });
+
+            myGridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Project Name",
+                DisplayMemberBinding = new Binding("projectName"),
+                Width = 150
+            });
+            myGridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Description",
+                DisplayMemberBinding = new Binding("description"),
+                Width = 350
+
+            });
+
+            myGridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Created By",
+                DisplayMemberBinding = new Binding("createdBy"),
+                Width = 150
+            });
+            myGridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Created Time",
+                DisplayMemberBinding = new Binding("createdTime"),
+                Width = 150
+            });
+
+            myGridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Updated By",
+                DisplayMemberBinding = new Binding("updatedBy"),
+                Width = 150
+            });
+
+            myGridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Updated Time",
+                DisplayMemberBinding = new Binding("updatedTime"),
+                Width = 150
+            });
+
+            listView.View = myGridView;
+        }
+
+        private void LoadListView()
+        {
+            DataSet dts = new DataSet();
+            DataTable dtl = new DataTable();
+            dts.ReadXml(System.IO.Path.GetFullPath("Assets/Data/ProjectXml/2.xml"));
+            dtl = dts.Tables[0];
+
+            if(dtl.Rows.Count>0)
+            {
+                int I = 0;
+                foreach(DataRow Dr in dtl.Rows)
+                {
+                    ListViewItem Lvi = new ListViewItem();
+                    
+                    
+                    
+                }
+            }
+        }
         private void login_Click(object sender, RoutedEventArgs e)
         {
 
             //WCF Service
-            Services.FacilityDocuServiceClient client = new Services.FacilityDocuServiceClient();
+            //ServiceReference2.Service1Client client = new ServiceReference2.Service1Client();
+            Services.IFacilityDocuService client = new Services.FacilityDocuServiceClient();
             if (client.Login(userName.Text, password.Password))
             {
                 grdViewLogin.Visibility = Visibility.Collapsed;
@@ -185,6 +296,8 @@ namespace FacilityDocLaptop
 
         private void NewProject_btn_Click(object sender, RoutedEventArgs e)
         {
+            xelement = XElement.Load("../../Assets/Data/ProjectXml/ProjectXML.xml");
+            IEnumerable<XElement> name = xelement.Elements();
             AllProject_ListBox.Items.Clear();
             ProjectName.Text = "";
             projectName_txt.Text = "";
@@ -254,7 +367,7 @@ namespace FacilityDocLaptop
                 BitmapImage src = new BitmapImage();
                 src.BeginInit();
                 src.CacheOption = BitmapCacheOption.OnLoad;
-            Image imagename = new Image();
+                System.Windows.Controls.Image imagename = new System.Windows.Controls.Image();
             src.UriSource = new Uri(ofd.FileName.Trim(), UriKind.Relative);
             imagename.Source = src;
             listboxPicture.Items.Add(imagename);
@@ -267,11 +380,25 @@ namespace FacilityDocLaptop
             sourcePath[imagecountdiff-1] = fileInfo.DirectoryName;
         }
 
+        string selectedprojectname;
         private void AllProject_ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            
             try
             {
+                selectedprojectname = AllProject_ListBox.SelectedItem.ToString();
                 ProjectName.Text = AllProject_ListBox.SelectedItem.ToString();
+                des_txtbox.Text = "";
+                var DATA = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == selectedprojectname).Elements("description")
+                           select new
+                           {
+                               name = query.Value,
+                           };
+                foreach (var names in DATA)
+                {
+                    des_txtbox.Text = names.name.ToString();
+
+                }
             }
             catch
             { }
@@ -279,26 +406,60 @@ namespace FacilityDocLaptop
 
         private void ok_btn_Click(object sender, RoutedEventArgs e)
         {
-            des_txtbox.Text = "";
+
+            if (ProjectName.Text != "")
+            {
+               
+
+                editPage_grid.Visibility = Visibility.Visible;
+                gridHomePage.Visibility = Visibility.Collapsed;
+                homePage.Title = "FacilityDocu - Edit Project";
+                /////////////////////////////////////////////////////////////////////////
+                var ID = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == selectedprojectname).Elements("id")
+                         select new
+                         {
+                             name = query.Value,
+                         };
+                foreach (var names in ID)
+                {
+                    txtProjectID.Text = names.name.ToString();
+                    projectid = names.name.ToString();
+
+                }
+                txtProjectDescription.Text = des_txtbox.Text;
+                ////////////////////////////////////////////////////////////////////////////////////////
+                Rig();
+                Module();
+                Step();
+                Action();
+                //  ActionDetails();
+                Images();
+                //Resources();
+                LiftingGears();
+                Tools();
+                Dimension();
+                Risk();
+                listboxPicture.Items.Clear();
+                imageload();
+                ReadPathFromConfigXML();
+            }
+
+            else
+            {
+               
+            }
+
+           
             creationdate_txt.Text = "";
             updatedate_txt.Text = "";
             createdby_txt.Text = "";
             updatedby_txt.Text = "";
-            projectName_txt.Text = ProjectName.Text;
+          //  projectName_txt.Text = ProjectName.Text;
             //////////////////////////////////////////////////////////////////////////////////////////
-            var DATA = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == ProjectName.Text).Elements("description")
-                       select new
-                       {
-                           name = query.Value,
-                       };
-            foreach (var names in DATA)
-            {
-                des_txtbox.Text = names.name.ToString();
-
-            }
+           
 
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            var DATA1 = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == ProjectName.Text).Elements("createdtime")
+            var DATA1 = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == selectedprojectname).Elements("createdtime")
                         select new
                         {
                             name = query.Value,
@@ -309,7 +470,7 @@ namespace FacilityDocLaptop
 
             }
             ///////////////////////////////////////////////////////////////////////////////////////////////////////
-            var DATA2 = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == ProjectName.Text).Elements("updatetime")
+            var DATA2 = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == selectedprojectname).Elements("updatetime")
                         select new
                         {
                             name = query.Value,
@@ -320,7 +481,7 @@ namespace FacilityDocLaptop
 
             }
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            var DATA3 = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == ProjectName.Text).Elements("createdby")
+            var DATA3 = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == selectedprojectname).Elements("createdby")
                         select new
                         {
                             name = query.Value,
@@ -331,7 +492,7 @@ namespace FacilityDocLaptop
 
             }
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            var DATA4 = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == ProjectName.Text).Elements("updatedby")
+            var DATA4 = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == selectedprojectname).Elements("updatedby")
                         select new
                         {
                             name = query.Value,
@@ -365,39 +526,40 @@ namespace FacilityDocLaptop
 
         private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) //_ProjectName_HyperLink
         {
-            if (projectName_txt.Text != "")
-            {
-                editPage_grid.Visibility = Visibility.Visible;
-                gridHomePage.Visibility = Visibility.Collapsed;
-                homePage.Title = "FacilityDocu - Edit Project";
-                /////////////////////////////////////////////////////////////////////////
-                var ID = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == ProjectName.Text).Elements("id")
-                         select new
-                         {
-                             name = query.Value,
-                         };
-                foreach (var names in ID)
-                {
-                    txtProjectID.Text = names.name.ToString();
-                    projectid = names.name.ToString();
+            //if (projectName_txt.Text != "")
+            //{
+            //    editPage_grid.Visibility = Visibility.Visible;
+            //    gridHomePage.Visibility = Visibility.Collapsed;
+            //    homePage.Title = "FacilityDocu - Edit Project";
+            //    /////////////////////////////////////////////////////////////////////////
+            //    var ID = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == ProjectName.Text).Elements("id")
+            //             select new
+            //             {
+            //                 name = query.Value,
+            //             };
+            //    foreach (var names in ID)
+            //    {
+            //        txtProjectID.Text = names.name.ToString();
+            //        projectid = names.name.ToString();
 
-                }
-                txtProjectDescription.Text = des_txtbox.Text;
-                ////////////////////////////////////////////////////////////////////////////////////////
-                Rig();
-                Module();
-                Step();
-                Action();
-                //  ActionDetails();
-                Images();
-                //Resources();
-                LiftingGears();
-                Tools();
-                Dimension();
-                Risk();
-                listboxPicture.Items.Clear();
-                imageload();
-            }
+            //    }
+            //    txtProjectDescription.Text = des_txtbox.Text;
+            //    ////////////////////////////////////////////////////////////////////////////////////////
+            //    Rig();
+            //    Module();
+            //    Step();
+            //    Action();
+            //    //  ActionDetails();
+            //    Images();
+            //    //Resources();
+            //    LiftingGears();
+            //    Tools();
+            //    Dimension();
+            //    Risk();
+            //    listboxPicture.Items.Clear();
+            //    imageload();
+            //    ReadPathFromConfigXML();
+            //}
         }
 
         private void txtblockActivity_MouseEnter(object sender, MouseEventArgs e)
@@ -501,7 +663,7 @@ namespace FacilityDocLaptop
 
         public void Rig()
         {
-            var RigData = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == ProjectName.Text)
+            var RigData = from query in xelement.Descendants("project").Where(query => query.Element("name").Value ==  selectedprojectname)
                             .Elements("rigs")
                             .Elements("rig")
                           select new
@@ -531,7 +693,7 @@ namespace FacilityDocLaptop
 
         public void Module()
         {
-            var ModuleData = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == ProjectName.Text)
+            var ModuleData = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == selectedprojectname)
                                  .Elements("rigs")
                                  .Elements("rig").Where(query => (string)query.Attribute("type") == txtRigType.Text)
                                  .Elements("modules")
@@ -572,7 +734,7 @@ namespace FacilityDocLaptop
 
         public void Step()
         {
-            var StepData = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == ProjectName.Text)
+            var StepData = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == selectedprojectname)
                                  .Elements("rigs")
                                  .Elements("rig").Where(query => (string)query.Attribute("type") == txtRigType.Text)
                                  .Elements("modules")
@@ -612,7 +774,7 @@ namespace FacilityDocLaptop
 
         public void Action()
         {
-            var ActionData = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == ProjectName.Text)
+            var ActionData = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == selectedprojectname)
                                              .Elements("rigs")
                                              .Elements("rig").Where(query => (string)query.Attribute("type") == txtRigType.Text)
                                              .Elements("modules")
@@ -698,7 +860,7 @@ namespace FacilityDocLaptop
 
             var LiftingGearsData = from query in xelement.Descendants("project")
                                 .Where(query => query.Element("name")
-                                .Value == ProjectName.Text)
+                                .Value == selectedprojectname)
                                 .Elements("rigs")
                                 .Elements("rig").Where(query => (string)query.Attribute("type") == txtRigType.Text)
                                 .Elements("modules")
@@ -736,7 +898,7 @@ namespace FacilityDocLaptop
         {
             var ToolsData = from query in xelement.Descendants("project")
                                 .Where(query => query.Element("name")
-                                    .Value == ProjectName.Text)
+                                    .Value == selectedprojectname)
                                     .Elements("rigs")
                                              .Elements("rig").Where(query => (string)query.Attribute("type") == txtRigType.Text)
                                              .Elements("modules")
@@ -767,7 +929,7 @@ namespace FacilityDocLaptop
         {
             var DimensionData = from query in xelement.Descendants("project")
                                 .Where(query => query.Element("name")
-                                .Value == ProjectName.Text)
+                                .Value == selectedprojectname)
                                 .Elements("rigs")
                                 .Elements("rig").Where(query => (string)query.Attribute("type") == txtRigType.Text)
                                 .Elements("modules")
@@ -802,7 +964,7 @@ namespace FacilityDocLaptop
         {
             var RiskData = from query in xelement.Descendants("project")
                                 .Where(query => query.Element("name")
-                                .Value == ProjectName.Text)
+                                .Value == selectedprojectname)
                                 .Elements("rigs")
                                 .Elements("rig").Where(query => (string)query.Attribute("type") == txtRigType.Text)
                                 .Elements("modules")
@@ -836,7 +998,7 @@ namespace FacilityDocLaptop
         {
             var ImageData = from query in xelement.Descendants("project")
                                .Where(query => query.Element("name")
-                               .Value == ProjectName.Text)
+                               .Value == selectedprojectname)
                                .Elements("rigs")
                                .Elements("rig").Where(query => (string)query.Attribute("type") == txtRigType.Text)
                                .Elements("modules")
@@ -864,15 +1026,14 @@ namespace FacilityDocLaptop
         }
         public void imageload()
         {
-            MessageBox.Show(imagecount.ToString());
              for (int i = 0; i < imagedata.Count; i++)
               {
             BitmapImage bimg = new BitmapImage();
-            Image imagename = new Image();
-            //bimg.UriSource = new Uri(@"H:/DataP/4001/Image1.png");
+            System.Windows.Controls.Image imagename = new System.Windows.Controls.Image();
+            bimg.UriSource = new Uri(@"H:/DataP/4001/Image1.png");
             bimg.BeginInit();
-            bimg.UriSource = new Uri(@"C:/Users/Yashasvi/Pictures/DataP/"+projectid+"."+ rigdata[rigtypeindex]+"."+ moduleid[moduleindex]+"."+stepid[stepindex]+"."+actionid[actionindex] + "/" + imagedata[i]);
-            imagename.Source = bimg;
+            ///bimg.UriSource = new Uri(System.IO.Path.GetFullPath("Data/Images") +"/"+ projectid + "." + rigdata[rigtypeindex] + "." + moduleid[moduleindex] + "." + stepid[stepindex] + "." + actionid[actionindex] + "/" + imagedata[i]);
+            //imagename.Source = bimg;
             bimg.EndInit();
             listboxPicture.Items.Add(imagename);
              }
@@ -880,11 +1041,91 @@ namespace FacilityDocLaptop
 
         public void createfolder()
         {
-            if (!Directory.Exists(@"C:/Users/Yashasvi/Pictures/DataP/"+projectid+"."+ rigdata[rigtypeindex]+"."+ moduleid[moduleindex]+"."+stepid[stepindex]+"."+actionid[actionindex]))
+
+            if (!Directory.Exists(System.IO.Path.GetFullPath("Data/Images") + "/" + projectid + "." + rigdata[rigtypeindex] + "." + moduleid[moduleindex] + "." + stepid[stepindex] + "." + actionid[actionindex]))
             {
-                Directory.CreateDirectory(@"C:/Users/Yashasvi/Pictures/DataP/"+projectid+"."+ rigdata[rigtypeindex]+"."+ moduleid[moduleindex]+"."+stepid[stepindex]+"."+actionid[actionindex]);
+                Directory.CreateDirectory(System.IO.Path.GetFullPath("Data/Images") + "/" + projectid + "." + rigdata[rigtypeindex] + "." + moduleid[moduleindex] + "." + stepid[stepindex] + "." + actionid[actionindex]);
             }
         }
+
+
+        public void updateFromRig()
+        {
+            string testXML;
+            try
+            {
+
+                testXML = System.IO.Path.Combine("", "Assets/Data/ProjectXml/ProjectXML.xml" + "/" + "ProjectXML.xml");
+                XDocument loadedData = XDocument.Load(testXML);
+
+                XElement rig = new XElement("rig",
+                               new XAttribute("type", txtRigType.Text),
+
+                               new XElement("modules",
+                    new XElement("module",
+                      new XElement("id", txtModuleID.Text),
+                      new XElement("name", txtModule.Text),
+                    //  new XElement("number", OfflineData.tempModuleNo),
+
+                      new XElement("steps",
+                              new XElement("step",
+                    //   new XElement("id", OfflineData.tempStepID),
+                                  new XElement("name", txtStepName.Text),
+                                  new XElement("number", txtStepNumber.Text),
+
+                                  new XElement("actions",
+                              new XElement("action",
+                                  new XElement("id", actionid[actionindex]),
+                                  new XElement("name", txtAction.Text),
+                                  new XElement("number", txtActionNumber.Text),
+                                  new XElement("description", txtDetails.Text),
+
+                                  new XElement("images",
+                               Enumerable.Range(0, listboxPicture.Items.Count).Select(i => new XElement("image",
+                                      new XElement("name", totalpictureinoneindex[i])))),
+
+
+                              //new XElement("images",
+                    // new XElement("image",
+                    // new XElement("id", OfflineData.tempimageid),
+                    //new XElement("number", OfflineData.tempimage_no),
+                    //new XElement("name", OfflineData.imageName),
+                    //new XElement("tags", OfflineData.tempimagetag),
+                    //new XElement("description", OfflineData.tempimage_description),
+                    //new XElement("comments")
+
+                    new XElement("tools",
+                   Enumerable.Range(0, toolsdata.Count).Select(i => new XElement("tool",
+                       //  new XElement("id",txtToolID.Text),
+                    new XElement("name", listboxTools.Items[i].ToString()))),
+
+                        new XElement("resources",
+                       Enumerable.Range(0, resourcedata.Count).Select(i => new XElement("resource",
+                           //new XElement("id", txtResourceID.Text),
+                                new XElement("name", "test"))),
+                    //    new XElement("count",hh )
+
+                            new XElement("risks",
+                                txtRisks.Text),
+
+                              new XElement("dimensions",
+                         txtDimensions.Text),
+
+                           new XElement("liftinggears",
+                         txtGears.Text)
+
+                                                  )))))))
+                                                           ));
+
+                loadedData.Elements("project").Where(query => query.Element("name").Value == selectedprojectname)
+                                  .Elements("rigs").Last().Add(rig);
+
+                loadedData.Save(System.IO.Path.GetFullPath("Data/ProjectXml") + "/" + "ProjectXML.xml");
+            }
+            catch 
+            {
+            }
+            }
 
         private void btnModuleRight_Click_1(object sender, RoutedEventArgs e)
         {
@@ -914,6 +1155,36 @@ namespace FacilityDocLaptop
 
             }
         }
+
+        public void ReadPathFromConfigXML()
+        {
+            XElement xelement = XElement.Load("../../Assets/Config.xml");
+            IEnumerable<XElement> name = xelement.Elements();
+
+            var readPath = from query in xelement.Descendants("paths")
+
+
+
+                           select new
+                           {
+                               xmlpath = query.Element("xmlp").Value,
+                               datapath = query.Element("datap").Value,
+                               backuppath = query.Element("backp").Value,
+                           };
+
+            foreach (var names in readPath)
+            {
+                XMLPath = names.xmlpath.ToString();
+                DATAPath = names.datapath.ToString();
+                BACKUPPath = names.backuppath.ToString();
+
+
+            }
+           // MessageBox.Show(DATAPath);
+        }
+
+            
+       
 
         private void btnModuleLeft_Click_1(object sender, RoutedEventArgs e)
         {
@@ -1080,9 +1351,10 @@ namespace FacilityDocLaptop
           
             
             XDocument projectSave = new XDocument(
+                         
                         new XElement("project",
                    new XElement("id", txtProjectID.Text),
-                   new XElement("name", projectName_txt.Text),
+                   new XElement("name", ProjectName.Text),
                    new XElement("description", des_txtbox.Text),
                    new XElement("createdtime", creationdate_txt.Text),
                    new XElement("createdby", createdby_txt.Text),
@@ -1145,16 +1417,18 @@ namespace FacilityDocLaptop
 
                     ))))))
 
-                                          )))))); 
+                                          ))))));
 
-            projectSave.Save(@"H://Project.xml");
+            
+            projectSave.Save(System.IO.Path.GetFullPath("Data/ProjectXml")+"/"+"ProjectXML.xml");
             MessageBox.Show("Succesfully Saved");
         }
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            ProjectSave();
             createfolder();
             ///////////////////////////////////////////////////////////////
-            string targetPath = @"C:/Users/Yashasvi/Pictures/DataP/"+projectid+"."+ rigdata[rigtypeindex]+"."+ moduleid[moduleindex]+"."+stepid[stepindex]+"."+actionid[actionindex];
+            string targetPath = System.IO.Path.GetFullPath("Data/Images") + "/" + projectid + "." + rigdata[rigtypeindex] + "." + moduleid[moduleindex] + "." + stepid[stepindex] + "." + actionid[actionindex];
           //  FileInfo fileInfo;
             for (int i = 0; i < imagecountdiff; i++)
             {
@@ -1165,7 +1439,296 @@ namespace FacilityDocLaptop
             }
             mergenewandoldimage();
         /////////////////////////////////////////////////////////////////////////////
-            ProjectSave();
+
+            if (!File.Exists(("Data/ProjectXml") + "/" + "ProjectXML.xml"))
+                ProjectSave();
+            else
+                updateFromRig();
+        }
+
+        public void ReadXML()
+        {
+
+
+            XElement xelement = XElement.Load(System.IO.Path.GetFullPath("Data/ProjectXml") + "/" + "ProjectXML.xml");
+            IEnumerable<XElement> name = xelement.Elements();
+
+            var readProjectName = from query in xelement.Descendants("project")
+                            .Elements("name")
+
+                                  select new
+                                  {
+                                      name = query.Value,
+                                  };
+
+            foreach (var names in readProjectName)
+            {
+                pdf_ProjectName = names.name.ToString();
+                // MessageBox.Show(ProjectName);
+            }
+
+
+            //RIG
+
+            var readRigType = from query in xelement.Descendants("project")
+                            .Elements("rigs")
+                            .Elements("rig")
+                              select new
+                              {
+                                  name = query.Attribute("type").Value,
+                              };
+
+
+
+            foreach (var names in readRigType)
+            {
+                pdf_RigType = names.name.ToString();
+                //MessageBox.Show(names.name);
+            }
+
+            //MODULE
+            var readModule = from query in xelement.Descendants("project")
+                                 .Elements("rigs")
+                                 .Elements("rig")
+                                 .Elements("modules")
+                                 .Elements("module")
+                                 .Elements("name")
+                             select new
+                             {
+                                 name = query.Value,
+
+                             };
+            foreach (var names in readModule)
+            {
+                pdf_Module = names.name.ToString();
+                // MessageBox.Show(names.name);
+            }
+
+
+            //STEP
+            var readStep = from query in xelement.Descendants("project")
+                                 .Elements("rigs")
+                                 .Elements("rig")
+                                 .Elements("modules")
+                                 .Elements("module")
+                                 .Elements("steps")
+                                 .Elements("step")
+
+                           select new
+                           {
+                               name = query.Element("name").Value,
+
+
+                           };
+            foreach (var names in readStep)
+            {
+                //MessageBox.Show(names.name);
+            }
+
+            //ACTION
+            var readAction = from query in xelement.Descendants("project")
+                                 .Elements("rigs")
+                                 .Elements("rig")
+                                 .Elements("modules")
+                                 .Elements("module")
+                                 .Elements("steps")
+                                 .Elements("step")
+                                 .Elements("actions")
+                                 .Elements("action")
+                                 .Elements("name")
+
+                             select new
+                             {
+                                 name = query.Value,
+
+
+                             };
+            foreach (var names in readAction)
+            {
+                MessageBox.Show(names.name);
+                // ActionName = names.name;
+            }
+
+
+            //Image
+            var readImage = from query in xelement.Descendants("project")
+                                 .Elements("rigs")
+                                 .Elements("rig")
+                                 .Elements("modules")
+                                 .Elements("module")
+                                 .Elements("steps")
+                                 .Elements("step")
+                                 .Elements("actions")
+                                 .Elements("action")
+                                 .Elements("images")
+                                 .Elements("image")
+
+                            select new
+                            {
+                                ImgID = query.Element("id").Value,
+                                ImgName = query.Element("name").Value,
+
+
+                            };
+            foreach (var names in readImage)
+            {
+                pdf_imagedataid.Add(names.ImgID.ToString());
+                pdf_imagedataname.Add(names.ImgName.ToString());
+                //  MessageBox.Show(names.name);
+                // ActionName = names.name;
+            }
+        }
+
+        public void GeneratePDF()
+        {
+            Document doc = new Document(iTextSharp.text.PageSize.A4, 5, 5, 20, 15);
+            PdfWriter wri = PdfWriter.GetInstance(doc, new FileStream(XMLPath + pdf_ProjectName + "_" + pdf_RigType + ".pdf", FileMode.Create));
+
+            doc.AddTitle("FacilityDocu");
+            doc.AddAuthor("User");
+            doc.Open();
+
+
+
+
+
+
+
+            ///////////////BOLD////////////////////////
+            //var normalFont = FontFactory.GetFont(FontFactory.HELVETICA, 12);
+            //var boldFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 120);
+
+            //var phrase = new Phrase();
+            //phrase.Add(new Chunk(ProjectName, boldFont));
+            //phrase.Add(new Chunk(" See Statutoryreason(s) designated by Code No(s) 1 on the reverse side hereof", normalFont));
+            //doc.Add(phrase);
+
+            PdfContentByte cb = wri.DirectContent;
+            PdfContentByte cb2 = wri.DirectContent;
+
+            // cb.SetColorFill(BaseColor.BLUE);
+            ColumnText ct = new ColumnText(cb);
+            ColumnText ct2 = new ColumnText(cb2);
+            ct.SetSimpleColumn(new Phrase(new Chunk(ProjectName + "\n", FontFactory.GetFont(FontFactory.HELVETICA, 80, Font.NORMAL))), 100, 600, 530, 36, 25, Element.ALIGN_LEFT | Element.ALIGN_TOP);
+            ct2.SetSimpleColumn(new Phrase(new Chunk("Rig Type: " + pdf_RigType, FontFactory.GetFont(FontFactory.HELVETICA, 50, Font.NORMAL))), 150, 500, 530, 36, 25, Element.ALIGN_LEFT | Element.ALIGN_TOP);
+            ct.Go();
+            ct2.Go();
+
+            doc.NewPage();
+
+            doc.Add(new iTextSharp.text.Paragraph(""));
+            PdfContentByte cb3 = wri.DirectContent;
+            ColumnText ct3 = new ColumnText(cb3);
+            ct3.SetSimpleColumn(new Phrase(new Chunk("Module List", FontFactory.GetFont(FontFactory.HELVETICA, 40, Font.NORMAL))), 100, 770, 530, 36, 25, Element.ALIGN_LEFT | Element.ALIGN_TOP);
+            ct3.Go();
+
+            iTextSharp.text.Paragraph paragraph = new iTextSharp.text.Paragraph("\n\n\n");
+            doc.Add(paragraph);
+            //RomanList romanlist = new RomanList(true, 100);
+            //romanlist.IndentationLeft = 30f;
+            //romanlist.Add(Module);
+            iTextSharp.text.List list = new iTextSharp.text.List(iTextSharp.text.List.ALPHABETICAL, 40f);
+            list.IndentationLeft = 40f;
+            list.Add(pdf_Module);
+            doc.Add(list);
+
+            doc.NewPage();
+            doc.Add(new iTextSharp.text.Paragraph(""));
+
+
+
+            /////////////////IMAGE///////////////////
+            int i = 0, k = 0, l = 0, m = 0, n = 0;
+
+            while (i < pdf_imagedataname.Count())
+            {
+                iTextSharp.text.Image PNG = iTextSharp.text.Image.GetInstance(XMLPath + "data/" + pdf_imagedataname[i] + ".jpg");
+                // PNG.ScalePercent(10f); //size according to percentage
+
+                PNG.ScaleToFit(250f, 500f);  //rectange
+
+                // PNG.Border = iTextSharp.text.Rectangle.BOX; //border to images
+
+                ///  PNG.BorderColor = iTextSharp.text.BaseColor.YELLOW;
+                //  PNG.BorderWidth = 5f;
+
+                PNG.SetAbsolutePosition(k + m, l + n); //position test
+                doc.Add(PNG);
+                i++;
+                k = k + 100;
+                l = l + 100;
+                m = m + 50;
+                n = n + 50;
+            }
+
+
+
+
+
+            doc.Close();
+        }
+
+        private void btnPublish_Click(object sender, RoutedEventArgs e)
+        {
+            ReadXML();
+            GeneratePDF();
+        }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            editPage_grid.Visibility = Visibility.Collapsed;
+            newProject_grid.Visibility = Visibility.Visible;
+        }
+
+        public void Rig1()
+        {
+            var RigData1 = from query in xelement.Descendants("rigs")
+                               //.Where(query => query.Element("name").Value ==  selectedprojectname)
+                            
+                            .Elements("rig")
+                          select new
+                          {
+                              name = query.Attribute("type").Value,
+                          };
+            rigdata.Clear();
+            moduledataname.Clear();
+            moduledatanumber.Clear();
+            stepdataname.Clear();
+            stepdatanumber.Clear();
+            actiondata.Clear();
+            foreach (var names in RigData1)
+            {
+                rigdata.Add(names.name.ToString());
+              
+
+            }
+            rigtypecount = rigdata.Count;
+
+            if (rigtypecount > 0)
+                txtRigType.Text = rigdata[rigtypeindex];
+
+            else
+                txtRigType.Text = "";
+        }
+        
+        private void listView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            int xmlrd=listView.SelectedIndex + 1;
+            selectedprojectname = "1.xml";
+
+xelement = XElement.Load("../../Assets/Data/ProjectXml/" + xmlrd.ToString() + ".xml");
+        //    xelement = XElement.Load("../../Assets/Data/ProjectXml/" + "1.xml");
+            IEnumerable<XElement> name = xelement.Elements();
+            Rig1();
+
+            editPage_grid.Visibility = Visibility.Visible;
+            gridHomePage.Visibility = Visibility.Collapsed;
+        }
+
+        private void homePage_Loaded(object sender, RoutedEventArgs e)
+        {
+            CreateListViewGrid();
+           
         }
     }
 }

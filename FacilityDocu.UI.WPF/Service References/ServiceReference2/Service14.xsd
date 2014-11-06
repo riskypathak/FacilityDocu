@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Tablet_ApplicationService" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Tablet_ApplicationService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="Imagesclass">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ImageId" type="xs:int" />
+      <xs:element minOccurs="0" name="ImagePath" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="getDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="getcreationdate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="gettags" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Imagesclass" nillable="true" type="tns:Imagesclass" />
+  <xs:complexType name="Rigtypeclass">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Rigtypeid" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Rigtypeclass" nillable="true" type="tns:Rigtypeclass" />
+  <xs:complexType name="Projectclass">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="getcreatedby" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="getcreationdate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="getdescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="getlastupdatedat" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="getlastupdatedby" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="getprojectid" type="xs:int" />
+      <xs:element minOccurs="0" name="gettemplate" type="xs:int" />
+      <xs:element minOccurs="0" name="getusername" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Projectclass" nillable="true" type="tns:Projectclass" />
+  <xs:complexType name="Moduleclass">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="getmoduleid" type="xs:int" />
+      <xs:element minOccurs="0" name="getmodulename" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Moduleclass" nillable="true" type="tns:Moduleclass" />
+  <xs:complexType name="Actionclass">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="getactionid" type="xs:int" />
+      <xs:element minOccurs="0" name="getactionname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="getdescription" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Actionclass" nillable="true" type="tns:Actionclass" />
+  <xs:complexType name="Stepclass">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="getstepid" type="xs:int" />
+      <xs:element minOccurs="0" name="getstepname" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Stepclass" nillable="true" type="tns:Stepclass" />
+</xs:schema>

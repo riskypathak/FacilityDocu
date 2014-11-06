@@ -121,8 +121,8 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ProjectID" Type="int" />
           <Property Name="RiskAnalysisID" Type="int" />
+          <Property Name="ProjectDetailID" Type="int" />
         </EntityType>
         <EntityType Name="Resource">
           <Key>
@@ -145,7 +145,6 @@
           </Key>
           <Property Name="RiskAnalysisID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RiskTypeID" Type="int" />
-          <Property Name="ModuleID" Type="int" />
           <Property Name="Activity" Type="varchar(max)" />
           <Property Name="Danger" Type="varchar(max)" />
           <Property Name="K" Type="decimal" Precision="18" Scale="0" />
@@ -423,15 +422,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProjectRi__Proje__49C3F6B7">
-          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+        <Association Name="FK__ProjectRi__Proje__01142BA1">
+          <End Role="ProjectDetail" Type="Self.ProjectDetail" Multiplicity="0..1" />
           <End Role="ProjectRiskAnalysis" Type="Self.ProjectRiskAnalysis" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Project">
-              <PropertyRef Name="ProjectID" />
+            <Principal Role="ProjectDetail">
+              <PropertyRef Name="ProjectDetailID" />
             </Principal>
             <Dependent Role="ProjectRiskAnalysis">
-              <PropertyRef Name="ProjectID" />
+              <PropertyRef Name="ProjectDetailID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -444,18 +443,6 @@
             </Principal>
             <Dependent Role="ProjectRiskAnalysis">
               <PropertyRef Name="RiskAnalysisID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__RiskAnaly__Modul__4BAC3F29">
-          <End Role="Module" Type="Self.Module" Multiplicity="0..1" />
-          <End Role="RiskAnalysis" Type="Self.RiskAnalysis" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Module">
-              <PropertyRef Name="ModuleID" />
-            </Principal>
-            <Dependent Role="RiskAnalysis">
-              <PropertyRef Name="ModuleID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -593,17 +580,13 @@
             <End Role="Step" EntitySet="Step" />
             <End Role="ProjectDetail" EntitySet="ProjectDetail" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProjectRi__Proje__49C3F6B7" Association="Self.FK__ProjectRi__Proje__49C3F6B7">
-            <End Role="Project" EntitySet="Project" />
+          <AssociationSet Name="FK__ProjectRi__Proje__01142BA1" Association="Self.FK__ProjectRi__Proje__01142BA1">
+            <End Role="ProjectDetail" EntitySet="ProjectDetail" />
             <End Role="ProjectRiskAnalysis" EntitySet="ProjectRiskAnalysis" />
           </AssociationSet>
           <AssociationSet Name="FK__ProjectRi__RiskA__4AB81AF0" Association="Self.FK__ProjectRi__RiskA__4AB81AF0">
             <End Role="RiskAnalysis" EntitySet="RiskAnalysis" />
             <End Role="ProjectRiskAnalysis" EntitySet="ProjectRiskAnalysis" />
-          </AssociationSet>
-          <AssociationSet Name="FK__RiskAnaly__Modul__4BAC3F29" Association="Self.FK__RiskAnaly__Modul__4BAC3F29">
-            <End Role="Module" EntitySet="Module" />
-            <End Role="RiskAnalysis" EntitySet="RiskAnalysis" />
           </AssociationSet>
           <AssociationSet Name="FK__RiskAnaly__RiskT__4CA06362" Association="Self.FK__RiskAnaly__RiskT__4CA06362">
             <End Role="RiskType" EntitySet="RiskType" />
@@ -680,10 +663,6 @@
             <End Role="Module" EntitySet="Modules" />
             <End Role="ProjectDetail" EntitySet="ProjectDetails" />
           </AssociationSet>
-          <AssociationSet Name="FK__RiskAnaly__Modul__4BAC3F29" Association="TabletApp_DatabaseModel.FK__RiskAnaly__Modul__4BAC3F29">
-            <End Role="Module" EntitySet="Modules" />
-            <End Role="RiskAnalysi" EntitySet="RiskAnalysis" />
-          </AssociationSet>
           <AssociationSet Name="FK__ModuleSte__StepI__3B75D760" Association="TabletApp_DatabaseModel.FK__ModuleSte__StepI__3B75D760">
             <End Role="Step" EntitySet="Steps" />
             <End Role="ModuleStep" EntitySet="ModuleSteps" />
@@ -699,10 +678,6 @@
           <AssociationSet Name="FK__ProjectDe__Proje__440B1D61" Association="TabletApp_DatabaseModel.FK__ProjectDe__Proje__440B1D61">
             <End Role="Project" EntitySet="Projects" />
             <End Role="ProjectDetail" EntitySet="ProjectDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ProjectRi__Proje__49C3F6B7" Association="TabletApp_DatabaseModel.FK__ProjectRi__Proje__49C3F6B7">
-            <End Role="Project" EntitySet="Projects" />
-            <End Role="ProjectRiskAnalysi" EntitySet="ProjectRiskAnalysis" />
           </AssociationSet>
           <AssociationSet Name="FK__ProjectAc__Proje__3E52440B" Association="TabletApp_DatabaseModel.FK__ProjectAc__Proje__3E52440B">
             <End Role="ProjectDetail" EntitySet="ProjectDetails" />
@@ -731,6 +706,10 @@
           <AssociationSet Name="FK__ProjectDe__StepI__45F365D3" Association="TabletApp_DatabaseModel.FK__ProjectDe__StepI__45F365D3">
             <End Role="Step" EntitySet="Steps" />
             <End Role="ProjectDetail" EntitySet="ProjectDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectRi__Proje__01142BA1" Association="TabletApp_DatabaseModel.FK__ProjectRi__Proje__01142BA1">
+            <End Role="ProjectDetail" EntitySet="ProjectDetails" />
+            <End Role="ProjectRiskAnalysi" EntitySet="ProjectRiskAnalysis" />
           </AssociationSet>
           <AssociationSet Name="FK__ProjectRi__RiskA__4AB81AF0" Association="TabletApp_DatabaseModel.FK__ProjectRi__RiskA__4AB81AF0">
             <End Role="RiskAnalysi" EntitySet="RiskAnalysis" />
@@ -807,7 +786,6 @@
           <NavigationProperty Name="RigType" Relationship="TabletApp_DatabaseModel.FK__Module__RigTypeI__571DF1D5" FromRole="Module" ToRole="RigType" />
           <NavigationProperty Name="ModuleSteps" Relationship="TabletApp_DatabaseModel.FK__ModuleSte__Modul__3A81B327" FromRole="Module" ToRole="ModuleStep" />
           <NavigationProperty Name="ProjectDetails" Relationship="TabletApp_DatabaseModel.FK__ProjectDe__Modul__4316F928" FromRole="Module" ToRole="ProjectDetail" />
-          <NavigationProperty Name="RiskAnalysis" Relationship="TabletApp_DatabaseModel.FK__RiskAnaly__Modul__4BAC3F29" FromRole="Module" ToRole="RiskAnalysi" />
         </EntityType>
         <EntityType Name="ModuleStep">
           <Key>
@@ -834,7 +812,6 @@
           <NavigationProperty Name="User" Relationship="TabletApp_DatabaseModel.FK__Project__Created__5AEE82B9" FromRole="Project" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="TabletApp_DatabaseModel.FK__Project__Updated__5BE2A6F2" FromRole="Project" ToRole="User" />
           <NavigationProperty Name="ProjectDetails" Relationship="TabletApp_DatabaseModel.FK__ProjectDe__Proje__440B1D61" FromRole="Project" ToRole="ProjectDetail" />
-          <NavigationProperty Name="ProjectRiskAnalysis" Relationship="TabletApp_DatabaseModel.FK__ProjectRi__Proje__49C3F6B7" FromRole="Project" ToRole="ProjectRiskAnalysi" />
         </EntityType>
         <EntityType Name="ProjectActionImage">
           <Key>
@@ -888,15 +865,16 @@
           <NavigationProperty Name="ProjectActionTools" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__66603565" FromRole="ProjectDetail" ToRole="ProjectActionTool" />
           <NavigationProperty Name="RigType" Relationship="TabletApp_DatabaseModel.FK__ProjectDe__RigTy__44FF419A" FromRole="ProjectDetail" ToRole="RigType" />
           <NavigationProperty Name="Step" Relationship="TabletApp_DatabaseModel.FK__ProjectDe__StepI__45F365D3" FromRole="ProjectDetail" ToRole="Step" />
+          <NavigationProperty Name="ProjectRiskAnalysis" Relationship="TabletApp_DatabaseModel.FK__ProjectRi__Proje__01142BA1" FromRole="ProjectDetail" ToRole="ProjectRiskAnalysi" />
         </EntityType>
         <EntityType Name="ProjectRiskAnalysi">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProjectID" Type="Int32" />
           <Property Name="RiskAnalysisID" Type="Int32" />
-          <NavigationProperty Name="Project" Relationship="TabletApp_DatabaseModel.FK__ProjectRi__Proje__49C3F6B7" FromRole="ProjectRiskAnalysi" ToRole="Project" />
+          <Property Name="ProjectDetailID" Type="Int32" />
+          <NavigationProperty Name="ProjectDetail" Relationship="TabletApp_DatabaseModel.FK__ProjectRi__Proje__01142BA1" FromRole="ProjectRiskAnalysi" ToRole="ProjectDetail" />
           <NavigationProperty Name="RiskAnalysi" Relationship="TabletApp_DatabaseModel.FK__ProjectRi__RiskA__4AB81AF0" FromRole="ProjectRiskAnalysi" ToRole="RiskAnalysi" />
         </EntityType>
         <EntityType Name="Resource">
@@ -923,7 +901,6 @@
           </Key>
           <Property Name="RiskAnalysisID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RiskTypeID" Type="Int32" />
-          <Property Name="ModuleID" Type="Int32" />
           <Property Name="Activity" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Danger" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="K" Type="Decimal" Precision="18" Scale="0" />
@@ -935,7 +912,6 @@
           <Property Name="B_" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="E_" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Risk_" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Module" Relationship="TabletApp_DatabaseModel.FK__RiskAnaly__Modul__4BAC3F29" FromRole="RiskAnalysi" ToRole="Module" />
           <NavigationProperty Name="ProjectRiskAnalysis" Relationship="TabletApp_DatabaseModel.FK__ProjectRi__RiskA__4AB81AF0" FromRole="RiskAnalysi" ToRole="ProjectRiskAnalysi" />
           <NavigationProperty Name="RiskType" Relationship="TabletApp_DatabaseModel.FK__RiskAnaly__RiskT__4CA06362" FromRole="RiskAnalysi" ToRole="RiskType" />
         </EntityType>
@@ -1093,18 +1069,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__RiskAnaly__Modul__4BAC3F29">
-          <End Type="TabletApp_DatabaseModel.Module" Role="Module" Multiplicity="0..1" />
-          <End Type="TabletApp_DatabaseModel.RiskAnalysi" Role="RiskAnalysi" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Module">
-              <PropertyRef Name="ModuleID" />
-            </Principal>
-            <Dependent Role="RiskAnalysi">
-              <PropertyRef Name="ModuleID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__ModuleSte__StepI__3B75D760">
           <End Type="TabletApp_DatabaseModel.Step" Role="Step" Multiplicity="0..1" />
           <End Type="TabletApp_DatabaseModel.ModuleStep" Role="ModuleStep" Multiplicity="*" />
@@ -1149,18 +1113,6 @@
               <PropertyRef Name="ProjectID" />
             </Principal>
             <Dependent Role="ProjectDetail">
-              <PropertyRef Name="ProjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ProjectRi__Proje__49C3F6B7">
-          <End Type="TabletApp_DatabaseModel.Project" Role="Project" Multiplicity="0..1" />
-          <End Type="TabletApp_DatabaseModel.ProjectRiskAnalysi" Role="ProjectRiskAnalysi" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Project">
-              <PropertyRef Name="ProjectID" />
-            </Principal>
-            <Dependent Role="ProjectRiskAnalysi">
               <PropertyRef Name="ProjectID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1246,6 +1198,18 @@
             </Principal>
             <Dependent Role="ProjectDetail">
               <PropertyRef Name="StepID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectRi__Proje__01142BA1">
+          <End Type="TabletApp_DatabaseModel.ProjectDetail" Role="ProjectDetail" Multiplicity="0..1" />
+          <End Type="TabletApp_DatabaseModel.ProjectRiskAnalysi" Role="ProjectRiskAnalysi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProjectDetail">
+              <PropertyRef Name="ProjectDetailID" />
+            </Principal>
+            <Dependent Role="ProjectRiskAnalysi">
+              <PropertyRef Name="ProjectDetailID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1417,8 +1381,8 @@
           <EntitySetMapping Name="ProjectRiskAnalysis">
             <EntityTypeMapping TypeName="TabletApp_DatabaseModel.ProjectRiskAnalysi">
               <MappingFragment StoreEntitySet="ProjectRiskAnalysis">
+                <ScalarProperty Name="ProjectDetailID" ColumnName="ProjectDetailID" />
                 <ScalarProperty Name="RiskAnalysisID" ColumnName="RiskAnalysisID" />
-                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1454,7 +1418,6 @@
                 <ScalarProperty Name="K" ColumnName="K" />
                 <ScalarProperty Name="Danger" ColumnName="Danger" />
                 <ScalarProperty Name="Activity" ColumnName="Activity" />
-                <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
                 <ScalarProperty Name="RiskTypeID" ColumnName="RiskTypeID" />
                 <ScalarProperty Name="RiskAnalysisID" ColumnName="RiskAnalysisID" />
               </MappingFragment>

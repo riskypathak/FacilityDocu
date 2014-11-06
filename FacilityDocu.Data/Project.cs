@@ -23,8 +23,6 @@ public partial class Project
 
         this.ProjectDetails = new HashSet<ProjectDetail>();
 
-        this.ProjectRiskAnalysis = new HashSet<ProjectRiskAnalysi>();
-
     }
 
 
@@ -51,8 +49,6 @@ public partial class Project
     public virtual User User1 { get; set; }
 
     public virtual ICollection<ProjectDetail> ProjectDetails { get; set; }
-
-    public virtual ICollection<ProjectRiskAnalysi> ProjectRiskAnalysis { get; set; }
 
 }
 

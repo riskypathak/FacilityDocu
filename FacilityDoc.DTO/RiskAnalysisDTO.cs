@@ -15,10 +15,7 @@ namespace FacilityDocu.DTO
         public string RiskAnalysisID { get; set; }
 
         [DataMember]
-        public string RiskType { get; set; }
-
-        [DataMember]
-        public string Module { get; set; }
+        public RiskAnalysisTypeDTO RiskAnalysisType { get; set; }
 
         [DataMember]
         public string Activity { get; set; }

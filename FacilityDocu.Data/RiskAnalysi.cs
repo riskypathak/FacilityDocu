@@ -30,8 +30,6 @@ public partial class RiskAnalysi
 
     public Nullable<int> RiskTypeID { get; set; }
 
-    public Nullable<int> ModuleID { get; set; }
-
     public string Activity { get; set; }
 
     public string Danger { get; set; }
@@ -55,8 +53,6 @@ public partial class RiskAnalysi
     public string Risk_ { get; set; }
 
 
-
-    public virtual Module Module { get; set; }
 
     public virtual ICollection<ProjectRiskAnalysi> ProjectRiskAnalysis { get; set; }
 
