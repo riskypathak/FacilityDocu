@@ -33,6 +33,9 @@ namespace FacilityDocu.Services
 
         [OperationContract]
         IList<ActionDTO> GetActions(int ActionID);
+
+        [OperationContract]
+        void UpdateActionImages(ActionDTO action);
     }
 }
 

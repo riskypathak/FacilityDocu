@@ -750,6 +750,9 @@ namespace FacilityDocu.UI.Utilities.Services {
         private string DescriptionField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private byte[] FileByteStreamField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string ImageIDField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -806,6 +809,19 @@ namespace FacilityDocu.UI.Utilities.Services {
                 if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
                     this.DescriptionField = value;
                     this.RaisePropertyChanged("Description");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] FileByteStream {
+            get {
+                return this.FileByteStreamField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.FileByteStreamField, value) != true)) {
+                    this.FileByteStreamField = value;
+                    this.RaisePropertyChanged("FileByteStream");
                 }
             }
         }
@@ -1401,6 +1417,12 @@ namespace FacilityDocu.UI.Utilities.Services {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetActions", ReplyAction="http://tempuri.org/IFacilityDocuService/GetActionsResponse")]
         System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ActionDTO[]> GetActionsAsync(int ActionID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateActionImages", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateActionImagesResponse")]
+        void UpdateActionImages(FacilityDocu.UI.Utilities.Services.ActionDTO action);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateActionImages", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateActionImagesResponse")]
+        System.Threading.Tasks.Task UpdateActionImagesAsync(FacilityDocu.UI.Utilities.Services.ActionDTO action);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1484,6 +1506,14 @@ namespace FacilityDocu.UI.Utilities.Services {
         
         public System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ActionDTO[]> GetActionsAsync(int ActionID) {
             return base.Channel.GetActionsAsync(ActionID);
+        }
+        
+        public void UpdateActionImages(FacilityDocu.UI.Utilities.Services.ActionDTO action) {
+            base.Channel.UpdateActionImages(action);
+        }
+        
+        public System.Threading.Tasks.Task UpdateActionImagesAsync(FacilityDocu.UI.Utilities.Services.ActionDTO action) {
+            return base.Channel.UpdateActionImagesAsync(action);
         }
     }
 }

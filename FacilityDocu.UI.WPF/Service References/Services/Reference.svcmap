@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="935f425a-62bc-4d13-88bb-bb35621fe280" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:51256/FacilityDocuService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="FacilityDocuService.xsd" MetadataType="Schema" ID="f388d929-6ac9-45fc-853f-a306e3432aa5" SourceId="1" SourceUrl="http://localhost:51256/FacilityDocuService.svc?xsd=xsd3" />
+    <MetadataFile FileName="FacilityDocuService.disco" MetadataType="Disco" ID="3763b26f-a154-438b-a44b-029df7f85355" SourceId="1" SourceUrl="http://localhost:51256/FacilityDocuService.svc?disco" />
+    <MetadataFile FileName="FacilityDocuService1.xsd" MetadataType="Schema" ID="7b2f5c22-6b94-4572-bde1-ad0be47c8979" SourceId="1" SourceUrl="http://localhost:51256/FacilityDocuService.svc?xsd=xsd1" />
+    <MetadataFile FileName="FacilityDocuService2.xsd" MetadataType="Schema" ID="edfb6d7d-e35f-4b9e-b1d5-3377620ac55f" SourceId="1" SourceUrl="http://localhost:51256/FacilityDocuService.svc?xsd=xsd2" />
+    <MetadataFile FileName="FacilityDocuService.wsdl" MetadataType="Wsdl" ID="6a84fdce-0af1-41e6-8907-874e333b82dc" SourceId="1" SourceUrl="http://localhost:51256/FacilityDocuService.svc?wsdl" />
+    <MetadataFile FileName="FacilityDocuService3.xsd" MetadataType="Schema" ID="81749a95-5ebd-4b10-a04f-36e1fa4f0712" SourceId="1" SourceUrl="http://localhost:51256/FacilityDocuService.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using FacilityDocu.UI.Utilities.Services;
 using System.IO;
+using System.Net;
 
 namespace FacilityDocu.UI.Utilities
 {
@@ -135,7 +136,6 @@ namespace FacilityDocu.UI.Utilities
             }
         }
 
-
         private static void WriteImage(IList<ImageDTO> images, XElement xAction)
         {
             XElement xImages = new XElement("images");
@@ -150,11 +150,24 @@ namespace FacilityDocu.UI.Utilities
                 xImage.Add(new XElement("number", image.Number));
                 xImage.Add(new XElement("creationdate", image.CreationDate));
                 xImage.Add(new XElement("description", image.Description));
-                xImage.Add(new XElement("path", image.Path));
+                xImage.Add(new XElement("path", SaveImage(image)));
                 xImage.Add(new XElement("tags", image.Tags));
+
+                
 
                 WriteImageComments(image.Comments, xImage);
             }
+        }
+
+        private static string SaveImage(ImageDTO image)
+        {
+            string savedPath = Path.GetFullPath(string.Format("Data/Images/{0}.jpeg",image.ImageID));
+            using (WebClient webClient = new WebClient())
+            {
+                webClient.DownloadFile(image.Path, savedPath);
+            }
+
+            return savedPath;
         }
 
         private static void WriteImageComments(IList<CommentDTO> comments, XElement xImage)

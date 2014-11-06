@@ -106,6 +106,7 @@
       <xs:element minOccurs="0" name="Comments" nillable="true" type="tns:ArrayOfCommentDTO" />
       <xs:element minOccurs="0" name="CreationDate" type="xs:dateTime" />
       <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FileByteStream" nillable="true" type="xs:base64Binary" />
       <xs:element minOccurs="0" name="ImageID" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Number" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Path" nillable="true" type="xs:string" />

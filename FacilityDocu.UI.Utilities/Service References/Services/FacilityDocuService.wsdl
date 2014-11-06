@@ -50,6 +50,12 @@
   <wsdl:message name="IFacilityDocuService_GetActions_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetActionsResponse" />
   </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_UpdateActionImages_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateActionImages" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_UpdateActionImages_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateActionImagesResponse" />
+  </wsdl:message>
   <wsdl:portType name="IFacilityDocuService">
     <wsdl:operation name="Login">
       <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/Login" message="tns:IFacilityDocuService_Login_InputMessage" />
@@ -78,6 +84,10 @@
     <wsdl:operation name="GetActions">
       <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/GetActions" message="tns:IFacilityDocuService_GetActions_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/GetActionsResponse" message="tns:IFacilityDocuService_GetActions_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateActionImages">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/UpdateActionImages" message="tns:IFacilityDocuService_UpdateActionImages_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/UpdateActionImagesResponse" message="tns:IFacilityDocuService_UpdateActionImages_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IFacilityDocuService" type="tns:IFacilityDocuService">
@@ -138,6 +148,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetActions">
       <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/GetActions" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateActionImages">
+      <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/UpdateActionImages" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

@@ -1,6 +1,8 @@
 ﻿using FacilityDocu.UI.Utilities.Services;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,6 +15,7 @@ namespace FacilityDocu.UI.Utilities
         public string ProjectXmlFolderPath { get; set; }
         public IList<int> ProjectIDs { get; set; }
 
+        private IFacilityDocuService service;
         public SyncManager(IList<int> projectIDs): this()
         {
             this.ProjectIDs = projectIDs;
@@ -25,16 +28,21 @@ namespace FacilityDocu.UI.Utilities
             {
                 Directory.CreateDirectory("Data\\ProjectXml");
             }
+
+            if (!Directory.Exists(Path.GetFullPath("Data\\Images")))
+            {
+                Directory.CreateDirectory("Data\\Images");
+            }
         }
 
         public SyncManager()
         {
+            service = new FacilityDocuServiceClient();
             this.ProjectXmlFolderPath = Path.GetFullPath("Data\\ProjectXml");
         }
 
         public void UpdateProjectXml()
         {
-            IFacilityDocuService service = new FacilityDocuServiceClient();
             ProjectDTO[] projects = service.GetProjectDetails(ProjectIDs.ToArray());
 
             projects.ToList().ForEach(p => ProjectXmlWriter.Write(p, ProjectXmlFolderPath));
@@ -50,7 +58,6 @@ namespace FacilityDocu.UI.Utilities
                 project.ProjectID = "0";
             }
 
-            IFacilityDocuService service = new FacilityDocuServiceClient();
             service.UpdateProject(project);
         }
 
@@ -69,10 +76,39 @@ namespace FacilityDocu.UI.Utilities
                 projectIDs.Add(Convert.ToInt32(project.ProjectID), project.LastUpdatedAt);
             }
 
-            IFacilityDocuService service = new FacilityDocuServiceClient();
             Dictionary<int, bool> result = service.IsSync(projectIDs);
 
             return result.Where(r => r.Value).Select(r => r.Key).ToList();
+        }
+
+        public void UploadImages(int projectID)
+        {
+            string projectPath = Path.Combine(this.ProjectXmlFolderPath, string.Format("{0}.xml", projectID));
+            ProjectDTO project = ProjectXmlReader.ReadProjectXml(projectPath, false);
+
+            List<Services.ActionDTO> actions= project.RigTypes.SelectMany(r => r.Modules).SelectMany(m => m.Steps).SelectMany(s => s.Actions).ToList();
+
+            actions.ForEach(a => 
+                {
+                    a.Images.ToList().ForEach(i=> i.FileByteStream = ReadImage(i.Path));
+                    service.UpdateActionImages(a);
+                });
+        }
+
+        private byte[] ReadImage(string imagePath)
+        {
+            byte[] bytes = null;
+            //
+            imagePath = @"C:\Users\RiskyPathak\Desktop\plus.jpg";
+            Image image = Image.FromFile(imagePath);
+            using (MemoryStream stream = new MemoryStream())
+            {
+                // Save image to stream.
+                image.Save(stream, ImageFormat.Jpeg);
+                bytes = stream.ToArray();
+            }
+
+            return bytes;
         }
     }
 }

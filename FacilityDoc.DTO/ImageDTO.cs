@@ -31,5 +31,8 @@ namespace FacilityDocu.DTO
         [DataMember]
         public IList<CommentDTO> Comments { get; set; }
 
+        [DataMember]
+        public byte[] FileByteStream;
+
     }
 }

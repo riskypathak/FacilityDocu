@@ -20,6 +20,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacilityDocu.UI.Utilities",
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacilityDocLaptop", "FacilityDocu.UI.WPF\FacilityDocLaptop.csproj", "{E3F9470B-DCFE-4AEA-A158-DA14C25B5CB4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A7BFCC4F-B24B-4716-849E-18811CE08112} = {A7BFCC4F-B24B-4716-849E-18811CE08112}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacilityDocu.Services", "FacilityDocu.Services\FacilityDocu.Services.csproj", "{A7BFCC4F-B24B-4716-849E-18811CE08112}"
 EndProject

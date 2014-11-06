@@ -17,19 +17,37 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2014 15:40:04</publishTime>
     </File>
     <File Include="bin/FacilityDocu.Data.dll">
-      <publishTime>10/27/2014 16:15:25</publishTime>
+      <publishTime>11/06/2014 14:21:08</publishTime>
+    </File>
+    <File Include="bin/FacilityDocu.DTO.dll">
+      <publishTime>11/06/2014 14:21:08</publishTime>
+    </File>
+    <File Include="bin/FacilityDocu.Services.dll">
+      <publishTime>11/06/2014 14:21:09</publishTime>
     </File>
     <File Include="bin/Tablet_ApplicationService.dll">
       <publishTime>10/27/2014 16:15:27</publishTime>
     </File>
+    <File Include="Data/Images/1.PNG">
+      <publishTime>11/05/2014 13:52:29</publishTime>
+    </File>
+    <File Include="Data/Images/2.PNG">
+      <publishTime>11/05/2014 13:52:29</publishTime>
+    </File>
+    <File Include="Data/Images/3.PNG">
+      <publishTime>11/05/2014 13:52:29</publishTime>
+    </File>
+    <File Include="FacilityDocuService.svc">
+      <publishTime>11/02/2014 22:43:43</publishTime>
+    </File>
     <File Include="packages.config">
-      <publishTime>10/27/2014 16:16:42</publishTime>
+      <publishTime>10/29/2014 15:14:18</publishTime>
     </File>
     <File Include="Service1.svc">
       <publishTime>10/15/2014 15:33:24</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/27/2014 16:17:01</publishTime>
+      <publishTime>11/06/2014 14:22:52</publishTime>
     </File>
   </ItemGroup>
 </Project>

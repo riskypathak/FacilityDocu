@@ -10,6 +10,7 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using FacilityDocu.Services.EntityDTOConverter;
+using System.IO;
 
 namespace FacilityDocu.Services
 {
@@ -391,7 +392,6 @@ namespace FacilityDocu.Services
             }
         }
 
-        //TODO
         public List<ModuleDTO> GetModules(int rigTypeID)
         {
             List<ModuleDTO> modulesDTO = new List<ModuleDTO>();
@@ -436,6 +436,104 @@ namespace FacilityDocu.Services
                 }
 
                 return actionDTO;
+            }
+        }
+
+        public void UpdateActionImages(ActionDTO action)
+        {
+            int actionID = Convert.ToInt32(action.ActionID);
+
+            int tempId = 0;
+            using (TabletApp_DatabaseEntities context = new TabletApp_DatabaseEntities())
+            {
+                foreach (var item in action.Images)
+                {
+                    int imageID = Convert.ToInt32(item.ImageID);
+
+                    //insert
+                    if (imageID == 0)
+                    {
+                        Image img = new Image()
+                        {
+                            CreationDate = item.CreationDate,
+                            Description = item.Description,
+                            Tags = String.Join(",", item.Tags),
+                        };
+
+                        foreach (CommentDTO comment in item.Comments)
+                        {
+                            ImageComment imgComment = new ImageComment()
+                            {
+                                CreationDate = comment.CommentedAt,
+                                ImageID = img.ImageID,
+                                Text = comment.Text,
+                                ImageCommentID = tempId--
+                            };
+                            img.ImageComments.Add(imgComment);
+                        }
+
+                        int projectDetailID = context.ProjectDetails.First(p => p.ActionID.Value.Equals(actionID)).ProjectDetailID;
+
+                        // Project action image is collection in Image 
+                        ProjectActionImage ProjectActionImg = new ProjectActionImage()
+                        {
+                            ID = tempId--,
+                            ImageID = img.ImageID,
+                            ProjectDetailID = projectDetailID
+                        };
+
+                        img.ProjectActionImages.Add(ProjectActionImg);
+
+                        context.Images.Add(img);
+                        context.SaveChanges();
+
+                        SaveImageToFile(img.ImageID, item);
+                    }
+                    else
+                    {
+                        //update
+                        Image img = context.Images.First(x => x.ImageID == imageID);
+
+
+
+                        img.Description = item.Description;
+                        img.Tags = String.Join(",", item.Tags);
+
+                        context.ImageComments.RemoveRange(context.ImageComments.Where(x => x.ImageID.Value == imageID));
+
+                        foreach (CommentDTO commnet in item.Comments)
+                        {
+                            ImageComment imgComment = new ImageComment()
+                            {
+                                CreationDate = commnet.CommentedAt,
+                                ImageID = img.ImageID,
+                                Text = commnet.Text,
+                                ImageCommentID = tempId--
+                            };
+                            img.ImageComments.Add(imgComment);
+                        }
+
+                        context.SaveChanges();
+
+                        SaveImageToFile(img.ImageID, item);
+
+
+
+                    }
+
+                }
+            }
+        }
+
+        private void SaveImageToFile(int imageId, ImageDTO item)
+        {
+            //image extension as for now using jpg
+            string extension = "jpeg";
+            string filePath = System.Web.Hosting.HostingEnvironment.MapPath(string.Format("~/Data/Images/{0}.{1}", imageId, extension));
+
+            using (MemoryStream ms = new MemoryStream(item.FileByteStream))
+            {
+                System.Drawing.Image.FromStream(ms).Save(filePath);
             }
         }
     }

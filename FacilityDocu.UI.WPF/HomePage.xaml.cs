@@ -25,7 +25,7 @@ namespace FacilityDocLaptop
     public class conn
     {
         //WCF Added
-        ServiceReference2.Service1Client MyService;
+        Services.FacilityDocuServiceClient MyService;
     }
     public class TempSaveData
     {
@@ -122,7 +122,7 @@ namespace FacilityDocLaptop
         {
 
             //WCF Service
-            ServiceReference2.Service1Client client = new ServiceReference2.Service1Client();
+            Services.FacilityDocuServiceClient client = new Services.FacilityDocuServiceClient();
             if (client.Login(userName.Text, password.Password))
             {
                 grdViewLogin.Visibility = Visibility.Collapsed;
