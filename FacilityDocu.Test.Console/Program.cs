@@ -13,7 +13,7 @@ namespace FacilityDocu.Test.Console
     {
         static void Main(string[] args)
         {
-            TestUpdateProjectXml();
+            //TestUpdateProjectXml();
             //TestUpdateProjectDatabase(1);
 
             //TestProjectSync();

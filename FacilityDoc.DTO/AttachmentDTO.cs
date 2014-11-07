@@ -7,20 +7,16 @@ using System.Threading.Tasks;
 
 namespace FacilityDocu.DTO
 {
-
     [DataContract]
-    public class ResourceDTO
+    public class AttachmentDTO
     {
         [DataMember]
-        public string ResourceID { get; set; }
+        public string AttachmentID { get; set; }
 
         [DataMember]
         public string Name { get; set; }
 
         [DataMember]
-        public string Type { get; set; }
-
-        [DataMember]
-        public string ResourceCount { get; set; }
+        public string Path { get; set; }
     }
 }

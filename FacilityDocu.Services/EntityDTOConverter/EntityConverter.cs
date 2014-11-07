@@ -108,9 +108,6 @@ namespace FacilityDocu.Services.EntityDTOConverter
                 stepsDTO.Add(stepDTO);
             }
             return stepsDTO;
-
-
-
         }
 
         private static IList<ActionDTO> ToActionDTO(IEnumerable<ProjectDetail> projectDetails)
@@ -128,18 +125,40 @@ namespace FacilityDocu.Services.EntityDTOConverter
                 actionDTO.Dimensions = projectDetail.Dimensions;
 
                 actionDTO.Images = TOImagesDTO(projectDetails.Where(x => x.ActionID.Value == projectDetail.ActionID));
+                actionDTO.Attachments = ToAttachmentsDTO(projectDetails.Where(x => x.ActionID.Value == projectDetail.ActionID));
                 actionDTO.Resources = ToResourcesDTO(projectDetails.Where(x => x.ActionID.Value == projectDetail.ActionID));
                 actionDTO.Tools = ToToolsDTO(projectDetails.Where(x => x.ActionID.Value == projectDetail.ActionID));
                 actionDTO.RiskAnalysis = ToRiskAnalysisDTO(projectDetails.Where(x => x.ActionID.Value == projectDetail.ActionID));
 
                 actionsDTO.Add(actionDTO);
-
-
             }
 
             return actionsDTO;
 
 
+        }
+
+        private static IList<AttachmentDTO> ToAttachmentsDTO(IEnumerable<ProjectDetail> enumerable)
+        {
+            IList<AttachmentDTO> AttachmentDTOs = new List<AttachmentDTO>();
+
+            foreach (var projectDetail in enumerable.Select(x => x.Action.ActionAttachments).FirstOrDefault())
+            {
+                AttachmentDTO attachmentDTO = new AttachmentDTO();
+                attachmentDTO.AttachmentID = projectDetail.AttachmentID.GetValueOrDefault().ToString();
+                attachmentDTO.Name = projectDetail.Attachment.Name;
+                attachmentDTO.Path = GetAttachmentActualPath(projectDetail.Attachment.Path);
+
+                AttachmentDTOs.Add(attachmentDTO);
+
+            }
+            return AttachmentDTOs;
+        }
+
+        private static string GetAttachmentActualPath(string path)
+        {
+            int lastIndex = System.ServiceModel.OperationContext.Current.RequestContext.RequestMessage.Headers.To.ToString().LastIndexOf('/');
+            return string.Format("{0}/Data/Attachments/{1}", System.ServiceModel.OperationContext.Current.RequestContext.RequestMessage.Headers.To.ToString().Substring(0, lastIndex), path);
         }
 
         private static IList<RiskAnalysisDTO> ToRiskAnalysisDTO(IEnumerable<ProjectDetail> analysiss)
@@ -179,6 +198,7 @@ namespace FacilityDocu.Services.EntityDTOConverter
                 resourceDTO.Name = resource.Resource.ResourceName;
                 resourceDTO.ResourceID = Convert.ToString(resource.ResourceID);
                 resourceDTO.ResourceCount = Convert.ToString(resource.ResourceCount);
+                resourceDTO.Type = Convert.ToString(resource.Resource.Type).ToLower();
 
                 resourcesDTO.Add(resourceDTO);
             }

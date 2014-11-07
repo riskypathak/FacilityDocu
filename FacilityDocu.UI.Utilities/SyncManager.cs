@@ -45,7 +45,7 @@ namespace FacilityDocu.UI.Utilities
         {
             ProjectDTO[] projects = service.GetProjectDetails(ProjectIDs.ToArray());
 
-            projects.ToList().ForEach(p => ProjectXmlWriter.Write(p, ProjectXmlFolderPath));
+            projects.ToList().ForEach(p => ProjectXmlWriter.Write(p));
         }
 
         public void UpdateDatabase(int projectID, bool isInsert)

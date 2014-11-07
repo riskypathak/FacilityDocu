@@ -1,4 +1,6 @@
-﻿using iTextSharp.text;
+﻿using FacilityDocu.UI.Utilities;
+using FacilityDocu.UI.Utilities.Services;
+using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Microsoft.Win32;
 using System;
@@ -24,46 +26,18 @@ using System.Xml.Linq;
 namespace FacilityDocLaptop
 {
 
-    public class conn
-    {
-        //WCF Added
-        ServiceReference2.Service1Client MyService;
-    }
-    public class TempSaveData
-    {
-
-        static DataSet userTable;
-        static DataSet moduleTable;
-        static DataSet stepTable;
-        static DataSet actionTable;
-        static DataSet toolTable;
-        static DataSet resourceTable;
-        static DataSet imagesTable;
-        static DataSet moduleStepTable;
-        static DataSet rigTypeTable;
-        static DataSet projectTable;
-        static DataSet projectDetailTable;
-        static DataSet imageDetailTable;
-        static DataSet stepActionTable;
-        static DataSet projectActionToolTable;
-        static DataSet projectModuleResourceTable;
-        static DataSet projectActionDimensionTable;
-        static DataSet projectActionImageTable;
-        static DataSet projectActionRiskTable;
-        public void SetUserTable(DataSet tbl)
-        {
-            userTable = tbl;
-        }
-        public DataSet GetUserTable()
-        {
-            return userTable;
-        }
-    }
-
     public partial class HomePage : Window
     {
+        Services.IFacilityDocuService service;
+
+        private int currentRigIndex = 0;
+        private int currentModuleIndex = 0;
+        private int currentStepIndex = 0;
+        private int currentActionIndex = 0;
+        private int currentAnalysisIndex = 0;
+
         string projectid;
-        string[] sourcePath= new string[100];
+        string[] sourcePath = new string[100];
         string[] pictureFilename = new string[100];
         string[] totalpictureinoneindex = new string[100];
         int imagecountdiff;
@@ -90,12 +64,21 @@ namespace FacilityDocLaptop
         int liftinggearindex = 0;
         string XMLPath;
         string DATAPath;
-        string BACKUPPath ;
+        string BACKUPPath;
         string pdf_ProjectName;
         string pdf_RigType;
         string pdf_Module;
 
-        conn connectiondb = new conn();
+        string[] projectname = new string[100];
+        string[] createdby = new string[100];
+        string[] createdtime = new string[100];
+        string[] updatedby = new string[100];
+        string[] updatetime = new string[100];
+        string[] xmlfilesArray = new string[100];
+        string[] templatename = new string[100];
+        string[] closed = new string[100];
+
+
         DataSet ds = new DataSet();
         SqlDataAdapter da = new SqlDataAdapter();
 
@@ -121,6 +104,7 @@ namespace FacilityDocLaptop
         List<string> dimensiondata = new List<string>();
         List<string> riskdata = new List<string>();
         List<string> imagedata = new List<string>();
+        List<string> imageiddata = new List<string>();
         //PDF
         List<string> pdf_imagedataid = new List<string>();
         List<string> pdf_imagedataname = new List<string>();
@@ -134,110 +118,43 @@ namespace FacilityDocLaptop
             public string createdTime { get; set; }
             public string updatedBy { get; set; }
             public string updatedTime { get; set; }
-
-
-
         }
+
         public HomePage()
         {
             InitializeComponent();
-           
-           
-             
-        }
 
+            this.DataContext = this;
+
+            service = new Services.FacilityDocuServiceClient();
+        }
 
         public void CreateListViewGrid()
         {
-            this.listView.Items.Add(new Grid_XMLRead { projectID = 1, projectName = "Template1", description = "this is description", createdBy = "Risky", createdTime = "03:45", updatedBy = "Mohan", updatedTime = "07:45" });
-            this.listView.Items.Add(new Grid_XMLRead { projectID = 2, projectName = "Template2", description = "this is description", createdBy = "Risky", createdTime = "12:45", updatedBy = "Kishor", updatedTime = "17:06" });
-            this.listView.Items.Add(new Grid_XMLRead { projectID = 3, projectName = "Template3", description = "this is description", createdBy = "Risky", createdTime = "12:45", updatedBy = "Kishor", updatedTime = "17:06" });
+            IList<string> projectFiles = Directory.GetFiles(Data.PROJECT_XML_FOLDER, "*.xml");
 
-            GridView myGridView = new GridView();
-            myGridView.AllowsColumnReorder = true;
-            myGridView.ColumnHeaderToolTip = "Non-Template Projects";
+            IList<ProjectDTO> projects = new List<ProjectDTO>();
+            projectFiles.ToList().ForEach(f => projects.Add(ProjectXmlReader.ReadProjectXml(f, true)));
 
-            myGridView.Columns.Add(new GridViewColumn
-            {
-                Header = "Project ID",
-                DisplayMemberBinding = new Binding("projectID"),
-                Width = 150
-
-            });
-
-            myGridView.Columns.Add(new GridViewColumn
-            {
-                Header = "Project Name",
-                DisplayMemberBinding = new Binding("projectName"),
-                Width = 150
-            });
-            myGridView.Columns.Add(new GridViewColumn
-            {
-                Header = "Description",
-                DisplayMemberBinding = new Binding("description"),
-                Width = 350
-
-            });
-
-            myGridView.Columns.Add(new GridViewColumn
-            {
-                Header = "Created By",
-                DisplayMemberBinding = new Binding("createdBy"),
-                Width = 150
-            });
-            myGridView.Columns.Add(new GridViewColumn
-            {
-                Header = "Created Time",
-                DisplayMemberBinding = new Binding("createdTime"),
-                Width = 150
-            });
-
-            myGridView.Columns.Add(new GridViewColumn
-            {
-                Header = "Updated By",
-                DisplayMemberBinding = new Binding("updatedBy"),
-                Width = 150
-            });
-
-            myGridView.Columns.Add(new GridViewColumn
-            {
-                Header = "Updated Time",
-                DisplayMemberBinding = new Binding("updatedTime"),
-                Width = 150
-            });
-
-            listView.View = myGridView;
+            listView.ItemsSource = projects.Where(p => !p.Template && !p.Closed);
         }
 
-        private void LoadListView()
-        {
-            DataSet dts = new DataSet();
-            DataTable dtl = new DataTable();
-            dts.ReadXml(System.IO.Path.GetFullPath("Assets/Data/ProjectXml/2.xml"));
-            dtl = dts.Tables[0];
-
-            if(dtl.Rows.Count>0)
-            {
-                int I = 0;
-                foreach(DataRow Dr in dtl.Rows)
-                {
-                    ListViewItem Lvi = new ListViewItem();
-                    
-                    
-                    
-                }
-            }
-        }
         private void login_Click(object sender, RoutedEventArgs e)
         {
+            bool isLogin = false;
 
-            //WCF Service
-            //ServiceReference2.Service1Client client = new ServiceReference2.Service1Client();
-            Services.IFacilityDocuService client = new Services.FacilityDocuServiceClient();
-            if (client.Login(userName.Text, password.Password))
+            try
             {
-                grdViewLogin.Visibility = Visibility.Collapsed;
-                gridHomePage.Visibility = Visibility.Visible;
+                isLogin = service.Login(userName.Text, password.Password);
+            }
+            catch (Exception)
+            {
+                isLogin = true;
+            }
+
+            if (isLogin)
+            {
+                MakeVisible(gridHomePage);
             }
             else
             {
@@ -245,15 +162,7 @@ namespace FacilityDocLaptop
                 MessageBox.Show("Invalid Username or Password");
             }
         }
-        public void HideHomePage()         //--Hiding HomePage 
-        {
-            gridHomePage.Visibility = Visibility.Collapsed;
-        }
 
-        public void ShowHomePage()       //--Back to HomePage
-        {
-            gridHomePage.Visibility = Visibility.Visible;
-        }
         public void MouseEnter()
         {
             if (this.Cursor != Cursors.Wait)
@@ -267,258 +176,75 @@ namespace FacilityDocLaptop
                 Mouse.OverrideCursor = Cursors.Arrow;
         }
 
-        public void mergenewandoldimage()
-        {
-            for(int i=0;i< listboxPicture.Items.Count;i++)
-            {
-                if (i < imagedata.Count)
-                    totalpictureinoneindex[i] = imagedata[i];
-                else
-                    totalpictureinoneindex[i] = pictureFilename[i - imagedata.Count];
-            }
-        }
-
-        private void LoadProject_btn_Click(object sender, RoutedEventArgs e)
-        {
-            HideHomePage();
-            loadProject_grid.Visibility = Visibility.Visible;
-
-            var DATA = from query in xelement.Descendants("project").Elements("name")
-                       select new
-                       {
-                           name = query.Value,
-                       };
-            foreach (var names in DATA)
-            {
-                ProjectList.Items.Add(names.name);
-            }
-        }
-
         private void NewProject_btn_Click(object sender, RoutedEventArgs e)
         {
-            xelement = XElement.Load("../../Assets/Data/ProjectXml/ProjectXML.xml");
-            IEnumerable<XElement> name = xelement.Elements();
-            AllProject_ListBox.Items.Clear();
-            ProjectName.Text = "";
-            projectName_txt.Text = "";
-            des_txtbox.Text = "";
-            creationdate_txt.Text = "";
-            createdby_txt.Text = "";
-            updatedate_txt.Text = "";
-            updatedby_txt.Text = "";
-            newProject_grid.Visibility = Visibility.Visible;
+            IList<ProjectDTO> projects = new List<ProjectDTO>();
+            IList<string> projectFiles = Directory.GetFiles(Data.PROJECT_XML_FOLDER, "*.xml");
+            projectFiles.ToList().ForEach(f => projects.Add(ProjectXmlReader.ReadProjectXml(f, true)));
+
+            cmbTemplates.ItemsSource = projects.Where(p => p.Template);
+
+            txtNewProjectName.Text = string.Empty;
+
             homePage.Title = "FacilityDocu - New Project";
 
-            var DATA = from query in xelement.Descendants("project").Elements("name")
-                       select new
-                       {
-                           name = query.Value,
-                       };
-            foreach (var names in DATA)
-            {
-                AllProject_ListBox.Items.Add(names.name);
-            }
-        }
-
-        private void LastProject_btn_Click(object sender, RoutedEventArgs e)
-        {
-            HideHomePage();
-            lastProject_grid.Visibility = Visibility.Visible;
+            gdvNew.Visibility = Visibility.Visible;
         }
 
         private void ImportPhoto_btn_Click(object sender, RoutedEventArgs e)
         {
-            HideHomePage();
             importPhotos_grid.Visibility = Visibility.Visible;
-        }
-
-        private void lastProject_back_Click(object sender, RoutedEventArgs e)
-        {
-            ShowHomePage();
-            lastProject_grid.Visibility = Visibility.Collapsed;
-        }
-
-        private void newProject_back_Click(object sender, RoutedEventArgs e)
-        {
-         
-            ShowHomePage();
-            newProject_grid.Visibility = Visibility.Collapsed;
-        }
-
-        private void loadProject_back_Click(object sender, RoutedEventArgs e)
-        {
-            ShowHomePage();
-            loadProject_grid.Visibility = Visibility.Collapsed;
         }
 
         private void importPhotos_back_Click(object sender, RoutedEventArgs e)
         {
-            ShowHomePage();
             importPhotos_grid.Visibility = Visibility.Collapsed;
         }
 
         private void addPictures_btn_Click(object sender, RoutedEventArgs e)
         {
-          var ofd = new OpenFileDialog() { Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
-                "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
-                "Portable Network Graphic (*.png)|*.png" };
-            var result = ofd.ShowDialog();
-            if (result == false) return;
-                BitmapImage src = new BitmapImage();
-                src.BeginInit();
-                src.CacheOption = BitmapCacheOption.OnLoad;
-                System.Windows.Controls.Image imagename = new System.Windows.Controls.Image();
-            src.UriSource = new Uri(ofd.FileName.Trim(), UriKind.Relative);
-            imagename.Source = src;
-            listboxPicture.Items.Add(imagename);
-            src.EndInit();
-           
-
-            imagecountdiff = listboxPicture.Items.Count - imagedata.Count;
-            pictureFilename[imagecountdiff-1]= System.IO.Path.GetFileName(ofd.FileName);
-            FileInfo fileInfo = new FileInfo(ofd.FileName);
-            sourcePath[imagecountdiff-1] = fileInfo.DirectoryName;
-        }
-
-        string selectedprojectname;
-        private void AllProject_ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            
-            try
+            var openFileDialogue = new OpenFileDialog()
             {
-                selectedprojectname = AllProject_ListBox.SelectedItem.ToString();
-                ProjectName.Text = AllProject_ListBox.SelectedItem.ToString();
-                des_txtbox.Text = "";
-                var DATA = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == selectedprojectname).Elements("description")
-                           select new
-                           {
-                               name = query.Value,
-                           };
-                foreach (var names in DATA)
-                {
-                    des_txtbox.Text = names.name.ToString();
+                Multiselect = true,
+                Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
+                    "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+                    "Portable Network Graphic (*.png)|*.png"
+            };
+            var result = openFileDialogue.ShowDialog();
 
-                }
-            }
-            catch
-            { }
+            if (result == false) return;
+
+            IList<ImageDTO> images = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Images.ToList();
+
+            openFileDialogue.FileNames.ToList().ForEach(i =>
+                {
+                    int counter = 1;
+                    ImageDTO image = new ImageDTO()
+                    {
+                        CreationDate = DateTime.Now,
+                        Description = "Image Added",
+                        ImageID = string.Concat(DateTime.Now.ToString("yyyyMMddHHmmssfff"), counter),
+                        Path = System.IO.Path.Combine(Data.PROJECT_IMAGES_FOLDER, string.Format("{0}.jpg", string.Concat(DateTime.Now.ToString("yyyyMMddHHmmssfff"), counter++)))
+                    };
+
+                    System.IO.File.Copy(i, image.Path);
+                    images.Add(image);
+                });
+
+            Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Images = images.ToArray();
+
+            ChangeScreenControls();
+
         }
 
         private void ok_btn_Click(object sender, RoutedEventArgs e)
         {
-
-            if (ProjectName.Text != "")
-            {
-               
-
-                editPage_grid.Visibility = Visibility.Visible;
-                gridHomePage.Visibility = Visibility.Collapsed;
-                homePage.Title = "FacilityDocu - Edit Project";
-                /////////////////////////////////////////////////////////////////////////
-                var ID = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == selectedprojectname).Elements("id")
-                         select new
-                         {
-                             name = query.Value,
-                         };
-                foreach (var names in ID)
-                {
-                    txtProjectID.Text = names.name.ToString();
-                    projectid = names.name.ToString();
-
-                }
-                txtProjectDescription.Text = des_txtbox.Text;
-                ////////////////////////////////////////////////////////////////////////////////////////
-                Rig();
-                Module();
-                Step();
-                Action();
-                //  ActionDetails();
-                Images();
-                //Resources();
-                LiftingGears();
-                Tools();
-                Dimension();
-                Risk();
-                listboxPicture.Items.Clear();
-                imageload();
-                ReadPathFromConfigXML();
-            }
-
-            else
-            {
-               
-            }
-
-           
-            creationdate_txt.Text = "";
-            updatedate_txt.Text = "";
-            createdby_txt.Text = "";
-            updatedby_txt.Text = "";
-          //  projectName_txt.Text = ProjectName.Text;
-            //////////////////////////////////////////////////////////////////////////////////////////
-           
-
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            var DATA1 = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == selectedprojectname).Elements("createdtime")
-                        select new
-                        {
-                            name = query.Value,
-                        };
-            foreach (var names in DATA1)
-            {
-                creationdate_txt.Text = names.name.ToString();
-
-            }
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////
-            var DATA2 = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == selectedprojectname).Elements("updatetime")
-                        select new
-                        {
-                            name = query.Value,
-                        };
-            foreach (var names in DATA2)
-            {
-                updatedate_txt.Text = names.name.ToString();
-
-            }
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            var DATA3 = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == selectedprojectname).Elements("createdby")
-                        select new
-                        {
-                            name = query.Value,
-                        };
-            foreach (var names in DATA3)
-            {
-                createdby_txt.Text = names.name.ToString();
-
-            }
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            var DATA4 = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == selectedprojectname).Elements("updatedby")
-                        select new
-                        {
-                            name = query.Value,
-                        };
-            foreach (var names in DATA4)
-            {
-                updatedby_txt.Text = names.name.ToString();
-            }
         }
+
         private void ProjectList_StylusInRange(object sender, StylusEventArgs e)
         {
         }
 
-        private void ProjectList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var DATA5 = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == ProjectList.SelectedItem.ToString()).Elements("description")
-                        select new
-                        {
-                            name = query.Value,
-                        };
-            foreach (var names in DATA5)
-            {
-                prj_Descriptiontxt.Text = names.name.ToString();
-
-            }
-        }
         private void editRisk_btn_Click(object sender, RoutedEventArgs e)
         {
             homePage.Title = "FacilityDocu - Edit Risk";
@@ -526,40 +252,6 @@ namespace FacilityDocLaptop
 
         private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) //_ProjectName_HyperLink
         {
-            //if (projectName_txt.Text != "")
-            //{
-            //    editPage_grid.Visibility = Visibility.Visible;
-            //    gridHomePage.Visibility = Visibility.Collapsed;
-            //    homePage.Title = "FacilityDocu - Edit Project";
-            //    /////////////////////////////////////////////////////////////////////////
-            //    var ID = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == ProjectName.Text).Elements("id")
-            //             select new
-            //             {
-            //                 name = query.Value,
-            //             };
-            //    foreach (var names in ID)
-            //    {
-            //        txtProjectID.Text = names.name.ToString();
-            //        projectid = names.name.ToString();
-
-            //    }
-            //    txtProjectDescription.Text = des_txtbox.Text;
-            //    ////////////////////////////////////////////////////////////////////////////////////////
-            //    Rig();
-            //    Module();
-            //    Step();
-            //    Action();
-            //    //  ActionDetails();
-            //    Images();
-            //    //Resources();
-            //    LiftingGears();
-            //    Tools();
-            //    Dimension();
-            //    Risk();
-            //    listboxPicture.Items.Clear();
-            //    imageload();
-            //    ReadPathFromConfigXML();
-            //}
         }
 
         private void txtblockActivity_MouseEnter(object sender, MouseEventArgs e)
@@ -574,18 +266,18 @@ namespace FacilityDocLaptop
 
         private void editHierarchy_btn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            homePage.Title = "FacilityDocu - Edit Hierarchy";
-            editPage_grid.Visibility = Visibility.Collapsed;
-            grid_EditHierarchy.Visibility = Visibility.Visible;
+            //homePage.Title = "FacilityDocu - Edit Hierarchy";
+            //editPage_grid.Visibility = Visibility.Collapsed;
+            //grid_EditHierarchy.Visibility = Visibility.Visible;
 
-            for (int i = 0; i < moduledataname.Count; i++)
-                listboxModules.Items.Add(moduledataname[i]);
+            //for (int i = 0; i < moduledataname.Count; i++)
+            //    listboxModules.Items.Add(moduledataname[i]);
 
-            for (int i = 0; i < stepdataname.Count; i++)
-            listboxSteps.Items.Add(stepdataname[i]);
+            //for (int i = 0; i < stepdataname.Count; i++)
+            //listboxSteps.Items.Add(stepdataname[i]);
 
-            for (int i = 0; i < actiondata.Count; i++)
-                listboxActions.Items.Add(actiondata[i]);
+            //for (int i = 0; i < actiondata.Count; i++)
+            //    listboxActions.Items.Add(actiondata[i]);
         }
 
         private void editHierarchy_btn_MouseEnter_1(object sender, MouseEventArgs e)
@@ -619,541 +311,39 @@ namespace FacilityDocLaptop
 
         private void btnPrev_Click(object sender, RoutedEventArgs e) //RigType Previous Button
         {
-            if (rigtypeindex > 0)
-            {
-                txtRigType.Text = rigdata[--rigtypeindex];
-            }
-            else { 
-                txtRigType.Text = rigdata[rigtypeindex];  }
-            Module();
-            Step();
-            Action();
-            //Resources();
-            LiftingGears();
-            Tools();
-            Dimension();
-            Risk();
-            Images();
-            listboxPicture.Items.Clear();
-            imageload();
-       }
+
+
+        }
 
         private void btnNext_Click(object sender, RoutedEventArgs e)  //RigType Next Button
         {
-            if (rigtypeindex < rigtypecount - 1)
-            {
-                txtRigType.Text = rigdata[++rigtypeindex];
-            }
-            else
-            {
-                txtRigType.Text = rigdata[rigtypeindex];
-            }
-            Module();
-            Step();
-            Action();
-            //Resources();
-            LiftingGears();
-            Tools();
-            Dimension();
-            Risk();
-            Images();
-            listboxPicture.Items.Clear();
-            imageload();
-       }
-
-        public void Rig()
-        {
-            var RigData = from query in xelement.Descendants("project").Where(query => query.Element("name").Value ==  selectedprojectname)
-                            .Elements("rigs")
-                            .Elements("rig")
-                          select new
-                          {
-                              name = query.Attribute("type").Value,
-                          };
-            rigdata.Clear();
-            moduledataname.Clear();
-            moduledatanumber.Clear();
-            stepdataname.Clear();
-            stepdatanumber.Clear();
-            actiondata.Clear();
-            foreach (var names in RigData)
-            {
-                rigdata.Add(names.name.ToString());
-              
-
-            }
-            rigtypecount = rigdata.Count;
-
-            if (rigtypecount > 0)
-                txtRigType.Text = rigdata[rigtypeindex];
-
-            else
-                txtRigType.Text = "";
-        }
-
-        public void Module()
-        {
-            var ModuleData = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == selectedprojectname)
-                                 .Elements("rigs")
-                                 .Elements("rig").Where(query => (string)query.Attribute("type") == txtRigType.Text)
-                                 .Elements("modules")
-                                 .Elements("module")
-                             select new
-                             {
-                                 name = query.Element
-                                        ("name").Value,
-                                 number = query.Element
-                                        ("number").Value,
-                                 id= query.Element
-                                        ("id").Value
-                             };
-            moduleindex = 0;
-            moduledataname.Clear();
-            moduledatanumber.Clear();
-            stepdataname.Clear();
-            stepdatanumber.Clear();
-            actiondata.Clear();
-            foreach (var names in ModuleData)
-            {
-                moduledataname.Add(names.name.ToString());
-                moduledatanumber.Add(names.number.ToString());
-                moduleid.Add(names.id.ToString());
-            }
-            modulecount = moduledataname.Count;
-            if (modulecount > 0)
-            {
-                txtModule.Text = moduledataname[moduleindex];
-                txtModuleID.Text = moduledatanumber[moduleindex];
-            }
-            else
-            {
-                txtModule.Text = "";
-                txtModuleID.Text = "";
-            }
-        }
-
-        public void Step()
-        {
-            var StepData = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == selectedprojectname)
-                                 .Elements("rigs")
-                                 .Elements("rig").Where(query => (string)query.Attribute("type") == txtRigType.Text)
-                                 .Elements("modules")
-                                 .Elements("module").Where(query => (string)query.Element("name").Value == txtModule.Text)
-                                 .Elements("steps")
-                                 .Elements("step")
-
-                           select new
-                           {
-                               number = query.Element("number").Value,
-                               name = query.Element("name").Value,
-                               id = query.Element("id").Value,
-                           };
-            stepindex = 0;
-            stepdataname.Clear();
-            stepdatanumber.Clear();
-            actiondata.Clear();
-            foreach (var names in StepData)
-            {
-                stepdataname.Add(names.name.ToString());
-                stepdatanumber.Add(names.number.ToString());
-                stepid.Add(names.id.ToString());
-
-            }
-            stepcount = stepdataname.Count;
-            if (stepcount > 0)
-            {
-                txtStepName.Text = stepdataname[stepindex];
-                txtStepNumber.Text = stepdatanumber[stepindex];
-            }
-            else
-            {
-                txtStepName.Text = "";
-                txtStepNumber.Text = "";
-            }
-        }
-
-        public void Action()
-        {
-            var ActionData = from query in xelement.Descendants("project").Where(query => query.Element("name").Value == selectedprojectname)
-                                             .Elements("rigs")
-                                             .Elements("rig").Where(query => (string)query.Attribute("type") == txtRigType.Text)
-                                             .Elements("modules")
-                                             .Elements("module").Where(query => (string)query.Element("name").Value == txtModule.Text)
-                                             .Elements("steps")
-                                             .Elements("step").Where(query => (string)query.Element("name").Value == txtStepName.Text)
-                                             .Elements("actions")
-                                             .Elements("action")
-                                            
-                             select new
-                             {
-                                   actionid=query.Element("id").Value,
-                                   number=query.Element("number").Value,
-                                   detail = query.Element("description").Value,
-                                   name = query.Element("name").Value
-                             };
-            actionindex = 0;
-            actiondata.Clear();
-            actionid.Clear();
-            actiondatadetails.Clear();
-            actiondatanumber.Clear();
-            resourcedata.Clear();
-
-            foreach (var names in ActionData)
-            {
-                actionid.Add(names.actionid.ToString());
-                actiondatadetails.Add(names.detail.ToString());
-                actiondata.Add(names.name.ToString());
-                actiondatanumber.Add(names.number.ToString());
-            }
-            actioncount = actiondata.Count;
-            if (actioncount > 0)
-            {
-               
-                txtAction.Text = actiondata[actionindex];
-                txtDetails.Text=actiondatadetails[actionindex];
-                txtActionNumber.Text = actiondatanumber[actionindex];
-
-            }
-            else
-            {
-                txtAction.Text = "";
-                txtDetails.Text = "";
-                txtActionNumber.Text ="";
-            }
-        }
-
-  /*     public void Resources()
-        {
-            var ResourcesData = from query in xelement.Descendants("project")
-                                .Where(query => query.Element("name")
-                                    .Value == ProjectName.Text)
-                                    .Elements("rigs")
-                                             .Elements("rig").Where(query => (string)query.Attribute("type") == txtRigType.Text)
-                                             .Elements("modules")
-                                             .Elements("module").Where(query => (string)query.Element("name").Value == txtModule.Text)
-                                             .Elements("steps")
-                                             .Elements("step").Where(query => (string)query.Element("name").Value == txtStepName.Text)
-                                             .Elements("actions")
-                                             .Elements("action").Where(query => (string)query.Element("name").Value == txtAction.Text)
-                                             .Elements("resources")
-                                             .Elements("resource")
-                                             .Elements("name")
-                                            
-                                select new
-                                {
-                                    name = query.Value,
-                                };
-            
-            resourceindex = 0;
-            resourcedata.Clear();
-            listBoxResources.Items.Clear();
-            foreach (var names in ResourcesData)
-            {
-                resourcedata.Add(names.name.ToString());
-                listBoxResources.Items.Add(resourcedata[resourceindex++]);
-            }
-            resourcecount = resourcedata.Count;      
-        }*/
-
-        public void LiftingGears()
-        {
-
-            var LiftingGearsData = from query in xelement.Descendants("project")
-                                .Where(query => query.Element("name")
-                                .Value == selectedprojectname)
-                                .Elements("rigs")
-                                .Elements("rig").Where(query => (string)query.Attribute("type") == txtRigType.Text)
-                                .Elements("modules")
-                                .Elements("module").Where(query => (string)query.Element("name").Value == txtModule.Text)
-                                .Elements("steps")
-                                .Elements("step").Where(query => (string)query.Element("name").Value == txtStepName.Text)
-                                .Elements("actions")
-                                .Elements("action").Where(query => (string)query.Element("name").Value == txtAction.Text)
-                                .Elements("liftinggears")
-                                select new
-                                {
-                                    name = query.Value,
-                                };
-            liftinggearindex = 0;
-           liftinggearsdata.Clear();
-            foreach (var names in LiftingGearsData)
-            {
-                 liftinggearsdata.Add(names.name.ToString());
-            }
-            liftinggearcount = liftinggearsdata.Count;
-            if (liftinggearcount> 0)
-            {
-                txtGears.Text = liftinggearsdata[liftinggearindex ];
-            }
-            else
-            {
-              txtGears.Text= "";
-            }
-            
-
-
 
         }
-        public void Tools()
-        {
-            var ToolsData = from query in xelement.Descendants("project")
-                                .Where(query => query.Element("name")
-                                    .Value == selectedprojectname)
-                                    .Elements("rigs")
-                                             .Elements("rig").Where(query => (string)query.Attribute("type") == txtRigType.Text)
-                                             .Elements("modules")
-                                             .Elements("module").Where(query => (string)query.Element("name").Value == txtModule.Text)
-                                             .Elements("steps")
-                                             .Elements("step").Where(query => (string)query.Element("name").Value == txtStepName.Text)
-                                             .Elements("actions")
-                                             .Elements("action").Where(query => (string)query.Element("name").Value == txtAction.Text)
-                                             .Elements("tools")
-                                             .Elements("tool")
-                                             .Elements("name")
-                            select new
-                            {
-                                name = query.Value,
-                            };
-            toolsindex = 0;
-            toolsdata.Clear();
-            listboxTools.Items.Clear();
-            foreach (var names in ToolsData)
-            {
-                toolsdata.Add(names.name.ToString());
-                listboxTools.Items.Add(toolsdata[toolsindex++]);
-            }
-            toolcount = toolsdata.Count;
-        }
 
-        public void Dimension()
-        {
-            var DimensionData = from query in xelement.Descendants("project")
-                                .Where(query => query.Element("name")
-                                .Value == selectedprojectname)
-                                .Elements("rigs")
-                                .Elements("rig").Where(query => (string)query.Attribute("type") == txtRigType.Text)
-                                .Elements("modules")
-                                .Elements("module").Where(query => (string)query.Element("name").Value == txtModule.Text)
-                                .Elements("steps")
-                                .Elements("step").Where(query => (string)query.Element("name").Value == txtStepName.Text)
-                                .Elements("actions")
-                                .Elements("action").Where(query => (string)query.Element("name").Value == txtAction.Text)
-                                .Elements("dimensions")
-                                select new
-                                {
-                                    name = query.Value,
-                                };
-                dimensionindex = 0;
-                dimensiondata.Clear();
-            foreach (var names in DimensionData)
-            {
-                dimensiondata.Add(names.name.ToString());
-            }
-            dimensioncount = dimensiondata.Count;
-            if(dimensioncount>0)
-            {
-                txtDimensions.Text = dimensiondata[actionindex];
-            }
-            else
-            {
-                txtDimensions.Text = "";
-            }
-            
-        }
-        public void Risk()
-        {
-            var RiskData = from query in xelement.Descendants("project")
-                                .Where(query => query.Element("name")
-                                .Value == selectedprojectname)
-                                .Elements("rigs")
-                                .Elements("rig").Where(query => (string)query.Attribute("type") == txtRigType.Text)
-                                .Elements("modules")
-                                .Elements("module").Where(query => (string)query.Element("name").Value == txtModule.Text)
-                                .Elements("steps")
-                                .Elements("step").Where(query => (string)query.Element("name").Value == txtStepName.Text)
-                                .Elements("actions")
-                                .Elements("action").Where(query => (string)query.Element("name").Value == txtAction.Text)
-                                .Elements("risks")
-                                select new
-                                {
-                                    name = query.Value,
-                                };
-            riskindex = 0;
-            riskdata.Clear();
-            foreach (var names in RiskData)
-            {
-                riskdata.Add(names.name.ToString());
-            }
-            riskcount = riskdata.Count;
-            if (riskcount > 0)
-            {
-                txtRisks.Text = riskdata[actionindex];
-            }
-            else
-            {
-                txtRisks.Text ="";
-            }
-        }
-        public void Images()
-        {
-            var ImageData = from query in xelement.Descendants("project")
-                               .Where(query => query.Element("name")
-                               .Value == selectedprojectname)
-                               .Elements("rigs")
-                               .Elements("rig").Where(query => (string)query.Attribute("type") == txtRigType.Text)
-                               .Elements("modules")
-                               .Elements("module").Where(query => (string)query.Element("name").Value == txtModule.Text)
-                               .Elements("steps")
-                               .Elements("step").Where(query => (string)query.Element("name").Value == txtStepName.Text)
-                               .Elements("actions")
-                               .Elements("action").Where(query => (string)query.Element("name").Value == txtAction.Text)
-                               .Elements("images")
-                               .Elements("image")
-                               .Elements("name")
-                            select new
-                            {
-                                name = query.Value
-                            };
-            imageindex = 0;
-            imagedata.Clear();
-            foreach (var names in ImageData)
-            {
-                imagedata.Add(names.name.ToString());
-
-            }
-            imagecount = imagedata.Count;
-
-        }
         public void imageload()
         {
-             for (int i = 0; i < imagedata.Count; i++)
-              {
-            BitmapImage bimg = new BitmapImage();
-            System.Windows.Controls.Image imagename = new System.Windows.Controls.Image();
-            bimg.UriSource = new Uri(@"H:/DataP/4001/Image1.png");
-            bimg.BeginInit();
-            ///bimg.UriSource = new Uri(System.IO.Path.GetFullPath("Data/Images") +"/"+ projectid + "." + rigdata[rigtypeindex] + "." + moduleid[moduleindex] + "." + stepid[stepindex] + "." + actionid[actionindex] + "/" + imagedata[i]);
-            //imagename.Source = bimg;
-            bimg.EndInit();
-            listboxPicture.Items.Add(imagename);
-             }
+            for (int i = 0; i < imagedata.Count; i++)
+            {
+                BitmapImage bimg = new BitmapImage();
+                System.Windows.Controls.Image imagename = new System.Windows.Controls.Image();
+                bimg.BeginInit();
+                bimg.UriSource = new Uri(imagedata[imageindex]);
+                imagename.Source = bimg;
+                imagename.Width = 150;
+                imagename.Height = 150;
+                bimg.EndInit();
+                lstPictures.Items.Add(imagename);
+            }
         }
 
         public void createfolder()
         {
 
-            if (!Directory.Exists(System.IO.Path.GetFullPath("Data/Images") + "/" + projectid + "." + rigdata[rigtypeindex] + "." + moduleid[moduleindex] + "." + stepid[stepindex] + "." + actionid[actionindex]))
+            if (!Directory.Exists(imagedata[imageindex]))
             {
-                Directory.CreateDirectory(System.IO.Path.GetFullPath("Data/Images") + "/" + projectid + "." + rigdata[rigtypeindex] + "." + moduleid[moduleindex] + "." + stepid[stepindex] + "." + actionid[actionindex]);
-            }
-        }
-
-
-        public void updateFromRig()
-        {
-            string testXML;
-            try
-            {
-
-                testXML = System.IO.Path.Combine("", "Assets/Data/ProjectXml/ProjectXML.xml" + "/" + "ProjectXML.xml");
-                XDocument loadedData = XDocument.Load(testXML);
-
-                XElement rig = new XElement("rig",
-                               new XAttribute("type", txtRigType.Text),
-
-                               new XElement("modules",
-                    new XElement("module",
-                      new XElement("id", txtModuleID.Text),
-                      new XElement("name", txtModule.Text),
-                    //  new XElement("number", OfflineData.tempModuleNo),
-
-                      new XElement("steps",
-                              new XElement("step",
-                    //   new XElement("id", OfflineData.tempStepID),
-                                  new XElement("name", txtStepName.Text),
-                                  new XElement("number", txtStepNumber.Text),
-
-                                  new XElement("actions",
-                              new XElement("action",
-                                  new XElement("id", actionid[actionindex]),
-                                  new XElement("name", txtAction.Text),
-                                  new XElement("number", txtActionNumber.Text),
-                                  new XElement("description", txtDetails.Text),
-
-                                  new XElement("images",
-                               Enumerable.Range(0, listboxPicture.Items.Count).Select(i => new XElement("image",
-                                      new XElement("name", totalpictureinoneindex[i])))),
-
-
-                              //new XElement("images",
-                    // new XElement("image",
-                    // new XElement("id", OfflineData.tempimageid),
-                    //new XElement("number", OfflineData.tempimage_no),
-                    //new XElement("name", OfflineData.imageName),
-                    //new XElement("tags", OfflineData.tempimagetag),
-                    //new XElement("description", OfflineData.tempimage_description),
-                    //new XElement("comments")
-
-                    new XElement("tools",
-                   Enumerable.Range(0, toolsdata.Count).Select(i => new XElement("tool",
-                       //  new XElement("id",txtToolID.Text),
-                    new XElement("name", listboxTools.Items[i].ToString()))),
-
-                        new XElement("resources",
-                       Enumerable.Range(0, resourcedata.Count).Select(i => new XElement("resource",
-                           //new XElement("id", txtResourceID.Text),
-                                new XElement("name", "test"))),
-                    //    new XElement("count",hh )
-
-                            new XElement("risks",
-                                txtRisks.Text),
-
-                              new XElement("dimensions",
-                         txtDimensions.Text),
-
-                           new XElement("liftinggears",
-                         txtGears.Text)
-
-                                                  )))))))
-                                                           ));
-
-                loadedData.Elements("project").Where(query => query.Element("name").Value == selectedprojectname)
-                                  .Elements("rigs").Last().Add(rig);
-
-                loadedData.Save(System.IO.Path.GetFullPath("Data/ProjectXml") + "/" + "ProjectXML.xml");
-            }
-            catch 
-            {
-            }
+                Directory.CreateDirectory(imagedata[imageindex]);
             }
 
-        private void btnModuleRight_Click_1(object sender, RoutedEventArgs e)
-        {
-            if (modulecount > 0)
-            {
-                if (moduleindex < modulecount - 1)
-                {
-                    txtModule.Text = moduledataname[++moduleindex];
-                    txtModuleID.Text = moduledatanumber[moduleindex];
-                }
-                else
-                {
-                    txtModule.Text = moduledataname[moduleindex];
-                    txtModuleID.Text = moduledatanumber[moduleindex];
-                }
-                Step();
-                Action();
-                //Resources();
-                LiftingGears();
-                Tools();
-
-                Dimension();
-                Risk();
-                Images();
-                listboxPicture.Items.Clear();
-                imageload();
-
-            }
         }
 
         public void ReadPathFromConfigXML()
@@ -1180,148 +370,7 @@ namespace FacilityDocLaptop
 
 
             }
-           // MessageBox.Show(DATAPath);
-        }
-
-            
-       
-
-        private void btnModuleLeft_Click_1(object sender, RoutedEventArgs e)
-        {
-            if (modulecount > 0)
-            {
-                if (moduleindex > 0)
-                {
-                    txtModule.Text = moduledataname[--moduleindex];
-                    txtModuleID.Text = moduledatanumber[moduleindex];
-                }
-                else
-                {
-                    txtModule.Text = moduledataname[moduleindex];
-                    txtModuleID.Text = moduledatanumber[moduleindex];
-                }
-                Step();
-                Action();
-                //Resources();
-                LiftingGears();
-                Tools();
-                Dimension();
-                Risk();
-                Images();
-                listboxPicture.Items.Clear();
-                imageload();
-            }
-        }
-
-        private void btnStepRight_Click(object sender, RoutedEventArgs e)
-        {
-            if (stepcount > 0)
-            {
-                if (stepindex < stepcount - 1)
-                {
-                    
-               
-                 txtStepName.Text = stepdataname[++stepindex];
-                  txtStepNumber.Text = stepdatanumber[stepindex];
-                }
-                else
-                {
-                txtStepName.Text = stepdataname[stepindex];
-                txtStepNumber.Text = stepdatanumber[stepindex];
-                   
-                }
-                Action();
-                //Resources();
-                LiftingGears();
-                Tools();
-                Dimension();
-                Risk();
-                Images();
-                listboxPicture.Items.Clear();
-                imageload();
-            }
-        }
-
-        private void btnStepLeft_Click(object sender, RoutedEventArgs e)
-        {
-            if (stepcount > 0)
-            {
-                if (stepindex > 0)
-                {
-                    txtStepName.Text = stepdataname[--stepindex];
-                   
-                }
-                else
-                {
-                    txtStepName.Text = stepdataname[stepindex];
-                    
-                }
-
-                Action();
-                //Resources();
-                LiftingGears();
-                Tools();
-                Dimension();
-                Risk();
-                Images();
-                listboxPicture.Items.Clear();
-                imageload();
-            }
-        }
-
-        private void btnActionRight_Click(object sender, RoutedEventArgs e)
-        {
-            if (actioncount > 0)
-            {
-                if (actionindex < actioncount - 1)
-                {
-                   txtAction.Text = actiondata[++actionindex];
-                   txtActionNumber.Text = actiondatanumber[actionindex];
-                   txtDetails.Text = actiondatadetails[actionindex];
-                }         
-                else
-                {
-                    txtAction.Text = actiondata[actionindex];
-                    txtActionNumber.Text = actiondatanumber[actionindex];
-                    txtDetails.Text = actiondatadetails[actionindex];
-                }
-                //Resources();
-                LiftingGears();
-                Tools();
-                Dimension();
-                Risk();
-                Images();
-                listboxPicture.Items.Clear();
-                imageload();
-            }
-        }
-
-        private void btnActionLeft_Click(object sender, RoutedEventArgs e)
-        {
-            if (actioncount > 0)
-            {
-                if (actionindex > 0)
-                {
-                    txtAction.Text = actiondata[--actionindex];
-                    txtActionNumber.Text = actiondatanumber[actionindex];
-                    txtDetails.Text = actiondatadetails[actionindex];
-
-                }
-                else
-                {
-                    txtAction.Text = actiondata[actionindex];
-                    txtActionNumber.Text = actiondatanumber[actionindex];
-                    txtDetails.Text = actiondatadetails[actionindex];
-                }
-                //Resources();
-                LiftingGears();
-                Tools();
-                Dimension();
-                Risk();
-                Images();
-                listboxPicture.Items.Clear();
-                imageload();
-            }
+            // MessageBox.Show(DATAPath);
         }
 
         private void listboxTools_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1329,7 +378,6 @@ namespace FacilityDocLaptop
 
         }
 
-      
         private void txtK_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             //char c = Convert.ToChar(e.Text);
@@ -1346,104 +394,9 @@ namespace FacilityDocLaptop
             // Regex rx = new Regex(@"^-?\d+(\.\d{2})?$");
             e.Handled = !regex.IsMatch((sender as TextBox).Text.Insert((sender as TextBox).SelectionStart, e.Text));
         }
+
         public void ProjectSave()
         {
-          
-            
-            XDocument projectSave = new XDocument(
-                         
-                        new XElement("project",
-                   new XElement("id", txtProjectID.Text),
-                   new XElement("name", ProjectName.Text),
-                   new XElement("description", des_txtbox.Text),
-                   new XElement("createdtime", creationdate_txt.Text),
-                   new XElement("createdby", createdby_txt.Text),
-                   new XElement("updatedby", updatedby_txt.Text),
-                   new XElement("updatetime", updatedate_txt.Text),
-                   new XElement("rigs",
-                   new XElement("rig",
-                   new XAttribute("type", txtRigType.Text),
-                   new XElement("modules",
-                   new XElement("module",
-                   new XElement("id", txtModuleID.Text),
-                   new XElement("name", txtModule.Text),
-                // new XElement("number",),
-
-              new XElement("steps",
-                      new XElement("step",
-                // new XElement("id", txt),
-                          new XElement("number", txtStepNumber.Text),
-                         new XElement("name", txtStepName.Text),
-
-                          new XElement("actions",
-                      new XElement("action",
-                          new XElement("id",actionid[actionindex]),
-                          new XElement("number", txtActionNumber.Text),
-                          new XElement("name", txtAction.Text),
-                          new XElement("description", txtDetails.Text),
-                          new XElement("images",
-                           Enumerable.Range(0,listboxPicture.Items.Count).Select(i=>new XElement("image",
-                                  new XElement("name",totalpictureinoneindex[i])))),
-
-
-                          //new XElement("images",
-                // new XElement("image",
-                // new XElement("id", OfflineData.tempimageid),
-                //new XElement("number", OfflineData.tempimage_no),
-                //new XElement("name", OfflineData.imageName),
-                //new XElement("tags", OfflineData.tempimagetag),
-                //new XElement("description", OfflineData.tempimage_description),
-                //new XElement("comments")
-              
-                new XElement("tools",
-               Enumerable.Range(0,toolsdata.Count).Select(i=>new XElement("tool",
-                //  new XElement("id",txtToolID.Text),
-                new XElement("name", listboxTools.Items[i].ToString()))),
-
-                    new XElement("resources",
-                   Enumerable.Range(0,resourcedata.Count).Select(i=> new XElement("resource",
-                //new XElement("id", txtResourceID.Text),
-                            new XElement("name", "test"))),
-                //    new XElement("count",hh )
-
-                        new XElement("risks",
-                            txtRisks.Text),
-
-                          new XElement("dimensions",
-                     txtDimensions.Text),
-
-                       new XElement("liftinggears",
-                     txtGears.Text)
-
-                    ))))))
-
-                                          ))))));
-
-            
-            projectSave.Save(System.IO.Path.GetFullPath("Data/ProjectXml")+"/"+"ProjectXML.xml");
-            MessageBox.Show("Succesfully Saved");
-        }
-        private void btnSave_Click(object sender, RoutedEventArgs e)
-        {
-            ProjectSave();
-            createfolder();
-            ///////////////////////////////////////////////////////////////
-            string targetPath = System.IO.Path.GetFullPath("Data/Images") + "/" + projectid + "." + rigdata[rigtypeindex] + "." + moduleid[moduleindex] + "." + stepid[stepindex] + "." + actionid[actionindex];
-          //  FileInfo fileInfo;
-            for (int i = 0; i < imagecountdiff; i++)
-            {
-               string sourceFile = System.IO.Path.Combine(sourcePath[i], pictureFilename[i]);
-              string destFile = System.IO.Path.Combine(targetPath, pictureFilename[i]);
-         
-               System.IO.File.Copy(sourceFile, destFile, true);
-            }
-            mergenewandoldimage();
-        /////////////////////////////////////////////////////////////////////////////
-
-            if (!File.Exists(("Data/ProjectXml") + "/" + "ProjectXML.xml"))
-                ProjectSave();
-            else
-                updateFromRig();
         }
 
         public void ReadXML()
@@ -1579,156 +532,361 @@ namespace FacilityDocLaptop
             }
         }
 
-        public void GeneratePDF()
-        {
-            Document doc = new Document(iTextSharp.text.PageSize.A4, 5, 5, 20, 15);
-            PdfWriter wri = PdfWriter.GetInstance(doc, new FileStream(XMLPath + pdf_ProjectName + "_" + pdf_RigType + ".pdf", FileMode.Create));
-
-            doc.AddTitle("FacilityDocu");
-            doc.AddAuthor("User");
-            doc.Open();
-
-
-
-
-
-
-
-            ///////////////BOLD////////////////////////
-            //var normalFont = FontFactory.GetFont(FontFactory.HELVETICA, 12);
-            //var boldFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 120);
-
-            //var phrase = new Phrase();
-            //phrase.Add(new Chunk(ProjectName, boldFont));
-            //phrase.Add(new Chunk(" See Statutoryreason(s) designated by Code No(s) 1 on the reverse side hereof", normalFont));
-            //doc.Add(phrase);
-
-            PdfContentByte cb = wri.DirectContent;
-            PdfContentByte cb2 = wri.DirectContent;
-
-            // cb.SetColorFill(BaseColor.BLUE);
-            ColumnText ct = new ColumnText(cb);
-            ColumnText ct2 = new ColumnText(cb2);
-            ct.SetSimpleColumn(new Phrase(new Chunk(ProjectName + "\n", FontFactory.GetFont(FontFactory.HELVETICA, 80, Font.NORMAL))), 100, 600, 530, 36, 25, Element.ALIGN_LEFT | Element.ALIGN_TOP);
-            ct2.SetSimpleColumn(new Phrase(new Chunk("Rig Type: " + pdf_RigType, FontFactory.GetFont(FontFactory.HELVETICA, 50, Font.NORMAL))), 150, 500, 530, 36, 25, Element.ALIGN_LEFT | Element.ALIGN_TOP);
-            ct.Go();
-            ct2.Go();
-
-            doc.NewPage();
-
-            doc.Add(new iTextSharp.text.Paragraph(""));
-            PdfContentByte cb3 = wri.DirectContent;
-            ColumnText ct3 = new ColumnText(cb3);
-            ct3.SetSimpleColumn(new Phrase(new Chunk("Module List", FontFactory.GetFont(FontFactory.HELVETICA, 40, Font.NORMAL))), 100, 770, 530, 36, 25, Element.ALIGN_LEFT | Element.ALIGN_TOP);
-            ct3.Go();
-
-            iTextSharp.text.Paragraph paragraph = new iTextSharp.text.Paragraph("\n\n\n");
-            doc.Add(paragraph);
-            //RomanList romanlist = new RomanList(true, 100);
-            //romanlist.IndentationLeft = 30f;
-            //romanlist.Add(Module);
-            iTextSharp.text.List list = new iTextSharp.text.List(iTextSharp.text.List.ALPHABETICAL, 40f);
-            list.IndentationLeft = 40f;
-            list.Add(pdf_Module);
-            doc.Add(list);
-
-            doc.NewPage();
-            doc.Add(new iTextSharp.text.Paragraph(""));
-
-
-
-            /////////////////IMAGE///////////////////
-            int i = 0, k = 0, l = 0, m = 0, n = 0;
-
-            while (i < pdf_imagedataname.Count())
-            {
-                iTextSharp.text.Image PNG = iTextSharp.text.Image.GetInstance(XMLPath + "data/" + pdf_imagedataname[i] + ".jpg");
-                // PNG.ScalePercent(10f); //size according to percentage
-
-                PNG.ScaleToFit(250f, 500f);  //rectange
-
-                // PNG.Border = iTextSharp.text.Rectangle.BOX; //border to images
-
-                ///  PNG.BorderColor = iTextSharp.text.BaseColor.YELLOW;
-                //  PNG.BorderWidth = 5f;
-
-                PNG.SetAbsolutePosition(k + m, l + n); //position test
-                doc.Add(PNG);
-                i++;
-                k = k + 100;
-                l = l + 100;
-                m = m + 50;
-                n = n + 50;
-            }
-
-
-
-
-
-            doc.Close();
-        }
-
         private void btnPublish_Click(object sender, RoutedEventArgs e)
         {
             ReadXML();
-            GeneratePDF();
         }
 
-        private void btnBack_Click(object sender, RoutedEventArgs e)
-        {
-            editPage_grid.Visibility = Visibility.Collapsed;
-            newProject_grid.Visibility = Visibility.Visible;
-        }
-
-        public void Rig1()
-        {
-            var RigData1 = from query in xelement.Descendants("rigs")
-                               //.Where(query => query.Element("name").Value ==  selectedprojectname)
-                            
-                            .Elements("rig")
-                          select new
-                          {
-                              name = query.Attribute("type").Value,
-                          };
-            rigdata.Clear();
-            moduledataname.Clear();
-            moduledatanumber.Clear();
-            stepdataname.Clear();
-            stepdatanumber.Clear();
-            actiondata.Clear();
-            foreach (var names in RigData1)
-            {
-                rigdata.Add(names.name.ToString());
-              
-
-            }
-            rigtypecount = rigdata.Count;
-
-            if (rigtypecount > 0)
-                txtRigType.Text = rigdata[rigtypeindex];
-
-            else
-                txtRigType.Text = "";
-        }
-        
         private void listView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            int xmlrd=listView.SelectedIndex + 1;
-            selectedprojectname = "1.xml";
 
-xelement = XElement.Load("../../Assets/Data/ProjectXml/" + xmlrd.ToString() + ".xml");
-        //    xelement = XElement.Load("../../Assets/Data/ProjectXml/" + "1.xml");
-            IEnumerable<XElement> name = xelement.Elements();
-            Rig1();
 
-            editPage_grid.Visibility = Visibility.Visible;
-            gridHomePage.Visibility = Visibility.Collapsed;
         }
 
         private void homePage_Loaded(object sender, RoutedEventArgs e)
         {
             CreateListViewGrid();
-           
+        }
+
+        private void listView_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+            string projectPath = System.IO.Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", (e.AddedItems[0] as ProjectDTO).ProjectID));
+            Data.CURRENT_PROJECT = ProjectXmlReader.ReadProjectXml(projectPath, false);
+
+            ChangeScreenControls();
+
+            editPage_grid.Visibility = Visibility.Visible;
+            gridHomePage.Visibility = Visibility.Collapsed;
+        }
+
+        private void ChangeScreenControls()
+        {
+            txtProjectID.Text = Data.CURRENT_PROJECT.ProjectID;
+            txtProjectDescription.Text = Data.CURRENT_PROJECT.Description;
+
+            txtRigType.Text = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Name;
+
+            ModuleDTO module = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex];
+            txtModule.Text = string.Format("{0} {1}", module.Number, module.Name);
+
+            StepDTO step = module.Steps[currentStepIndex];
+            txtStepName.Text = string.Format("{0} {1}", step.Number, step.Name);
+
+            ActionDTO action = step.Actions[currentActionIndex];
+            txtAction.Text = action.Name.Trim();
+            txtActionNumber.Text = action.Number.Trim();
+            txtActionDetails.Text = action.Description.Trim();
+            txtActionDimensions.Text = action.Dimensions.Trim();
+            txtActionLiftingGears.Text = action.LiftingGears.Trim();
+            txtActionRisks.Text = action.Risks.Trim();
+
+            lstActionTools.ItemsSource = action.Tools;
+
+            lstActionResourcesP.ItemsSource = action.Resources.Where(r => r.Type.Equals("people")).ToList();
+            lstActionResourcesM.ItemsSource = action.Resources.Where(r => r.Type.Equals("machine")).ToList();
+
+            lstPictures.Items.Clear();
+            action.Images.ToList().ForEach(i => AddActionImage(i.Path));
+
+            txtAction.IsReadOnly = true;
+            txtActionDetails.IsReadOnly = true;
+            txtActionDimensions.IsReadOnly = true;
+            txtActionRisks.IsReadOnly = true;
+            lstActionTools.IsEnabled = false;
+            lstActionResourcesM.IsEnabled = false;
+            lstActionResourcesP.IsEnabled = false;
+
+
+            lstAttachments.ItemsSource = action.Attachments;
+
+            if (action.RiskAnalysis.Length > 0)
+            {
+                RiskAnalysisDTO analysis = action.RiskAnalysis[currentAnalysisIndex];
+                txtAnalysisActivity.Text = analysis.Activity;
+                txtAnalysisB.Text = analysis.B.ToString();
+                txtAnalysisB_.Text = analysis.B_.ToString();
+                txtAnalysisControl.Text = analysis.Controls;
+                txtAnalysisDanger.Text = analysis.Activity;
+                txtAnalysisE.Text = analysis.E.ToString();
+                txtAnalysisE_.Text = analysis.E_.ToString();
+                txtAnalysisK.Text = analysis.K.ToString();
+                txtAnalysisK_.Text = analysis.K_.ToString();
+                txtAnalysisRisk.Text = analysis.Risk.ToString();
+                txtAnalysisRisk_.Text = analysis.Risk_.ToString();
+            }
+            txtAnalysisActivity.IsReadOnly = true;
+            txtAnalysisB.IsReadOnly = true;
+            txtAnalysisB_.IsReadOnly = true;
+            txtAnalysisControl.IsReadOnly = true;
+            txtAnalysisDanger.IsReadOnly = true;
+            txtAnalysisE.IsReadOnly = true;
+            txtAnalysisE_.IsReadOnly = true;
+            txtAnalysisK.IsReadOnly = true;
+            txtAnalysisK_.IsReadOnly = true;
+            txtAnalysisRisk.IsReadOnly = true;
+            txtAnalysisRisk_.IsReadOnly = true;
+
+        }
+
+        private void AddActionImage(string imagePath)
+        {
+            BitmapImage bitmap = new BitmapImage();
+            System.Windows.Controls.Image imagename = new System.Windows.Controls.Image();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(imagePath);
+            imagename.Source = bitmap;
+            imagename.Width = 150;
+            imagename.Height = 150;
+            bitmap.EndInit();
+            lstPictures.Items.Add(imagename);
+        }
+
+        private void btnUpNext_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (currentRigIndex > 0)
+            {
+                currentRigIndex--;
+                currentModuleIndex = 0;
+                currentStepIndex = 0;
+                currentActionIndex = 0;
+
+                ChangeScreenControls();
+            }
+        }
+
+        private void btnDownNext_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (currentRigIndex < (Data.CURRENT_PROJECT.RigTypes.Count() - 1))
+            {
+                currentRigIndex++;
+                currentModuleIndex = 0;
+                currentStepIndex = 0;
+                currentActionIndex = 0;
+
+                ChangeScreenControls();
+            }
+        }
+
+        private void btnModuleLeft_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (currentModuleIndex > 0)// || currentRigIndex > (Data.CURRENT_PROJECT .RigTypes.Count() - 1) )
+            {
+                currentModuleIndex--;
+                currentStepIndex = 0;
+                currentActionIndex = 0;
+
+                ChangeScreenControls();
+            }
+        }
+
+        private void btnModuleRight_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (currentModuleIndex < (Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules.Count() - 1))
+            {
+                currentModuleIndex++;
+                currentStepIndex = 0;
+                currentActionIndex = 0;
+
+                ChangeScreenControls();
+            }
+        }
+
+        private void btnStepRight_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentStepIndex < (Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps.Count() - 1))
+            {
+                currentStepIndex++;
+                currentActionIndex = 0;
+
+                ChangeScreenControls();
+            }
+        }
+
+        private void btnStepLeft_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentStepIndex > 0)// || currentRigIndex > (Data.CURRENT_PROJECT .RigTypes.Count() - 1) )
+            {
+                currentStepIndex--;
+                currentActionIndex = 0;
+
+                ChangeScreenControls();
+            }
+        }
+
+        private void btnActionRight_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentActionIndex < (Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Count() - 1))
+            {
+                currentActionIndex++;
+                currentAnalysisIndex = 0;
+
+                ChangeScreenControls();
+            }
+        }
+
+        private void btnActionLeft_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentActionIndex > 0)
+            {
+                currentActionIndex--;
+                currentAnalysisIndex = 0;
+
+                ChangeScreenControls();
+            }
+        }
+
+        private void btnActionAdd_Click_1(object sender, RoutedEventArgs e)
+        {
+            ActionDTO action = new ActionDTO()
+                {
+                    Name = "New Action",
+                    Description = "New Action's Description",
+                    Dimensions = "New Action's Dimesnions",
+                    LiftingGears = "New Action's Lifting Gears",
+                    Risks = "New Action's Risks",
+                    Number = (Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Length + 1).ToString("00"),
+                    Resources = (new List<ResourceDTO>()).ToArray(),
+                    RiskAnalysis = (new List<RiskAnalysisDTO>() { new RiskAnalysisDTO() }).ToArray(),
+                    Tools = (new List<ToolDTO>()).ToArray(),
+                    Images = (new List<ImageDTO>()).ToArray(),
+                    ActionID = "0"
+                };
+
+            IList<ActionDTO> actions = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions.ToList();
+            actions.Add(action);
+
+            Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions = actions.ToArray();
+
+            currentActionIndex = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Count() - 1;
+            ChangeScreenControls();
+        }
+
+        private void btnActionEdit_Click_1(object sender, RoutedEventArgs e)
+        {
+            txtAction.IsReadOnly = false;
+            txtActionDetails.IsReadOnly = false;
+            txtActionDimensions.IsReadOnly = false;
+            txtActionRisks.IsReadOnly = false;
+            lstActionTools.IsEnabled = true;
+            lstActionResourcesM.IsEnabled = true;
+            lstActionResourcesP.IsEnabled = true;
+        }
+
+        private void btAnalysisLeft_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (currentAnalysisIndex > 0)
+            {
+                currentAnalysisIndex--;
+                ChangeScreenControls();
+            }
+        }
+
+        private void btAnalysisRight_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (currentAnalysisIndex < (Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentAnalysisIndex].RiskAnalysis.Count() - 1))
+            {
+                currentAnalysisIndex++;
+
+                ChangeScreenControls();
+            }
+        }
+
+        private void btnAddAttachments_Click_1(object sender, RoutedEventArgs e)
+        {
+            var openFileDialogue = new OpenFileDialog()
+            {
+                Multiselect = true
+            };
+
+            var result = openFileDialogue.ShowDialog();
+
+            if (result == false) return;
+
+            IList<AttachmentDTO> attachments = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Attachments.ToList();
+
+            openFileDialogue.FileNames.ToList().ForEach(i =>
+            {
+                int counter = 1;
+                AttachmentDTO attachment = new AttachmentDTO()
+                {
+                    AttachmentID = string.Concat(DateTime.Now.ToString("yyyyMMddHHmmssfff"), counter),
+                    Name = System.IO.Path.GetFileName(i),
+                    Path = System.IO.Path.Combine(Data.PROJECT_ATTACHMENTS_FOLDER, string.Format("{0}.atc", string.Concat(DateTime.Now.ToString("yyyyMMddHHmmssfff"), counter++)))
+                };
+
+                System.IO.File.Copy(i, attachment.Path);
+                attachments.Add(attachment);
+            });
+
+            Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Attachments = attachments.ToArray();
+
+            ChangeScreenControls();
+        }
+
+        private void btnRemoveAttachment_Click_1(object sender, RoutedEventArgs e)
+        {
+            IList<AttachmentDTO> attachments = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Attachments.ToList();
+
+            AttachmentDTO removeAttachment = attachments.Single(a => a.AttachmentID.Equals((sender as Button).CommandParameter));
+            attachments.Remove(removeAttachment);
+
+            Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Attachments = attachments.ToArray();
+
+            ChangeScreenControls();
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+            MessageBox.Show("Project saved locally. \nPlease click on publish to sync with remote data server");
+        }
+
+        private void MakeVisible(Grid grid)
+        {
+            grdViewLogin.Visibility = Visibility.Collapsed;
+            gridHomePage.Visibility = Visibility.Collapsed;
+            editPage_grid.Visibility = Visibility.Collapsed;
+
+            grid.Visibility = Visibility.Visible;
+
+        }
+
+        private void btnCreate_Click_1(object sender, RoutedEventArgs e)
+        {
+            if ((cmbTemplates.SelectedItem as ProjectDTO) == null
+                || string.IsNullOrEmpty(txtNewProjectName.Text))
+            {
+                return;
+            }
+
+            gdvNew.Visibility = Visibility.Collapsed;
+
+            MakeVisible(editPage_grid);
+
+            string oldProjectPath = System.IO.Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", (cmbTemplates.SelectedItem as ProjectDTO).ProjectID));
+            string newProjectPath = System.IO.Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", DateTime.Now.ToString("yyyyMMddHHmmssfff")));
+
+            System.IO.File.Copy(oldProjectPath, newProjectPath);
+
+            Data.CURRENT_PROJECT = ProjectXmlReader.ReadProjectXml(newProjectPath, false);
+
+            Data.CURRENT_PROJECT.Description = txtNewProjectName.Text;
+            Data.CURRENT_PROJECT.Template = false;
+            Data.CURRENT_PROJECT.Closed = false;
+
+            ChangeScreenControls();
+        }
+
+        private void btnExport_Click_1(object sender, RoutedEventArgs e)
+        {
+            IList<string> outputs = Helper.GeneratePdf(Data.CURRENT_PROJECT);
+
+            MessageBox.Show(string.Concat("Files Generated at\n", string.Join("\n", outputs.ToArray())));
+        }
+
+        private void btnBack_Click_1(object sender, RoutedEventArgs e)
+        {
+            MakeVisible(gridHomePage);
         }
     }
 }

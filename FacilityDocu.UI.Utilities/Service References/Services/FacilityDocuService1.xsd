@@ -83,6 +83,7 @@
   <xs:complexType name="ActionDTO">
     <xs:sequence>
       <xs:element minOccurs="0" name="ActionID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Attachments" nillable="true" type="tns:ArrayOfAttachmentDTO" />
       <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Dimensions" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Images" nillable="true" type="tns:ArrayOfImageDTO" />
@@ -96,6 +97,20 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ActionDTO" nillable="true" type="tns:ActionDTO" />
+  <xs:complexType name="ArrayOfAttachmentDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AttachmentDTO" nillable="true" type="tns:AttachmentDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAttachmentDTO" nillable="true" type="tns:ArrayOfAttachmentDTO" />
+  <xs:complexType name="AttachmentDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AttachmentID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Path" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AttachmentDTO" nillable="true" type="tns:AttachmentDTO" />
   <xs:complexType name="ArrayOfImageDTO">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="ImageDTO" nillable="true" type="tns:ImageDTO" />
@@ -141,6 +156,7 @@
       <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ResourceCount" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ResourceID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Type" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ResourceDTO" nillable="true" type="tns:ResourceDTO" />

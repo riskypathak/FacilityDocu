@@ -555,6 +555,9 @@ namespace FacilityDocu.UI.Utilities.Services {
         private string ActionIDField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private FacilityDocu.UI.Utilities.Services.AttachmentDTO[] AttachmentsField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DescriptionField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -603,6 +606,19 @@ namespace FacilityDocu.UI.Utilities.Services {
                 if ((object.ReferenceEquals(this.ActionIDField, value) != true)) {
                     this.ActionIDField = value;
                     this.RaisePropertyChanged("ActionID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public FacilityDocu.UI.Utilities.Services.AttachmentDTO[] Attachments {
+            get {
+                return this.AttachmentsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AttachmentsField, value) != true)) {
+                    this.AttachmentsField = value;
+                    this.RaisePropertyChanged("Attachments");
                 }
             }
         }
@@ -733,6 +749,83 @@ namespace FacilityDocu.UI.Utilities.Services {
                 if ((object.ReferenceEquals(this.ToolsField, value) != true)) {
                     this.ToolsField = value;
                     this.RaisePropertyChanged("Tools");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AttachmentDTO", Namespace="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO")]
+    [System.SerializableAttribute()]
+    public partial class AttachmentDTO : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string AttachmentIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string PathField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string AttachmentID {
+            get {
+                return this.AttachmentIDField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AttachmentIDField, value) != true)) {
+                    this.AttachmentIDField = value;
+                    this.RaisePropertyChanged("AttachmentID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Name {
+            get {
+                return this.NameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NameField, value) != true)) {
+                    this.NameField = value;
+                    this.RaisePropertyChanged("Name");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Path {
+            get {
+                return this.PathField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.PathField, value) != true)) {
+                    this.PathField = value;
+                    this.RaisePropertyChanged("Path");
                 }
             }
         }
@@ -922,6 +1015,9 @@ namespace FacilityDocu.UI.Utilities.Services {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string ResourceIDField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string TypeField;
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -967,6 +1063,19 @@ namespace FacilityDocu.UI.Utilities.Services {
                 if ((object.ReferenceEquals(this.ResourceIDField, value) != true)) {
                     this.ResourceIDField = value;
                     this.RaisePropertyChanged("ResourceID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Type {
+            get {
+                return this.TypeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TypeField, value) != true)) {
+                    this.TypeField = value;
+                    this.RaisePropertyChanged("Type");
                 }
             }
         }

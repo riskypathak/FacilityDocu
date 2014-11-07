@@ -12,7 +12,7 @@ namespace FacilityDocu.UI.Utilities
 {
     public static class ProjectXmlWriter
     {
-        public static void Write(ProjectDTO project, string projectXMLPath)
+        public static void Write(ProjectDTO project)
         {
             XElement xProject = new XElement("project");
 
@@ -27,7 +27,7 @@ namespace FacilityDocu.UI.Utilities
 
             WriteRig(project.RigTypes.ToList(), xProject);
 
-            xProject.Save(Path.Combine(Path.GetFullPath(projectXMLPath), string.Format("{0}.xml",project.ProjectID)));
+            xProject.Save(Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml",project.ProjectID)));
         }
 
         private static void WriteRig(IList<RigTypeDTO> rigTypes, XElement xProject)
@@ -106,12 +106,44 @@ namespace FacilityDocu.UI.Utilities
                 xStepAction.Add(new XElement("dimensions", stepAction.Dimensions));
 
                 WriteImage(stepAction.Images, xStepAction);
+                WriteAttachments(stepAction.Attachments, xStepAction);
                 WriteTools(stepAction.Tools, xStepAction);
                 WriteResources(stepAction.Resources, xStepAction);
                 WriteRiskAnalysis(stepAction.RiskAnalysis, xStepAction);
 
                 count++;
             }
+        }
+
+        private static void WriteAttachments(AttachmentDTO[] attachments, XElement xAction)
+        {
+            XElement xAttachments = new XElement("attachments");
+            xAction.Add(xAttachments);
+
+            foreach (AttachmentDTO attachment in attachments)
+            {
+                XElement xAttachment = new XElement("attachment");
+                xAttachments.Add(xAttachment);
+
+                xAttachment.Add(new XElement("id", attachment.AttachmentID));
+                xAttachment.Add(new XElement("name", attachment.Name));
+                xAttachment.Add(new XElement("path", SaveAttachment(attachment)));
+            }
+        }
+
+        private static string SaveAttachment(AttachmentDTO attachment)
+        {
+            string savedPath = Path.Combine(Data.PROJECT_ATTACHMENTS_FOLDER, string.Format("{0}.atc", attachment.AttachmentID));
+
+            if (Data.SYNCPROCESS)
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    webClient.DownloadFile(attachment.Path, savedPath);
+                }
+            }
+
+            return savedPath;
         }
 
         private static void WriteRiskAnalysis(IList<RiskAnalysisDTO> riskAnalysiss, XElement xAction)
@@ -168,6 +200,7 @@ namespace FacilityDocu.UI.Utilities
                 xResource.Add(new XElement("id", resource.ResourceID));
                 xResource.Add(new XElement("name", resource.Name));
                 xResource.Add(new XElement("count", resource.ResourceCount));
+                xResource.Add(new XElement("type", resource.Type));
             }
         }
 
@@ -185,6 +218,7 @@ namespace FacilityDocu.UI.Utilities
                 xImage.Add(new XElement("number", image.Number));
                 xImage.Add(new XElement("creationdate", image.CreationDate));
                 xImage.Add(new XElement("description", image.Description));
+
                 xImage.Add(new XElement("path", SaveImage(image)));
                 xImage.Add(new XElement("tags", image.Tags));
 
@@ -196,10 +230,14 @@ namespace FacilityDocu.UI.Utilities
 
         private static string SaveImage(ImageDTO image)
         {
-            string savedPath = Path.GetFullPath(string.Format("Data/Images/{0}.jpeg",image.ImageID));
-            using (WebClient webClient = new WebClient())
+            string savedPath = Path.Combine(Data.PROJECT_IMAGES_FOLDER, string.Format("{0}.jpeg", image.ImageID));
+
+            if (Data.SYNCPROCESS)
             {
-                webClient.DownloadFile(image.Path, savedPath);
+                using (WebClient webClient = new WebClient())
+                {
+                    webClient.DownloadFile(image.Path, savedPath);
+                }
             }
 
             return savedPath;

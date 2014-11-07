@@ -62,6 +62,7 @@ namespace FacilityDocu.UI.Utilities
                 ModuleDTO module = new ModuleDTO();
                 module.ModuleID = Convert.ToString(xModule.Element("id").Value);
                 module.Name = Convert.ToString(xModule.Element("name").Value);
+                module.Number = Convert.ToString(xModule.Element("number").Value);
 
                 IList<Services.StepDTO> steps = ReadSteps(xModule);
                 module.Steps = steps.ToArray();
@@ -79,6 +80,8 @@ namespace FacilityDocu.UI.Utilities
                 StepDTO step = new StepDTO();
                 step.StepID = Convert.ToInt32(xStep.Element("id").Value);
                 step.Name = Convert.ToString(xStep.Element("name").Value);
+                step.Number = Convert.ToString(xStep.Element("number").Value);
+
                 IList<Services.ActionDTO> actions = ReadActions(xStep);
 
                 step.Actions = actions.ToArray();
@@ -96,6 +99,7 @@ namespace FacilityDocu.UI.Utilities
                 ActionDTO action = new ActionDTO();
                 action.ActionID = Convert.ToString(xAction.Element("id").Value);
                 action.Name = Convert.ToString(xAction.Element("name").Value);
+                action.Number = Convert.ToString(xAction.Element("number").Value);
                 action.Description = Convert.ToString(xAction.Element("description").Value);
                 action.Risks = Convert.ToString(xAction.Element("risks").Value);
                 action.LiftingGears = Convert.ToString(xAction.Element("liftinggears").Value);
@@ -104,15 +108,69 @@ namespace FacilityDocu.UI.Utilities
                 IList<Services.ImageDTO> images = ReadImages(xAction);
                 action.Images = images.ToArray();
 
+                IList<Services.AttachmentDTO> attachments = ReadAttachments(xAction);
+                action.Attachments = attachments.ToArray();
+
                 IList<Services.ResourceDTO> resources = ReadResources(xAction);
                 action.Resources = resources.ToArray();
 
                 IList<Services.ToolDTO> tools = ReadTools(xAction);
                 action.Tools = tools.ToArray();
 
+                IList<Services.RiskAnalysisDTO> analaysis = ReadAnalsysis(xAction);
+                action.RiskAnalysis = analaysis.ToArray();
+
                 actions.Add(action);
             }
             return actions;
+        }
+
+        private static IList<AttachmentDTO> ReadAttachments(XElement xAction)
+        {
+            IList<Services.AttachmentDTO> attachments = new List<Services.AttachmentDTO>();
+
+            //Risky: edit
+            if (xAction.Element("attachments") != null)
+            {
+                foreach (XElement xAttachment in xAction.Element("attachments").Elements("attachment"))
+                {
+                    AttachmentDTO attachment = new AttachmentDTO();
+                    attachment.AttachmentID = Convert.ToString(xAttachment.Element("id").Value);
+                    attachment.Name = Convert.ToString(xAttachment.Element("name").Value);
+                    attachment.Path = Convert.ToString(xAttachment.Element("path").Value);
+
+                    attachments.Add(attachment);
+                }
+            }
+            return attachments;
+        }
+
+        private static IList<RiskAnalysisDTO> ReadAnalsysis(XElement xAction)
+        {
+            IList<Services.RiskAnalysisDTO> analysiss = new List<Services.RiskAnalysisDTO>();
+
+            foreach (XElement xAnalysis in xAction.Element("risksAnalysis").Elements("riskAnalysis"))
+            {
+                RiskAnalysisDTO analysise = new RiskAnalysisDTO();
+                analysise.RiskAnalysisID = Convert.ToString(xAnalysis.Element("id").Value);
+                analysise.Activity = Convert.ToString(xAnalysis.Element("activity").Value);
+                analysise.B = Convert.ToDouble(xAnalysis.Element("b").Value);
+                analysise.B_ = Convert.ToDouble(xAnalysis.Element("b_").Value);
+                analysise.Controls = Convert.ToString(xAnalysis.Element("controls").Value);
+                analysise.Danger = Convert.ToString(xAnalysis.Element("danger").Value);
+                analysise.E = Convert.ToDouble(xAnalysis.Element("e").Value);
+                analysise.E_ = Convert.ToDouble(xAnalysis.Element("e_").Value);
+                analysise.K = Convert.ToDouble(xAnalysis.Element("k").Value);
+                analysise.K_ = Convert.ToDouble(xAnalysis.Element("k_").Value);
+                analysise.Risk = Convert.ToDouble(xAnalysis.Element("risk").Value);
+                analysise.Risk_ = Convert.ToDouble(xAnalysis.Element("risk_").Value);
+                analysise.RiskAnalysisType =  new RiskAnalysisTypeDTO(){ Name= Convert.ToString(xAnalysis.Element("type").Value)};
+
+
+
+                analysiss.Add(analysise);
+            }
+            return analysiss;
         }
 
         private static IList<ToolDTO> ReadTools(XElement xAction)
@@ -139,6 +197,13 @@ namespace FacilityDocu.UI.Utilities
                 ResourceDTO resource = new ResourceDTO();
                 resource.ResourceID = Convert.ToString(xResource.Element("id").Value);
                 resource.Name = Convert.ToString(xResource.Element("name").Value);
+
+                //risky
+                if (xResource.Element("type") != null)
+                {
+                    resource.Type = Convert.ToString(xResource.Element("type").Value);
+                }
+
                 resource.ResourceCount = Convert.ToString(xResource.Element("count").Value);
 
                 resources.Add(resource);

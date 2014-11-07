@@ -17,11 +17,15 @@ namespace FacilityDocu.UI.Utilities
             return new Phrase(input, FontFactory.GetFont(FontFactory.HELVETICA, 8));
         }
 
-        public static void GeneratePdf(ProjectDTO project)
+        public static IList<string> GeneratePdf(ProjectDTO project)
         {
+            IList<string> outputs = new List<string>();
+
             foreach (RigTypeDTO rigType in project.RigTypes)
             {
-                string pdfPath = System.IO.Path.GetFullPath(string.Format("Data/Output/{0}_{1}.pdf", project.Description, rigType.Name));
+                string pdfPath = System.IO.Path.Combine(Data.PROJECT_OUTPUT_FOLDER, string.Format("{0}_{1}.pdf", project.Description, rigType.Name));
+                outputs.Add(pdfPath);
+                
                 FileStream fs = new FileStream(pdfPath, FileMode.Create, FileAccess.Write);
 
                 Document doc = new Document(iTextSharp.text.PageSize.A4, 5, 5, 20, 15);
@@ -105,7 +109,7 @@ namespace FacilityDocu.UI.Utilities
                 doc.Close();
             }
 
-
+            return outputs;
 
 
             //PdfContentByte cb = wri.DirectContent;
