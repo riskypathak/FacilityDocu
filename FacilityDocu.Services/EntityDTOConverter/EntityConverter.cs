@@ -16,7 +16,25 @@ namespace FacilityDocu.Services.EntityDTOConverter
             moduleDTO.ModuleID = Convert.ToString(module.ModuleID);
             moduleDTO.Name = module.ModuleName;
 
+            moduleDTO.Steps = ToStepsDTO(module);
+
             return moduleDTO;
+        }
+
+        private static IList<StepDTO> ToStepsDTO(Module module)
+        {
+            IList<StepDTO> stepsDTO = new List<StepDTO>();
+
+            foreach (ModuleStep step in module.ModuleSteps.Distinct())
+            { 
+                StepDTO stepDTO = new StepDTO();
+                stepDTO.StepID = step.StepID.Value;
+                stepDTO.Name = step.Step.StepName;
+
+                stepsDTO.Add(stepDTO);
+            }
+
+            return stepsDTO;
         }
 
         public static ProjectDTO ToProjectDTO(Project project)

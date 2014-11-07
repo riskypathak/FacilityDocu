@@ -35,13 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="itextsharp">
-      <HintPath>..\..\..\..\Documents\Visual Studio 2013\Projects\TestPDF\TestPDF\itextsharp.dll</HintPath>
-    </Reference>
-    <Reference Include="itextsharp.pdfa">
-      <HintPath>..\..\..\..\Documents\Visual Studio 2013\Projects\TestPDF\TestPDF\itextsharp.pdfa.dll</HintPath>
-    </Reference>
-    <Reference Include="itextsharp.xtra">
-      <HintPath>..\..\..\..\Documents\Visual Studio 2013\Projects\TestPDF\TestPDF\itextsharp.xtra.dll</HintPath>
+      <HintPath>..\packages\iTextSharp.5.5.3\lib\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -64,6 +58,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EditHierarchy.xaml.cs">
+      <DependentUpon>EditHierarchy.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Service References\ServiceReference2\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -75,17 +72,14 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="sqlconnection.cs" />
-    <Page Include="addPhotos.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="EditHierarchy.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="HomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="addPhotos.xaml.cs">
-      <DependentUpon>addPhotos.xaml</DependentUpon>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -96,7 +90,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -114,6 +107,11 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\DataSources\FacilityDocu.UI.Utilities.Services.ActionDTO.datasource" />
+    <None Include="Properties\DataSources\FacilityDocu.UI.Utilities.Services.ModuleDTO.datasource" />
+    <None Include="Properties\DataSources\FacilityDocu.UI.Utilities.Services.ProjectDTO.datasource" />
+    <None Include="Properties\DataSources\FacilityDocu.UI.Utilities.Services.StepDTO.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -138,37 +136,12 @@
     <None Include="Service References\ServiceReference2\Service14.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Services\FacilityDocLaptop.Services.ActionDTO.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Services\FacilityDocLaptop.Services.ModuleDTO.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Services\FacilityDocLaptop.Services.ProjectDTO.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Services\FacilityDocLaptop.Services.StepDTO.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Services\FacilityDocuService.wsdl" />
-    <None Include="Service References\Services\FacilityDocuService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Services\FacilityDocuService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Services\FacilityDocuService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Services\FacilityDocuService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Data\ProjectXml\ProjectXML.xml">
+    <Resource Include="Data\ProjectXml\ProjectXML.xml">
       <SubType>Designer</SubType>
     </Resource>
   </ItemGroup>
@@ -200,11 +173,8 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\Services\FacilityDocuService.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\Data\ProjectXml\1.xml" />
-    <Resource Include="Assets\Data\ProjectXml\2.xml" />
+    <Resource Include="Data\ProjectXml\1.xml" />
+    <Resource Include="Data\ProjectXml\2.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\Services\configuration91.svcinfo" />
@@ -213,10 +183,42 @@
     <None Include="Service References\Services\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Service References\Services\FacilityDocuService1.wsdl" />
+    <None Include="Service References\Services\FacilityDocuService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services\FacilityDocuService41.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services\FacilityDocuService42.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services\FacilityDocuService43.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\Services\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FacilityDocu.UI.Utilities\FacilityDocu.UI.Utilities.csproj">
+      <Project>{db21a8d5-b7da-49df-b737-293569ea2712}</Project>
+      <Name>FacilityDocu.UI.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\plus.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services\FacilityDocuService1.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\remove.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
