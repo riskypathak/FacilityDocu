@@ -13,9 +13,15 @@ namespace FacilityDocu.UI.Utilities
         public static string PROJECT_IMAGES_FOLDER = System.IO.Path.GetFullPath("Data/Images");
         public static string PROJECT_ATTACHMENTS_FOLDER = System.IO.Path.GetFullPath("Data/Attachments");
         public static string PROJECT_OUTPUT_FOLDER = System.IO.Path.GetFullPath("Data/Output");
+        public static string CONFIG_PATH = System.IO.Path.GetFullPath("Assets/config.xml");
+        public static string ASSETS_PATH = System.IO.Path.GetFullPath("Assets");
 
         public static bool SYNCPROCESS = false;
 
         public static ProjectDTO CURRENT_PROJECT;
+
+        public static string CURRENT_USER;
+
+        public static IList<ToolDTO> AVAILABLE_TOOLS = null;
     }
 }

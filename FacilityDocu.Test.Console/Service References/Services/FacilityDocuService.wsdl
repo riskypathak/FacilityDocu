@@ -32,23 +32,17 @@
   <wsdl:message name="IFacilityDocuService_UpdateProject_OutputMessage">
     <wsdl:part name="parameters" element="tns:UpdateProjectResponse" />
   </wsdl:message>
-  <wsdl:message name="IFacilityDocuService_GetModules_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetModules" />
+  <wsdl:message name="IFacilityDocuService_UpdateActionImages_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateActionImages" />
   </wsdl:message>
-  <wsdl:message name="IFacilityDocuService_GetModules_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetModulesResponse" />
+  <wsdl:message name="IFacilityDocuService_UpdateActionImages_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateActionImagesResponse" />
   </wsdl:message>
-  <wsdl:message name="IFacilityDocuService_GetSteps_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetSteps" />
+  <wsdl:message name="IFacilityDocuService_GetTools_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTools" />
   </wsdl:message>
-  <wsdl:message name="IFacilityDocuService_GetSteps_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetStepsResponse" />
-  </wsdl:message>
-  <wsdl:message name="IFacilityDocuService_GetActions_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetActions" />
-  </wsdl:message>
-  <wsdl:message name="IFacilityDocuService_GetActions_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetActionsResponse" />
+  <wsdl:message name="IFacilityDocuService_GetTools_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetToolsResponse" />
   </wsdl:message>
   <wsdl:portType name="IFacilityDocuService">
     <wsdl:operation name="Login">
@@ -67,17 +61,13 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/UpdateProject" message="tns:IFacilityDocuService_UpdateProject_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/UpdateProjectResponse" message="tns:IFacilityDocuService_UpdateProject_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetModules">
-      <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/GetModules" message="tns:IFacilityDocuService_GetModules_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/GetModulesResponse" message="tns:IFacilityDocuService_GetModules_OutputMessage" />
+    <wsdl:operation name="UpdateActionImages">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/UpdateActionImages" message="tns:IFacilityDocuService_UpdateActionImages_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/UpdateActionImagesResponse" message="tns:IFacilityDocuService_UpdateActionImages_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetSteps">
-      <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/GetSteps" message="tns:IFacilityDocuService_GetSteps_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/GetStepsResponse" message="tns:IFacilityDocuService_GetSteps_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="GetActions">
-      <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/GetActions" message="tns:IFacilityDocuService_GetActions_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/GetActionsResponse" message="tns:IFacilityDocuService_GetActions_OutputMessage" />
+    <wsdl:operation name="GetTools">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/GetTools" message="tns:IFacilityDocuService_GetTools_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/GetToolsResponse" message="tns:IFacilityDocuService_GetTools_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IFacilityDocuService" type="tns:IFacilityDocuService">
@@ -118,8 +108,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetModules">
-      <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/GetModules" style="document" />
+    <wsdl:operation name="UpdateActionImages">
+      <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/UpdateActionImages" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -127,17 +117,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetSteps">
-      <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/GetSteps" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetActions">
-      <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/GetActions" style="document" />
+    <wsdl:operation name="GetTools">
+      <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/GetTools" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

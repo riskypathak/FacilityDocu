@@ -9,33 +9,6 @@ namespace FacilityDocu.Services.EntityDTOConverter
 {
     public static class EntityConverter
     {
-        public static ModuleDTO ToModuleDTO(Module module)
-        {
-            ModuleDTO moduleDTO = new ModuleDTO();
-
-            moduleDTO.ModuleID = Convert.ToString(module.ModuleID);
-            moduleDTO.Name = module.ModuleName;
-
-            moduleDTO.Steps = ToStepsDTO(module);
-
-            return moduleDTO;
-        }
-
-        private static IList<StepDTO> ToStepsDTO(Module module)
-        {
-            IList<StepDTO> stepsDTO = new List<StepDTO>();
-
-            foreach (ModuleStep step in module.ModuleSteps.Distinct())
-            { 
-                StepDTO stepDTO = new StepDTO();
-                stepDTO.StepID = step.StepID.Value;
-                stepDTO.Name = step.Step.StepName;
-
-                stepsDTO.Add(stepDTO);
-            }
-
-            return stepsDTO;
-        }
 
         public static ProjectDTO ToProjectDTO(Project project)
         {
@@ -59,15 +32,17 @@ namespace FacilityDocu.Services.EntityDTOConverter
         {
             IList<RigTypeDTO> rigTypesDTO = new List<RigTypeDTO>();
 
-            foreach (ProjectDetail projectDetail in projectDetails.GroupBy(p => p.RigTypeID).Select(grp => grp.First()))
+            foreach (ProjectDetail projectDetail in projectDetails.GroupBy(x => x.Step.Module.RigType.RigTypeID).Select(y => y.First()))
             {
+
                 RigTypeDTO rigTypeDTO = new RigTypeDTO();
-                rigTypeDTO.Name = projectDetail.RigType.Name;
-                rigTypeDTO.RigTypeID = projectDetail.RigType.RigTypeID.ToString();
+                rigTypeDTO.Name = projectDetail.Step.Module.RigType.Name;
+                rigTypeDTO.RigTypeID = Convert.ToString(projectDetail.Step.Module.RigType.RigTypeID);
+                rigTypeDTO.Modules = ToModulesDTO(projectDetails.Where(p => p.Step.Module.RigType.RigTypeID.Equals(projectDetail.Step.Module.RigTypeID.Value)));
 
                 rigTypesDTO.Add(rigTypeDTO);
 
-                rigTypeDTO.Modules = ToModulesDTO(projectDetails.Where(p => p.RigTypeID.Value.ToString().Equals(rigTypeDTO.RigTypeID)));
+
             }
 
             return rigTypesDTO;
@@ -77,15 +52,16 @@ namespace FacilityDocu.Services.EntityDTOConverter
         {
             IList<ModuleDTO> modulesDTO = new List<ModuleDTO>();
 
-            foreach (ProjectDetail projectDetail in projectDetails.GroupBy(p => p.ModuleID).Select(grp => grp.First()))
+            foreach (ProjectDetail projectDetail in projectDetails.GroupBy(x => x.Step.Module.ModuleID).Select(y => y.First()))
             {
                 ModuleDTO moduleDTO = new ModuleDTO();
-                moduleDTO.Name = projectDetail.Module.ModuleName;
-                moduleDTO.ModuleID = projectDetail.Module.ModuleID.ToString();
+                moduleDTO.Name = projectDetail.Step.Module.ModuleName;
+                moduleDTO.ModuleID = projectDetail.Step.Module.ModuleID.ToString();
 
+                moduleDTO.Steps = ToStepsDTO(projectDetails.Where(p => p.Step.Module.ModuleID.Equals(projectDetail.Step.Module.ModuleID)));
                 modulesDTO.Add(moduleDTO);
 
-                moduleDTO.Steps = ToStepsDTO(projectDetails.Where(p => p.ModuleID.Value.ToString().Equals(moduleDTO.ModuleID)));
+
             }
 
             return modulesDTO;
@@ -95,17 +71,15 @@ namespace FacilityDocu.Services.EntityDTOConverter
         {
             IList<StepDTO> stepsDTO = new List<StepDTO>();
 
-            foreach (var projectDetail in projectDetails.GroupBy(p => p.StepID).Select(grp => grp.First()))
+            foreach (var projectDetail in projectDetails.GroupBy(x => x.Step.StepID).Select(y => y.First()))
             {
                 StepDTO stepDTO = new StepDTO();
                 stepDTO.Name = projectDetail.Step.StepName;
                 stepDTO.StepID = projectDetail.Step.StepID;
 
+                stepDTO.Actions = ToActionDTO(projectDetails.Where(p => p.Step.StepID.Equals(projectDetail.Step.StepID)));
                 stepsDTO.Add(stepDTO);
-                stepDTO.Actions = ToActionDTO(projectDetails.Where(x => x.StepID.Value == stepDTO.StepID));
 
-
-                stepsDTO.Add(stepDTO);
             }
             return stepsDTO;
         }
@@ -114,21 +88,25 @@ namespace FacilityDocu.Services.EntityDTOConverter
         {
             IList<ActionDTO> actionsDTO = new List<ActionDTO>();
 
-            foreach (var projectDetail in projectDetails.GroupBy(p => p.ActionID).Select(grp => grp.First()))
+            foreach (var projectDetail in projectDetails)
             {
                 ActionDTO actionDTO = new ActionDTO();
-                actionDTO.ActionID = projectDetail.ActionID.GetValueOrDefault().ToString();
-                actionDTO.Description = projectDetail.Action.Description;
-                actionDTO.Name = projectDetail.Action.ActionName;
+                actionDTO.ActionID = Convert.ToString(projectDetail.ProjectDetailID);
+                actionDTO.Description = projectDetail.Description;
+                actionDTO.Name = projectDetail.ActionName;
                 actionDTO.Risks = projectDetail.Risks;
                 actionDTO.LiftingGears = projectDetail.LiftingGears;
                 actionDTO.Dimensions = projectDetail.Dimensions;
+                actionDTO.IsNameWarning = projectDetail.ActionNameWarning.Value;
+                actionDTO.IsDescriptionwarning = projectDetail.ActionDescriptionWarning.Value;
+                actionDTO.ImportantName = projectDetail.ImportantActionname;
+                actionDTO.ImportantDescription = projectDetail.ImportantActionDescription;
 
-                actionDTO.Images = TOImagesDTO(projectDetails.Where(x => x.ActionID.Value == projectDetail.ActionID));
-                actionDTO.Attachments = ToAttachmentsDTO(projectDetails.Where(x => x.ActionID.Value == projectDetail.ActionID));
-                actionDTO.Resources = ToResourcesDTO(projectDetails.Where(x => x.ActionID.Value == projectDetail.ActionID));
-                actionDTO.Tools = ToToolsDTO(projectDetails.Where(x => x.ActionID.Value == projectDetail.ActionID));
-                actionDTO.RiskAnalysis = ToRiskAnalysisDTO(projectDetails.Where(x => x.ActionID.Value == projectDetail.ActionID));
+                actionDTO.Images = TOImagesDTO(projectDetails);
+                actionDTO.Attachments = ToAttachmentsDTO(projectDetails);
+                actionDTO.Resources = ToResourcesDTO(projectDetails);
+                actionDTO.Tools = ToToolsDTO(projectDetails);
+                actionDTO.RiskAnalysis = ToRiskAnalysisDTO(projectDetails);
 
                 actionsDTO.Add(actionDTO);
             }
@@ -142,7 +120,7 @@ namespace FacilityDocu.Services.EntityDTOConverter
         {
             IList<AttachmentDTO> AttachmentDTOs = new List<AttachmentDTO>();
 
-            foreach (var projectDetail in enumerable.Select(x => x.Action.ActionAttachments).FirstOrDefault())
+            foreach (var projectDetail in enumerable.Select(x => x.ProjectActionAttachments).FirstOrDefault())
             {
                 AttachmentDTO attachmentDTO = new AttachmentDTO();
                 attachmentDTO.AttachmentID = projectDetail.AttachmentID.GetValueOrDefault().ToString();
@@ -165,22 +143,21 @@ namespace FacilityDocu.Services.EntityDTOConverter
         {
             IList<RiskAnalysisDTO> analysissDTO = new List<RiskAnalysisDTO>();
 
-            foreach (var analysis in analysiss.Select(x => x.ProjectRiskAnalysis).FirstOrDefault())
+            foreach (var analysis in analysiss.Select(x => x.RiskAnalysis).FirstOrDefault())
             {
                 RiskAnalysisDTO analysisDTO = new RiskAnalysisDTO();
-                analysisDTO.Activity = analysis.RiskAnalysi.Activity;
-                analysisDTO.B = Convert.ToDouble(analysis.RiskAnalysi.B.Value);
-                analysisDTO.B_ = Convert.ToDouble(analysis.RiskAnalysi.B_);
-                analysisDTO.Controls = analysis.RiskAnalysi.Controls;
-                analysisDTO.Danger = analysis.RiskAnalysi.Danger;
-                analysisDTO.E = Convert.ToDouble(analysis.RiskAnalysi.E.Value);
-                analysisDTO.E_ = Convert.ToDouble(analysis.RiskAnalysi.E_);
-                analysisDTO.K = Convert.ToDouble(analysis.RiskAnalysi.K.Value);
-                analysisDTO.K_ = Convert.ToDouble(analysis.RiskAnalysi.K_);
-                analysisDTO.Risk = Convert.ToDouble(analysis.RiskAnalysi.Risk.Value);
-                analysisDTO.Risk_ = Convert.ToDouble(analysis.RiskAnalysi.Risk_);
-                analysisDTO.RiskAnalysisID = Convert.ToString(analysis.RiskAnalysi.RiskAnalysisID);
-                analysisDTO.RiskAnalysisType = new RiskAnalysisTypeDTO() { RiskTypeID = analysis.RiskAnalysi.RiskType.RiskTypeID.ToString(), Name = analysis.RiskAnalysi.RiskType.Description };
+                analysisDTO.Activity = analysis.Activity;
+                analysisDTO.B = Convert.ToDouble(analysis.B.Value);
+                analysisDTO.B_ = Convert.ToDouble(analysis.B_);
+                analysisDTO.Controls = analysis.Controls;
+                analysisDTO.Danger = analysis.Danger;
+                analysisDTO.E = Convert.ToDouble(analysis.E.Value);
+                analysisDTO.E_ = Convert.ToDouble(analysis.E_);
+                analysisDTO.K = Convert.ToDouble(analysis.K.Value);
+                analysisDTO.K_ = Convert.ToDouble(analysis.K_);
+                analysisDTO.Risk = Convert.ToDouble(analysis.Risk.Value);
+                analysisDTO.Risk_ = Convert.ToDouble(analysis.Risk_);
+                analysisDTO.RiskAnalysisID = Convert.ToString(analysis.RiskAnalysisID);
 
                 analysissDTO.Add(analysisDTO);
             }
@@ -291,16 +268,5 @@ namespace FacilityDocu.Services.EntityDTOConverter
 
             return stepDTO;
         }
-
-        internal static ActionDTO ToActionDTO(StepAction action)
-        {
-            ActionDTO actionDTO = new ActionDTO();
-            actionDTO.ActionID = action.ActionID.GetValueOrDefault().ToString();
-            actionDTO.Description = action.Action.Description;
-            actionDTO.Name = action.Action.ActionName;
-
-            return actionDTO;
-        }
-
     }
 }

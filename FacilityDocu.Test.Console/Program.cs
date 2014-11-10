@@ -30,14 +30,14 @@ namespace FacilityDocu.Test.Console
 
         private static void TestUpdateProjectXml()
         {
-            SyncManager manager = new SyncManager(new List<int> { 1, 2 });
+            SyncManager manager = new SyncManager(new List<int> { 1});
             manager.UpdateProjectXml();
         }
 
         private static void TestUpdateProjectDatabase(int projectID)
         {
             SyncManager manager = new SyncManager();
-            manager.UpdateDatabase(1, true);
+            manager.UpdateDatabase(1, false);
         }
 
         private static void TestActionImageUpload()

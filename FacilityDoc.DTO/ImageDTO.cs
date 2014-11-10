@@ -10,11 +10,15 @@ namespace FacilityDocu.DTO
     [DataContract]
     public class ImageDTO
     {
+
         [DataMember]
         public string ImageID { get; set; }
 
         [DataMember]
         public string Number { get; set; }
+
+        [DataMember]
+        public bool Used { get; set; }
 
         [DataMember]
         public string Description { get; set; }
@@ -33,6 +37,5 @@ namespace FacilityDocu.DTO
 
         [DataMember]
         public byte[] FileByteStream;
-
     }
 }

@@ -9,6 +9,7 @@
   <xs:element name="ArrayOfProjectDTO" nillable="true" type="tns:ArrayOfProjectDTO" />
   <xs:complexType name="ProjectDTO">
     <xs:sequence>
+      <xs:element minOccurs="0" name="Closed" type="xs:boolean" />
       <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="tns:UserDTO" />
       <xs:element minOccurs="0" name="CreationDate" type="xs:dateTime" />
       <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
@@ -82,9 +83,14 @@
   <xs:complexType name="ActionDTO">
     <xs:sequence>
       <xs:element minOccurs="0" name="ActionID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Attachments" nillable="true" type="tns:ArrayOfAttachmentDTO" />
       <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Dimensions" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Images" nillable="true" type="tns:ArrayOfImageDTO" />
+      <xs:element minOccurs="0" name="ImportantDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ImportantName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IsDescriptionwarning" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNameWarning" type="xs:boolean" />
       <xs:element minOccurs="0" name="LiftingGears" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Number" nillable="true" type="xs:string" />
@@ -95,6 +101,20 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ActionDTO" nillable="true" type="tns:ActionDTO" />
+  <xs:complexType name="ArrayOfAttachmentDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AttachmentDTO" nillable="true" type="tns:AttachmentDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAttachmentDTO" nillable="true" type="tns:ArrayOfAttachmentDTO" />
+  <xs:complexType name="AttachmentDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AttachmentID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Path" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AttachmentDTO" nillable="true" type="tns:AttachmentDTO" />
   <xs:complexType name="ArrayOfImageDTO">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="ImageDTO" nillable="true" type="tns:ImageDTO" />
@@ -106,10 +126,12 @@
       <xs:element minOccurs="0" name="Comments" nillable="true" type="tns:ArrayOfCommentDTO" />
       <xs:element minOccurs="0" name="CreationDate" type="xs:dateTime" />
       <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FileByteStream" nillable="true" type="xs:base64Binary" />
       <xs:element minOccurs="0" name="ImageID" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Number" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Path" nillable="true" type="xs:string" />
       <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Tags" nillable="true" type="q1:ArrayOfstring" />
+      <xs:element minOccurs="0" name="Used" type="xs:boolean" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ImageDTO" nillable="true" type="tns:ImageDTO" />
@@ -139,6 +161,7 @@
       <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ResourceCount" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ResourceID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Type" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ResourceDTO" nillable="true" type="tns:ResourceDTO" />
@@ -159,10 +182,8 @@
       <xs:element minOccurs="0" name="E_" type="xs:double" />
       <xs:element minOccurs="0" name="K" type="xs:double" />
       <xs:element minOccurs="0" name="K_" type="xs:double" />
-      <xs:element minOccurs="0" name="Module" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Risk" type="xs:double" />
       <xs:element minOccurs="0" name="RiskAnalysisID" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="RiskType" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Risk_" type="xs:double" />
     </xs:sequence>
   </xs:complexType>

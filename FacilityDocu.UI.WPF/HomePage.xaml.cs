@@ -25,6 +25,12 @@ using System.Xml.Linq;
 
 namespace FacilityDocLaptop
 {
+    public class ImageModel
+    {
+        public string ImageID { get; set; }
+        public System.Windows.Controls.Image Image { get; set; }
+        public string Description { get; set; }
+    }
 
     public partial class HomePage : Window
     {
@@ -36,89 +42,7 @@ namespace FacilityDocLaptop
         private int currentActionIndex = 0;
         private int currentAnalysisIndex = 0;
 
-        string projectid;
-        string[] sourcePath = new string[100];
-        string[] pictureFilename = new string[100];
-        string[] totalpictureinoneindex = new string[100];
-        int imagecountdiff;
-        string actionidstring;
-        int liftinggearcount;
-        int imagecount;
-        int riskcount;
-        int dimensioncount;
-        int toolcount;
-        int resourcecount;
-        int actioncount;
-        int stepcount;
-        int modulecount;
-        int rigtypecount;
-        int rigtypeindex = 0;
-        int moduleindex = 0;
-        int stepindex = 0;
-        int actionindex = 0;
-        int resourceindex = 0;
-        int toolsindex = 0;
-        int dimensionindex = 0;
-        int riskindex = 0;
-        int imageindex = 0;
-        int liftinggearindex = 0;
-        string XMLPath;
-        string DATAPath;
-        string BACKUPPath;
-        string pdf_ProjectName;
-        string pdf_RigType;
-        string pdf_Module;
-
-        string[] projectname = new string[100];
-        string[] createdby = new string[100];
-        string[] createdtime = new string[100];
-        string[] updatedby = new string[100];
-        string[] updatetime = new string[100];
-        string[] xmlfilesArray = new string[100];
-        string[] templatename = new string[100];
-        string[] closed = new string[100];
-
-
-        DataSet ds = new DataSet();
-        SqlDataAdapter da = new SqlDataAdapter();
-
-        XElement xelement;
-
-
-        List<string> rigdata = new List<string>();
-        List<string> rigdata1 = new List<string>();
-        List<string> moduledataname = new List<string>();
-        List<string> moduledatanumber = new List<string>();
-        List<string> moduleid = new List<string>();
-        List<string> stepdataname = new List<string>();
-        List<string> stepdatanumber = new List<string>();
-        List<string> stepid = new List<string>();
-        List<string> actionid = new List<string>();
-        List<string> actiondata = new List<string>();
-        List<string> actiondatanumber = new List<string>();
-        List<string> actiondatadetails = new List<string>();
-        List<string> actiondetailsdata = new List<string>();
-        List<string> resourcedata = new List<string>();
-        List<string> liftinggearsdata = new List<string>();
-        List<string> toolsdata = new List<string>();
-        List<string> dimensiondata = new List<string>();
-        List<string> riskdata = new List<string>();
-        List<string> imagedata = new List<string>();
-        List<string> imageiddata = new List<string>();
-        //PDF
-        List<string> pdf_imagedataid = new List<string>();
-        List<string> pdf_imagedataname = new List<string>();
-
-        public class Grid_XMLRead
-        {
-            public int projectID { get; set; }
-            public string projectName { get; set; }
-            public string description { get; set; }
-            public string createdBy { get; set; }
-            public string createdTime { get; set; }
-            public string updatedBy { get; set; }
-            public string updatedTime { get; set; }
-        }
+        public IList<ImageModel> Images;
 
         public HomePage()
         {
@@ -143,18 +67,28 @@ namespace FacilityDocLaptop
         {
             bool isLogin = false;
 
+            XDocument xdoc = XDocument.Load(Data.CONFIG_PATH);
+
             try
             {
                 isLogin = service.Login(userName.Text, password.Password);
+                if (isLogin)
+                {
+                    xdoc.Element("config").Element("lastlogin").Value = userName.Text;
+                }
             }
             catch (Exception)
             {
-                isLogin = true;
+                if (xdoc.Element("config").Element("lastlogin").Value.Equals(userName.Text))
+                {
+                    isLogin = true;
+                }
             }
 
             if (isLogin)
             {
                 MakeVisible(gridHomePage);
+                Data.CURRENT_USER = userName.Text;
             }
             else
             {
@@ -169,6 +103,7 @@ namespace FacilityDocLaptop
 
                 Mouse.OverrideCursor = Cursors.Hand;
         }
+
         public void MouseLeave()
         {
             if (this.Cursor != Cursors.Wait)
@@ -189,16 +124,6 @@ namespace FacilityDocLaptop
             homePage.Title = "FacilityDocu - New Project";
 
             gdvNew.Visibility = Visibility.Visible;
-        }
-
-        private void ImportPhoto_btn_Click(object sender, RoutedEventArgs e)
-        {
-            importPhotos_grid.Visibility = Visibility.Visible;
-        }
-
-        private void importPhotos_back_Click(object sender, RoutedEventArgs e)
-        {
-            importPhotos_grid.Visibility = Visibility.Collapsed;
         }
 
         private void addPictures_btn_Click(object sender, RoutedEventArgs e)
@@ -237,59 +162,6 @@ namespace FacilityDocLaptop
 
         }
 
-        private void ok_btn_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void ProjectList_StylusInRange(object sender, StylusEventArgs e)
-        {
-        }
-
-        private void editRisk_btn_Click(object sender, RoutedEventArgs e)
-        {
-            homePage.Title = "FacilityDocu - Edit Risk";
-        }
-
-        private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) //_ProjectName_HyperLink
-        {
-        }
-
-        private void txtblockActivity_MouseEnter(object sender, MouseEventArgs e)
-        {
-            MouseEnter();
-        }
-
-        private void txtblockActivity_MouseLeave(object sender, MouseEventArgs e)
-        {
-            MouseLeave();
-        }
-
-        private void editHierarchy_btn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            //homePage.Title = "FacilityDocu - Edit Hierarchy";
-            //editPage_grid.Visibility = Visibility.Collapsed;
-            //grid_EditHierarchy.Visibility = Visibility.Visible;
-
-            //for (int i = 0; i < moduledataname.Count; i++)
-            //    listboxModules.Items.Add(moduledataname[i]);
-
-            //for (int i = 0; i < stepdataname.Count; i++)
-            //listboxSteps.Items.Add(stepdataname[i]);
-
-            //for (int i = 0; i < actiondata.Count; i++)
-            //    listboxActions.Items.Add(actiondata[i]);
-        }
-
-        private void editHierarchy_btn_MouseEnter_1(object sender, MouseEventArgs e)
-        {
-            MouseEnter();
-        }
-
-        private void editHierarchy_btn_MouseLeave_1(object sender, MouseEventArgs e)
-        {
-            MouseLeave();
-        }
-
         private void projectName_txt_MouseEnter(object sender, MouseEventArgs e)
         {
             MouseEnter();
@@ -307,70 +179,6 @@ namespace FacilityDocLaptop
             {
                 //log out activity
             }
-        }
-
-        private void btnPrev_Click(object sender, RoutedEventArgs e) //RigType Previous Button
-        {
-
-
-        }
-
-        private void btnNext_Click(object sender, RoutedEventArgs e)  //RigType Next Button
-        {
-
-        }
-
-        public void imageload()
-        {
-            for (int i = 0; i < imagedata.Count; i++)
-            {
-                BitmapImage bimg = new BitmapImage();
-                System.Windows.Controls.Image imagename = new System.Windows.Controls.Image();
-                bimg.BeginInit();
-                bimg.UriSource = new Uri(imagedata[imageindex]);
-                imagename.Source = bimg;
-                imagename.Width = 150;
-                imagename.Height = 150;
-                bimg.EndInit();
-                lstPictures.Items.Add(imagename);
-            }
-        }
-
-        public void createfolder()
-        {
-
-            if (!Directory.Exists(imagedata[imageindex]))
-            {
-                Directory.CreateDirectory(imagedata[imageindex]);
-            }
-
-        }
-
-        public void ReadPathFromConfigXML()
-        {
-            XElement xelement = XElement.Load("../../Assets/Config.xml");
-            IEnumerable<XElement> name = xelement.Elements();
-
-            var readPath = from query in xelement.Descendants("paths")
-
-
-
-                           select new
-                           {
-                               xmlpath = query.Element("xmlp").Value,
-                               datapath = query.Element("datap").Value,
-                               backuppath = query.Element("backp").Value,
-                           };
-
-            foreach (var names in readPath)
-            {
-                XMLPath = names.xmlpath.ToString();
-                DATAPath = names.datapath.ToString();
-                BACKUPPath = names.backuppath.ToString();
-
-
-            }
-            // MessageBox.Show(DATAPath);
         }
 
         private void listboxTools_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -399,142 +207,9 @@ namespace FacilityDocLaptop
         {
         }
 
-        public void ReadXML()
-        {
-
-
-            XElement xelement = XElement.Load(System.IO.Path.GetFullPath("Data/ProjectXml") + "/" + "ProjectXML.xml");
-            IEnumerable<XElement> name = xelement.Elements();
-
-            var readProjectName = from query in xelement.Descendants("project")
-                            .Elements("name")
-
-                                  select new
-                                  {
-                                      name = query.Value,
-                                  };
-
-            foreach (var names in readProjectName)
-            {
-                pdf_ProjectName = names.name.ToString();
-                // MessageBox.Show(ProjectName);
-            }
-
-
-            //RIG
-
-            var readRigType = from query in xelement.Descendants("project")
-                            .Elements("rigs")
-                            .Elements("rig")
-                              select new
-                              {
-                                  name = query.Attribute("type").Value,
-                              };
-
-
-
-            foreach (var names in readRigType)
-            {
-                pdf_RigType = names.name.ToString();
-                //MessageBox.Show(names.name);
-            }
-
-            //MODULE
-            var readModule = from query in xelement.Descendants("project")
-                                 .Elements("rigs")
-                                 .Elements("rig")
-                                 .Elements("modules")
-                                 .Elements("module")
-                                 .Elements("name")
-                             select new
-                             {
-                                 name = query.Value,
-
-                             };
-            foreach (var names in readModule)
-            {
-                pdf_Module = names.name.ToString();
-                // MessageBox.Show(names.name);
-            }
-
-
-            //STEP
-            var readStep = from query in xelement.Descendants("project")
-                                 .Elements("rigs")
-                                 .Elements("rig")
-                                 .Elements("modules")
-                                 .Elements("module")
-                                 .Elements("steps")
-                                 .Elements("step")
-
-                           select new
-                           {
-                               name = query.Element("name").Value,
-
-
-                           };
-            foreach (var names in readStep)
-            {
-                //MessageBox.Show(names.name);
-            }
-
-            //ACTION
-            var readAction = from query in xelement.Descendants("project")
-                                 .Elements("rigs")
-                                 .Elements("rig")
-                                 .Elements("modules")
-                                 .Elements("module")
-                                 .Elements("steps")
-                                 .Elements("step")
-                                 .Elements("actions")
-                                 .Elements("action")
-                                 .Elements("name")
-
-                             select new
-                             {
-                                 name = query.Value,
-
-
-                             };
-            foreach (var names in readAction)
-            {
-                MessageBox.Show(names.name);
-                // ActionName = names.name;
-            }
-
-
-            //Image
-            var readImage = from query in xelement.Descendants("project")
-                                 .Elements("rigs")
-                                 .Elements("rig")
-                                 .Elements("modules")
-                                 .Elements("module")
-                                 .Elements("steps")
-                                 .Elements("step")
-                                 .Elements("actions")
-                                 .Elements("action")
-                                 .Elements("images")
-                                 .Elements("image")
-
-                            select new
-                            {
-                                ImgID = query.Element("id").Value,
-                                ImgName = query.Element("name").Value,
-
-
-                            };
-            foreach (var names in readImage)
-            {
-                pdf_imagedataid.Add(names.ImgID.ToString());
-                pdf_imagedataname.Add(names.ImgName.ToString());
-                //  MessageBox.Show(names.name);
-                // ActionName = names.name;
-            }
-        }
-
         private void btnPublish_Click(object sender, RoutedEventArgs e)
         {
-            ReadXML();
+            //ReadXML();
         }
 
         private void listView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -555,12 +230,12 @@ namespace FacilityDocLaptop
 
             ChangeScreenControls();
 
-            editPage_grid.Visibility = Visibility.Visible;
-            gridHomePage.Visibility = Visibility.Collapsed;
+            MakeVisible(editPage_grid);
         }
 
         private void ChangeScreenControls()
         {
+            txtUser.Text = Data.CURRENT_USER;
             txtProjectID.Text = Data.CURRENT_PROJECT.ProjectID;
             txtProjectDescription.Text = Data.CURRENT_PROJECT.Description;
 
@@ -572,48 +247,51 @@ namespace FacilityDocLaptop
             StepDTO step = module.Steps[currentStepIndex];
             txtStepName.Text = string.Format("{0} {1}", step.Number, step.Name);
 
-            ActionDTO action = step.Actions[currentActionIndex];
-            txtAction.Text = action.Name.Trim();
-            txtActionNumber.Text = action.Number.Trim();
-            txtActionDetails.Text = action.Description.Trim();
-            txtActionDimensions.Text = action.Dimensions.Trim();
-            txtActionLiftingGears.Text = action.LiftingGears.Trim();
-            txtActionRisks.Text = action.Risks.Trim();
-
-            lstActionTools.ItemsSource = action.Tools;
-
-            lstActionResourcesP.ItemsSource = action.Resources.Where(r => r.Type.Equals("people")).ToList();
-            lstActionResourcesM.ItemsSource = action.Resources.Where(r => r.Type.Equals("machine")).ToList();
-
-            lstPictures.Items.Clear();
-            action.Images.ToList().ForEach(i => AddActionImage(i.Path));
-
-            txtAction.IsReadOnly = true;
-            txtActionDetails.IsReadOnly = true;
-            txtActionDimensions.IsReadOnly = true;
-            txtActionRisks.IsReadOnly = true;
-            lstActionTools.IsEnabled = false;
-            lstActionResourcesM.IsEnabled = false;
-            lstActionResourcesP.IsEnabled = false;
-
-
-            lstAttachments.ItemsSource = action.Attachments;
-
-            if (action.RiskAnalysis.Length > 0)
+            if (step.Actions.Length > 0)
             {
-                RiskAnalysisDTO analysis = action.RiskAnalysis[currentAnalysisIndex];
-                txtAnalysisActivity.Text = analysis.Activity;
-                txtAnalysisB.Text = analysis.B.ToString();
-                txtAnalysisB_.Text = analysis.B_.ToString();
-                txtAnalysisControl.Text = analysis.Controls;
-                txtAnalysisDanger.Text = analysis.Activity;
-                txtAnalysisE.Text = analysis.E.ToString();
-                txtAnalysisE_.Text = analysis.E_.ToString();
-                txtAnalysisK.Text = analysis.K.ToString();
-                txtAnalysisK_.Text = analysis.K_.ToString();
-                txtAnalysisRisk.Text = analysis.Risk.ToString();
-                txtAnalysisRisk_.Text = analysis.Risk_.ToString();
+                ActionDTO action = step.Actions[currentActionIndex];
+
+                txtAction.Document.Blocks.Clear();
+                txtAction.Document.Blocks.Add(new System.Windows.Documents.Paragraph(new Run(action.Name)));
+
+                EnableNameWarning();
+
+                txtActionDetails.Document.Blocks.Clear();
+                txtActionDetails.Document.Blocks.Add(new System.Windows.Documents.Paragraph(new Run(action.Description)));
+
+                EnableActionDetailsWarning();
+
+                txtActionNumber.Text = action.Number.Trim();
+                txtActionDimensions.Text = action.Dimensions.Trim();
+                txtActionLiftingGears.Text = action.LiftingGears.Trim();
+                txtActionRisks.Text = action.Risks.Trim();
+
+                lstActionTools.ItemsSource = action.Tools;
+
+                lstActionResourcesP.ItemsSource = action.Resources.Where(r => r.Type.Equals("people")).ToList();
+                lstActionResourcesM.ItemsSource = action.Resources.Where(r => r.Type.Equals("machine")).ToList();
+
+                ShowImages(action.Images);
+
+                lstAttachments.ItemsSource = action.Attachments;
+
+                if (action.RiskAnalysis.Length > 0)
+                {
+                    RiskAnalysisDTO analysis = action.RiskAnalysis[currentAnalysisIndex];
+                    txtAnalysisActivity.Text = analysis.Activity;
+                    txtAnalysisB.Text = analysis.B.ToString();
+                    txtAnalysisB_.Text = analysis.B_.ToString();
+                    txtAnalysisControl.Text = analysis.Controls;
+                    txtAnalysisDanger.Text = analysis.Activity;
+                    txtAnalysisE.Text = analysis.E.ToString();
+                    txtAnalysisE_.Text = analysis.E_.ToString();
+                    txtAnalysisK.Text = analysis.K.ToString();
+                    txtAnalysisK_.Text = analysis.K_.ToString();
+                    txtAnalysisRisk.Text = analysis.Risk.ToString();
+                    txtAnalysisRisk_.Text = analysis.Risk_.ToString();
+                }
             }
+
             txtAnalysisActivity.IsReadOnly = true;
             txtAnalysisB.IsReadOnly = true;
             txtAnalysisB_.IsReadOnly = true;
@@ -628,17 +306,23 @@ namespace FacilityDocLaptop
 
         }
 
-        private void AddActionImage(string imagePath)
+        private void ShowImages(IList<ImageDTO> images)
         {
-            BitmapImage bitmap = new BitmapImage();
-            System.Windows.Controls.Image imagename = new System.Windows.Controls.Image();
-            bitmap.BeginInit();
-            bitmap.UriSource = new Uri(imagePath);
-            imagename.Source = bitmap;
-            imagename.Width = 150;
-            imagename.Height = 150;
-            bitmap.EndInit();
-            lstPictures.Items.Add(imagename);
+            Images = new List<ImageModel>();
+            foreach (ImageDTO image in images.Where(i => i.Used == true))
+            {
+                BitmapImage bitmap = new BitmapImage();
+                System.Windows.Controls.Image imagename = new System.Windows.Controls.Image();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(image.Path);
+                imagename.Source = bitmap;
+                //imagename.Width = 150;
+                //imagename.Height = 150;
+                bitmap.EndInit();
+
+                Images.Add(new ImageModel() { ImageID = image.ImageID, Image = imagename, Description = image.Description });
+            }
+            lstPictures.ItemsSource = Images;
         }
 
         private void btnUpNext_Click_1(object sender, RoutedEventArgs e)
@@ -706,6 +390,8 @@ namespace FacilityDocLaptop
         {
             if (currentStepIndex > 0)// || currentRigIndex > (Data.CURRENT_PROJECT .RigTypes.Count() - 1) )
             {
+                SaveActionDetail();
+
                 currentStepIndex--;
                 currentActionIndex = 0;
 
@@ -717,11 +403,26 @@ namespace FacilityDocLaptop
         {
             if (currentActionIndex < (Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Count() - 1))
             {
+                SaveActionDetail();
                 currentActionIndex++;
                 currentAnalysisIndex = 0;
-
                 ChangeScreenControls();
             }
+        }
+
+        private void SaveActionDetail()
+        {
+            ActionDTO action = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex];
+
+            action.Dimensions = txtActionDimensions.Text;
+            action.LiftingGears = txtActionLiftingGears.Text;
+            action.Name = new TextRange(txtAction.Document.ContentStart, txtAction.Document.ContentEnd).Text;
+            action.Description = new TextRange(txtActionDetails.Document.ContentStart, txtActionDetails.Document.ContentEnd).Text;
+            action.Risks = txtActionRisks.Text;
+
+            TextRange rng = new TextRange(txtAction.Document.ContentStart, txtAction.Document.ContentEnd);
+
+            object obj = rng.GetPropertyValue(TextElement.ForegroundProperty);
         }
 
         private void btnActionLeft_Click(object sender, RoutedEventArgs e)
@@ -752,24 +453,17 @@ namespace FacilityDocLaptop
                     ActionID = "0"
                 };
 
+
+
             IList<ActionDTO> actions = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions.ToList();
             actions.Add(action);
 
             Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions = actions.ToArray();
 
             currentActionIndex = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Count() - 1;
-            ChangeScreenControls();
-        }
 
-        private void btnActionEdit_Click_1(object sender, RoutedEventArgs e)
-        {
-            txtAction.IsReadOnly = false;
-            txtActionDetails.IsReadOnly = false;
-            txtActionDimensions.IsReadOnly = false;
-            txtActionRisks.IsReadOnly = false;
-            lstActionTools.IsEnabled = true;
-            lstActionResourcesM.IsEnabled = true;
-            lstActionResourcesP.IsEnabled = true;
+            currentAnalysisIndex = 0;
+            ChangeScreenControls();
         }
 
         private void btAnalysisLeft_Click_1(object sender, RoutedEventArgs e)
@@ -837,6 +531,8 @@ namespace FacilityDocLaptop
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            SaveActionDetail();
+
             ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
             MessageBox.Show("Project saved locally. \nPlease click on publish to sync with remote data server");
         }
@@ -848,6 +544,15 @@ namespace FacilityDocLaptop
             editPage_grid.Visibility = Visibility.Collapsed;
 
             grid.Visibility = Visibility.Visible;
+
+            if (grid.Name.Equals("editPage_grid"))
+            {
+                dpnMenu.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                dpnMenu.Visibility = System.Windows.Visibility.Collapsed;
+            }
 
         }
 
@@ -874,6 +579,8 @@ namespace FacilityDocLaptop
             Data.CURRENT_PROJECT.Template = false;
             Data.CURRENT_PROJECT.Closed = false;
 
+            ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+
             ChangeScreenControls();
         }
 
@@ -887,6 +594,255 @@ namespace FacilityDocLaptop
         private void btnBack_Click_1(object sender, RoutedEventArgs e)
         {
             MakeVisible(gridHomePage);
+        }
+
+        private void btnToolAdd_Click_1(object sender, RoutedEventArgs e)
+        {
+            Data.AVAILABLE_TOOLS = service.GetTools();
+
+
+            var notToolIds = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools.Select(n => n.ToolID);
+
+            lstAddTools.ItemsSource = Data.AVAILABLE_TOOLS.Where(t => !notToolIds.Contains(t.ToolID));
+            popTool.IsOpen = true;
+        }
+
+        private void btnToolA_Click_1(object sender, RoutedEventArgs e)
+        {
+            popTool.IsOpen = false;
+
+            foreach (ToolDTO selected in lstAddTools.SelectedItems)
+            {
+                IList<ToolDTO> tools = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools.ToList();
+                tools.Add(selected);
+
+
+                Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools = tools.ToArray();
+            }
+            ChangeScreenControls();
+        }
+
+        private void btnToolC_Click_1(object sender, RoutedEventArgs e)
+        {
+            popTool.IsOpen = false;
+        }
+
+        private void btnRemove_Click_1(object sender, RoutedEventArgs e)
+        {
+            string toolToRemoveID = (sender as Button).CommandParameter.ToString();
+
+            IList<ToolDTO> tools = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools.ToList();
+
+            ToolDTO toolToRemove = tools.Single(t => t.ToolID.Equals(toolToRemoveID));
+            tools.Remove(toolToRemove);
+
+
+            Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools = tools.ToArray();
+
+            ChangeScreenControls();
+        }
+
+        private void btnRemoveImage_Click_1(object sender, RoutedEventArgs e)
+        {
+            string imageToRemoveID = (sender as Button).CommandParameter.ToString();
+
+            ImageDTO removeImage = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].
+                Actions[currentActionIndex].Images.Single(i => i.ImageID.Equals(imageToRemoveID));
+
+            removeImage.Used = false;
+
+            ChangeScreenControls();
+        }
+
+        private void btnAddImages_Click_1(object sender, RoutedEventArgs e)
+        {
+            lstAddImages.ItemsSource = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Images.Where(i => i.Used == false);
+            popImage.IsOpen = true;
+        }
+
+        private void btnImageA_Click_1(object sender, RoutedEventArgs e)
+        {
+            popImage.IsOpen = false;
+
+            foreach (ImageDTO selected in lstAddImages.SelectedItems)
+            {
+                ImageDTO modified = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Images.Single(i => i.ImageID.Equals(selected.ImageID));
+                modified.Used = true;
+            }
+            ChangeScreenControls();
+        }
+
+        private void btnImageC_Click_1(object sender, RoutedEventArgs e)
+        {
+            popImage.IsOpen = false;
+        }
+
+        private void btnActionDelete_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (currentActionIndex >= 0)
+            {
+                IList<ActionDTO> actions = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions.ToList();
+                actions.Remove(Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex]);
+
+                Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions = actions.ToArray();
+
+                currentActionIndex--;
+                currentAnalysisIndex = 0;
+                ChangeScreenControls();
+            }
+        }
+
+        private void btnAnalysisAdd_Click_1(object sender, RoutedEventArgs e)
+        {
+            RiskAnalysisDTO RiskAnalysis = new RiskAnalysisDTO()
+            {
+                Activity = "New RiskAnalysis Activity",
+                Controls = "New RiskAnalysis's Controls",
+                Danger = "New RiskAnalysis's Danger"
+            };
+
+            IList<RiskAnalysisDTO> RiskAnalysiss = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex]
+                .Actions[currentActionIndex].RiskAnalysis.ToList();
+            RiskAnalysiss.Add(RiskAnalysis);
+
+            Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].RiskAnalysis = RiskAnalysiss.ToArray();
+
+            currentAnalysisIndex = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex]
+                .Actions[currentActionIndex].RiskAnalysis.Count() - 1;
+            ChangeScreenControls();
+        }
+
+        private void btnAnalysisDelete_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (currentAnalysisIndex >= 0)
+            {
+                IList<RiskAnalysisDTO> RiskAnalysiss = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex]
+                    .Actions[currentActionIndex].RiskAnalysis.ToList();
+
+                RiskAnalysiss.Remove(Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex]
+                    .Actions[currentActionIndex].RiskAnalysis[currentAnalysisIndex]);
+
+                Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex]
+                    .Actions[currentActionIndex].RiskAnalysis = RiskAnalysiss.ToArray();
+
+                currentAnalysisIndex--;
+                ChangeScreenControls();
+            }
+        }
+
+        private void btnWarningAction_MouseDown_1(object sender, MouseButtonEventArgs e)
+        {
+            EnableNameWarning(true);
+        }
+
+        private void EnableNameWarning(bool isToggle = false)
+        {
+            ActionDTO action = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex]
+        .Actions[currentActionIndex];
+
+            Brush color = new SolidColorBrush(Colors.Yellow);
+
+            BitmapImage logo = new BitmapImage();
+            logo.BeginInit();
+
+            if (isToggle)
+            {
+                if (action.IsNameWarning)
+                {
+                    action.IsNameWarning = false;
+                    logo.UriSource = new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "warningdisable.png"));
+                    color = new SolidColorBrush(Colors.Black);
+                }
+                else
+                {
+                    action.IsNameWarning = true;
+                    logo.UriSource = new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "warningenable.png"));
+                    color = new SolidColorBrush(Colors.Yellow);
+                }
+            }
+            else
+            {
+                if (!action.IsNameWarning)
+                {
+                    logo.UriSource = new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "warningdisable.png"));
+                    color = new SolidColorBrush(Colors.Black);
+                }
+                else
+                {
+                    logo.UriSource = new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "warningenable.png"));
+                    color = new SolidColorBrush(Colors.Yellow);
+                }
+            }
+            logo.EndInit();
+
+
+            txtAction.BorderBrush = color;
+            btnWarningAction.Source = logo;
+        }
+
+        private void mniImportnat_Click_1(object sender, RoutedEventArgs e)
+        {
+            txtAction.Selection.ApplyPropertyValue(RichTextBox.ForegroundProperty, Brushes.Red);
+        }
+
+        private void mniDetailImportnat_Click_1(object sender, RoutedEventArgs e)
+        {
+            txtActionDetails.Selection.ApplyPropertyValue(RichTextBox.ForegroundProperty, Brushes.Red);
+        }
+
+        private void btnWarningActionDescription_MouseDown_1(object sender, MouseButtonEventArgs e)
+        {
+            EnableActionDetailsWarning(true);
+        }
+
+        private void EnableActionDetailsWarning(bool isToggle = false)
+        {
+            ActionDTO action = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex]
+        .Actions[currentActionIndex];
+
+            Brush color = new SolidColorBrush(Colors.Yellow);
+
+            BitmapImage logo = new BitmapImage();
+            logo.BeginInit();
+
+            if (isToggle)
+            {
+                if (action.IsDescriptionwarning)
+                {
+                    action.IsDescriptionwarning = false;
+                    logo.UriSource = new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "warningdisable.png"));
+                    color = new SolidColorBrush(Colors.Black);
+                }
+                else
+                {
+                    action.IsDescriptionwarning = true;
+                    logo.UriSource = new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "warningenable.png"));
+                    color = new SolidColorBrush(Colors.Yellow);
+                }
+            }
+            else
+            {
+                if (!action.IsDescriptionwarning)
+                {
+                    logo.UriSource = new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "warningdisable.png"));
+                    color = new SolidColorBrush(Colors.Black);
+                }
+                else
+                {
+                    logo.UriSource = new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "warningenable.png"));
+                    color = new SolidColorBrush(Colors.Yellow);
+                }
+            }
+            logo.EndInit();
+
+
+            txtActionDetails.BorderBrush = color;
+            btnWarningActionDescription.Source = logo;
+        }
+
+        private void btnSync_Click_1(object sender, RoutedEventArgs e)
+        {
+            (new SyncManager()).Sync();
         }
     }
 }

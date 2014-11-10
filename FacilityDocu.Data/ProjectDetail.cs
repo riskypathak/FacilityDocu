@@ -21,13 +21,15 @@ public partial class ProjectDetail
     public ProjectDetail()
     {
 
+        this.ProjectActionAttachments = new HashSet<ProjectActionAttachment>();
+
         this.ProjectActionImages = new HashSet<ProjectActionImage>();
 
         this.ProjectActionResources = new HashSet<ProjectActionResource>();
 
         this.ProjectActionTools = new HashSet<ProjectActionTool>();
 
-        this.ProjectRiskAnalysis = new HashSet<ProjectRiskAnalysi>();
+        this.RiskAnalysis = new HashSet<RiskAnalysi>();
 
     }
 
@@ -36,13 +38,7 @@ public partial class ProjectDetail
 
     public Nullable<int> ProjectID { get; set; }
 
-    public Nullable<int> RigTypeID { get; set; }
-
-    public Nullable<int> ModuleID { get; set; }
-
     public Nullable<int> StepID { get; set; }
-
-    public Nullable<int> ActionID { get; set; }
 
     public string Risks { get; set; }
 
@@ -50,13 +46,23 @@ public partial class ProjectDetail
 
     public string LiftingGears { get; set; }
 
+    public string ActionName { get; set; }
+
+    public string Description { get; set; }
+
+    public Nullable<bool> ActionNameWarning { get; set; }
+
+    public Nullable<bool> ActionDescriptionWarning { get; set; }
+
+    public string ImportantActionname { get; set; }
+
+    public string ImportantActionDescription { get; set; }
 
 
-    public virtual Action Action { get; set; }
-
-    public virtual Module Module { get; set; }
 
     public virtual Project Project { get; set; }
+
+    public virtual ICollection<ProjectActionAttachment> ProjectActionAttachments { get; set; }
 
     public virtual ICollection<ProjectActionImage> ProjectActionImages { get; set; }
 
@@ -64,11 +70,9 @@ public partial class ProjectDetail
 
     public virtual ICollection<ProjectActionTool> ProjectActionTools { get; set; }
 
-    public virtual RigType RigType { get; set; }
-
     public virtual Step Step { get; set; }
 
-    public virtual ICollection<ProjectRiskAnalysi> ProjectRiskAnalysis { get; set; }
+    public virtual ICollection<RiskAnalysi> RiskAnalysis { get; set; }
 
 }
 

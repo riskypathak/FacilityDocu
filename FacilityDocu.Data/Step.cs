@@ -21,11 +21,7 @@ public partial class Step
     public Step()
     {
 
-        this.ModuleSteps = new HashSet<ModuleStep>();
-
         this.ProjectDetails = new HashSet<ProjectDetail>();
-
-        this.StepActions = new HashSet<StepAction>();
 
     }
 
@@ -34,13 +30,13 @@ public partial class Step
 
     public string StepName { get; set; }
 
+    public Nullable<int> ModuleID { get; set; }
 
 
-    public virtual ICollection<ModuleStep> ModuleSteps { get; set; }
+
+    public virtual Module Module { get; set; }
 
     public virtual ICollection<ProjectDetail> ProjectDetails { get; set; }
-
-    public virtual ICollection<StepAction> StepActions { get; set; }
 
 }
 

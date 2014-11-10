@@ -26,16 +26,10 @@ namespace FacilityDocu.Services
         void UpdateProject(ProjectDTO projectDTO);
 
         [OperationContract]
-        List<ModuleDTO> GetModules(int RigTypeID);
-
-        [OperationContract]
-        IList<StepDTO> GetSteps(int ModuleID);
-
-        [OperationContract]
-        IList<ActionDTO> GetActions(int ActionID);
-
-        [OperationContract]
         void UpdateActionImages(ActionDTO action);
+
+        [OperationContract]
+        IList<ToolDTO> GetTools();
     }
 }
 

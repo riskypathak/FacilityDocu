@@ -16,7 +16,9 @@ namespace FacilityDocu.UI.Utilities
         public IList<int> ProjectIDs { get; set; }
 
         private IFacilityDocuService service;
-        public SyncManager(IList<int> projectIDs): this()
+
+        public SyncManager(IList<int> projectIDs)
+            : this()
         {
             this.ProjectIDs = projectIDs;
 
@@ -39,6 +41,13 @@ namespace FacilityDocu.UI.Utilities
         {
             service = new FacilityDocuServiceClient();
             this.ProjectXmlFolderPath = Path.GetFullPath("Data\\ProjectXml");
+        }
+
+        public void Sync()
+        {
+            this.ProjectIDs = IsSyncRequired();
+            UpdateProjectXml();
+
         }
 
         public void UpdateProjectXml()
@@ -66,7 +75,7 @@ namespace FacilityDocu.UI.Utilities
             DirectoryInfo rootFolder = new DirectoryInfo(this.ProjectXmlFolderPath);
             FileInfo[] Files = rootFolder.GetFiles("*.xml");
 
-            Dictionary<int, DateTime> projectIDs = new Dictionary<int,DateTime>();
+            Dictionary<int, DateTime> projectIDs = new Dictionary<int, DateTime>();
 
             foreach (FileInfo file in Files)
             {
@@ -86,11 +95,11 @@ namespace FacilityDocu.UI.Utilities
             string projectPath = Path.Combine(this.ProjectXmlFolderPath, string.Format("{0}.xml", projectID));
             ProjectDTO project = ProjectXmlReader.ReadProjectXml(projectPath, false);
 
-            List<Services.ActionDTO> actions= project.RigTypes.SelectMany(r => r.Modules).SelectMany(m => m.Steps).SelectMany(s => s.Actions).ToList();
+            List<Services.ActionDTO> actions = project.RigTypes.SelectMany(r => r.Modules).SelectMany(m => m.Steps).SelectMany(s => s.Actions).ToList();
 
-            actions.ForEach(a => 
+            actions.ForEach(a =>
                 {
-                    a.Images.ToList().ForEach(i=> i.FileByteStream = ReadImage(i.Path));
+                    a.Images.ToList().ForEach(i => i.FileByteStream = ReadImage(i.Path));
                     service.UpdateActionImages(a);
                 });
         }

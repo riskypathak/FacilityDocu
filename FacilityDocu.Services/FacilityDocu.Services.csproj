@@ -82,6 +82,7 @@
     <Compile Include="FacilityDocuService.svc.cs">
       <DependentUpon>FacilityDocuService.svc</DependentUpon>
     </Compile>
+    <Compile Include="Helper.cs" />
     <Compile Include="IFacilityDocuService.cs" />
   </ItemGroup>
   <ItemGroup>

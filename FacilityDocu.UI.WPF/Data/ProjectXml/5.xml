@@ -9,7 +9,7 @@
   <updatedtime>1900-01-01T00:00:00</updatedtime>
   <updatedby />
   <rigs>
-    <rig type="UP">
+    <rig id="1" type="UP">
       <modules>
         <module>
           <id>1</id>

@@ -15,20 +15,20 @@ namespace FacilityDocu.Data
 using System;
     using System.Collections.Generic;
     
-public partial class ProjectRiskAnalysi
+public partial class ProjectActionAttachment
 {
 
-    public int ID { get; set; }
-
-    public Nullable<int> RiskAnalysisID { get; set; }
+    public int ActionAttachmentID { get; set; }
 
     public Nullable<int> ProjectDetailID { get; set; }
 
+    public Nullable<int> AttachmentID { get; set; }
 
+
+
+    public virtual Attachment Attachment { get; set; }
 
     public virtual ProjectDetail ProjectDetail { get; set; }
-
-    public virtual RiskAnalysi RiskAnalysi { get; set; }
 
 }
 

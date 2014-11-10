@@ -32,10 +32,6 @@ public partial class TabletApp_DatabaseEntities : DbContext
     }
 
 
-    public virtual DbSet<Action> Actions { get; set; }
-
-    public virtual DbSet<ActionAttachment> ActionAttachments { get; set; }
-
     public virtual DbSet<Attachment> Attachments { get; set; }
 
     public virtual DbSet<Image> Images { get; set; }
@@ -44,9 +40,9 @@ public partial class TabletApp_DatabaseEntities : DbContext
 
     public virtual DbSet<Module> Modules { get; set; }
 
-    public virtual DbSet<ModuleStep> ModuleSteps { get; set; }
-
     public virtual DbSet<Project> Projects { get; set; }
+
+    public virtual DbSet<ProjectActionAttachment> ProjectActionAttachments { get; set; }
 
     public virtual DbSet<ProjectActionImage> ProjectActionImages { get; set; }
 
@@ -56,19 +52,13 @@ public partial class TabletApp_DatabaseEntities : DbContext
 
     public virtual DbSet<ProjectDetail> ProjectDetails { get; set; }
 
-    public virtual DbSet<ProjectRiskAnalysi> ProjectRiskAnalysis { get; set; }
-
     public virtual DbSet<Resource> Resources { get; set; }
 
     public virtual DbSet<RigType> RigTypes { get; set; }
 
     public virtual DbSet<RiskAnalysi> RiskAnalysis { get; set; }
 
-    public virtual DbSet<RiskType> RiskTypes { get; set; }
-
     public virtual DbSet<Step> Steps { get; set; }
-
-    public virtual DbSet<StepAction> StepActions { get; set; }
 
     public virtual DbSet<Tool> Tools { get; set; }
 

@@ -21,7 +21,7 @@ public partial class Attachment
     public Attachment()
     {
 
-        this.ActionAttachments = new HashSet<ActionAttachment>();
+        this.ProjectActionAttachments = new HashSet<ProjectActionAttachment>();
 
     }
 
@@ -34,7 +34,7 @@ public partial class Attachment
 
 
 
-    public virtual ICollection<ActionAttachment> ActionAttachments { get; set; }
+    public virtual ICollection<ProjectActionAttachment> ProjectActionAttachments { get; set; }
 
 }
 

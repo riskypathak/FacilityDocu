@@ -567,6 +567,18 @@ namespace FacilityDocu.UI.Utilities.Services {
         private FacilityDocu.UI.Utilities.Services.ImageDTO[] ImagesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ImportantDescriptionField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ImportantNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IsDescriptionwarningField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IsNameWarningField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string LiftingGearsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -658,6 +670,58 @@ namespace FacilityDocu.UI.Utilities.Services {
                 if ((object.ReferenceEquals(this.ImagesField, value) != true)) {
                     this.ImagesField = value;
                     this.RaisePropertyChanged("Images");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ImportantDescription {
+            get {
+                return this.ImportantDescriptionField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ImportantDescriptionField, value) != true)) {
+                    this.ImportantDescriptionField = value;
+                    this.RaisePropertyChanged("ImportantDescription");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ImportantName {
+            get {
+                return this.ImportantNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ImportantNameField, value) != true)) {
+                    this.ImportantNameField = value;
+                    this.RaisePropertyChanged("ImportantName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsDescriptionwarning {
+            get {
+                return this.IsDescriptionwarningField;
+            }
+            set {
+                if ((this.IsDescriptionwarningField.Equals(value) != true)) {
+                    this.IsDescriptionwarningField = value;
+                    this.RaisePropertyChanged("IsDescriptionwarning");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsNameWarning {
+            get {
+                return this.IsNameWarningField;
+            }
+            set {
+                if ((this.IsNameWarningField.Equals(value) != true)) {
+                    this.IsNameWarningField = value;
+                    this.RaisePropertyChanged("IsNameWarning");
                 }
             }
         }
@@ -873,6 +937,9 @@ namespace FacilityDocu.UI.Utilities.Services {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string[] TagsField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool UsedField;
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -983,6 +1050,19 @@ namespace FacilityDocu.UI.Utilities.Services {
                 if ((object.ReferenceEquals(this.TagsField, value) != true)) {
                     this.TagsField = value;
                     this.RaisePropertyChanged("Tags");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Used {
+            get {
+                return this.UsedField;
+            }
+            set {
+                if ((this.UsedField.Equals(value) != true)) {
+                    this.UsedField = value;
+                    this.RaisePropertyChanged("Used");
                 }
             }
         }
@@ -1131,9 +1211,6 @@ namespace FacilityDocu.UI.Utilities.Services {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string RiskAnalysisIDField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private FacilityDocu.UI.Utilities.Services.RiskAnalysisTypeDTO RiskAnalysisTypeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private double Risk_Field;
@@ -1287,19 +1364,6 @@ namespace FacilityDocu.UI.Utilities.Services {
                 if ((object.ReferenceEquals(this.RiskAnalysisIDField, value) != true)) {
                     this.RiskAnalysisIDField = value;
                     this.RaisePropertyChanged("RiskAnalysisID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public FacilityDocu.UI.Utilities.Services.RiskAnalysisTypeDTO RiskAnalysisType {
-            get {
-                return this.RiskAnalysisTypeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.RiskAnalysisTypeField, value) != true)) {
-                    this.RiskAnalysisTypeField = value;
-                    this.RaisePropertyChanged("RiskAnalysisType");
                 }
             }
         }
@@ -1481,67 +1545,6 @@ namespace FacilityDocu.UI.Utilities.Services {
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="RiskAnalysisTypeDTO", Namespace="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO")]
-    [System.SerializableAttribute()]
-    public partial class RiskAnalysisTypeDTO : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string NameField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string RiskTypeIDField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Name {
-            get {
-                return this.NameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NameField, value) != true)) {
-                    this.NameField = value;
-                    this.RaisePropertyChanged("Name");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string RiskTypeID {
-            get {
-                return this.RiskTypeIDField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.RiskTypeIDField, value) != true)) {
-                    this.RiskTypeIDField = value;
-                    this.RaisePropertyChanged("RiskTypeID");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="Services.IFacilityDocuService")]
     public interface IFacilityDocuService {
@@ -1570,29 +1573,17 @@ namespace FacilityDocu.UI.Utilities.Services {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateProject", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateProjectResponse")]
         System.Threading.Tasks.Task UpdateProjectAsync(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetModules", ReplyAction="http://tempuri.org/IFacilityDocuService/GetModulesResponse")]
-        FacilityDocu.UI.Utilities.Services.ModuleDTO[] GetModules(int RigTypeID);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetModules", ReplyAction="http://tempuri.org/IFacilityDocuService/GetModulesResponse")]
-        System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ModuleDTO[]> GetModulesAsync(int RigTypeID);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetSteps", ReplyAction="http://tempuri.org/IFacilityDocuService/GetStepsResponse")]
-        FacilityDocu.UI.Utilities.Services.StepDTO[] GetSteps(int ModuleID);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetSteps", ReplyAction="http://tempuri.org/IFacilityDocuService/GetStepsResponse")]
-        System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.StepDTO[]> GetStepsAsync(int ModuleID);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetActions", ReplyAction="http://tempuri.org/IFacilityDocuService/GetActionsResponse")]
-        FacilityDocu.UI.Utilities.Services.ActionDTO[] GetActions(int ActionID);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetActions", ReplyAction="http://tempuri.org/IFacilityDocuService/GetActionsResponse")]
-        System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ActionDTO[]> GetActionsAsync(int ActionID);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateActionImages", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateActionImagesResponse")]
         void UpdateActionImages(FacilityDocu.UI.Utilities.Services.ActionDTO action);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateActionImages", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateActionImagesResponse")]
         System.Threading.Tasks.Task UpdateActionImagesAsync(FacilityDocu.UI.Utilities.Services.ActionDTO action);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetTools", ReplyAction="http://tempuri.org/IFacilityDocuService/GetToolsResponse")]
+        FacilityDocu.UI.Utilities.Services.ToolDTO[] GetTools();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetTools", ReplyAction="http://tempuri.org/IFacilityDocuService/GetToolsResponse")]
+        System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ToolDTO[]> GetToolsAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1654,36 +1645,20 @@ namespace FacilityDocu.UI.Utilities.Services {
             return base.Channel.UpdateProjectAsync(projectDTO);
         }
         
-        public FacilityDocu.UI.Utilities.Services.ModuleDTO[] GetModules(int RigTypeID) {
-            return base.Channel.GetModules(RigTypeID);
-        }
-        
-        public System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ModuleDTO[]> GetModulesAsync(int RigTypeID) {
-            return base.Channel.GetModulesAsync(RigTypeID);
-        }
-        
-        public FacilityDocu.UI.Utilities.Services.StepDTO[] GetSteps(int ModuleID) {
-            return base.Channel.GetSteps(ModuleID);
-        }
-        
-        public System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.StepDTO[]> GetStepsAsync(int ModuleID) {
-            return base.Channel.GetStepsAsync(ModuleID);
-        }
-        
-        public FacilityDocu.UI.Utilities.Services.ActionDTO[] GetActions(int ActionID) {
-            return base.Channel.GetActions(ActionID);
-        }
-        
-        public System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ActionDTO[]> GetActionsAsync(int ActionID) {
-            return base.Channel.GetActionsAsync(ActionID);
-        }
-        
         public void UpdateActionImages(FacilityDocu.UI.Utilities.Services.ActionDTO action) {
             base.Channel.UpdateActionImages(action);
         }
         
         public System.Threading.Tasks.Task UpdateActionImagesAsync(FacilityDocu.UI.Utilities.Services.ActionDTO action) {
             return base.Channel.UpdateActionImagesAsync(action);
+        }
+        
+        public FacilityDocu.UI.Utilities.Services.ToolDTO[] GetTools() {
+            return base.Channel.GetTools();
+        }
+        
+        public System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ToolDTO[]> GetToolsAsync() {
+            return base.Channel.GetToolsAsync();
         }
     }
 }

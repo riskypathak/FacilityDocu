@@ -18,17 +18,7 @@ using System;
 public partial class RiskAnalysi
 {
 
-    public RiskAnalysi()
-    {
-
-        this.ProjectRiskAnalysis = new HashSet<ProjectRiskAnalysi>();
-
-    }
-
-
     public int RiskAnalysisID { get; set; }
-
-    public Nullable<int> RiskTypeID { get; set; }
 
     public string Activity { get; set; }
 
@@ -52,11 +42,11 @@ public partial class RiskAnalysi
 
     public string Risk_ { get; set; }
 
+    public Nullable<int> ProjectDetailID { get; set; }
 
 
-    public virtual ICollection<ProjectRiskAnalysi> ProjectRiskAnalysis { get; set; }
 
-    public virtual RiskType RiskType { get; set; }
+    public virtual ProjectDetail ProjectDetail { get; set; }
 
 }
 

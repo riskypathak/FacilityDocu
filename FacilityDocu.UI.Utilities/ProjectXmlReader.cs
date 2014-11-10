@@ -26,6 +26,7 @@ namespace FacilityDocu.UI.Utilities
 
             project.ProjectID = Convert.ToString(xProject.Element("id").Value);
             project.Template = Convert.ToBoolean(xProject.Element("template").Value);
+            project.Closed = Convert.ToBoolean(xProject.Element("closed").Value);
 
             if (!onlyProjectAttributes)
             {
@@ -44,6 +45,7 @@ namespace FacilityDocu.UI.Utilities
             {
                 RigTypeDTO rigType = new RigTypeDTO();
                 rigType.Name = Convert.ToString(xRigType.Attribute("type").Value);
+                rigType.RigTypeID = Convert.ToString(xRigType.Attribute("id").Value);
 
                 IList<Services.ModuleDTO> modules = ReadModules(xRigType);
                 rigType.Modules = modules.ToArray();
@@ -105,6 +107,16 @@ namespace FacilityDocu.UI.Utilities
                 action.LiftingGears = Convert.ToString(xAction.Element("liftinggears").Value);
                 action.Dimensions = Convert.ToString(xAction.Element("dimensions").Value);
 
+
+                //Risky: Edit
+                if (xAction.Element("namewarning") != null)
+                {
+                    action.IsNameWarning = Convert.ToBoolean(xAction.Element("namewarning").Value);
+                    action.IsDescriptionwarning = Convert.ToBoolean(xAction.Element("descriptionwarning").Value);
+                    action.ImportantName = Convert.ToString(xAction.Element("importantname").Value);
+                    action.ImportantDescription = Convert.ToString(xAction.Element("importantdescription").Value);
+                }
+
                 IList<Services.ImageDTO> images = ReadImages(xAction);
                 action.Images = images.ToArray();
 
@@ -164,9 +176,6 @@ namespace FacilityDocu.UI.Utilities
                 analysise.K_ = Convert.ToDouble(xAnalysis.Element("k_").Value);
                 analysise.Risk = Convert.ToDouble(xAnalysis.Element("risk").Value);
                 analysise.Risk_ = Convert.ToDouble(xAnalysis.Element("risk_").Value);
-                analysise.RiskAnalysisType =  new RiskAnalysisTypeDTO(){ Name= Convert.ToString(xAnalysis.Element("type").Value)};
-
-
 
                 analysiss.Add(analysise);
             }
@@ -224,6 +233,12 @@ namespace FacilityDocu.UI.Utilities
                 image.Number = Convert.ToString(xImage.Element("number").Value);
                 image.Path = Convert.ToString(xImage.Element("path").Value);
                 image.Tags = Convert.ToString(xImage.Element("tags").Value).Split(';');
+
+                //Risky: Edit
+                if (xImage.Element("used") != null)
+                {
+                    image.Used = Convert.ToBoolean(xImage.Element("used").Value);
+                }
 
                 IList<Services.CommentDTO> comments = ReadComments(xImage);
                 image.Comments = comments.ToArray();

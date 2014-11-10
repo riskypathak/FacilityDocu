@@ -9,7 +9,7 @@
   <updatedtime>1900-01-01T00:00:00</updatedtime>
   <updatedby />
   <rigs>
-    <rig type="UP">
+    <rig id="1" type="UP">
       <modules>
         <module>
           <id>1</id>
@@ -24,6 +24,10 @@
                 <action>
                   <id>1</id>
                   <number>01</number>
+				  <namewarning>true</namewarning>
+				  <descriptionwarning>true</descriptionwarning>
+				  <importantname>abc</importantname>
+				  <importantdescription>abc</importantdescription>
                   <name>Mark centre well</name>
                   <description>
                     Mark centre well on the new location with the help of RIG
@@ -61,6 +65,7 @@
                   <images>
                     <image>
                       <id>2</id>
+					  <used>true</used>
                       <number />
                       <creationdate>2014-01-01T00:00:00</creationdate>
                       <description>Image 2</description>
@@ -76,6 +81,7 @@
                     </image>
                     <image>
                       <id>3</id>
+					  <used>true</used>
                       <number />
                       <creationdate>2014-01-01T00:00:00</creationdate>
                       <description>Image 3</description>
@@ -22311,7 +22317,7 @@
         </module>
       </modules>
     </rig>
-    <rig type="DOWN">
+    <rig id="1" type="DOWN">
       <modules>
         <module>
           <id>1</id>
@@ -29738,7 +29744,7 @@
         </module>
       </modules>
     </rig>
-    <rig type="MOVE">
+    <rig id="1" type="MOVE">
       <modules>
         <module>
           <id>1</id>

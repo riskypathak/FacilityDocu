@@ -41,6 +41,7 @@ namespace FacilityDocu.UI.Utilities
                 xRigs.Add(xRig);
 
                 xRig.Add(new XAttribute("type", rigType.Name));
+                xRig.Add(new XAttribute("id", rigType.RigTypeID));
 
                 WriteModule(rigType.Modules, xRig);
             }
@@ -96,6 +97,11 @@ namespace FacilityDocu.UI.Utilities
             {
                 XElement xStepAction = new XElement("action");
                 xStepActions.Add(xStepAction);
+
+                xStepAction.Add(new XElement("namewarning", stepAction.IsNameWarning));
+                xStepAction.Add(new XElement("descriptionwarning", stepAction.IsDescriptionwarning));
+                xStepAction.Add(new XElement("importantname", stepAction.ImportantName));
+                xStepAction.Add(new XElement("importantdescription", stepAction.ImportantDescription));
 
                 xStepAction.Add(new XElement("id", stepAction.ActionID));
                 xStepAction.Add(new XElement("number", count.ToString("00")));
@@ -157,7 +163,6 @@ namespace FacilityDocu.UI.Utilities
                 xRiskAnalysiss.Add(xRiskAnalysis);
 
                 xRiskAnalysis.Add(new XElement("id", riskAnalysis.RiskAnalysisID));
-                xRiskAnalysis.Add(new XElement("type", riskAnalysis.RiskAnalysisType.Name));
                 xRiskAnalysis.Add(new XElement("activity", riskAnalysis.Activity));
                 xRiskAnalysis.Add(new XElement("danger", riskAnalysis.Danger));
                 xRiskAnalysis.Add(new XElement("k", riskAnalysis.K));

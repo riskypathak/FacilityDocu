@@ -21,9 +21,7 @@ public partial class Module
     public Module()
     {
 
-        this.ModuleSteps = new HashSet<ModuleStep>();
-
-        this.ProjectDetails = new HashSet<ProjectDetail>();
+        this.Steps = new HashSet<Step>();
 
     }
 
@@ -38,9 +36,7 @@ public partial class Module
 
     public virtual RigType RigType { get; set; }
 
-    public virtual ICollection<ModuleStep> ModuleSteps { get; set; }
-
-    public virtual ICollection<ProjectDetail> ProjectDetails { get; set; }
+    public virtual ICollection<Step> Steps { get; set; }
 
 }
 

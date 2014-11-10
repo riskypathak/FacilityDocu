@@ -39,29 +39,17 @@ namespace FacilityDocLaptop.Services {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateProject", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateProjectResponse")]
         System.Threading.Tasks.Task UpdateProjectAsync(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetModules", ReplyAction="http://tempuri.org/IFacilityDocuService/GetModulesResponse")]
-        FacilityDocu.UI.Utilities.Services.ModuleDTO[] GetModules(int RigTypeID);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetModules", ReplyAction="http://tempuri.org/IFacilityDocuService/GetModulesResponse")]
-        System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ModuleDTO[]> GetModulesAsync(int RigTypeID);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetSteps", ReplyAction="http://tempuri.org/IFacilityDocuService/GetStepsResponse")]
-        FacilityDocu.UI.Utilities.Services.StepDTO[] GetSteps(int ModuleID);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetSteps", ReplyAction="http://tempuri.org/IFacilityDocuService/GetStepsResponse")]
-        System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.StepDTO[]> GetStepsAsync(int ModuleID);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetActions", ReplyAction="http://tempuri.org/IFacilityDocuService/GetActionsResponse")]
-        FacilityDocu.UI.Utilities.Services.ActionDTO[] GetActions(int ActionID);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetActions", ReplyAction="http://tempuri.org/IFacilityDocuService/GetActionsResponse")]
-        System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ActionDTO[]> GetActionsAsync(int ActionID);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateActionImages", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateActionImagesResponse")]
         void UpdateActionImages(FacilityDocu.UI.Utilities.Services.ActionDTO action);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateActionImages", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateActionImagesResponse")]
         System.Threading.Tasks.Task UpdateActionImagesAsync(FacilityDocu.UI.Utilities.Services.ActionDTO action);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetTools", ReplyAction="http://tempuri.org/IFacilityDocuService/GetToolsResponse")]
+        FacilityDocu.UI.Utilities.Services.ToolDTO[] GetTools();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetTools", ReplyAction="http://tempuri.org/IFacilityDocuService/GetToolsResponse")]
+        System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ToolDTO[]> GetToolsAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -123,36 +111,20 @@ namespace FacilityDocLaptop.Services {
             return base.Channel.UpdateProjectAsync(projectDTO);
         }
         
-        public FacilityDocu.UI.Utilities.Services.ModuleDTO[] GetModules(int RigTypeID) {
-            return base.Channel.GetModules(RigTypeID);
-        }
-        
-        public System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ModuleDTO[]> GetModulesAsync(int RigTypeID) {
-            return base.Channel.GetModulesAsync(RigTypeID);
-        }
-        
-        public FacilityDocu.UI.Utilities.Services.StepDTO[] GetSteps(int ModuleID) {
-            return base.Channel.GetSteps(ModuleID);
-        }
-        
-        public System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.StepDTO[]> GetStepsAsync(int ModuleID) {
-            return base.Channel.GetStepsAsync(ModuleID);
-        }
-        
-        public FacilityDocu.UI.Utilities.Services.ActionDTO[] GetActions(int ActionID) {
-            return base.Channel.GetActions(ActionID);
-        }
-        
-        public System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ActionDTO[]> GetActionsAsync(int ActionID) {
-            return base.Channel.GetActionsAsync(ActionID);
-        }
-        
         public void UpdateActionImages(FacilityDocu.UI.Utilities.Services.ActionDTO action) {
             base.Channel.UpdateActionImages(action);
         }
         
         public System.Threading.Tasks.Task UpdateActionImagesAsync(FacilityDocu.UI.Utilities.Services.ActionDTO action) {
             return base.Channel.UpdateActionImagesAsync(action);
+        }
+        
+        public FacilityDocu.UI.Utilities.Services.ToolDTO[] GetTools() {
+            return base.Channel.GetTools();
+        }
+        
+        public System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ToolDTO[]> GetToolsAsync() {
+            return base.Channel.GetToolsAsync();
         }
     }
 }

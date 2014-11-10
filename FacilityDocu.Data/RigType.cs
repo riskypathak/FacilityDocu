@@ -23,8 +23,6 @@ public partial class RigType
 
         this.Modules = new HashSet<Module>();
 
-        this.ProjectDetails = new HashSet<ProjectDetail>();
-
     }
 
 
@@ -35,8 +33,6 @@ public partial class RigType
 
 
     public virtual ICollection<Module> Modules { get; set; }
-
-    public virtual ICollection<ProjectDetail> ProjectDetails { get; set; }
 
 }
 

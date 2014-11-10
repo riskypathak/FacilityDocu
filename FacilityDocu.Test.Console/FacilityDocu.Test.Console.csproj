@@ -53,18 +53,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Service References\Services\FacilityDocu.Test.Console.Services.ActionDTO.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Services\FacilityDocu.Test.Console.Services.ModuleDTO.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Services\FacilityDocu.Test.Console.Services.ProjectDTO.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Services\FacilityDocu.Test.Console.Services.StepDTO.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
+    <None Include="Properties\DataSources\FacilityDocu.UI.Utilities.Services.ProjectDTO.datasource" />
+    <None Include="Properties\DataSources\FacilityDocu.UI.Utilities.Services.ToolDTO.datasource" />
     <None Include="Service References\Services\FacilityDocuService.wsdl" />
     <None Include="Service References\Services\FacilityDocuService.xsd">
       <SubType>Designer</SubType>

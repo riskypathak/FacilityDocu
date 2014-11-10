@@ -20,6 +20,18 @@ namespace FacilityDocu.DTO
         public string Name { get; set; }
 
         [DataMember]
+        public bool IsNameWarning { get; set; }
+
+        [DataMember]
+        public bool IsDescriptionwarning { get; set; }
+
+        [DataMember]
+        public string ImportantName { get; set; }
+
+        [DataMember]
+        public string ImportantDescription { get; set; }
+
+        [DataMember]
         public string Description { get; set; }
 
         [DataMember]

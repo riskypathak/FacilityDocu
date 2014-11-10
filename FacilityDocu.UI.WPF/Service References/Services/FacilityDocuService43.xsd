@@ -57,58 +57,28 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
-  <xs:element name="GetModules">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="RigTypeID" type="xs:int" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetModulesResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="GetModulesResult" nillable="true" type="q6:ArrayOfModuleDTO" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetSteps">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="ModuleID" type="xs:int" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetStepsResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="GetStepsResult" nillable="true" type="q7:ArrayOfStepDTO" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetActions">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="ActionID" type="xs:int" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetActionsResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="GetActionsResult" nillable="true" type="q8:ArrayOfActionDTO" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
   <xs:element name="UpdateActionImages">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="action" nillable="true" type="q9:ActionDTO" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="action" nillable="true" type="q6:ActionDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="UpdateActionImagesResponse">
     <xs:complexType>
       <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTools">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetToolsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="GetToolsResult" nillable="true" type="q7:ArrayOfToolDTO" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
 </xs:schema>
