@@ -45,9 +45,12 @@ namespace FacilityDocu.UI.Utilities
 
         public void Sync()
         {
+            Data.SYNCPROCESS = true;
+
             this.ProjectIDs = IsSyncRequired();
             UpdateProjectXml();
 
+            Data.SYNCPROCESS = false;
         }
 
         public void UpdateProjectXml()
@@ -57,17 +60,19 @@ namespace FacilityDocu.UI.Utilities
             projects.ToList().ForEach(p => ProjectXmlWriter.Write(p));
         }
 
-        public void UpdateDatabase(int projectID, bool isInsert)
+        public ProjectDTO UpdateDatabase(string projectID, bool isInsert)
         {
             string projectPath = Path.Combine(this.ProjectXmlFolderPath, string.Format("{0}.xml", projectID));
             ProjectDTO project = ProjectXmlReader.ReadProjectXml(projectPath, false);
 
-            if (isInsert)
-            {
-                project.ProjectID = "0";
-            }
+            ProjectDTO updatedProject = service.UpdateProject(project);
+            ProjectXmlWriter.Write(updatedProject);
+            UploadImages(projectID);
 
-            service.UpdateProject(project);
+            this.ProjectIDs = new List<int>() { Convert.ToInt32(updatedProject.ProjectID) };
+            UpdateProjectXml();
+
+            return ProjectXmlReader.ReadProjectXml(Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml",updatedProject.ProjectID)),false);
         }
 
         public IList<int> IsSyncRequired()
@@ -90,7 +95,7 @@ namespace FacilityDocu.UI.Utilities
             return result.Where(r => r.Value).Select(r => r.Key).ToList();
         }
 
-        public void UploadImages(int projectID)
+        public void UploadImages(string projectID)
         {
             string projectPath = Path.Combine(this.ProjectXmlFolderPath, string.Format("{0}.xml", projectID));
             ProjectDTO project = ProjectXmlReader.ReadProjectXml(projectPath, false);

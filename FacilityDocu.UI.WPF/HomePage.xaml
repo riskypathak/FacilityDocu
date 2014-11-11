@@ -7,19 +7,20 @@
     <DockPanel >
         <Menu Name="dpnMenu" DockPanel.Dock="Top" Visibility="Collapsed">
             <MenuItem Header="File">
-                <MenuItem Header="Log Out" />
+                <MenuItem Name="mniLogout" Click="mniLogout_Click_1" Header="Log Out" />
+                <MenuItem Name="mniExit" Click="mniExit_Click_1" Header="Exit" />
             </MenuItem>
             <MenuItem Header="Rig Type">
-                <MenuItem Header="Rig Up" />
-                <MenuItem Header="Rig Down" />
-                <MenuItem Header="Rig Move" />
+                <MenuItem Name="mniUp" Click="MenuItem_Click_1"  CommandParameter="0" Header="Rig Up" />
+                <MenuItem Name="mniDown" Click="MenuItem_Click_1" CommandParameter="1" Header="Rig Down" />
+                <MenuItem Name="mniMove" Click="MenuItem_Click_1" CommandParameter="2" Header="Rig Move" />
             </MenuItem>
             <MenuItem Header="Options">
                 <MenuItem Header="Import Pictures" Click="addPictures_btn_Click" />
             </MenuItem>
         </Menu>
         <Grid x:Name="grid" Margin="1,0,-1,0" Background="#FF0D5887">
-            <Grid x:Name="grdViewLogin" Background="#FF0D5887" Visibility="Collapsed">
+            <Grid x:Name="grdViewLogin" Background="#FF0D5887" Visibility="Visible">
                 <Button HorizontalAlignment="Left" Height="148" Margin="915,58,0,0" VerticalAlignment="Top" Width="189">
                     <Path Data="F1M484.766,361.437C484.766,361.272 484.766,361.044 484.766,360.702 484.766,354.202 473.334,347.86 463.161,344.493 462.697,344.342 459.766,343.021 461.598,337.451L461.572,337.451C466.346,332.535 469.995,324.617 469.995,316.825 469.995,304.846 462.027,298.566 452.769,298.566 443.505,298.566 435.583,304.846 435.583,316.825 435.583,324.647 439.212,332.596 444.014,337.502 445.887,342.413 442.538,344.236 441.837,344.493 432.143,348 420.766,354.392 420.766,360.702 420.766,361.044 420.766,361.272 420.766,361.437L484.766,361.437z" Stretch="Uniform" Fill="#FFFFFFFF" RenderTransformOrigin="0.5,0.5" Height="123.82" Width="130.373">
                         <Path.RenderTransform>
@@ -39,7 +40,7 @@
                 <TextBlock HorizontalAlignment="Left" Margin="148,156,0,0" TextWrapping="Wrap" Text="Welcome" VerticalAlignment="Top" FontSize="40" Foreground="#FFADDDFF"/>
 
             </Grid>
-            <Grid x:Name="gridHomePage" HorizontalAlignment="Left" Height="732" VerticalAlignment="Top" Width="1358" Visibility="Visible">
+            <Grid x:Name="gridHomePage" HorizontalAlignment="Left" Height="732" VerticalAlignment="Top" Width="1358" Visibility="Collapsed">
                 <Border BorderThickness="1" HorizontalAlignment="Left" Height="217" Margin="22,150,0,0" VerticalAlignment="Top" Width="214" Background="#FF396591" RenderTransformOrigin="0.5,0.5"/>
 
                 <Button x:Name="btnSync" Click="btnSync_Click_1"  HorizontalAlignment="Left" Margin="1249,67,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="7.3,-1.227">
@@ -47,7 +48,7 @@
                         <Image Source="Assets\sync.jpg" />
                     </StackPanel>
                 </Button>
-                
+
                 <Button x:Name="NewProject_btn" HorizontalAlignment="Left" Height="196" Margin="26,168,0,0" VerticalAlignment="Top" Width="214" Click="NewProject_btn_Click">
                     <Path Data="M26.283646,18.626712C25.578564,18.625717 24.870488,18.877655 24.305667,19.389528 23.101716,20.477525 23.00672,22.33552 24.098676,23.539514 25.18563,24.74451 27.043555,24.836511 28.250504,23.747514 29.454455,22.658518 29.546452,20.798525 28.456496,19.594528 27.87799,18.953842 27.08274,18.627839 26.283646,18.626712z M26.285584,16.825022C27.575473,16.828347 28.859135,17.354848 29.791442,18.386532 31.274381,20.027527 31.394376,22.415519 30.229424,24.179512L33.069306,27.318502C33.50929,27.803501 33.468293,28.551498 32.98531,28.987497 32.50533,29.423496 31.756362,29.388496 31.319379,28.900497L28.477496,25.762508C26.606572,26.745504 24.242669,26.388506 22.76073,24.745512 21.003802,22.807518 21.153796,19.805526 23.093716,18.050533 24.00446,17.226473 25.147446,16.82209 26.285584,16.825022z M9.136998,7.8089907C8.6249979,7.8089907 8.209998,8.1949904 8.209998,8.6719892 8.209998,9.1459892 8.6249979,9.5319884 9.136998,9.5319884L17.588,9.5319884C18.098,9.5319884 18.513001,9.1459892 18.513001,8.6719892 18.513001,8.1949904 18.098,7.8089907 17.588,7.8089907z M9.0219982,4.120995C8.4969986,4.120995 8.0719984,4.5219945 8.0719984,5.016994 8.0719984,5.5119934 8.4969986,5.912993 9.0219982,5.9129932L17.668999,5.9129932C18.192,5.912993 18.617001,5.5119934 18.617001,5.016994 18.617001,4.6389943 18.368001,4.3149948 18.017001,4.1839948L18.017001,4.1829947 18.012,4.1829947C17.905,4.1429949,17.79,4.120995,17.668999,4.120995z M0,3.3599535L4.6150001,3.3599535 4.6150001,7.1138582 4.6150001,10.08395 4.6150001,20.706871C4.6150001,21.943931 3.5819965,22.442953 2.3090032,22.442953 1.0350024,22.442953 0,21.439903 0,20.202842L0,10.08395 0,7.1138582z M6.820998,0L25.574002,0 25.579003,15.224982C22.379002,15.350981 19.823001,17.981979 19.823001,21.213976 19.823001,21.638975 19.868001,22.051973 19.951001,22.451973L6.820998,22.451973z" Stretch="Uniform" Fill="#FFAB45E7" Width="206.373" Height="162.476" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
                         <Path.RenderTransform>
@@ -89,9 +90,9 @@
                         <GridView>
                             <GridViewColumn Width="0" DisplayMemberBinding="{Binding ProjectID }"/>
                             <GridViewColumn Header="Project Name" DisplayMemberBinding="{Binding Description }"/>
-                            <GridViewColumn Header="Created By" DisplayMemberBinding="{Binding CreatedBy}"/>
+                            <GridViewColumn Header="Created By" DisplayMemberBinding="{Binding CreatedBy.UserName}"/>
                             <GridViewColumn Header="Created Time" DisplayMemberBinding="{Binding CreationDate}"/>
-                            <GridViewColumn Header="Updated By" DisplayMemberBinding="{Binding LastUpdatedBy }"/>
+                            <GridViewColumn Header="Updated By" DisplayMemberBinding="{Binding LastUpdatedBy.UserName }"/>
                             <GridViewColumn Header="Updated Time" DisplayMemberBinding="{Binding LastUpdatedAt}"/>
                         </GridView>
                     </ListView.View>
@@ -182,7 +183,7 @@
                 <TextBlock HorizontalAlignment="Left" Margin="1097,346,0,0" TextWrapping="Wrap" Text="DateTime" VerticalAlignment="Top" Height="28" Width="156" FontSize="20" FontFamily="Shruti" FontStyle="Italic"/>
 
             </Grid>
-            
+
             <Grid x:Name="editPage_grid" HorizontalAlignment="Left" Height="732"  VerticalAlignment="Top" Width="1358"
               Background="#FF0D5887" Visibility="Collapsed">
                 <Grid.RowDefinitions>
@@ -193,8 +194,7 @@
                     <ColumnDefinition Width="55*"/>
                     <ColumnDefinition Width="1303*"/>
                 </Grid.ColumnDefinitions>
-                
-                
+
                 <ListBox ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible" Width="600" Height="200" Margin="0,146,848,289" x:Name="lstPictures" Grid.Column="1" Grid.Row="1">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -237,7 +237,6 @@
                                     <TextBlock Text="{Binding Name}"/>
                                 </StackPanel>
                             </DataTemplate>
-
                         </ListBox.ItemTemplate>
                     </ListBox>
                     <ListBox Name="lstActionResourcesM" Grid.Column="1" Margin="8,56,37,61">
@@ -371,22 +370,14 @@
                     <TextBlock HorizontalAlignment="Left" Margin="444.836,63,0,0" TextWrapping="Wrap" Text="Chapter" VerticalAlignment="Top" FontSize="22" Width="95" FontWeight="Bold" Grid.Column="1"/>
                     <TextBlock x:Name="txtUser" HorizontalAlignment="Left" Margin="1007.836,16,0,0" TextWrapping="Wrap" Text="User" VerticalAlignment="Top" FontSize="15" Width="231" Grid.Column="1" Foreground="White"/>
                     <TextBlock HorizontalAlignment="Left" Margin="908.836,16,0,0" TextWrapping="Wrap" Text="Logged in as" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Grid.Column="1"/>
-                    <TextBlock x:Name="txtModule" HorizontalAlignment="Left" Margin="582,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="15" Width="267" Grid.Column="1" Foreground="White"/>
+                    <TextBlock x:Name="txtModule" MouseDown="txtModule_MouseDown_1" HorizontalAlignment="Left" Margin="582,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="15" Width="267" Grid.Column="1" Foreground="White"/>
                     <TextBlock HorizontalAlignment="Left" Margin="20,51,0,0" TextWrapping="Wrap" Text="Project Description" VerticalAlignment="Top" FontSize="15" Width="142" FontWeight="Bold" Grid.ColumnSpan="2"/>
                     <TextBlock x:Name="txtProjectDescription" HorizontalAlignment="Left" Margin="135.836,51,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="15" Width="249" Grid.Column="1" Foreground="White"><Run Text="Dalamr Dubai"/></TextBlock>
-                    <Button x:Name="btnModuleLeft" FontFamily="Marlett" FontSize="20" Content="3" Margin="409,0,823,31" BorderBrush="{x:Null}" Height="25" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="#FFC6D625" Click="btnModuleLeft_Click_1" Grid.Column="1" Width="25"  />
-                    <Button x:Name="btnModuleRight" FontFamily="Marlett" FontSize="20" Content="4" Margin="852.836,56,363,24" BorderBrush="{x:Null}" Foreground="#FFB7C718" Background="{x:Null}" Click="btnModuleRight_Click_1" Grid.Column="1" Width="25" Height="25" />
                     <TextBlock HorizontalAlignment="Left" Margin="450,91,0,0" TextWrapping="Wrap" Text="Step:" VerticalAlignment="Top" FontSize="18" Width="46" FontWeight="Bold" Grid.Column="1"/>
-                    <TextBlock x:Name="txtStepName" HorizontalAlignment="Left" Margin="535,91,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="13" Width="313" Height="30" Grid.Column="1" Foreground="White"/>
-                    <Button x:Name="btnStepLeft" FontFamily="Marlett" FontSize="20" Content="3" Margin="408,0,824,2" BorderBrush="{x:Null}" Height="25" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="#FFC6D625" Click="btnStepLeft_Click" Grid.Column="1" Width="25"  />
-                    <Button x:Name="btnStepRight" FontFamily="Marlett" FontSize="20" Content="4" Margin="842,83,359,-1" BorderBrush="{x:Null}" Foreground="#FFB7C718" Background="{x:Null}" Click="btnStepRight_Click" Grid.Column="1" Width="25" Height="25" />
+                    <TextBlock x:Name="txtStepName" MouseDown="txtStepName_MouseDown_1" HorizontalAlignment="Left" Margin="535,91,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="13" Width="313" Height="30" Grid.Column="1" Foreground="White"/>
                     <TextBlock  HorizontalAlignment="Left" Margin="484.836,3,0,0" TextWrapping="Wrap" Text="RIG" VerticalAlignment="Top" FontSize="36" FontWeight="Bold" Width="61" Foreground="#FFFDFBFB" Grid.Column="1"/>
 
                 </Grid>
-                <Button Click="btnUpNext_Click_1" Name="btnUpNext" FontFamily="Marlett" FontSize="30" Content="5" Margin="1214,0,15,42" BorderBrush="{x:Null}" Height="64" VerticalAlignment="Bottom" Background="Black" Foreground="White" RenderTransformOrigin="0.5,0.5" Grid.Column="1"  >
-                </Button>
-                <Button Click="btnDownNext_Click_1" Name="btnDownNext" FontFamily="Marlett" FontSize="30" Content="6" Margin="1213,0,16,92" BorderBrush="{x:Null}" Height="64" VerticalAlignment="Bottom" Background="Black" Foreground="White" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Grid.Row="1"  >
-                </Button>
                 <Button x:Name="btnReset" Content="Reset" HorizontalAlignment="Left" Margin="721,480,0,0" VerticalAlignment="Top" Width="80" Height="25" Grid.Column="1" Grid.Row="1"/>
                 <Button x:Name="btnBack" Click="btnBack_Click_1" Content="Back" HorizontalAlignment="Left" Margin="821,480,0,0" VerticalAlignment="Top" Width="80" Height="25" Grid.Column="1" Grid.Row="1"/>
                 <Button Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="921,480,0,0" VerticalAlignment="Top" Width="80" Height="25" Grid.Column="1" Grid.Row="1" Click="btnSave_Click"/>
@@ -454,8 +445,8 @@
                     </ScrollViewer>
                 </Popup>
 
-                <Popup ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" Name="popImage" IsOpen="False" Placement="Mouse" Height="200" Width="150" Grid.Column="1" Grid.RowSpan="2">
-                    <ScrollViewer VerticalScrollBarVisibility="Visible" MaxHeight="200">
+                <Popup ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" Name="popImage" IsOpen="False" Placement="Mouse" Height="400" Width="150" Grid.Column="1" Grid.RowSpan="2">
+                    <ScrollViewer VerticalScrollBarVisibility="Visible">
                         <Grid>
                             <StackPanel  Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
@@ -467,7 +458,8 @@
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
                                                 <CheckBox Tag="{Binding ImageID}" IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsSelected}"></CheckBox>
-                                                <TextBlock Width="250" Text="{Binding Description}"></TextBlock>
+                                                <TextBlock Text="{Binding Description}"></TextBlock>
+                                                <ContentControl Width="50" Height="50" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="3" Content="{Binding Image}"/>
                                             </StackPanel>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
@@ -480,6 +472,20 @@
                         Stretch="Fill" MouseDown="btnWarningAction_MouseDown_1"/>
                 <Image x:Name="btnWarningActionDescription" Grid.Column="1" Margin="426,141,0,0" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="32"
                 	Stretch="Fill" MouseDown="btnWarningActionDescription_MouseDown_1"/>
+                <ListBox SelectionChanged="lstChapters_SelectionChanged_1" Visibility="Collapsed" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Background="#FF4A44C3" Foreground="White" x:Name="lstChapters" Grid.Column="1" HorizontalAlignment="Left" Height="195" Margin="545,81,0,0" VerticalAlignment="Top" Width="301" Grid.RowSpan="2">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"></TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <ListBox SelectionChanged="lstSteps_SelectionChanged_1"  Visibility="Collapsed" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Background="#FF4A44C3" Foreground="White" x:Name="lstSteps" Grid.Column="1" HorizontalAlignment="Left" Height="205" Margin="545,121,0,0" VerticalAlignment="Top" Width="301" Grid.RowSpan="2">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </Grid>
         </Grid>
     </DockPanel>

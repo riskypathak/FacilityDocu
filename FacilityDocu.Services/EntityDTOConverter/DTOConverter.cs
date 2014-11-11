@@ -16,7 +16,12 @@ namespace FacilityDocu.Services.EntityDTOConverter
             Project project = new Project();
 
             project.Description = projectDTO.Description;
-            project.ProjectID = Convert.ToInt32(projectDTO.ProjectID);
+
+            if (projectDTO.ProjectID.Length <= 15)
+            {
+                project.ProjectID = Convert.ToInt32(projectDTO.ProjectID);
+            }
+
             project.CreationDate = projectDTO.CreationDate;
             project.LastUpdatedAt = projectDTO.LastUpdatedAt;
 

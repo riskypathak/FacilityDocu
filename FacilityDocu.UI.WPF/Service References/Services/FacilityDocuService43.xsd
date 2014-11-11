@@ -54,13 +54,15 @@
   </xs:element>
   <xs:element name="UpdateProjectResponse">
     <xs:complexType>
-      <xs:sequence />
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="UpdateProjectResult" nillable="true" type="q6:ProjectDTO" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="UpdateActionImages">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="action" nillable="true" type="q6:ActionDTO" />
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="action" nillable="true" type="q7:ActionDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -77,7 +79,7 @@
   <xs:element name="GetToolsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="GetToolsResult" nillable="true" type="q7:ArrayOfToolDTO" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="GetToolsResult" nillable="true" type="q8:ArrayOfToolDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

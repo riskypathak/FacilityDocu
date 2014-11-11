@@ -60,6 +60,9 @@ namespace FacilityDocLaptop
             IList<ProjectDTO> projects = new List<ProjectDTO>();
             projectFiles.ToList().ForEach(f => projects.Add(ProjectXmlReader.ReadProjectXml(f, true)));
 
+
+            //projects[0].CreatedBy.UserName
+
             listView.ItemsSource = projects.Where(p => !p.Template && !p.Closed);
         }
 
@@ -159,7 +162,6 @@ namespace FacilityDocLaptop
             Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Images = images.ToArray();
 
             ChangeScreenControls();
-
         }
 
         private void projectName_txt_MouseEnter(object sender, MouseEventArgs e)
@@ -203,13 +205,13 @@ namespace FacilityDocLaptop
             e.Handled = !regex.IsMatch((sender as TextBox).Text.Insert((sender as TextBox).SelectionStart, e.Text));
         }
 
-        public void ProjectSave()
-        {
-        }
-
         private void btnPublish_Click(object sender, RoutedEventArgs e)
         {
-            //ReadXML();
+            btnSave_Click(null, null);
+            Data.CURRENT_PROJECT = (new SyncManager()).UpdateDatabase(Data.CURRENT_PROJECT.ProjectID, false);
+
+            ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+            MessageBox.Show("Published");
         }
 
         private void listView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -235,6 +237,9 @@ namespace FacilityDocLaptop
 
         private void ChangeScreenControls()
         {
+            lstChapters.ItemsSource = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules;
+            lstSteps.ItemsSource = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps;
+
             txtUser.Text = Data.CURRENT_USER;
             txtProjectID.Text = Data.CURRENT_PROJECT.ProjectID;
             txtProjectDescription.Text = Data.CURRENT_PROJECT.Description;
@@ -292,18 +297,24 @@ namespace FacilityDocLaptop
                 }
             }
 
-            txtAnalysisActivity.IsReadOnly = true;
-            txtAnalysisB.IsReadOnly = true;
-            txtAnalysisB_.IsReadOnly = true;
-            txtAnalysisControl.IsReadOnly = true;
-            txtAnalysisDanger.IsReadOnly = true;
-            txtAnalysisE.IsReadOnly = true;
-            txtAnalysisE_.IsReadOnly = true;
-            txtAnalysisK.IsReadOnly = true;
-            txtAnalysisK_.IsReadOnly = true;
-            txtAnalysisRisk.IsReadOnly = true;
-            txtAnalysisRisk_.IsReadOnly = true;
-
+            if (currentRigIndex == 0)
+            {
+                mniUp.IsChecked = true;
+                mniDown.IsChecked = false;
+                mniMove.IsChecked = false;
+            }
+            else if (currentRigIndex == 1)
+            {
+                mniUp.IsChecked = false;
+                mniDown.IsChecked = true;
+                mniMove.IsChecked = false;
+            }
+            else if (currentRigIndex == 2)
+            {
+                mniUp.IsChecked = false;
+                mniDown.IsChecked = false;
+                mniMove.IsChecked = true;
+            }
         }
 
         private void ShowImages(IList<ImageDTO> images)
@@ -323,56 +334,6 @@ namespace FacilityDocLaptop
                 Images.Add(new ImageModel() { ImageID = image.ImageID, Image = imagename, Description = image.Description });
             }
             lstPictures.ItemsSource = Images;
-        }
-
-        private void btnUpNext_Click_1(object sender, RoutedEventArgs e)
-        {
-            if (currentRigIndex > 0)
-            {
-                currentRigIndex--;
-                currentModuleIndex = 0;
-                currentStepIndex = 0;
-                currentActionIndex = 0;
-
-                ChangeScreenControls();
-            }
-        }
-
-        private void btnDownNext_Click_1(object sender, RoutedEventArgs e)
-        {
-            if (currentRigIndex < (Data.CURRENT_PROJECT.RigTypes.Count() - 1))
-            {
-                currentRigIndex++;
-                currentModuleIndex = 0;
-                currentStepIndex = 0;
-                currentActionIndex = 0;
-
-                ChangeScreenControls();
-            }
-        }
-
-        private void btnModuleLeft_Click_1(object sender, RoutedEventArgs e)
-        {
-            if (currentModuleIndex > 0)// || currentRigIndex > (Data.CURRENT_PROJECT .RigTypes.Count() - 1) )
-            {
-                currentModuleIndex--;
-                currentStepIndex = 0;
-                currentActionIndex = 0;
-
-                ChangeScreenControls();
-            }
-        }
-
-        private void btnModuleRight_Click_1(object sender, RoutedEventArgs e)
-        {
-            if (currentModuleIndex < (Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules.Count() - 1))
-            {
-                currentModuleIndex++;
-                currentStepIndex = 0;
-                currentActionIndex = 0;
-
-                ChangeScreenControls();
-            }
         }
 
         private void btnStepRight_Click(object sender, RoutedEventArgs e)
@@ -505,7 +466,7 @@ namespace FacilityDocLaptop
                 {
                     AttachmentID = string.Concat(DateTime.Now.ToString("yyyyMMddHHmmssfff"), counter),
                     Name = System.IO.Path.GetFileName(i),
-                    Path = System.IO.Path.Combine(Data.PROJECT_ATTACHMENTS_FOLDER, string.Format("{0}.atc", string.Concat(DateTime.Now.ToString("yyyyMMddHHmmssfff"), counter++)))
+                    Path = System.IO.Path.Combine(Data.PROJECT_ATTACHMENTS_FOLDER, string.Format("{0}.pdf", string.Concat(DateTime.Now.ToString("yyyyMMddHHmmssfff"), counter++)))
                 };
 
                 System.IO.File.Copy(i, attachment.Path);
@@ -532,6 +493,9 @@ namespace FacilityDocLaptop
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             SaveActionDetail();
+
+            Data.CURRENT_PROJECT.LastUpdatedBy = new UserDTO() { UserName = Data.CURRENT_USER };
+            Data.CURRENT_PROJECT.LastUpdatedAt = DateTime.Now.ToUniversalTime();
 
             ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
             MessageBox.Show("Project saved locally. \nPlease click on publish to sync with remote data server");
@@ -568,16 +532,22 @@ namespace FacilityDocLaptop
 
             MakeVisible(editPage_grid);
 
+            string newProjectID = DateTime.Now.ToString("yyyyMMddHHmmssfff");
             string oldProjectPath = System.IO.Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", (cmbTemplates.SelectedItem as ProjectDTO).ProjectID));
-            string newProjectPath = System.IO.Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", DateTime.Now.ToString("yyyyMMddHHmmssfff")));
+            string newProjectPath = System.IO.Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", newProjectID));
 
             System.IO.File.Copy(oldProjectPath, newProjectPath);
 
             Data.CURRENT_PROJECT = ProjectXmlReader.ReadProjectXml(newProjectPath, false);
 
+            Data.CURRENT_PROJECT.ProjectID = newProjectID;
             Data.CURRENT_PROJECT.Description = txtNewProjectName.Text;
             Data.CURRENT_PROJECT.Template = false;
             Data.CURRENT_PROJECT.Closed = false;
+            Data.CURRENT_PROJECT.CreatedBy = new UserDTO() { UserName = Data.CURRENT_USER };
+            Data.CURRENT_PROJECT.LastUpdatedBy = new UserDTO() { UserName = Data.CURRENT_USER };
+            Data.CURRENT_PROJECT.LastUpdatedAt = DateTime.Now.ToUniversalTime();
+            Data.CURRENT_PROJECT.CreationDate = DateTime.Now.ToUniversalTime();
 
             ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
 
@@ -656,7 +626,22 @@ namespace FacilityDocLaptop
 
         private void btnAddImages_Click_1(object sender, RoutedEventArgs e)
         {
-            lstAddImages.ItemsSource = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Images.Where(i => i.Used == false);
+            IList<ImageModel> addImages = new List<ImageModel>();
+
+            Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Images.Where(i => i.Used == false)
+                .ToList().ForEach(i=>
+            {
+                BitmapImage bitmap = new BitmapImage();
+                System.Windows.Controls.Image imagename = new System.Windows.Controls.Image();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(i.Path);
+                imagename.Source = bitmap;
+                bitmap.EndInit();
+
+                addImages.Add(new ImageModel(){Description=i.Description, ImageID= i.ImageID, Image=imagename});
+
+        });
+            lstAddImages.ItemsSource = addImages;
             popImage.IsOpen = true;
         }
 
@@ -664,7 +649,7 @@ namespace FacilityDocLaptop
         {
             popImage.IsOpen = false;
 
-            foreach (ImageDTO selected in lstAddImages.SelectedItems)
+            foreach (ImageModel selected in lstAddImages.SelectedItems)
             {
                 ImageDTO modified = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Images.Single(i => i.ImageID.Equals(selected.ImageID));
                 modified.Used = true;
@@ -843,6 +828,89 @@ namespace FacilityDocLaptop
         private void btnSync_Click_1(object sender, RoutedEventArgs e)
         {
             (new SyncManager()).Sync();
+
+            MessageBox.Show("Data Sync Done!!!");
+            CreateListViewGrid();
+
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            int rigIndex = Convert.ToInt32((sender as MenuItem).CommandParameter);
+
+
+
+
+            currentRigIndex = rigIndex;
+
+            currentModuleIndex = 0;
+            currentStepIndex = 0;
+            currentActionIndex = 0;
+
+            ChangeScreenControls();
+        }
+
+        private void mniLogout_Click_1(object sender, RoutedEventArgs e)
+        {
+            MakeVisible(grdViewLogin);
+        }
+
+        private void mniExit_Click_1(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void txtModule_MouseDown_1(object sender, MouseButtonEventArgs e)
+        {
+            lstChapters.Visibility = System.Windows.Visibility.Visible;
+
+            Mouse.Capture(this, CaptureMode.SubTree);
+            AddHandler();
+        }
+
+        private void AddHandler()
+        {
+            AddHandler(Mouse.PreviewMouseDownOutsideCapturedElementEvent, new MouseButtonEventHandler(HandleClickOutsideOfControl), true);
+        }
+
+        private void HandleClickOutsideOfControl(object sender, MouseButtonEventArgs e)
+        {
+            lstChapters.Visibility = System.Windows.Visibility.Collapsed;
+            lstSteps.Visibility = System.Windows.Visibility.Collapsed;
+            ReleaseMouseCapture();
+        }
+
+        private void lstChapters_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+            currentModuleIndex = (sender as ListBox).SelectedIndex;
+            currentStepIndex = 0;
+            currentActionIndex = 0;
+            currentAnalysisIndex = 0;
+
+            lstChapters.Visibility = System.Windows.Visibility.Collapsed;
+            ReleaseMouseCapture();
+
+            ChangeScreenControls();
+        }
+
+        private void lstSteps_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+            currentStepIndex = (sender as ListBox).SelectedIndex;
+            currentActionIndex = 0;
+            currentAnalysisIndex = 0;
+
+            lstSteps.Visibility = System.Windows.Visibility.Collapsed;
+            ReleaseMouseCapture();
+
+            ChangeScreenControls();
+        }
+
+        private void txtStepName_MouseDown_1(object sender, MouseButtonEventArgs e)
+        {
+            lstSteps.Visibility = System.Windows.Visibility.Visible;
+
+            Mouse.Capture(this, CaptureMode.SubTree);
+            AddHandler();
         }
     }
 }

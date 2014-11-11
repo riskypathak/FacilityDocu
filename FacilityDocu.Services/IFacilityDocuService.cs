@@ -23,7 +23,7 @@ namespace FacilityDocu.Services
         List<ProjectDTO> GetProjectDetails(IList<int> ProjectIDs);
 
         [OperationContract]
-        void UpdateProject(ProjectDTO projectDTO);
+        ProjectDTO UpdateProject(ProjectDTO projectDTO);
 
         [OperationContract]
         void UpdateActionImages(ActionDTO action);

@@ -16,24 +16,31 @@ namespace FacilityDocu.Services
 {
     public class FacilityDocuService : IFacilityDocuService
     {
-        public Dictionary<int, bool> IsSync(Dictionary<int, DateTime> ProjectsData)
+        public Dictionary<int, bool> IsSync(Dictionary<int, DateTime> inputProjects)
         {
             Dictionary<int, bool> _statusData = new Dictionary<int, bool>();
 
-            using (var _db = new TabletApp_DatabaseEntities())
+            using (var context = new TabletApp_DatabaseEntities())
             {
-                foreach (var item in ProjectsData)
+                foreach (var project in context.Projects)
                 {
+                    var inputProject = inputProjects.Where(i => i.Key == project.ProjectID);
 
-                    var _currentProject = _db.Projects.Where(x => x.ProjectID == item.Key).FirstOrDefault();
-
-                    if (_currentProject != null && DateTime.Compare(_currentProject.LastUpdatedAt.GetValueOrDefault(), item.Value) > 0)
+                    if (inputProject.Count() <= 0)
                     {
-                        _statusData.Add(item.Key, true);
+                        _statusData.Add(project.ProjectID, true);
                     }
                     else
                     {
-                        _statusData.Add(item.Key, false);
+                        DateTime inputDate = inputProject.First().Value;
+                        if (inputProject != null && DateTime.Compare(project.LastUpdatedAt.GetValueOrDefault(), inputDate) > 0)
+                        {
+                            _statusData.Add(project.ProjectID, true);
+                        }
+                        else
+                        {
+                            _statusData.Add(project.ProjectID, false);
+                        }
                     }
                 }
             }
@@ -45,9 +52,12 @@ namespace FacilityDocu.Services
         {
             var _projectData = new List<ProjectDTO>();
 
+
+           
+
             using (var _db = new TabletApp_DatabaseEntities())
             {
-
+                EntityConverter.AllResources = EntityConverter.ToResourceDTO(_db.Resources);
 
                 foreach (var id in ProjectIDs)
                 {
@@ -55,9 +65,8 @@ namespace FacilityDocu.Services
                         .FirstOrDefault(x => x.ProjectID == id);
                     if (_currentProject != null)
                     {
-                        //_db.Entry(_currentProject).Reference(s => s.User).Load();
-
-                        _projectData.Add(EntityConverter.ToProjectDTO(_currentProject));
+                        ProjectDTO projectDTO = EntityConverter.ToProjectDTO(_currentProject);
+                        _projectData.Add(projectDTO);
                     }
                     else
                     {
@@ -84,8 +93,10 @@ namespace FacilityDocu.Services
             return isAuthenticated;
         }
 
-        public void UpdateProject(ProjectDTO projectDTO)
+        public ProjectDTO UpdateProject(ProjectDTO projectDTO)
         {
+            ProjectDTO updatedProjectDTO = null;
+
             using (TabletApp_DatabaseEntities context = new TabletApp_DatabaseEntities())
             {
                 if (Helper.IsNew(projectDTO.ProjectID))
@@ -96,6 +107,8 @@ namespace FacilityDocu.Services
 
                     context.Projects.Add(project);
                     context.SaveChanges();
+
+                    updatedProjectDTO = EntityConverter.ToProjectDTO(project);
                 }
                 else
                 {
@@ -130,8 +143,12 @@ namespace FacilityDocu.Services
 
 
                     context.SaveChanges();
+
+                    updatedProjectDTO = EntityConverter.ToProjectDTO(project);
                 }
             }
+
+            return updatedProjectDTO;
         }
 
         public void UpdateActionImages(ActionDTO action)

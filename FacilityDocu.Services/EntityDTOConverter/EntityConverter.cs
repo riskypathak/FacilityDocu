@@ -10,6 +10,8 @@ namespace FacilityDocu.Services.EntityDTOConverter
     public static class EntityConverter
     {
 
+        public static List<ResourceDTO> AllResources;
+
         public static ProjectDTO ToProjectDTO(Project project)
         {
             ProjectDTO projectDTO = new ProjectDTO();
@@ -180,6 +182,16 @@ namespace FacilityDocu.Services.EntityDTOConverter
                 resourcesDTO.Add(resourceDTO);
             }
 
+            IList<string> existingIDs = resourcesDTO.Select(r=>r.ResourceID).ToList();
+            AllResources.ForEach(r =>
+                {
+                    if (!existingIDs.Contains(r.ResourceID))
+                    {
+                        resourcesDTO.Add(r);
+                    }
+                }
+                    );
+
             return resourcesDTO;
         }
 
@@ -267,6 +279,26 @@ namespace FacilityDocu.Services.EntityDTOConverter
             stepDTO.StepID = step.StepID;
 
             return stepDTO;
+        }
+
+        internal static List<ResourceDTO> ToResourceDTO(System.Data.Entity.DbSet<Resource> dbSet)
+        {
+            List<ResourceDTO> resourcesDTO = new List<ResourceDTO>();
+
+            foreach (Resource resource in dbSet)
+            {
+                ResourceDTO resourceDTO = new ResourceDTO()
+                {
+                    Name = resource.ResourceName,
+                    ResourceCount = "0",
+                    ResourceID = resource.ResourceID.ToString(),
+                    Type = resource.Type.ToString().ToLower()
+                };
+
+                resourcesDTO.Add(resourceDTO);
+            }
+
+            return resourcesDTO;
         }
     }
 }

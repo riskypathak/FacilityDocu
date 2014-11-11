@@ -87,6 +87,10 @@
       <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Dimensions" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Images" nillable="true" type="tns:ArrayOfImageDTO" />
+      <xs:element minOccurs="0" name="ImportantDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ImportantName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IsDescriptionwarning" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNameWarning" type="xs:boolean" />
       <xs:element minOccurs="0" name="LiftingGears" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Number" nillable="true" type="xs:string" />
@@ -127,6 +131,7 @@
       <xs:element minOccurs="0" name="Number" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Path" nillable="true" type="xs:string" />
       <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Tags" nillable="true" type="q1:ArrayOfstring" />
+      <xs:element minOccurs="0" name="Used" type="xs:boolean" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ImageDTO" nillable="true" type="tns:ImageDTO" />

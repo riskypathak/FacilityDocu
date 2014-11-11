@@ -34,10 +34,10 @@ namespace FacilityDocLaptop.Services {
         System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ProjectDTO[]> GetProjectDetailsAsync(int[] ProjectIDs);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateProject", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateProjectResponse")]
-        void UpdateProject(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO);
+        FacilityDocu.UI.Utilities.Services.ProjectDTO UpdateProject(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateProject", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateProjectResponse")]
-        System.Threading.Tasks.Task UpdateProjectAsync(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO);
+        System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ProjectDTO> UpdateProjectAsync(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateActionImages", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateActionImagesResponse")]
         void UpdateActionImages(FacilityDocu.UI.Utilities.Services.ActionDTO action);
@@ -103,11 +103,11 @@ namespace FacilityDocLaptop.Services {
             return base.Channel.GetProjectDetailsAsync(ProjectIDs);
         }
         
-        public void UpdateProject(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO) {
-            base.Channel.UpdateProject(projectDTO);
+        public FacilityDocu.UI.Utilities.Services.ProjectDTO UpdateProject(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO) {
+            return base.Channel.UpdateProject(projectDTO);
         }
         
-        public System.Threading.Tasks.Task UpdateProjectAsync(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO) {
+        public System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ProjectDTO> UpdateProjectAsync(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO) {
             return base.Channel.UpdateProjectAsync(projectDTO);
         }
         

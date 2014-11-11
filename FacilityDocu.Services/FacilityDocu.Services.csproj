@@ -91,15 +91,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <Content Include="Data\Attachments\1.atc">
+    <None Include="Data\Attachments\1.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Attachments\2.atc">
+    </None>
+    <None Include="Data\Attachments\2.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Attachments\3.atc">
+    </None>
+    <None Include="Data\Attachments\3.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

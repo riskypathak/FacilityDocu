@@ -19,11 +19,11 @@ namespace FacilityDocu.UI.Utilities
             xProject.Add(new XElement("id", project.ProjectID));
             xProject.Add(new XElement("template", project.Template));
             xProject.Add(new XElement("closed", project.Closed));
-            xProject.Add(new XElement("createdby", project.CreatedBy.Name));
+            xProject.Add(new XElement("createdby", project.CreatedBy.UserName));
             xProject.Add(new XElement("createdtime", project.CreationDate));
             xProject.Add(new XElement("description", project.Description));
             xProject.Add(new XElement("updatedtime", project.LastUpdatedAt));
-            xProject.Add(new XElement("updatedby", project.LastUpdatedBy.Name));
+            xProject.Add(new XElement("updatedby", project.LastUpdatedBy.UserName));
 
             WriteRig(project.RigTypes.ToList(), xProject);
 
@@ -139,7 +139,7 @@ namespace FacilityDocu.UI.Utilities
 
         private static string SaveAttachment(AttachmentDTO attachment)
         {
-            string savedPath = Path.Combine(Data.PROJECT_ATTACHMENTS_FOLDER, string.Format("{0}.atc", attachment.AttachmentID));
+            string savedPath = Path.Combine(Data.PROJECT_ATTACHMENTS_FOLDER, string.Format("{0}.pdf", attachment.AttachmentID));
 
             if (Data.SYNCPROCESS)
             {
@@ -223,6 +223,7 @@ namespace FacilityDocu.UI.Utilities
                 xImage.Add(new XElement("number", image.Number));
                 xImage.Add(new XElement("creationdate", image.CreationDate));
                 xImage.Add(new XElement("description", image.Description));
+                xImage.Add(new XElement("used", image.Used));
 
                 xImage.Add(new XElement("path", SaveImage(image)));
                 xImage.Add(new XElement("tags", image.Tags));

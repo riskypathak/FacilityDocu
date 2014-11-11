@@ -37,13 +37,13 @@ namespace FacilityDocu.Test.Console
         private static void TestUpdateProjectDatabase(int projectID)
         {
             SyncManager manager = new SyncManager();
-            manager.UpdateDatabase(1, false);
+            manager.UpdateDatabase("1", false);
         }
 
         private static void TestActionImageUpload()
         {
             SyncManager manager = new SyncManager();
-            manager.UploadImages(1);
+            manager.UploadImages("1");
         }
 
         private static void TestGeneratePdf()
