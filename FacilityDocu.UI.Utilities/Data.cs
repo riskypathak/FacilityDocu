@@ -16,7 +16,8 @@ namespace FacilityDocu.UI.Utilities
         public static string CONFIG_PATH = System.IO.Path.GetFullPath("Assets/config.xml");
         public static string ASSETS_PATH = System.IO.Path.GetFullPath("Assets");
 
-        public static bool SYNCPROCESS = false;
+        public static bool SYNC_DOWNLOAD = false;
+        public static bool SYNC_DOWNLOAD_UPDATE = false;
 
         public static ProjectDTO CURRENT_PROJECT;
 

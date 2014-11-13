@@ -10,7 +10,7 @@ namespace FacilityDocu.Services
         public static bool IsNew(string id)
         {
             bool returnValue;
-            returnValue = (id.Length >= 15 || id.Equals("0") || id.StartsWith("-")) ? true : false;
+            returnValue = (string.IsNullOrEmpty(id) || id.Length >= 15 || id.Equals("0") || id.StartsWith("-")) ? true : false;
 
             return returnValue;
         }

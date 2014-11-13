@@ -20,13 +20,16 @@ namespace FacilityDocu.Services
         Dictionary<int, bool> IsSync(Dictionary<int, DateTime> ProjectsData);
 
         [OperationContract]
-        List<ProjectDTO> GetProjectDetails(IList<int> ProjectIDs);
+        ProjectDTO GetProjectDetails(int projectID);
 
         [OperationContract]
         ProjectDTO UpdateProject(ProjectDTO projectDTO);
 
         [OperationContract]
         void UpdateActionImages(ActionDTO action);
+
+        [OperationContract]
+        void UpdateActionAttachments(ActionDTO action);
 
         [OperationContract]
         IList<ToolDTO> GetTools();

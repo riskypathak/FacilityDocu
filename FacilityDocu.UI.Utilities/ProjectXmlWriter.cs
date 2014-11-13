@@ -27,7 +27,7 @@ namespace FacilityDocu.UI.Utilities
 
             WriteRig(project.RigTypes.ToList(), xProject);
 
-            xProject.Save(Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml",project.ProjectID)));
+            xProject.Save(Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", project.ProjectID)));
         }
 
         private static void WriteRig(IList<RigTypeDTO> rigTypes, XElement xProject)
@@ -126,30 +126,18 @@ namespace FacilityDocu.UI.Utilities
             XElement xAttachments = new XElement("attachments");
             xAction.Add(xAttachments);
 
-            foreach (AttachmentDTO attachment in attachments)
+            if (attachments != null)
             {
-                XElement xAttachment = new XElement("attachment");
-                xAttachments.Add(xAttachment);
-
-                xAttachment.Add(new XElement("id", attachment.AttachmentID));
-                xAttachment.Add(new XElement("name", attachment.Name));
-                xAttachment.Add(new XElement("path", SaveAttachment(attachment)));
-            }
-        }
-
-        private static string SaveAttachment(AttachmentDTO attachment)
-        {
-            string savedPath = Path.Combine(Data.PROJECT_ATTACHMENTS_FOLDER, string.Format("{0}.pdf", attachment.AttachmentID));
-
-            if (Data.SYNCPROCESS)
-            {
-                using (WebClient webClient = new WebClient())
+                foreach (AttachmentDTO attachment in attachments)
                 {
-                    webClient.DownloadFile(attachment.Path, savedPath);
+                    XElement xAttachment = new XElement("attachment");
+                    xAttachments.Add(xAttachment);
+
+                    xAttachment.Add(new XElement("id", attachment.AttachmentID));
+                    xAttachment.Add(new XElement("name", attachment.Name));
+                    xAttachment.Add(new XElement("path", SaveAttachment(attachment)));
                 }
             }
-
-            return savedPath;
         }
 
         private static void WriteRiskAnalysis(IList<RiskAnalysisDTO> riskAnalysiss, XElement xAction)
@@ -228,21 +216,42 @@ namespace FacilityDocu.UI.Utilities
                 xImage.Add(new XElement("path", SaveImage(image)));
                 xImage.Add(new XElement("tags", image.Tags));
 
-                
-
                 WriteImageComments(image.Comments, xImage);
             }
         }
 
         private static string SaveImage(ImageDTO image)
         {
-            string savedPath = Path.Combine(Data.PROJECT_IMAGES_FOLDER, string.Format("{0}.jpeg", image.ImageID));
+            string savedPath = Path.Combine(Data.PROJECT_IMAGES_FOLDER, string.Format("{0}.jpg", image.ImageID));
 
-            if (Data.SYNCPROCESS)
+            if (Data.SYNC_DOWNLOAD_UPDATE)
+            {
+                savedPath = image.Path;
+            }
+            else if (Data.SYNC_DOWNLOAD)
             {
                 using (WebClient webClient = new WebClient())
                 {
                     webClient.DownloadFile(image.Path, savedPath);
+                }
+            }
+
+            return savedPath;
+        }
+
+        private static string SaveAttachment(AttachmentDTO attachment)
+        {
+            string savedPath = Path.Combine(Data.PROJECT_IMAGES_FOLDER, string.Format("{0}.pdf", attachment.AttachmentID));
+
+            if (Data.SYNC_DOWNLOAD_UPDATE)
+            {
+                savedPath = attachment.Path;
+            }
+            else if (Data.SYNC_DOWNLOAD)
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    webClient.DownloadFile(attachment.Path, savedPath);
                 }
             }
 
@@ -254,14 +263,17 @@ namespace FacilityDocu.UI.Utilities
             XElement xComments = new XElement("comments");
             xImage.Add(xComments);
 
-            foreach (CommentDTO comment in comments)
+            if (comments != null)
             {
-                XElement xComment = new XElement("comment");
-                xComments.Add(xComment);
+                foreach (CommentDTO comment in comments)
+                {
+                    XElement xComment = new XElement("comment");
+                    xComments.Add(xComment);
 
-                xComment.Add(new XElement("text", comment.Text));
-                xComment.Add(new XElement("date", comment.CommentedAt));
-                xComment.Add(new XElement("user", comment.User));
+                    xComment.Add(new XElement("text", comment.Text));
+                    xComment.Add(new XElement("date", comment.CommentedAt));
+                    xComment.Add(new XElement("user", comment.User));
+                }
             }
         }
     }

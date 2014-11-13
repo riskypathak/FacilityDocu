@@ -48,37 +48,23 @@ namespace FacilityDocu.Services
             return _statusData;
         }
 
-        public List<ProjectDTO> GetProjectDetails(IList<int> ProjectIDs)
+        public ProjectDTO GetProjectDetails(int projectID)
         {
-            var _projectData = new List<ProjectDTO>();
-
-
-           
+            ProjectDTO projectDTO = new ProjectDTO();
 
             using (var _db = new TabletApp_DatabaseEntities())
             {
                 EntityConverter.AllResources = EntityConverter.ToResourceDTO(_db.Resources);
 
-                foreach (var id in ProjectIDs)
+                var _currentProject = _db.Projects
+                    .FirstOrDefault(x => x.ProjectID == projectID);
+                if (_currentProject != null)
                 {
-                    var _currentProject = _db.Projects
-                        .FirstOrDefault(x => x.ProjectID == id);
-                    if (_currentProject != null)
-                    {
-                        ProjectDTO projectDTO = EntityConverter.ToProjectDTO(_currentProject);
-                        _projectData.Add(projectDTO);
-                    }
-                    else
-                    {
-                        _projectData.Add(null);
-                    }
-
-
-
+                    projectDTO = EntityConverter.ToProjectDTO(_currentProject);
                 }
             }
-            return _projectData;
 
+            return projectDTO;
         }
 
         public bool Login(string userName, string password)
@@ -108,12 +94,11 @@ namespace FacilityDocu.Services
                     context.Projects.Add(project);
                     context.SaveChanges();
 
-                    updatedProjectDTO = EntityConverter.ToProjectDTO(project);
+                    updatedProjectDTO = GetProjectDetails(project.ProjectID);
+
                 }
                 else
                 {
-                    DTOConverter.IsUpdate = true;
-
                     Project project = DTOConverter.ToProject(projectDTO);
 
                     int projectID = Convert.ToInt32(projectDTO.ProjectID);
@@ -123,32 +108,173 @@ namespace FacilityDocu.Services
                     existingProject.Close = project.Close;
                     existingProject.LastUpdatedAt = project.LastUpdatedAt;
 
-
-
-                    foreach (ProjectDetail existingPD in existingProject.ProjectDetails.ToList())
-                    {
-                        ProjectDetail updateProject = project.ProjectDetails.FirstOrDefault(p => p.ProjectDetailID.Equals(existingPD.ProjectDetailID));
-
-                        existingPD.Dimensions = updateProject.Dimensions;
-                        existingPD.LiftingGears = updateProject.LiftingGears;
-                        existingPD.Risks = updateProject.Risks;
-
-                        existingPD.ActionName = updateProject.ActionName;
-                        existingPD.Description = updateProject.Description;
-                    }
-
-                    List<ProjectDetail> newProjectDetails = project.ProjectDetails.Where(p => Helper.IsNew(p.ProjectDetailID.ToString())).ToList();
-                    newProjectDetails.ForEach(np => existingProject.ProjectDetails.Add(np));
-
-
+                    UpdateProjectDetail(project, existingProject);
 
                     context.SaveChanges();
 
-                    updatedProjectDTO = EntityConverter.ToProjectDTO(project);
+                    updatedProjectDTO = GetProjectDetails(project.ProjectID);
                 }
             }
 
             return updatedProjectDTO;
+        }
+
+        private void UpdateProjectDetail(Project project, Project existingProject)
+        {
+            foreach (ProjectDetail existingPD in existingProject.ProjectDetails.ToList())
+            {
+                ProjectDetail updateProject = project.ProjectDetails.FirstOrDefault(p => p.ProjectDetailID == existingPD.ProjectDetailID);
+
+                if (updateProject != null)
+                {
+                    ProjectDetail modifyAction = existingProject.ProjectDetails.Single(a => a.ProjectDetailID == updateProject.ProjectDetailID);
+
+                    modifyAction.Dimensions = updateProject.Dimensions;
+                    modifyAction.LiftingGears = updateProject.LiftingGears;
+                    modifyAction.Risks = updateProject.Risks;
+
+                    modifyAction.ActionName = updateProject.ActionName;
+                    modifyAction.Description = updateProject.Description;
+
+                    modifyAction.ActionDescriptionWarning = updateProject.ActionDescriptionWarning;
+                    modifyAction.ActionNameWarning = updateProject.ActionNameWarning;
+                    modifyAction.ImportantActionDescription = updateProject.ImportantActionDescription;
+                    modifyAction.ImportantActionname = updateProject.ImportantActionname;
+
+                    UpdateActionTool(updateProject, existingPD);
+                    UpdateActionResource(updateProject, existingPD);
+                    UpdateActionRiskAnalysis(updateProject, existingPD);
+                    UpdateActionImages(updateProject, existingPD);
+                }
+                else
+                {
+                    existingProject.ProjectDetails.Remove(existingProject.ProjectDetails.Single(p => p.ProjectDetailID == existingPD.ProjectDetailID));
+                }
+            }
+
+            List<ProjectDetail> newProjectDetails = project.ProjectDetails.Where(p => Helper.IsNew(p.ProjectDetailID.ToString())).ToList();
+            newProjectDetails.ForEach(np => existingProject.ProjectDetails.Add(np));
+        }
+
+        private void UpdateActionImages(ProjectDetail updateProject, ProjectDetail existingPD)
+        {
+            foreach (ProjectActionImage existingPAI in existingPD.ProjectActionImages.ToList())
+            {
+                ProjectActionImage updatePAI = updateProject.ProjectActionImages.FirstOrDefault(p => p.ImageID == existingPAI.ImageID);
+
+                if (updatePAI != null)
+                {
+                    ProjectActionImage modifyPAI = existingPD.ProjectActionImages.Single(a => a.ImageID == updatePAI.ImageID);
+
+                    modifyPAI.Image.CreationDate = updatePAI.Image.CreationDate;
+                    modifyPAI.Image.Description = updatePAI.Image.Description;
+                    modifyPAI.Image.ImageComments = updatePAI.Image.ImageComments;
+                    modifyPAI.Image.ImagePath = updatePAI.Image.ImagePath;
+                    modifyPAI.Image.Tags = updatePAI.Image.Tags;
+                }
+                else
+                {
+                    existingPD.ProjectActionImages.Remove(existingPD.ProjectActionImages.Single(p => p.ImageID == existingPAI.ImageID));
+                }
+            }
+
+            List<ProjectActionImage> newRA = updateProject.ProjectActionImages.Where(p => Helper.IsNew(p.ImageID.ToString())).ToList();
+            newRA.ForEach(np => existingPD.ProjectActionImages.Add(np));
+        }
+
+        private void UpdateActionRiskAnalysis(ProjectDetail updateProject, ProjectDetail existingPD)
+        {
+            foreach (RiskAnalysi existingRA in existingPD.RiskAnalysis.ToList())
+            {
+                RiskAnalysi updateRA = updateProject.RiskAnalysis.FirstOrDefault(p => p.RiskAnalysisID == existingRA.RiskAnalysisID);
+
+                if (updateRA != null)
+                {
+                    RiskAnalysi modifyRA = existingPD.RiskAnalysis.Single(a => a.RiskAnalysisID == updateRA.RiskAnalysisID);
+
+                    modifyRA.Activity = updateRA.Activity;
+                    modifyRA.B = updateRA.B;
+                    modifyRA.B_ = updateRA.B_;
+                    modifyRA.Controls = updateRA.Controls;
+                    modifyRA.Danger = updateRA.Danger;
+                    modifyRA.E = updateRA.E;
+                    modifyRA.E_ = updateRA.E_;
+                    modifyRA.K = updateRA.K;
+                    modifyRA.K_ = updateRA.K_;
+                    modifyRA.Risk = updateRA.Risk;
+                    modifyRA.Risk_ = updateRA.Risk_;
+
+                }
+                else
+                {
+                    existingPD.RiskAnalysis.Remove(existingPD.RiskAnalysis.Single(p => p.RiskAnalysisID == existingRA.RiskAnalysisID));
+                }
+            }
+
+            List<RiskAnalysi> newRA = updateProject.RiskAnalysis.Where(p => Helper.IsNew(p.RiskAnalysisID.ToString())).ToList();
+            newRA.ForEach(np => existingPD.RiskAnalysis.Add(np));
+        }
+
+        private void UpdateActionTool(ProjectDetail updateProject, ProjectDetail existingPD)
+        {
+            foreach (ProjectActionTool existingActionTool in existingPD.ProjectActionTools.ToList())
+            {
+                ProjectActionTool updateActionTool = updateProject.ProjectActionTools.FirstOrDefault(t => t.ToolID == existingActionTool.ToolID);
+
+                if (updateActionTool != null)
+                {
+                }
+                else
+                {
+                    existingPD.ProjectActionTools.Remove(existingPD.ProjectActionTools.Single(p => p.ProjectActionToolID == existingActionTool.ProjectActionToolID));
+                }
+            }
+
+            foreach (ProjectActionTool updateActionTool in updateProject.ProjectActionTools.ToList())
+            {
+                ProjectActionTool newActionTool = existingPD.ProjectActionTools.FirstOrDefault(t => t != null && t.ToolID == updateActionTool.ToolID);
+
+                if (newActionTool != null)
+                {
+                }
+                else
+                {
+                    existingPD.ProjectActionTools.Add(updateActionTool);
+                }
+            }
+        }
+
+        private void UpdateActionResource(ProjectDetail updateProject, ProjectDetail existingPD)
+        {
+            foreach (ProjectActionResource existingActionResource in existingPD.ProjectActionResources.ToList())
+            {
+                ProjectActionResource updateActionResource = updateProject.ProjectActionResources.FirstOrDefault(t => t.ResourceID == existingActionResource.ResourceID);
+
+                if (updateActionResource != null)
+                {
+                    ProjectActionResource modifyActionResource = existingPD.ProjectActionResources.Single(r => r.ResourceID == updateActionResource.ResourceID);
+
+                    modifyActionResource.ResourceCount = updateActionResource.ResourceCount;
+                    
+                }
+                else
+                {
+                    existingPD.ProjectActionResources.Remove(existingPD.ProjectActionResources.Single(p => p.ProjectActionResourceID == existingActionResource.ProjectActionResourceID));
+                }
+            }
+
+            foreach (ProjectActionResource updateActionResource in updateProject.ProjectActionResources.ToList())
+            {
+                ProjectActionResource newActionResource = existingPD.ProjectActionResources.FirstOrDefault(t => t != null && t.ResourceID == updateActionResource.ResourceID);
+
+                if (newActionResource != null)
+                {
+                }
+                else
+                {
+                    existingPD.ProjectActionResources.Add(updateActionResource);
+                }
+            }
         }
 
         public void UpdateActionImages(ActionDTO action)
@@ -158,62 +284,58 @@ namespace FacilityDocu.Services
             int tempId = 0;
             using (TabletApp_DatabaseEntities context = new TabletApp_DatabaseEntities())
             {
-                foreach (var item in action.Images)
+                foreach (ImageDTO imageDTO in action.Images)
                 {
-                    int imageID = Convert.ToInt32(item.ImageID);
-
                     //insert
-                    if (imageID == 0)
+                    if (Helper.IsNew(imageDTO.ImageID))
                     {
-                        Image img = new Image()
+
+                        ProjectActionImage projectImage = new ProjectActionImage();
+                        projectImage.ProjectDetailID = actionID;
+
+                        projectImage.Image = new Image()
                         {
-                            CreationDate = item.CreationDate,
-                            Description = item.Description,
-                            Tags = String.Join(",", item.Tags),
+                            ImageID = Helper.GetUniqueID(),
+                            Description = imageDTO.Description,
+                            ImagePath = imageDTO.Path,
+                            CreationDate = imageDTO.CreationDate,
+                            Tags = string.Join(";", imageDTO.Tags.ToArray()),
                         };
 
-                        foreach (CommentDTO comment in item.Comments)
+                        foreach (CommentDTO commentDTO in imageDTO.Comments)
                         {
                             ImageComment imgComment = new ImageComment()
                             {
-                                CreationDate = comment.CommentedAt,
-                                ImageID = img.ImageID,
-                                Text = comment.Text,
-                                ImageCommentID = tempId--
+                                ImageCommentID = Helper.GetUniqueID(),
+                                CreationDate = commentDTO.CommentedAt,
+                                ImageID = projectImage.Image.ImageID,
+                                Text = commentDTO.Text,
                             };
-                            img.ImageComments.Add(imgComment);
+
+                            projectImage.Image.ImageComments.Add(imgComment);
                         }
 
-                        int projectDetailID = context.ProjectDetails.First(p => p.ProjectDetailID.Equals(actionID)).ProjectDetailID;
+                        context.ProjectActionImages.Add(projectImage);
 
-                        // Project action image is collection in Image 
-                        ProjectActionImage ProjectActionImg = new ProjectActionImage()
-                        {
-                            ID = tempId--,
-                            ImageID = img.ImageID,
-                            ProjectDetailID = projectDetailID
-                        };
-
-                        img.ProjectActionImages.Add(ProjectActionImg);
-
-                        context.Images.Add(img);
                         context.SaveChanges();
-
-                        SaveImageToFile(img.ImageID, item);
+                        projectImage.Image.ImagePath = SaveImageToFile(projectImage.Image.ImageID, imageDTO);
+                        context.SaveChanges();
                     }
                     else
                     {
+                        int imageID = Convert.ToInt32(imageDTO.ImageID);
+
                         //update
                         Image img = context.Images.First(x => x.ImageID == imageID);
 
 
 
-                        img.Description = item.Description;
-                        img.Tags = String.Join(",", item.Tags);
+                        img.Description = imageDTO.Description;
+                        img.Tags = String.Join(",", imageDTO.Tags);
 
                         context.ImageComments.RemoveRange(context.ImageComments.Where(x => x.ImageID.Value == imageID));
 
-                        foreach (CommentDTO commnet in item.Comments)
+                        foreach (CommentDTO commnet in imageDTO.Comments)
                         {
                             ImageComment imgComment = new ImageComment()
                             {
@@ -225,28 +347,101 @@ namespace FacilityDocu.Services
                             img.ImageComments.Add(imgComment);
                         }
 
+                        img.ImagePath = SaveImageToFile(img.ImageID, imageDTO);
+
                         context.SaveChanges();
-
-                        SaveImageToFile(img.ImageID, item);
-
-
-
                     }
-
                 }
             }
         }
 
-        private void SaveImageToFile(int imageId, ImageDTO item)
+        private string GetImageActualPath(string imagePath)
+        {
+            int lastIndex = System.ServiceModel.OperationContext.Current.RequestContext.RequestMessage.Headers.To.ToString().LastIndexOf('/');
+            return string.Format("{0}/Data/Images/{1}", System.ServiceModel.OperationContext.Current.RequestContext.RequestMessage.Headers.To.ToString().Substring(0, lastIndex), imagePath);
+        }
+
+        private string SaveImageToFile(int imageId, ImageDTO item)
         {
             //image extension as for now using jpg
-            string extension = "jpeg";
+            string extension = "jpg";
+            string dbImagePath = GetImageActualPath(string.Format("{0}.{1}", imageId, extension));
+
             string filePath = System.Web.Hosting.HostingEnvironment.MapPath(string.Format("~/Data/Images/{0}.{1}", imageId, extension));
 
             using (MemoryStream ms = new MemoryStream(item.FileByteStream))
             {
                 System.Drawing.Image.FromStream(ms).Save(filePath);
             }
+
+            return dbImagePath;
+        }
+
+        public void UpdateActionAttachments(ActionDTO action)
+        {
+            int actionID = Convert.ToInt32(action.ActionID);
+
+            int tempId = 0;
+            using (TabletApp_DatabaseEntities context = new TabletApp_DatabaseEntities())
+            {
+                foreach (AttachmentDTO attachmentDTO in action.Attachments)
+                {
+                    //insert
+                    if (Helper.IsNew(attachmentDTO.AttachmentID))
+                    {
+
+                        ProjectActionAttachment projectAttachment = new ProjectActionAttachment();
+                        projectAttachment.ProjectDetailID = actionID;
+
+                        projectAttachment.Attachment = new Attachment()
+                        {
+                            AttachmentID = Helper.GetUniqueID(),
+                            Name = attachmentDTO.Name,
+                        };
+
+                        context.ProjectActionAttachments.Add(projectAttachment);
+
+                        context.SaveChanges();
+                        projectAttachment.Attachment.Path = SaveAttachmentToFile(projectAttachment.Attachment.AttachmentID, attachmentDTO);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        int AttachmentID = Convert.ToInt32(attachmentDTO.AttachmentID);
+
+                        //update
+                        Attachment attachment = context.Attachments.First(x => x.AttachmentID == AttachmentID);
+
+                        attachment.Name = attachmentDTO.Name;
+
+                        attachment.Path = SaveAttachmentToFile(attachment.AttachmentID, attachmentDTO);
+
+                        context.SaveChanges();
+                    }
+                }
+            }
+        }
+
+        private string GetAttachmentActualPath(string AttachmentPath)
+        {
+            int lastIndex = System.ServiceModel.OperationContext.Current.RequestContext.RequestMessage.Headers.To.ToString().LastIndexOf('/');
+            return string.Format("{0}/Data/Attachments/{1}", System.ServiceModel.OperationContext.Current.RequestContext.RequestMessage.Headers.To.ToString().Substring(0, lastIndex), AttachmentPath);
+        }
+
+        private string SaveAttachmentToFile(int AttachmentId, AttachmentDTO item)
+        {
+            //Attachment extension as for now using jpg
+            string extension = "pdf";
+            string dbAttachmentPath = GetAttachmentActualPath(string.Format("{0}.{1}", AttachmentId, extension));
+
+            string filePath = System.Web.Hosting.HostingEnvironment.MapPath(string.Format("~/Data/Attachments/{0}.{1}", AttachmentId, extension));
+
+            using(FileStream fileStream = File.Create(filePath))
+            {
+                fileStream.Write(item.FileByteStream, 0, item.FileByteStream.Length);
+            }
+
+            return dbAttachmentPath;
         }
 
         public IList<ToolDTO> GetTools()

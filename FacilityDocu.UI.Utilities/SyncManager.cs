@@ -45,19 +45,21 @@ namespace FacilityDocu.UI.Utilities
 
         public void Sync()
         {
-            Data.SYNCPROCESS = true;
-
             this.ProjectIDs = IsSyncRequired();
             UpdateProjectXml();
-
-            Data.SYNCPROCESS = false;
         }
 
         public void UpdateProjectXml()
         {
-            ProjectDTO[] projects = service.GetProjectDetails(ProjectIDs.ToArray());
+            Data.SYNC_DOWNLOAD = true;
+            foreach (int projectID in this.ProjectIDs)
+            {
+                ProjectDTO project = service.GetProjectDetails(Convert.ToInt32(projectID));
 
-            projects.ToList().ForEach(p => ProjectXmlWriter.Write(p));
+                ProjectXmlWriter.Write(project);
+            }
+
+            Data.SYNC_DOWNLOAD = false;
         }
 
         public ProjectDTO UpdateDatabase(string projectID, bool isInsert)
@@ -66,10 +68,16 @@ namespace FacilityDocu.UI.Utilities
             ProjectDTO project = ProjectXmlReader.ReadProjectXml(projectPath, false);
 
             ProjectDTO updatedProject = service.UpdateProject(project);
+
+            Data.SYNC_DOWNLOAD_UPDATE = true;
             ProjectXmlWriter.Write(updatedProject);
-            UploadImages(projectID);
+            Data.SYNC_DOWNLOAD_UPDATE = false;
+
+            UploadImages(updatedProject.ProjectID);
+            UploadAttachments(updatedProject.ProjectID);
 
             this.ProjectIDs = new List<int>() { Convert.ToInt32(updatedProject.ProjectID) };
+
             UpdateProjectXml();
 
             return ProjectXmlReader.ReadProjectXml(Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml",updatedProject.ProjectID)),false);
@@ -87,7 +95,10 @@ namespace FacilityDocu.UI.Utilities
                 string projectPath = Path.Combine(this.ProjectXmlFolderPath, string.Format("{0}", file.Name));
                 ProjectDTO project = ProjectXmlReader.ReadProjectXml(projectPath, false);
 
-                projectIDs.Add(Convert.ToInt32(project.ProjectID), project.LastUpdatedAt);
+                if (!Helper.IsNew(project.ProjectID.ToString()))
+                {
+                    projectIDs.Add(Convert.ToInt32(project.ProjectID), project.LastUpdatedAt);
+                }
             }
 
             Dictionary<int, bool> result = service.IsSync(projectIDs);
@@ -112,8 +123,7 @@ namespace FacilityDocu.UI.Utilities
         private byte[] ReadImage(string imagePath)
         {
             byte[] bytes = null;
-            //
-            imagePath = @"C:\Users\RiskyPathak\Desktop\plus.jpg";
+
             Image image = Image.FromFile(imagePath);
             using (MemoryStream stream = new MemoryStream())
             {
@@ -123,6 +133,25 @@ namespace FacilityDocu.UI.Utilities
             }
 
             return bytes;
+        }
+
+        public void UploadAttachments(string projectID)
+        {
+            string projectPath = Path.Combine(this.ProjectXmlFolderPath, string.Format("{0}.xml", projectID));
+            ProjectDTO project = ProjectXmlReader.ReadProjectXml(projectPath, false);
+
+            List<Services.ActionDTO> actions = project.RigTypes.SelectMany(r => r.Modules).SelectMany(m => m.Steps).SelectMany(s => s.Actions).ToList();
+
+            actions.ForEach(a =>
+            {
+                a.Attachments.ToList().ForEach(i => i.FileByteStream = ReadAttachment(i.Path));
+               service.UpdateActionAttachments(a);
+            });
+        }
+
+        private byte[] ReadAttachment(string attachmentPath)
+        {
+            return System.IO.File.ReadAllBytes(attachmentPath);
         }
     }
 }

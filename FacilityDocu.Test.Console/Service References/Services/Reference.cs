@@ -28,16 +28,16 @@ namespace FacilityDocu.Test.Console.Services {
         System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<int, bool>> IsSyncAsync(System.Collections.Generic.Dictionary<int, System.DateTime> ProjectsData);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetProjectDetails", ReplyAction="http://tempuri.org/IFacilityDocuService/GetProjectDetailsResponse")]
-        FacilityDocu.UI.Utilities.Services.ProjectDTO[] GetProjectDetails(int[] ProjectIDs);
+        FacilityDocu.UI.Utilities.Services.ProjectDTO GetProjectDetails(int projectID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetProjectDetails", ReplyAction="http://tempuri.org/IFacilityDocuService/GetProjectDetailsResponse")]
-        System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ProjectDTO[]> GetProjectDetailsAsync(int[] ProjectIDs);
+        System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ProjectDTO> GetProjectDetailsAsync(int projectID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateProject", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateProjectResponse")]
-        void UpdateProject(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO);
+        FacilityDocu.UI.Utilities.Services.ProjectDTO UpdateProject(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateProject", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateProjectResponse")]
-        System.Threading.Tasks.Task UpdateProjectAsync(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO);
+        System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ProjectDTO> UpdateProjectAsync(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateActionImages", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateActionImagesResponse")]
         void UpdateActionImages(FacilityDocu.UI.Utilities.Services.ActionDTO action);
@@ -95,19 +95,19 @@ namespace FacilityDocu.Test.Console.Services {
             return base.Channel.IsSyncAsync(ProjectsData);
         }
         
-        public FacilityDocu.UI.Utilities.Services.ProjectDTO[] GetProjectDetails(int[] ProjectIDs) {
-            return base.Channel.GetProjectDetails(ProjectIDs);
+        public FacilityDocu.UI.Utilities.Services.ProjectDTO GetProjectDetails(int projectID) {
+            return base.Channel.GetProjectDetails(projectID);
         }
         
-        public System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ProjectDTO[]> GetProjectDetailsAsync(int[] ProjectIDs) {
-            return base.Channel.GetProjectDetailsAsync(ProjectIDs);
+        public System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ProjectDTO> GetProjectDetailsAsync(int projectID) {
+            return base.Channel.GetProjectDetailsAsync(projectID);
         }
         
-        public void UpdateProject(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO) {
-            base.Channel.UpdateProject(projectDTO);
+        public FacilityDocu.UI.Utilities.Services.ProjectDTO UpdateProject(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO) {
+            return base.Channel.UpdateProject(projectDTO);
         }
         
-        public System.Threading.Tasks.Task UpdateProjectAsync(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO) {
+        public System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ProjectDTO> UpdateProjectAsync(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO) {
             return base.Channel.UpdateProjectAsync(projectDTO);
         }
         

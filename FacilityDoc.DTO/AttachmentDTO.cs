@@ -18,5 +18,8 @@ namespace FacilityDocu.DTO
 
         [DataMember]
         public string Path { get; set; }
+
+        [DataMember]
+        public byte[] FileByteStream { get; set; }
     }
 }

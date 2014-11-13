@@ -48,9 +48,38 @@ namespace FacilityDocLaptop
         {
             InitializeComponent();
 
+            Dispatcher.UnhandledException += Dispatcher_UnhandledException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             this.DataContext = this;
 
             service = new Services.FacilityDocuServiceClient();
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            string errorMessage = string.Empty;
+            Exception ex = (e.ExceptionObject as Exception);
+
+            if (ex != null)
+            {
+                errorMessage = ex.Message + "\n\n" + ex.StackTrace;
+            }
+
+            Helper.WriteLog(errorMessage, EventLogEntryType.Error);
+        }
+
+        private void Dispatcher_UnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            string errorMessage = string.Empty;
+            Exception ex = e.Exception;
+
+            if (ex != null)
+            {
+                errorMessage = ex.Message + "\n\n" + ex.StackTrace;
+            }
+
+            Helper.WriteLog(errorMessage, EventLogEntryType.Error);
         }
 
         public void CreateListViewGrid()
@@ -207,17 +236,20 @@ namespace FacilityDocLaptop
 
         private void btnPublish_Click(object sender, RoutedEventArgs e)
         {
-            btnSave_Click(null, null);
+            SaveProject();
+
+            string oldProjectID = Data.CURRENT_PROJECT.ProjectID;
             Data.CURRENT_PROJECT = (new SyncManager()).UpdateDatabase(Data.CURRENT_PROJECT.ProjectID, false);
-
             ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+
+            if (oldProjectID != Data.CURRENT_PROJECT.ProjectID)
+            {
+                File.Delete(System.IO.Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", oldProjectID)));
+            }
+
             MessageBox.Show("Published");
-        }
 
-        private void listView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
-
+            MakeVisible(gridHomePage);
         }
 
         private void homePage_Loaded(object sender, RoutedEventArgs e)
@@ -227,12 +259,17 @@ namespace FacilityDocLaptop
 
         private void listView_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
-            string projectPath = System.IO.Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", (e.AddedItems[0] as ProjectDTO).ProjectID));
-            Data.CURRENT_PROJECT = ProjectXmlReader.ReadProjectXml(projectPath, false);
+            if (e.AddedItems.Count > 0)
+            {
+                string projectPath = System.IO.Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", (e.AddedItems[0] as ProjectDTO).ProjectID));
+                Data.CURRENT_PROJECT = ProjectXmlReader.ReadProjectXml(projectPath, false);
 
-            ChangeScreenControls();
+                ChangeScreenControls();
 
-            MakeVisible(editPage_grid);
+                MakeVisible(editPage_grid);
+
+                listView.SelectedIndex = -1;
+            }
         }
 
         private void ChangeScreenControls()
@@ -280,7 +317,7 @@ namespace FacilityDocLaptop
 
                 lstAttachments.ItemsSource = action.Attachments;
 
-                if (action.RiskAnalysis.Length > 0)
+                if (IsAnalysisIndexCorrect())
                 {
                     RiskAnalysisDTO analysis = action.RiskAnalysis[currentAnalysisIndex];
                     txtAnalysisActivity.Text = analysis.Activity;
@@ -294,6 +331,12 @@ namespace FacilityDocLaptop
                     txtAnalysisK_.Text = analysis.K_.ToString();
                     txtAnalysisRisk.Text = analysis.Risk.ToString();
                     txtAnalysisRisk_.Text = analysis.Risk_.ToString();
+
+                    txtActivityNumbers.Text = string.Format("RiskyAnalysis#{0} of {1}", currentAnalysisIndex + 1, action.RiskAnalysis.Count());
+                }
+                else
+                {
+                    txtActionNumber.Visibility = System.Windows.Visibility.Collapsed;
                 }
             }
 
@@ -381,9 +424,29 @@ namespace FacilityDocLaptop
             action.Description = new TextRange(txtActionDetails.Document.ContentStart, txtActionDetails.Document.ContentEnd).Text;
             action.Risks = txtActionRisks.Text;
 
-            TextRange rng = new TextRange(txtAction.Document.ContentStart, txtAction.Document.ContentEnd);
+            SaveAnalysisDetail();
+        }
 
-            object obj = rng.GetPropertyValue(TextElement.ForegroundProperty);
+        private void SaveAnalysisDetail()
+        {
+            if (IsAnalysisIndexCorrect())
+            {
+                RiskAnalysisDTO analysis = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].
+                    RiskAnalysis[currentAnalysisIndex];
+
+                analysis.Activity = txtAnalysisActivity.Text;
+                txtAnalysisActivity.Text = analysis.Activity;
+                analysis.B = Convert.ToDouble(txtAnalysisB.Text);
+                analysis.B = Convert.ToDouble(txtAnalysisB_.Text);
+                analysis.Controls = txtAnalysisControl.Text;
+                analysis.Activity = txtAnalysisDanger.Text;
+                analysis.E = Convert.ToDouble(txtAnalysisE.Text);
+                analysis.E_ = Convert.ToDouble(txtAnalysisE_.Text);
+                analysis.K = Convert.ToDouble(txtAnalysisK.Text);
+                analysis.K_ = Convert.ToDouble(txtAnalysisK_.Text);
+                analysis.Risk = Convert.ToDouble(txtAnalysisRisk.Text);
+                analysis.Risk_ = Convert.ToDouble(txtAnalysisRisk_.Text);
+            }
         }
 
         private void btnActionLeft_Click(object sender, RoutedEventArgs e)
@@ -431,6 +494,7 @@ namespace FacilityDocLaptop
         {
             if (currentAnalysisIndex > 0)
             {
+                SaveAnalysisDetail();
                 currentAnalysisIndex--;
                 ChangeScreenControls();
             }
@@ -440,8 +504,8 @@ namespace FacilityDocLaptop
         {
             if (currentAnalysisIndex < (Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentAnalysisIndex].RiskAnalysis.Count() - 1))
             {
+                SaveAnalysisDetail();
                 currentAnalysisIndex++;
-
                 ChangeScreenControls();
             }
         }
@@ -492,13 +556,18 @@ namespace FacilityDocLaptop
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            SaveProject();
+            MessageBox.Show("Project saved locally. \nPlease click on publish to sync with remote data server");
+        }
+
+        private void SaveProject()
+        {
             SaveActionDetail();
 
             Data.CURRENT_PROJECT.LastUpdatedBy = new UserDTO() { UserName = Data.CURRENT_USER };
             Data.CURRENT_PROJECT.LastUpdatedAt = DateTime.Now.ToUniversalTime();
 
             ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
-            MessageBox.Show("Project saved locally. \nPlease click on publish to sync with remote data server");
         }
 
         private void MakeVisible(Grid grid)
@@ -629,7 +698,7 @@ namespace FacilityDocLaptop
             IList<ImageModel> addImages = new List<ImageModel>();
 
             Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Images.Where(i => i.Used == false)
-                .ToList().ForEach(i=>
+                .ToList().ForEach(i =>
             {
                 BitmapImage bitmap = new BitmapImage();
                 System.Windows.Controls.Image imagename = new System.Windows.Controls.Image();
@@ -638,9 +707,9 @@ namespace FacilityDocLaptop
                 imagename.Source = bitmap;
                 bitmap.EndInit();
 
-                addImages.Add(new ImageModel(){Description=i.Description, ImageID= i.ImageID, Image=imagename});
+                addImages.Add(new ImageModel() { Description = i.Description, ImageID = i.ImageID, Image = imagename });
 
-        });
+            });
             lstAddImages.ItemsSource = addImages;
             popImage.IsOpen = true;
         }
@@ -667,13 +736,21 @@ namespace FacilityDocLaptop
             if (currentActionIndex >= 0)
             {
                 IList<ActionDTO> actions = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions.ToList();
-                actions.Remove(Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex]);
 
-                Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions = actions.ToArray();
+                if (actions.Count > 1)
+                {
+                    actions.Remove(Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex]);
 
-                currentActionIndex--;
-                currentAnalysisIndex = 0;
-                ChangeScreenControls();
+                    Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions = actions.ToArray();
+
+                    currentActionIndex--;
+                    currentAnalysisIndex = 0;
+                    ChangeScreenControls();
+                }
+                else
+                {
+                    MessageBox.Show("Cannot Delete. There should be atleast one action in a step");
+                }
             }
         }
 
@@ -681,6 +758,7 @@ namespace FacilityDocLaptop
         {
             RiskAnalysisDTO RiskAnalysis = new RiskAnalysisDTO()
             {
+                RiskAnalysisID = DateTime.Now.ToString("yyyyMMddHHmmssfff"),
                 Activity = "New RiskAnalysis Activity",
                 Controls = "New RiskAnalysis's Controls",
                 Danger = "New RiskAnalysis's Danger"
@@ -699,7 +777,7 @@ namespace FacilityDocLaptop
 
         private void btnAnalysisDelete_Click_1(object sender, RoutedEventArgs e)
         {
-            if (currentAnalysisIndex >= 0)
+            if (IsAnalysisIndexCorrect())
             {
                 IList<RiskAnalysisDTO> RiskAnalysiss = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex]
                     .Actions[currentActionIndex].RiskAnalysis.ToList();
@@ -911,6 +989,25 @@ namespace FacilityDocLaptop
 
             Mouse.Capture(this, CaptureMode.SubTree);
             AddHandler();
+        }
+
+        private void TextBlock_MouseDown_1(object sender, MouseButtonEventArgs e)
+        {
+            string attachmentID = (sender as TextBlock).Tag.ToString();
+            System.Diagnostics.Process.Start(System.IO.Path.Combine(Data.PROJECT_ATTACHMENTS_FOLDER, string.Format("{0}.pdf", attachmentID)));
+        }
+
+        private bool IsAnalysisIndexCorrect()
+        {
+            if (Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].RiskAnalysis.Count() > 0
+                && currentAnalysisIndex >= 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

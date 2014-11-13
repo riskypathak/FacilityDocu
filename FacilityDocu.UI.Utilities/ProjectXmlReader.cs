@@ -107,15 +107,10 @@ namespace FacilityDocu.UI.Utilities
                 action.LiftingGears = Convert.ToString(xAction.Element("liftinggears").Value);
                 action.Dimensions = Convert.ToString(xAction.Element("dimensions").Value);
 
-
-                //Risky: Edit
-                if (xAction.Element("namewarning") != null)
-                {
-                    action.IsNameWarning = Convert.ToBoolean(xAction.Element("namewarning").Value);
-                    action.IsDescriptionwarning = Convert.ToBoolean(xAction.Element("descriptionwarning").Value);
-                    action.ImportantName = Convert.ToString(xAction.Element("importantname").Value);
-                    action.ImportantDescription = Convert.ToString(xAction.Element("importantdescription").Value);
-                }
+                action.IsNameWarning = Convert.ToBoolean(xAction.Element("namewarning").Value);
+                action.IsDescriptionwarning = Convert.ToBoolean(xAction.Element("descriptionwarning").Value);
+                action.ImportantName = Convert.ToString(xAction.Element("importantname").Value);
+                action.ImportantDescription = Convert.ToString(xAction.Element("importantdescription").Value);
 
                 IList<Services.ImageDTO> images = ReadImages(xAction);
                 action.Images = images.ToArray();
@@ -141,7 +136,6 @@ namespace FacilityDocu.UI.Utilities
         {
             IList<Services.AttachmentDTO> attachments = new List<Services.AttachmentDTO>();
 
-            //Risky: edit
             if (xAction.Element("attachments") != null)
             {
                 foreach (XElement xAttachment in xAction.Element("attachments").Elements("attachment"))
@@ -206,12 +200,7 @@ namespace FacilityDocu.UI.Utilities
                 ResourceDTO resource = new ResourceDTO();
                 resource.ResourceID = Convert.ToString(xResource.Element("id").Value);
                 resource.Name = Convert.ToString(xResource.Element("name").Value);
-
-                //risky
-                if (xResource.Element("type") != null)
-                {
-                    resource.Type = Convert.ToString(xResource.Element("type").Value);
-                }
+                resource.Type = Convert.ToString(xResource.Element("type").Value);
 
                 resource.ResourceCount = Convert.ToString(xResource.Element("count").Value);
 
@@ -233,12 +222,7 @@ namespace FacilityDocu.UI.Utilities
                 image.Number = Convert.ToString(xImage.Element("number").Value);
                 image.Path = Convert.ToString(xImage.Element("path").Value);
                 image.Tags = Convert.ToString(xImage.Element("tags").Value).Split(';');
-
-                //Risky: Edit
-                if (xImage.Element("used") != null)
-                {
-                    image.Used = Convert.ToBoolean(xImage.Element("used").Value);
-                }
+                image.Used = Convert.ToBoolean(xImage.Element("used").Value);
 
                 IList<Services.CommentDTO> comments = ReadComments(xImage);
                 image.Comments = comments.ToArray();

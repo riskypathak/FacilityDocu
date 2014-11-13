@@ -40,6 +40,7 @@
                 <TextBlock HorizontalAlignment="Left" Margin="148,156,0,0" TextWrapping="Wrap" Text="Welcome" VerticalAlignment="Top" FontSize="40" Foreground="#FFADDDFF"/>
 
             </Grid>
+            
             <Grid x:Name="gridHomePage" HorizontalAlignment="Left" Height="732" VerticalAlignment="Top" Width="1358" Visibility="Collapsed">
                 <Border BorderThickness="1" HorizontalAlignment="Left" Height="217" Margin="22,150,0,0" VerticalAlignment="Top" Width="214" Background="#FF396591" RenderTransformOrigin="0.5,0.5"/>
 
@@ -99,7 +100,6 @@
                 </ListView>
             </Grid>
 
-
             <Grid x:Name="gdvNew" Background="#FF0D5887" Visibility="Collapsed" Margin="460,108,196,320">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="146*"/>
@@ -146,41 +146,6 @@
                 </Grid>
                 <Button Click="btnCreate_Click_1"  x:Name="btnCreate" Content="Create" HorizontalAlignment="Left" Margin="416.5,52,0,0" VerticalAlignment="Top" Width="112" Height="98" FontSize="15" Grid.Row="1" Grid.Column="1"/>
                 <TextBox x:Name="des_txtbox" HorizontalAlignment="Left" Height="179" Margin="746.5,42,-596,0" VerticalAlignment="Top" Width="422" Visibility="Collapsed" Grid.Row="1" Grid.Column="1"/>
-
-            </Grid>
-
-            <Grid x:Name="importPhotos_grid" Background="#FF0D5887" Visibility="Collapsed">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Button Content="Import Image" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="399" Height="82" FontSize="30" Foreground="Red" RenderTransformOrigin="2.507,4.198" Grid.ColumnSpan="1" FontWeight="Bold"/>
-                <Image HorizontalAlignment="Left" Height="100" Margin="755,196,0,0" VerticalAlignment="Top" Width="100"/>
-                <Grid HorizontalAlignment="Left" Height="727" Margin="638,10,0,-5" VerticalAlignment="Top" Width="490">
-                    <Image HorizontalAlignment="Left" Height="235" Margin="250,47,0,0" VerticalAlignment="Top" Width="240" RenderTransformOrigin="0.816,0.5"/>
-                    <Image HorizontalAlignment="Left" Height="174" Margin="250,287,-51,0" VerticalAlignment="Top" Width="291"/>
-                </Grid>
-                <Image HorizontalAlignment="Left" Height="181" Margin="918,483,0,0" VerticalAlignment="Top" Width="210" />
-                <Button Content="Back" HorizontalAlignment="Left" Margin="93,612,0,0" VerticalAlignment="Top" Width="176" Height="52" FontSize="30"/>
-            </Grid>
-
-            <Grid Background="#FF0D5887" x:Name="lastProject_grid" Visibility="Collapsed">
-                <Grid HorizontalAlignment="Left" Height="183" Margin="116,147,0,0" VerticalAlignment="Top" Width="218" Background="#FFBB8686"/>
-                <Grid HorizontalAlignment="Left" Height="188" Margin="436,147,0,0" VerticalAlignment="Top" Width="229" Background="#FFBB7878"/>
-                <Grid HorizontalAlignment="Left" Height="188" Margin="736,147,0,0" VerticalAlignment="Top" Width="229" Background="#FFCB6F6F"/>
-                <Grid HorizontalAlignment="Left" Height="183" Margin="1033,152,0,0" VerticalAlignment="Top" Width="220" Background="#FFB07979"/>
-                <TextBlock HorizontalAlignment="Left" Margin="53,42,0,0" TextWrapping="Wrap" Text="Last Projects" VerticalAlignment="Top" Height="100" Width="414" FontSize="70" Foreground="#FFE2E2E2"/>
-                <TextBlock HorizontalAlignment="Left" Margin="187,297,0,0" TextWrapping="Wrap" Text="Project 1" VerticalAlignment="Top" FontSize="20"/>
-                <TextBlock HorizontalAlignment="Left" Margin="513,297,0,0" TextWrapping="Wrap" Text="Project 2" VerticalAlignment="Top" FontSize="20"/>
-                <TextBlock HorizontalAlignment="Left" Margin="807,297,0,0" TextWrapping="Wrap" Text="Project 3" VerticalAlignment="Top" FontSize="20"/>
-                <TextBlock HorizontalAlignment="Left" Margin="1107,297,0,0" TextWrapping="Wrap" Text="Project 4" VerticalAlignment="Top" FontSize="20"/>
-                <Rectangle Fill="#FFDBDBF0" HorizontalAlignment="Left" Height="54" Margin="116,335,0,0" VerticalAlignment="Top" Width="218" Opacity="0.5"/>
-                <Rectangle Fill="#FFDBDBF0" HorizontalAlignment="Left" Height="54" Margin="436,340,0,0" VerticalAlignment="Top" Width="229" Opacity="0.5"/>
-                <Rectangle Fill="#FFDBDBF0" HorizontalAlignment="Left" Height="54" Margin="736,340,0,0" VerticalAlignment="Top" Width="229" Opacity="0.5"/>
-                <Rectangle Fill="#FFDBDBF0" HorizontalAlignment="Left" Height="54" Margin="1035,340,0,0" VerticalAlignment="Top" Width="218" Opacity="0.5"/>
-                <TextBlock HorizontalAlignment="Left" Margin="178,340,0,0" TextWrapping="Wrap" Text="DateTime" VerticalAlignment="Top" Height="28" Width="156" FontSize="20" FontFamily="Shruti" FontStyle="Italic"/>
-                <TextBlock HorizontalAlignment="Left" Margin="486,346,0,0" TextWrapping="Wrap" Text="DateTime" VerticalAlignment="Top" Height="28" Width="156" FontSize="20" FontFamily="Shruti" FontStyle="Italic"/>
-                <TextBlock HorizontalAlignment="Left" Margin="807,346,0,0" TextWrapping="Wrap" Text="DateTime" VerticalAlignment="Top" Height="28" Width="156" FontSize="20" FontFamily="Shruti" FontStyle="Italic"/>
-                <TextBlock HorizontalAlignment="Left" Margin="1097,346,0,0" TextWrapping="Wrap" Text="DateTime" VerticalAlignment="Top" Height="28" Width="156" FontSize="20" FontFamily="Shruti" FontStyle="Italic"/>
 
             </Grid>
 
@@ -256,26 +221,26 @@
                 </Grid>
                 <Grid Height="136" Margin="0,346,89,80" Width="1220" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.ColumnSpan="2" Grid.Row="1">
                     <TextBlock HorizontalAlignment="Left" Margin="34,36,0,0" TextWrapping="Wrap" Text="Activity" VerticalAlignment="Top" FontSize="18" Width="70" FontWeight="Bold"/>
-                    <TextBox x:Name="txtAnalysisActivity" HorizontalAlignment="Left" Height="60" Margin="6,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="166" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="175,31,0,0" TextWrapping="Wrap" Text="Danger/Consequence" VerticalAlignment="Top" FontSize="18" Width="190" FontWeight="Bold"/>
-                    <TextBox x:Name="txtAnalysisDanger" HorizontalAlignment="Left" Height="60" Margin="175,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox IsReadOnly="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" x:Name="txtAnalysisActivity" HorizontalAlignment="Left" Height="60" Margin="6,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="166" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <TextBlock  HorizontalAlignment="Left" Margin="175,31,0,0" TextWrapping="Wrap" Text="Danger/Consequence" VerticalAlignment="Top" FontSize="18" Width="190" FontWeight="Bold"/>
+                    <TextBox IsReadOnly="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" x:Name="txtAnalysisDanger" HorizontalAlignment="Left" Height="60" Margin="175,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
                     <TextBlock HorizontalAlignment="Left" Margin="594,31,0,0" TextWrapping="Wrap" Text="Control Measure" VerticalAlignment="Top" FontSize="20" Width="150" FontWeight="Bold" Height="26"/>
-                    <TextBox Name="txtAnalysisControl" HorizontalAlignment="Left" Height="59" Margin="594,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="268" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
-                    <TextBox Name="txtAnalysisE" HorizontalAlignment="Left" Height="60" Margin="475,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="48" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
-                    <TextBox Name="txtAnalysisK" HorizontalAlignment="Left" Height="60" Margin="370,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="48" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" PreviewTextInput="txtK_PreviewTextInput" />
-                    <TextBox Name="txtAnalysisB" HorizontalAlignment="Left" Height="60" Margin="423,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="47" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox IsReadOnly="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisControl" HorizontalAlignment="Left" Height="59" Margin="594,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="268" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox IsReadOnly="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisE" HorizontalAlignment="Left" Height="60" Margin="475,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="48" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox IsReadOnly="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisK" HorizontalAlignment="Left" Height="60" Margin="370,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="48" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" PreviewTextInput="txtK_PreviewTextInput" />
+                    <TextBox IsReadOnly="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisB" HorizontalAlignment="Left" Height="60" Margin="423,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="47" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
                     <TextBlock HorizontalAlignment="Left" Margin="370,31,0,0" TextWrapping="Wrap" Text="K" VerticalAlignment="Top" FontSize="20" Width="28" FontWeight="Bold"/>
                     <TextBlock HorizontalAlignment="Left" Margin="423,31,0,0" TextWrapping="Wrap" Text="B" VerticalAlignment="Top" FontSize="20" Width="28" FontWeight="Bold"/>
                     <TextBlock HorizontalAlignment="Left" Margin="475,30,0,0" TextWrapping="Wrap" Text="E" VerticalAlignment="Top" FontSize="20" Width="21" FontWeight="Bold"/>
-                    <TextBox Name="txtAnalysisRisk" HorizontalAlignment="Left" Height="60" Margin="528,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="61" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox IsReadOnly="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisRisk" HorizontalAlignment="Left" Height="60" Margin="528,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="61" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
                     <TextBlock HorizontalAlignment="Left" Margin="528,31,0,0" TextWrapping="Wrap" Text="Risk" VerticalAlignment="Top" FontSize="20" Width="44" FontWeight="Bold"/>
-                    <TextBox Name="txtAnalysisE_" HorizontalAlignment="Left" Height="60" Margin="1025,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
-                    <TextBox Name="txtAnalysisK_" HorizontalAlignment="Left" Height="60" Margin="867,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
-                    <TextBox Name="txtAnalysisB_"  HorizontalAlignment="Left" Height="60" Margin="946,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox IsReadOnly="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}"  Name="txtAnalysisE_" HorizontalAlignment="Left" Height="60" Margin="1025,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox IsReadOnly="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisK_" HorizontalAlignment="Left" Height="60" Margin="867,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox IsReadOnly="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisB_"  HorizontalAlignment="Left" Height="60" Margin="946,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
                     <TextBlock HorizontalAlignment="Left" Margin="867,31,0,0" TextWrapping="Wrap" Text="K" VerticalAlignment="Top" FontSize="20" Width="28" RenderTransformOrigin="0.488,0.551" FontWeight="Bold"/>
                     <TextBlock HorizontalAlignment="Left" Margin="946,31,0,0" TextWrapping="Wrap" Text="B" VerticalAlignment="Top" FontSize="20" Width="28" FontWeight="Bold"/>
                     <TextBlock HorizontalAlignment="Left" Margin="1025,30,0,0" TextWrapping="Wrap" Text="E" VerticalAlignment="Top" FontSize="20" Width="28" FontWeight="Bold"/>
-                    <TextBox Name="txtAnalysisRisk_" HorizontalAlignment="Left" Height="60" Margin="1104,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="106" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox IsReadOnly="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisRisk_" HorizontalAlignment="Left" Height="60" Margin="1104,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="106" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
                     <TextBlock HorizontalAlignment="Left" Margin="1104,30,0,0" TextWrapping="Wrap" Text="Risk" VerticalAlignment="Top" FontSize="20" Width="44" FontWeight="Bold"/>
                 </Grid>
                 <Grid HorizontalAlignment="Left" Height="178" Margin="25,115,0,0" VerticalAlignment="Top" Width="1323" Grid.ColumnSpan="2" Grid.RowSpan="2">
@@ -328,8 +293,8 @@
                     <Button Name="btnActionLeft" FontFamily="Marlett" FontSize="20" Content="3" Margin="29,0,1269,127" BorderBrush="{x:Null}" Height="25" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="#FFC6D625" Click="btnActionLeft_Click" Width="25"  />
                     <Button Name="btnActionRight" FontFamily="Marlett" FontSize="20" Content="4" Margin="0,26,1167,126" BorderBrush="{x:Null}" Foreground="#FFB7C718" Background="{x:Null}" HorizontalAlignment="Right" Width="25" Click="btnActionRight_Click" Height="25" />
                     <Button x:Name="btnActionDelete" Click="btnActionDelete_Click_1" Content="Delete" HorizontalAlignment="Left" Margin="227,126,0,0" VerticalAlignment="Top" Width="80" Height="25"/>
-                    <Button x:Name="btnAnalysisAdd" Click="btnAnalysisAdd_Click_1"  Content="Add New" HorizontalAlignment="Left" Margin="31,529,0,-376" VerticalAlignment="Top" Width="80" Height="25"/>
-                    <Button x:Name="btnAnalysisDelete" Click="btnAnalysisDelete_Click_1"  Content="Delete" HorizontalAlignment="Left" Margin="227,529,0,-376" VerticalAlignment="Top" Width="80" Height="25"/>
+                    <Button x:Name="btnAnalysisAdd" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Click="btnAnalysisAdd_Click_1"  Content="Add New" HorizontalAlignment="Left" Margin="31,529,0,-376" VerticalAlignment="Top" Width="80" Height="25"/>
+                    <Button x:Name="btnAnalysisDelete" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Click="btnAnalysisDelete_Click_1"  Content="Delete" HorizontalAlignment="Left" Margin="227,529,0,-376" VerticalAlignment="Top" Width="80" Height="25"/>
                 </Grid>
                 <Separator HorizontalAlignment="Left" Height="16" Margin="899,227,0,0" VerticalAlignment="Top" Width="242" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Grid.Row="1">
                     <Separator.RenderTransform>
@@ -385,7 +350,7 @@
                 <Button Name="btnPublish" Content="Publish" HorizontalAlignment="Left" Margin="1121,480,0,0" VerticalAlignment="Top" Width="80" Height="25" Grid.Column="1" Grid.Row="1" Click="btnPublish_Click"/>
 
                 <TextBlock HorizontalAlignment="Left" Margin="0,116,0,0" TextWrapping="Wrap" Text="Pictures Preview" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Grid.Column="1" Height="27" Width="155" Grid.Row="1"/>
-                <CheckBox Content="Risk Analysis" HorizontalAlignment="Left" Margin="0,330,0,0" VerticalAlignment="Top" FontSize="29" FontWeight="Bold" Grid.Column="1" Height="38" Width="195" Grid.Row="1"/>
+                <CheckBox Name="chkRiskAnalysis" Content="Risk Analysis" HorizontalAlignment="Left" Margin="0,330,0,0" VerticalAlignment="Top" FontSize="29" FontWeight="Bold" Grid.Column="1" Height="38" Width="195" Grid.Row="1"/>
 
                 <Button x:Name="btAnalysisLeft" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Marlett" FontSize="20" Content="3" BorderBrush="{x:Null}" Height="25" Background="{x:Null}" Foreground="#FFC6D625" Click="btAnalysisLeft_Click_1"  Grid.Column="1" Width="25" Grid.Row="1" Margin="0,382,0,0"  />
                 <Button x:Name="btAnalysisRight" HorizontalAlignment="Left" VerticalAlignment="Top"  FontFamily="Marlett" FontSize="20" Content="4" BorderBrush="{x:Null}" Foreground="#FFB7C718" Background="{x:Null}" Click="btAnalysisRight_Click_1"  Width="25" Height="24" Grid.Column="1" Grid.Row="1" Margin="99,384,0,0" />
@@ -407,7 +372,7 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Width="100" Text="{Binding Name}"></TextBlock>
+                                <TextBlock MouseDown="TextBlock_MouseDown_1"  Tag="{Binding AttachmentID}" Width="100" Text="{Binding Name}"></TextBlock>
                                 <Button Name="btnRemoveAttachment" Click="btnRemoveAttachment_Click_1"  CommandParameter="{Binding AttachmentID}" Height="20" Width="20">
                                     <StackPanel>
                                         <Image Source="Assets\remove.jpg" />
@@ -486,6 +451,7 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+                <TextBlock Text="No Risk Analysis" x:Name="txtActivityNumbers" Grid.Column="1" HorizontalAlignment="Left" Margin="220,343,0,0" Grid.Row="1" Foreground="White" VerticalAlignment="Top"/>
             </Grid>
         </Grid>
     </DockPanel>

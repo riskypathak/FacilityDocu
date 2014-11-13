@@ -24,7 +24,15 @@ namespace FacilityDocu.Services.EntityDTOConverter
             projectDTO.LastUpdatedAt = project.LastUpdatedAt.Value;
 
             projectDTO.CreatedBy = ToUserDTO(project.User);
-            projectDTO.LastUpdatedBy = ToUserDTO(project.User1);
+
+            if (project.User1 == null)
+            {
+                projectDTO.LastUpdatedBy = new UserDTO() { UserName = project.UpdatedBy };
+            }
+            else
+            {
+                projectDTO.LastUpdatedBy = ToUserDTO(project.User1);
+            }
 
             projectDTO.RigTypes = ToRigTypesDTO(project.ProjectDetails);
             return projectDTO;
@@ -43,7 +51,6 @@ namespace FacilityDocu.Services.EntityDTOConverter
                 rigTypeDTO.Modules = ToModulesDTO(projectDetails.Where(p => p.Step.Module.RigType.RigTypeID.Equals(projectDetail.Step.Module.RigTypeID.Value)));
 
                 rigTypesDTO.Add(rigTypeDTO);
-
 
             }
 
@@ -104,11 +111,11 @@ namespace FacilityDocu.Services.EntityDTOConverter
                 actionDTO.ImportantName = projectDetail.ImportantActionname;
                 actionDTO.ImportantDescription = projectDetail.ImportantActionDescription;
 
-                actionDTO.Images = TOImagesDTO(projectDetails);
-                actionDTO.Attachments = ToAttachmentsDTO(projectDetails);
-                actionDTO.Resources = ToResourcesDTO(projectDetails);
-                actionDTO.Tools = ToToolsDTO(projectDetails);
-                actionDTO.RiskAnalysis = ToRiskAnalysisDTO(projectDetails);
+                actionDTO.Images = TOImagesDTO(projectDetail);
+                actionDTO.Attachments = ToAttachmentsDTO(projectDetail);
+                actionDTO.Resources = ToResourcesDTO(projectDetail);
+                actionDTO.Tools = ToToolsDTO(projectDetail);
+                actionDTO.RiskAnalysis = ToRiskAnalysisDTO(projectDetail);
 
                 actionsDTO.Add(actionDTO);
             }
@@ -118,16 +125,16 @@ namespace FacilityDocu.Services.EntityDTOConverter
 
         }
 
-        private static IList<AttachmentDTO> ToAttachmentsDTO(IEnumerable<ProjectDetail> enumerable)
+        private static IList<AttachmentDTO> ToAttachmentsDTO(ProjectDetail projectDetail)
         {
             IList<AttachmentDTO> AttachmentDTOs = new List<AttachmentDTO>();
 
-            foreach (var projectDetail in enumerable.Select(x => x.ProjectActionAttachments).FirstOrDefault())
+            foreach (var projectAttachment in projectDetail.ProjectActionAttachments)
             {
                 AttachmentDTO attachmentDTO = new AttachmentDTO();
-                attachmentDTO.AttachmentID = projectDetail.AttachmentID.GetValueOrDefault().ToString();
-                attachmentDTO.Name = projectDetail.Attachment.Name;
-                attachmentDTO.Path = GetAttachmentActualPath(projectDetail.Attachment.Path);
+                attachmentDTO.AttachmentID = projectAttachment.AttachmentID.GetValueOrDefault().ToString();
+                attachmentDTO.Name = projectAttachment.Attachment.Name;
+                attachmentDTO.Path = projectAttachment.Attachment.Path;
 
                 AttachmentDTOs.Add(attachmentDTO);
 
@@ -135,17 +142,11 @@ namespace FacilityDocu.Services.EntityDTOConverter
             return AttachmentDTOs;
         }
 
-        private static string GetAttachmentActualPath(string path)
-        {
-            int lastIndex = System.ServiceModel.OperationContext.Current.RequestContext.RequestMessage.Headers.To.ToString().LastIndexOf('/');
-            return string.Format("{0}/Data/Attachments/{1}", System.ServiceModel.OperationContext.Current.RequestContext.RequestMessage.Headers.To.ToString().Substring(0, lastIndex), path);
-        }
-
-        private static IList<RiskAnalysisDTO> ToRiskAnalysisDTO(IEnumerable<ProjectDetail> analysiss)
+        private static IList<RiskAnalysisDTO> ToRiskAnalysisDTO(ProjectDetail projectDetail)
         {
             IList<RiskAnalysisDTO> analysissDTO = new List<RiskAnalysisDTO>();
 
-            foreach (var analysis in analysiss.Select(x => x.RiskAnalysis).FirstOrDefault())
+            foreach (var analysis in projectDetail.RiskAnalysis)
             {
                 RiskAnalysisDTO analysisDTO = new RiskAnalysisDTO();
                 analysisDTO.Activity = analysis.Activity;
@@ -167,11 +168,11 @@ namespace FacilityDocu.Services.EntityDTOConverter
             return analysissDTO;
         }
 
-        private static IList<ResourceDTO> ToResourcesDTO(IEnumerable<ProjectDetail> resources)
+        private static IList<ResourceDTO> ToResourcesDTO(ProjectDetail projectDetail)
         {
             IList<ResourceDTO> resourcesDTO = new List<ResourceDTO>();
 
-            foreach (var resource in resources.Select(x => x.ProjectActionResources).FirstOrDefault())
+            foreach (var resource in projectDetail.ProjectActionResources)
             {
                 ResourceDTO resourceDTO = new ResourceDTO();
                 resourceDTO.Name = resource.Resource.ResourceName;
@@ -195,11 +196,11 @@ namespace FacilityDocu.Services.EntityDTOConverter
             return resourcesDTO;
         }
 
-        private static IList<ToolDTO> ToToolsDTO(IEnumerable<ProjectDetail> tools)
+        private static IList<ToolDTO> ToToolsDTO(ProjectDetail projectDetail)
         {
             IList<ToolDTO> toolsDTO = new List<ToolDTO>();
 
-            foreach (var tool in tools.Select(x => x.ProjectActionTools).FirstOrDefault())
+            foreach (var tool in projectDetail.ProjectActionTools)
             {
                 ToolDTO toolDTO = new ToolDTO();
                 toolDTO.Name = tool.Tool.ToolName;
@@ -211,32 +212,25 @@ namespace FacilityDocu.Services.EntityDTOConverter
             return toolsDTO;
         }
 
-        private static IList<ImageDTO> TOImagesDTO(IEnumerable<ProjectDetail> enumerable)
+        private static IList<ImageDTO> TOImagesDTO(ProjectDetail projectDetail)
         {
             IList<ImageDTO> ImageDTOs = new List<ImageDTO>();
 
-            foreach (var projectDetail in enumerable.Select(x => x.ProjectActionImages).FirstOrDefault())
+            foreach (var projctImage in projectDetail.ProjectActionImages)
             {
                 ImageDTO imageDTO = new ImageDTO();
-                imageDTO.ImageID = projectDetail.ImageID.GetValueOrDefault().ToString();
-                imageDTO.Description = projectDetail.Image.Description;
-                imageDTO.Path = GetImageActualPath(projectDetail.Image.ImagePath);
-                imageDTO.CreationDate = projectDetail.Image.CreationDate.GetValueOrDefault();
-                imageDTO.Tags = projectDetail.Image.Tags.Split(';');
+                imageDTO.ImageID = projctImage.ImageID.GetValueOrDefault().ToString();
+                imageDTO.Description = projctImage.Image.Description;
+                imageDTO.Path = projctImage.Image.ImagePath;
+                imageDTO.CreationDate = projctImage.Image.CreationDate.GetValueOrDefault();
+                imageDTO.Tags = projctImage.Image.Tags.Split(';');
 
-                imageDTO.Comments = TOCommentDTO(projectDetail.Image.ImageComments);
+                imageDTO.Comments = TOCommentDTO(projctImage.Image.ImageComments);
 
                 ImageDTOs.Add(imageDTO);
 
             }
             return ImageDTOs;
-
-        }
-
-        private static string GetImageActualPath(string imagePath)
-        {
-            int lastIndex = System.ServiceModel.OperationContext.Current.RequestContext.RequestMessage.Headers.To.ToString().LastIndexOf('/');
-            return string.Format("{0}/Data/Images/{1}", System.ServiceModel.OperationContext.Current.RequestContext.RequestMessage.Headers.To.ToString().Substring(0, lastIndex), imagePath);
         }
 
         private static IList<CommentDTO> TOCommentDTO(ICollection<ImageComment> ImageComments)

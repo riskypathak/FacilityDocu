@@ -12,6 +12,13 @@ namespace FacilityDocu.UI.Utilities
 {
     public static class Helper
     {
+        public static bool IsNew(string id)
+        {
+            bool returnValue;
+            returnValue = (id.Length >= 15 || id.Equals("0") || id.StartsWith("-")) ? true : false;
+
+            return returnValue;
+        }
 
         private static Phrase Format(string input)
         {
@@ -135,10 +142,6 @@ namespace FacilityDocu.UI.Utilities
                             tblAction.AddCell(Format(action.Dimensions));
                             tblAction.AddCell(Format(string.Join("\n", action.Images.Select(i => string.Format("{0}.{1}", action.ActionID, i.ImageID)))));
                             tblAction.AddCell(Format(action.Risks));
-
-
-
-
                         }
 
                         doc.Add(tblAction);
@@ -237,6 +240,13 @@ namespace FacilityDocu.UI.Utilities
                 base.OnCloseDocument(writer, document);
 
             }
+        }
+
+        public static void WriteLog(string message, System.Diagnostics.EventLogEntryType type = System.Diagnostics.EventLogEntryType.Information)
+        {
+            System.Diagnostics.EventLog appLog = new System.Diagnostics.EventLog();
+            appLog.Source = "FacilityDocu-LaptopApp";
+            appLog.WriteEntry(message, type);
         }
     }
 }

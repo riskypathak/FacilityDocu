@@ -43,7 +43,7 @@ namespace FacilityDocu.Test.Console
         private static void TestActionImageUpload()
         {
             SyncManager manager = new SyncManager();
-            manager.UploadImages("1");
+            manager.UploadImages("54");
         }
 
         private static void TestGeneratePdf()

@@ -9,8 +9,6 @@ namespace FacilityDocu.Services.EntityDTOConverter
 {
     public static class DTOConverter
     {
-        public static bool IsUpdate = false;
-
         public static Project ToProject(ProjectDTO projectDTO)
         {
             Project project = new Project();
@@ -46,14 +44,28 @@ namespace FacilityDocu.Services.EntityDTOConverter
                         foreach (ActionDTO actionDTO in stepDTO.Actions)
                         {
                             ProjectDetail projectDetail = new ProjectDetail();
-                            projectDetail.ProjectDetailID = Helper.GetUniqueID();
+
+                            if (Helper.IsNew(actionDTO.ActionID))
+                            {
+                                projectDetail.ProjectDetailID = Helper.GetUniqueID();
+                            }
+                            else
+                            {
+                                projectDetail.ProjectDetailID = Convert.ToInt32(actionDTO.ActionID);
+                            }
+
                             projectDetail.ActionName = actionDTO.Name;
                             projectDetail.Description = actionDTO.Description;
-                            
+
                             projectDetail.StepID = Convert.ToInt32(stepDTO.StepID);
                             projectDetail.Dimensions = actionDTO.Dimensions;
                             projectDetail.LiftingGears = actionDTO.LiftingGears;
                             projectDetail.Risks = actionDTO.Risks;
+
+                            projectDetail.ActionDescriptionWarning = actionDTO.IsDescriptionwarning;
+                            projectDetail.ActionNameWarning = actionDTO.IsNameWarning;
+                            projectDetail.ImportantActionDescription = actionDTO.ImportantDescription;
+                            actionDTO.ImportantName = actionDTO.ImportantName;
 
                             projectDetail.ProjectActionTools = ToProjectActionTool(actionDTO.Tools, projectDetail);
                             projectDetail.ProjectActionResources = ToProjectActionResources(actionDTO.Resources, projectDetail);
@@ -77,7 +89,17 @@ namespace FacilityDocu.Services.EntityDTOConverter
             foreach (RiskAnalysisDTO analysisDTO in analysissDTO)
             {
                 RiskAnalysi analysis = new RiskAnalysi();
-                analysis.RiskAnalysisID = Convert.ToInt32(analysisDTO.RiskAnalysisID);
+
+                if (!Helper.IsNew(analysisDTO.RiskAnalysisID))
+                {
+                    analysis.RiskAnalysisID = Convert.ToInt32(analysisDTO.RiskAnalysisID);
+                }
+                else
+                {
+                    analysis.RiskAnalysisID = Helper.GetUniqueID();
+                }
+
+
                 analysis.ProjectDetailID = projectDetail.ProjectDetailID;
                 analysis.Activity = analysisDTO.Activity;
                 analysis.B = Convert.ToDecimal(analysisDTO.B);
@@ -104,17 +126,28 @@ namespace FacilityDocu.Services.EntityDTOConverter
             foreach (ImageDTO imageDTO in images)
             {
                 ProjectActionImage projectImage = new ProjectActionImage();
-                projectImage.ImageID = Convert.ToInt32(imageDTO.ImageID);
                 projectImage.ProjectDetailID = projectDetail.ProjectDetailID;
+
+
                 projectImage.Image = new Image()
                 {
-                    ImageID = Helper.GetUniqueID(),
                     Description = imageDTO.Description,
                     ImagePath = imageDTO.Path,
                     CreationDate = imageDTO.CreationDate,
                     Tags = string.Join(";", imageDTO.Tags.ToArray()),
                     ImageComments = ToProjectActionImageComments(imageDTO.Comments, imageDTO.ImageID)
                 };
+
+                if (!Helper.IsNew(imageDTO.ImageID))
+                {
+                    projectImage.Image.ImageID = Convert.ToInt32(imageDTO.ImageID);
+                }
+                else
+                {
+                    projectImage.Image.ImageID = Helper.GetUniqueID();
+                }
+
+                projectImage.ImageID = projectImage.Image.ImageID;
 
                 projectImages.Add(projectImage);
             }
@@ -130,7 +163,16 @@ namespace FacilityDocu.Services.EntityDTOConverter
             {
                 ImageComment comment = new ImageComment();
                 comment.CreationDate = Convert.ToDateTime(commentDTO.CommentedAt);
-                comment.ImageCommentID = Helper.GetUniqueID();
+
+                if (!Helper.IsNew(commentDTO.CommentID))
+                {
+                    comment.ImageCommentID = Convert.ToInt32(commentDTO.CommentID);
+                }
+                else
+                {
+                    comment.ImageCommentID = Helper.GetUniqueID();
+                }
+
                 comment.ImageID = Convert.ToInt32(imageID);
                 comment.Text = commentDTO.Text;
 
@@ -148,9 +190,19 @@ namespace FacilityDocu.Services.EntityDTOConverter
             {
 
                 ProjectActionAttachment projectAttachment = new ProjectActionAttachment();
-                projectAttachment.AttachmentID = Convert.ToInt32(attachmentDTO.AttachmentID);
                 projectAttachment.ProjectDetailID = projectDetail.ProjectDetailID;
-                projectAttachment.Attachment = new Attachment() { AttachmentID = Helper.GetUniqueID(), Name = attachmentDTO.Name, Path = attachmentDTO.Path };
+                projectAttachment.Attachment = new Attachment() { Name = attachmentDTO.Name, Path = attachmentDTO.Path };
+
+                if (!Helper.IsNew(attachmentDTO.AttachmentID))
+                {
+                    projectAttachment.Attachment.AttachmentID = Convert.ToInt32(attachmentDTO.AttachmentID);
+                }
+                else
+                {
+                    projectAttachment.Attachment.AttachmentID = Helper.GetUniqueID();
+                }
+
+                projectAttachment.AttachmentID = projectAttachment.Attachment.AttachmentID;
 
                 projectAttachments.Add(projectAttachment);
             }
@@ -164,12 +216,15 @@ namespace FacilityDocu.Services.EntityDTOConverter
 
             foreach (ResourceDTO resourceDTO in resources)
             {
-                ProjectActionResource projectResource = new ProjectActionResource();
-                projectResource.ResourceID = Convert.ToInt32(resourceDTO.ResourceID);
-                projectResource.ResourceCount = Convert.ToInt32(resourceDTO.ResourceCount);
-                projectResource.ProjectDetailID = projectDetail.ProjectDetailID;
+                if (Convert.ToInt32(resourceDTO.ResourceCount) > 0)
+                {
+                    ProjectActionResource projectResource = new ProjectActionResource();
+                    projectResource.ResourceID = Convert.ToInt32(resourceDTO.ResourceID);
+                    projectResource.ResourceCount = Convert.ToInt32(resourceDTO.ResourceCount);
+                    projectResource.ProjectDetailID = projectDetail.ProjectDetailID;
 
-                projectResources.Add(projectResource);
+                    projectResources.Add(projectResource);
+                }
             }
 
             return projectResources;
