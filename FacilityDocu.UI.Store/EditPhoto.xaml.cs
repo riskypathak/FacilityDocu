@@ -1,36 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
-
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using Windows.ApplicationModel;
-using Windows.Data.Xml.Dom;
-using Windows.Devices.Input;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
-using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Core;
-using Windows.UI.Input;
 using Windows.UI.Input.Inking;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
 
 
@@ -39,37 +26,60 @@ using Windows.UI.Xaml.Shapes;
 namespace Tablet_App
 {
 
-    public sealed partial class edit : Page
+    public sealed partial class EditPhoto : Page
     {
-
-
         Windows.Storage.StorageFolder saveFolder = ApplicationData.Current.LocalFolder;
         int redo_undo = 0;
         InkManager MyInkManager = new InkManager();
         string DrawingTool;
         double X1, X2, Y1, Y2, StrokeThickness = 1;
-        Point StartPoint, PreviousContactPoint, CurrentContactPoint;
-        double w = 0, h = 0;
+        Point PreviousContactPoint, CurrentContactPoint;
+
+        double width = 0, height = 0;
+
         Line NewLine;
         Ellipse NewEllipse;
         Polyline Pencil;
         Rectangle NewRectangle;
-        Color BorderColor = Colors.Black, FillColor, temp;
+        Color BorderColor, FillColor;
         uint PenID, TouchID;
         BitmapImage finalImage = new BitmapImage();
         ImageBrush img = new ImageBrush();
         int count = 0;
 
-        int dn = 0;
         StorageFile file;
+
         BitmapImage bitmapImage;
-      
-       
-        public edit()
+
+        private static List<PropertyInfo> LoadColors()
         {
+            List<PropertyInfo> colors = new List<PropertyInfo>();
+
+            var t = typeof(Colors);
+            var ti = t.GetTypeInfo();
+            var dp = ti.DeclaredProperties;
+            foreach (var item in dp)
+            {
+                if (item.Name.Equals("Red")
+                    || item.Name.Equals("White")
+                    || item.Name.Equals("Black")
+                    || item.Name.Equals("Blue")
+                    || item.Name.Equals("Green")
+                    || item.Name.Equals("Yellow"))
+                {
+                    colors.Add(item);
+                }
+            }
+
+            return colors;
+        }
 
 
+
+        public EditPhoto()
+        {
             this.InitializeComponent();
+
             try
             {
                 canvas.PointerMoved += canvas_PointerMoved;
@@ -78,36 +88,27 @@ namespace Tablet_App
                 canvas.PointerExited += canvas_PointerExited;
                 canvas.PointerEntered += canvas_PointerEntered;
 
-                for (int i = 1; i < 30; i++)
-                {
-                    ComboBoxItem Items = new ComboBoxItem();
-                    Items.Content = i;
-                    cbStrokeThickness.Items.Add(Items);
-                }
                 for (int i = 30; i < 100; i += 5)
                 {
                     ComboBoxItem Items = new ComboBoxItem();
                     Items.Content = i;
-                    cbStrokeThickness.Items.Add(Items);
+                    cmbStrokeThickness.Items.Add(Items);
                 }
-                cbStrokeThickness.SelectedIndex = 10;
 
-                cbFillColor.Items.Add("");
-                var colors = typeof(Colors).GetTypeInfo().DeclaredProperties;
-                foreach (var item in colors)
-                {
-                    cbBorderColor.Items.Add(item);
-                    cbFillColor.Items.Add(item);
-                }
+                cmbStrokeThickness.SelectedIndex = 3;
+
+                cbBorderColor.ItemsSource = LoadColors();
+
+                BorderColor = Colors.White;
             }
             catch
             {
-                msg.show("Somethig is missing");
+                ScreenMessage.Show("Somethig is missing");
             }
 
         }
+        #region Drawing Tools Click Events
 
-        #region Drawing Tools Click Events 
         private void btnPencil_Click(object sender, RoutedEventArgs e)
         {
             DrawingTool = "Pencil";
@@ -123,56 +124,30 @@ namespace Tablet_App
             DrawingTool = "Ellipse";
         }
 
-        private void btnRectagle_Click(object sender, RoutedEventArgs e)
+        private void btnRectangle_Click(object sender, RoutedEventArgs e)
         {
-            DrawingTool = "Rectagle";
-        }
-
-        private void btnEraser_Click(object sender, RoutedEventArgs e)
-        {
-            DrawingTool = "Eraser";
-        }
-
-
-        private void btnSelect_Click(object sender, RoutedEventArgs e)
-        {
-            DrawingTool = "Select";
+            DrawingTool = "Rectangle";
         }
 
         #endregion
 
         #region Pointer Events
-
         void canvas_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
             if (DrawingTool == "Select")
                 Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Hand, 1);
         }
-
         void canvas_PointerExited(object sender, PointerRoutedEventArgs e)
         {
             sset = 0;
             Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Hand, 1);
         }
         int sset = 0;
-        void canvas_PointerPressed(object sender, PointerRoutedEventArgs e)
+        double xCor = 0;
+        double yCor = 0;
+        double xf = 0, yf = 0, xl = 0, yl = 0;
+        public void initialPoint(PointerRoutedEventArgs e)
         {
-            if (DrawingTool != "Eraser" && DrawingTool != "Select")
-            {
-                sset = 1;
-                Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Cross, 1);
-            }
-            else if (DrawingTool == "Select")
-            {
-                sset = 0;
-                Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Hand, 1);
-            }
-            else
-            {
-                sset = 1;
-                Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Hand, 1);
-            }
-
             try
             {
                 switch (DrawingTool)
@@ -182,10 +157,12 @@ namespace Tablet_App
 
                             NewLine = new Line();
 
-                            NewLine.X1 = e.GetCurrentPoint(canvas).Position.X;
-                            NewLine.Y1 = e.GetCurrentPoint(canvas).Position.Y;
+                            NewLine.X1 = xCor;
+                            NewLine.Y1 = yCor;
+
                             NewLine.X2 = NewLine.X1 + 1;
                             NewLine.Y2 = NewLine.Y1 + 1;
+
                             NewLine.StrokeThickness = StrokeThickness;
                             NewLine.Stroke = new SolidColorBrush(BorderColor);
                             canvas.Children.Add(NewLine);
@@ -215,11 +192,11 @@ namespace Tablet_App
                         }
                         break;
 
-                    case "Rectagle":
+                    case "Rectangle":
                         {
                             NewRectangle = new Rectangle();
-                            X1 = e.GetCurrentPoint(canvas).Position.X;
-                            Y1 = e.GetCurrentPoint(canvas).Position.Y;
+                            X1 = xCor;
+                            Y1 = yCor;
                             X2 = X1;
                             Y2 = Y1;
                             NewRectangle.Width = X2 - X1;
@@ -231,6 +208,7 @@ namespace Tablet_App
                             NewRectangle.ManipulationMode = ManipulationModes.All;
 
 
+
                         }
                         break;
 
@@ -240,8 +218,8 @@ namespace Tablet_App
 
 
                             NewEllipse = new Ellipse();
-                            X1 = e.GetCurrentPoint(canvas).Position.X;
-                            Y1 = e.GetCurrentPoint(canvas).Position.Y;
+                            X1 = xCor;
+                            Y1 = yCor;
                             X2 = X1;
                             Y2 = Y1;
                             NewEllipse.Width = X2 - X1;
@@ -254,17 +232,6 @@ namespace Tablet_App
                         }
                         break;
 
-                    case "Eraser":
-                        {
-                            Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.UniversalNo, 1);
-                            StartPoint = e.GetCurrentPoint(canvas).Position;
-                            Pencil = new Polyline();
-                            Pencil.Stroke = new SolidColorBrush(Colors.Wheat);
-                            Pencil.StrokeThickness = 10;
-                            canvas.Children.Add(Pencil);
-                        }
-                        break;
-
                     default:
                         break;
                 }
@@ -274,19 +241,10 @@ namespace Tablet_App
 
             }
         }
-    
-
-        void canvas_PointerMoved(object sender, PointerRoutedEventArgs e)
+        public void finalPoint(PointerRoutedEventArgs e)
         {
             try
             {
-                if (DrawingTool != "Eraser" && DrawingTool != "Select")
-                    Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Cross, 1);
-                else if (DrawingTool == "Select")
-                    Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Arrow, 1);
-                else
-                    Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.UniversalNo, 1);
-
                 switch (DrawingTool)
                 {
                     case "Pencil":
@@ -337,12 +295,14 @@ namespace Tablet_App
                         }
                         break;
 
-                    case "Rectagle":
+                    case "Rectangle":
                         {
                             if (e.GetCurrentPoint(canvas).Properties.IsLeftButtonPressed == true)
                             {
                                 X2 = e.GetCurrentPoint(canvas).Position.X;
                                 Y2 = e.GetCurrentPoint(canvas).Position.Y;
+
+
                                 if ((X2 - X1) > 0 && (Y2 - Y1) > 0)
                                     NewRectangle.Margin = new Thickness(X1, Y1, X2, Y2);
                                 else if ((X2 - X1) < 0 && (Y2 - Y1) > 0)
@@ -365,6 +325,7 @@ namespace Tablet_App
                             {
                                 X2 = e.GetCurrentPoint(canvas).Position.X;
                                 Y2 = e.GetCurrentPoint(canvas).Position.Y;
+
                                 if ((X2 - X1) > 0 && (Y2 - Y1) > 0)
                                     NewEllipse.Margin = new Thickness(X1, Y1, X2, Y2);
                                 else if ((X2 - X1) < 0 && (Y2 - Y1) > 0)
@@ -385,29 +346,57 @@ namespace Tablet_App
                         }
                         break;
 
-                    case "Eraser":
-                        {
-                            if (e.GetCurrentPoint(canvas).Properties.IsLeftButtonPressed == true)
-                            {
-                                if (StartPoint != e.GetCurrentPoint(canvas).Position)
-                                {
-                                    Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.UniversalNo, 1);
-                                    Pencil.Points.Add(e.GetCurrentPoint(canvas).Position);
-                                }
-                            }
-                        }
-                        break;
-
                     default:
                         break;
                 }
             }
             catch
             {
-                //
+
+            }
+
+        }
+        void canvas_PointerMoved(object sender, PointerRoutedEventArgs e)
+        {
+            try
+            {
+                if (DrawingTool != "Eraser" && DrawingTool != "Select")
+                    Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Cross, 1);
+                else if (DrawingTool == "Select")
+                    Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Arrow, 1);
+                else
+                    Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.UniversalNo, 1);
+
+                finalPoint(e);
+            }
+            catch
+            {
+
             }
         }
+        void canvas_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            if (DrawingTool != "Eraser" && DrawingTool != "Select")
+            {
+                sset = 1;
+                Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Cross, 1);
+            }
+            else if (DrawingTool == "Select")
+            {
+                sset = 0;
+                Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Hand, 1);
+            }
+            else
+            {
+                sset = 1;
+                Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Hand, 1);
+            }
 
+            xCor = e.GetCurrentPoint(canvas).Position.X;
+            yCor = e.GetCurrentPoint(canvas).Position.Y;
+            initialPoint(e);
+
+        }
         private double Distance(double x1, double y1, double x2, double y2)
         {
             double d = 0;
@@ -423,9 +412,8 @@ namespace Tablet_App
 
             if (sset == 1)
             {
-                btn_Undo.IsEnabled = true;
-
-                SaveCanvas();
+                xl = X2;
+                yl = Y2;
 
             }
             TouchID = 0;
@@ -437,461 +425,153 @@ namespace Tablet_App
             NewEllipse = null;
 
         }
-
         #endregion
 
-
-        private void cbStrokeThickness_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cmbStrokeThickness_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            StrokeThickness = Convert.ToDouble(cbStrokeThickness.SelectedIndex + 1);
-        }
-        private void cbBorderColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (cbBorderColor.SelectedIndex == 0)
-            {
-                BorderColor = temp;
-            }
-            else if (cbBorderColor.SelectedIndex != -1)
-            {
-                var pi = cbBorderColor.SelectedItem as PropertyInfo;
-                BorderColor = (Color)pi.GetValue(null);
-            }
-        }
-        private void cbFillColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (cbFillColor.SelectedIndex != -1)
-            {
-                var pi = cbFillColor.SelectedItem as PropertyInfo;
-                FillColor = (Color)pi.GetValue(null);
-            }
+            StrokeThickness = Convert.ToDouble(cmbStrokeThickness.SelectedIndex + 1);
         }
 
-
-
-        #region Show Message method
-        /// <summary>  
-        /// Show Message method  
-        /// </summary>  
-        /// <param name="content">Content parameter</param>  
-        /// <param name="title">Title parameter</param>  
-        private async void ShowMessage(string content, string title)
-        {
-            try
-            {
-                MessageDialog msg = new MessageDialog(content, title);
-                await msg.ShowAsync();
-            }
-            catch
-            {
-
-            }
-
-        }
-        #endregion
-        #region Create File method.
-        /// <summary>  
-        /// Create File method.  
-        /// </summary>  
-        /// <param name="filename">File name parameter</param>  
-        /// <returns>Returns storage file type object</returns>  
-
-        #endregion
-        #region Save to PNG method.
-       
         private async Task SaveToPNG(RenderTargetBitmap bitmap)
         {
+            StorageFolder sf = await StorageFolder.GetFolderFromPathAsync(Data.ImagesPath);
+            file = await sf.CreateFileAsync("temp.jpg", Windows.Storage.CreationCollisionOption.ReplaceExisting);
 
-            try
+            using (var stream = await file.OpenStreamForWriteAsync())
             {
-                StorageFolder sf = await StorageFolder.GetFolderFromPathAsync(OfflineData.datap);
-                file = await sf.CreateFileAsync
-                                 (OfflineData.folderName+"\\image"+OfflineData.picCount.ToString()+ ".png", Windows.Storage.CreationCollisionOption.ReplaceExisting);
-
-                if (bitmap == null)
-                {
-
-                    this.ShowMessage("Something goes wrong, try again later", "Error");
-
-                    return;
-                }
-
-                using (var stream = await file.OpenStreamForWriteAsync())
-                {
-                    // Initialization.  
-                    var pixelBuffer = await bitmap.GetPixelsAsync();
-                    var logicalDpi = DisplayInformation.GetForCurrentView().LogicalDpi;
-                    // convert stream to IRandomAccessStream  
-                    var randomAccessStream = stream.AsRandomAccessStream();
-                    // encoding to PNG  
-                    var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, randomAccessStream);
-                    // Finish saving  
-                    encoder.SetPixelData(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore, (uint)bitmap.PixelWidth,
-                               (uint)bitmap.PixelHeight, logicalDpi, logicalDpi, pixelBuffer.ToArray());
-                    // Flush encoder.  
-                    await encoder.FlushAsync();
-
-                }
-
-
-                using (IRandomAccessStream fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read))
-                {
-                    // Set the image source to the selected bitmap
-                    bitmapImage = new BitmapImage();
-                    await bitmapImage.SetSourceAsync(fileStream);
-                    nj.Source = bitmapImage;
-                   // img.ImageSource = bitmapImage;
-                    finalImage = bitmapImage;
-                    OfflineData.imagebk[redo_undo]=bitmapImage;
-                    img.ImageSource = OfflineData.imagebk[redo_undo];
-                    canvas.Background = img;
-                    canvas.Children.Clear();
-                    count++;
-                    redo_undo++;
-                }
-
-
-
+                // Initialization.  
+                var pixelBuffer = await bitmap.GetPixelsAsync();
+                var logicalDpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+                // convert stream to IRandomAccessStream  
+                var randomAccessStream = stream.AsRandomAccessStream();
+                // encoding to PNG  
+                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, randomAccessStream);
+                // Finish saving  
+                encoder.SetPixelData(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore, (uint)bitmap.PixelWidth,
+                           (uint)bitmap.PixelHeight, logicalDpi, logicalDpi, pixelBuffer.ToArray());
+                // Flush encoder.  
+                await encoder.FlushAsync();
             }
-            catch (Exception ex)
-            {
-                //  this.ShowMessage("File not supported or not found", "Error");
-            }
-
-
         }
-
-
-        #endregion
-        #region Canvas to BMP method
 
         private async Task<RenderTargetBitmap> CanvasToBMP()
         {
-            // Initialization  
-            RenderTargetBitmap bitmap = null;
-            try
-            {
-                // Initialization.  
-                Size canvasSize = this.canvas.RenderSize;
-                Point defaultPoint = this.canvas.RenderTransformOrigin;
-                // Sezing to output image dimension.  
-                this.canvas.Measure(canvasSize);
-                this.canvas.UpdateLayout();
-                this.canvas.Arrange(new Rect(defaultPoint, canvasSize));
-                // Convert canvas to bmp.  
-                var bmp = new RenderTargetBitmap();
-                await bmp.RenderAsync(this.canvas);
-                // Setting.  
-                bitmap = bmp as RenderTargetBitmap;
-            }
-            catch
-            {
-                SaveCanvas();
+            // Initialization.  
+            Size canvasSize = this.canvas.RenderSize;
+            Point defaultPoint = this.canvas.RenderTransformOrigin;
+            // Sezing to output image dimension.  
+            this.canvas.Measure(canvasSize);
+            this.canvas.UpdateLayout();
+            this.canvas.Arrange(new Rect(defaultPoint, canvasSize));
+            // Convert canvas to bmp.  
+            var bitmap = new RenderTargetBitmap();
+            await bitmap.RenderAsync(this.canvas);
 
-            }
+
             return bitmap;
         }
-        #endregion
-        #region Save Canvas method
 
-        private async void SaveCanvas()
+        private async Task SaveCanvas()
         {
-
-
             try
             {
-                redo_undo = count;
-                canvas.Width = w;
+                canvas.Width = width;
+                canvas.Height = height;
 
-                canvas.Height = h;
-
-                RenderTargetBitmap bitmap = await this.CanvasToBMP();
-
-                await this.SaveToPNG(bitmap);
+                RenderTargetBitmap bitmap = await CanvasToBMP();
+                await SaveToPNG(bitmap);
             }
 
             catch
             {
-                msg.show("Error Update Your Process");
-
+                ScreenMessage.Show("Error Update Your Process");
             }
         }
-        #endregion
-        private void btnRedo_Click(object sender, RoutedEventArgs e)
+
+        public async void ViewImage()
         {
-            try
+            ImageBrush img = new ImageBrush();
+
+            StorageFile modifyImage = null;
+            if (!Data.IsFromCrop)
             {
-
-
-                btn_Undo.IsEnabled = true;
-
-                if (count != redo_undo)
-                {
-                    count++;
-                    ImageBrush img = new ImageBrush();
-                    img.ImageSource = OfflineData.undoImage[count];
-                    canvas.Background = img;
-                    nj.Source = img.ImageSource;
-
-                }
-                else
-                {
-                    btnRedo.IsEnabled = false;
-                }
-            }
-
-            catch
-            {
-                msg.show("Redo cannot be performed");
-            }
-        }
-        private void btn_Undo_Click(object sender, RoutedEventArgs e)
-        {
-            //red--;
-            try
-            {
-                btnRedo.IsEnabled = true;
-
-                if (count != 0)
-                {
-                    count--;
-                    ImageBrush img = new ImageBrush();
-                    img.ImageSource = OfflineData.undoImage[0];
-                    canvas.Background = img;
-                    nj.Source = img.ImageSource;
-                }
-                else
-                {
-                    btn_Undo.IsEnabled = false;
-                }
-               
-
-            }
-
-            catch
-            {
-                msg.show("Undo cannot be performed");
-            }
-        }
-        private void zoomout_btn_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-
-
-                double rat;
-                rat = canvas.Width / canvas.Height;
-                if (rat > 1)
-                {
-                    canvas.Width = canvas.Width - rat * 10;
-                    canvas.Height = canvas.Height - 10;
-                }
-                else
-                {
-                    canvas.Width = canvas.Width - 10;
-                    canvas.Height = canvas.Height - rat * 10;
-                }
-            }
-            catch
-            {
-
-            }
-        }
-        private void zoomin_btn_Click(object sender, RoutedEventArgs e)
-        {
-            double rat;
-            rat = canvas.Width / canvas.Height;
-            if (rat > 1)
-            {
-                canvas.Width = canvas.Width + rat * 10;
-                canvas.Height = canvas.Height + 10;
+                modifyImage = await StorageFile.GetFileFromPathAsync(Data.MODIFYIMAGE.Path);
             }
             else
             {
-                canvas.Width = canvas.Width + 10;
-                canvas.Height = canvas.Height + rat * 10;
-            }
-        }
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            resize_bk.Visibility = Visibility.Collapsed;
-            canvas.Height = h;
-            canvas.Width = w;
-        }
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            double wdv, htv;
-            try
-            {
-                wdv = Convert.ToInt32(wd.Text);
-                htv = Convert.ToInt32(ht.Text);
-                h = htv;
-                w = wdv;
-                canvas.Height = h;
-                canvas.Width = w;
-                resize_bk.Visibility = Visibility.Collapsed;
-            }
-            catch
-            {
-                this.ShowMessage("Enter the valid data in Pixel Form ", "Invalid");
-            }
-        }
-        private void resize_btn_Click(object sender, RoutedEventArgs e)
-        {
-            resize_bk.Visibility = Visibility.Visible;
-        }
-        private void ht_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            try
-            {
-                if (ht.Text != "")
-                {
-                    er.Text = "";
-                    canvas.Height = Convert.ToInt32(ht.Text);
-                }
-                else
-                {
-                    er.Text = "";
-                }
-
-            }
-            catch
-            {
-                er.Text = "Invalid input";
-            }
-        }
-        private void wd_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-            try
-            {
-
-                if (wd.Text != "")
-                {
-                    er.Text = "";
-                    canvas.Width = Convert.ToInt32(wd.Text);
-                }
-                else
-                {
-                    er.Text = "";
-                }
-
-            }
-            catch
-            {
-                er.Text = "Invaid Data Entered In width Box ..";
-            }
-        }
-        public async void viewimg()
-        {
-           
-            BitmapImage bi = new BitmapImage();
-            ImageBrush img = new ImageBrush();
-            try
-            {
-             
-                using (IRandomAccessStream fileStream = await OfflineData.tempPhotoloc.OpenAsync(Windows.Storage.FileAccessMode.Read))
-                {
-                   // uint sourceImagePixelWidth;
-                   // uint sourceImagePixelHeight;
-                    // Set the image source to the selected bitmap
-                    bitmapImage = new BitmapImage();
-                    await bitmapImage.SetSourceAsync(fileStream);
-                  
-                    canvas.Width = bitmapImage.PixelWidth * 1.5;
-                    canvas.Height = bitmapImage.PixelHeight * 1.5;
-                    w = canvas.Width;
-                    h = canvas.Height;
-                   nj.Source = bitmapImage;
-                    img.ImageSource = this.nj.Source;
-                    canvas.Background = img;
-                  SaveCanvas();
-                }
-               
-            }
-            catch
-            {
-
+                modifyImage = await StorageFile.GetFileFromPathAsync(System.IO.Path.Combine(Data.ImagesPath, "temp.jpg"));
+                Data.IsFromCrop = false;
             }
 
+            using (IRandomAccessStream fileStream = await modifyImage.OpenAsync(Windows.Storage.FileAccessMode.Read))
+            {
+                bitmapImage = new BitmapImage();
+                await bitmapImage.SetSourceAsync(fileStream);
+
+                canvas.Width = 1024;
+                canvas.Height = 768;
+                width = canvas.Width;
+                height = canvas.Height;
+                imgPreview.Source = bitmapImage;
+                img.ImageSource = this.imgPreview.Source;
+                canvas.Background = img;
+            }
         }
+
         private void Page_Loaded_1(object sender, RoutedEventArgs e)
         {
-            viewimg();
-
+            ViewImage();
         }
 
-        private async void Done_Click(object sender, TappedRoutedEventArgs e)
+        private async void btnNext_Click(object sender, TappedRoutedEventArgs e)
         {
+            await SaveCanvas();
+            StorageFile modifyImage = await StorageFile.GetFileFromPathAsync(Data.MODIFYIMAGE.Path);
+            await file.CopyAndReplaceAsync(modifyImage);
 
-            //DateTime dt = DateTime.Now;
-            //string dtt = dt.ToString("r");
-            dn = 1;
-           
-
+            this.Frame.Navigate(typeof(Gallery));
         }
 
-       
-        int getimg_pos = 0;
-        private void Button_Tapped_1(object sender, TappedRoutedEventArgs e)
-        {
-
-
-            SaveCanvas();
-            OfflineData.undoImage.Clear();
-           
-            redo_undo = 0;
-            count = 0;
-            btn_Undo.IsEnabled = false;
-            btnRedo.IsEnabled = false;
-            getimg_pos++;
-            if (getimg_pos == OfflineData.imagebk.Count)
-            {
-                getimg_pos = 0;
-            }
-            // OfflineData.imagebk[prev_imgsel] = bitmapImage;
-          
-        }
-
-        private void cropDone_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            ImageBrush img = new ImageBrush();
-            img.ImageSource = previewImage.Source;
-
-            canvas.Width = previewImage.Width;
-            canvas.Height = previewImage.Height;
-            canvas.Background = img;
-            crop_grid.Visibility = Visibility.Collapsed;
-            SaveCanvas();
-        }
-
-        private void backButton_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            crop_grid.Visibility = Visibility.Collapsed;
-        }
-
-        private void Button_Click(object sender, TappedRoutedEventArgs e)
-        {
-            dn = 1;
-            OfflineData.editpic = bitmapImage;
-            this.Frame.Navigate(typeof(PhotoDetails));
-
-        }
-
-        private void backButton_Copy_Tapped(object sender, TappedRoutedEventArgs e)
+        private void btnBack_Tapped(object sender, TappedRoutedEventArgs e)
         {
             this.Frame.GoBack();
         }
 
-        private void crp_Tapped(object sender, TappedRoutedEventArgs e)
+        private async void btnCrop_Tapped(object sender, TappedRoutedEventArgs e)
         {
+            await SaveCanvas();
             this.Frame.Navigate(typeof(CropPage));
         }
 
+        private void cmbResize_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string selectedValue = (e.AddedItems[0] as ComboBoxItem).Content.ToString();
 
+            if (selectedValue.Equals("640X480"))
+            {
+                canvas.Width = 640;
+                canvas.Height = 480;
+            }
+            else if (selectedValue.Equals("1024X768"))
+            {
+                canvas.Width = 1024;
+                canvas.Height = 768;
+            }
+            else if (selectedValue.Equals("1280X1024"))
+            {
+                canvas.Width = 1280;
+                canvas.Height = 1024;
+            }
+        }
 
+        private void cmbFillColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FillColor = (((e.AddedItems[0] as ComboBoxItem).Content as Rectangle).Fill as SolidColorBrush).Color;
+        }
 
-
-
-
+        private void cmbBorderColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            BorderColor = (((e.AddedItems[0] as ComboBoxItem).Content as Rectangle).Fill as SolidColorBrush).Color;
+        }
     }
 }

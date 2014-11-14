@@ -1,0 +1,150 @@
+﻿<project>
+  <id>1</id>
+  <name>Template 1</name>
+  <createdtime>2002-09-24-06:00</createdtime>
+  <updatetime>2014-09-24-07:00</updatetime>
+  <description></description>
+  <rigs>
+    <rig type="up">
+      <modules>
+        <module>
+          <id>2001</id>
+          <number>01</number>
+          <name>Mud System</name>
+          <steps>
+            <step>
+              <id>3001</id>
+              <number>01</number>
+              <name>General Preparations</name>
+              <actions>
+                <action>
+                  <id>4001</id>
+                  <number>01</number>
+                  <name>Mark centre well and position of shaker tank</name>
+                  <description>
+                    Take the measurement from the rig equipment lay-out of
+                    Dalma Gulf drilling . Drawing number LR07-103.101.01
+                    Verify with the TP if the dimensions on the drawing are still
+                    accurate.
+                    Remark: Make sure grease and spare seals of several
+                    sizes are available on the new location
+                  </description>
+                  <images>
+                    <image>
+                      <id>100001</id>
+                      <number>01</number>
+                      <name>Image1</name>
+                      <description>Initial Image</description>
+                      <tags>RigUp; Mud;</tags>
+                      <comments>
+                        <comment>
+                          <text>Added first image</text>
+                          <date>2014-09-24-06:00</date>
+                          <user>riskypathak</user>
+                        </comment>
+                        <comment>
+                          <text>Editted first image's description</text>
+                          <date>2014-09-24-07:00</date>
+                          <user>riskypathak</user>
+                        </comment>
+                      </comments>
+                    </image>
+                    <image>
+                      <id>100002</id>
+                      <number>02</number>
+                      <name>Image2</name>
+                      <description>Final Image</description>
+                      <tags>RigUp; Mud;</tags>
+                      <comments>
+                        <comment>
+                          <text>Added first image</text>
+                          <date>2014-09-24-06:30</date>
+                          <user>riskypathak</user>
+                        </comment>
+                      </comments>
+                    </image>
+                  </images>
+                </action>
+                <action>
+                  <id>4002</id>
+                  <number>02</number>
+                  <name>Unload and position shaker tank</name>
+                  <description>
+                    Check the dimensions when the tank is lowered on the
+                    Surface.
+                    Centre well - Shaker tank = 12,19 m
+                    Center well - Front shaker tank = 2,95 m
+                    When the tank is in position check and clean the seals and
+                    piping
+                  </description>
+                  <images>
+                  </images>
+                </action>
+              </actions>
+            </step>
+            <step>
+              <id>3002</id>
+              <number>02</number>
+              <name>Mud return line</name>
+              <actions>
+                <action>
+                  <id>4003</id>
+                  <number>01</number>
+                  <name>Unload and install stairs mix/suction tank</name>
+                  <description>
+                    Position with 1 crane the stairs from ground to shale shaker
+                    skid.
+                    Bring the stairs in position and install the pins plus secondary
+                    retention. Check if all the handrails of the intermediate tank
+                    are in position and secured, to guarantee safe working.
+                  </description>
+                  <images>
+                  </images>
+                </action>
+              </actions>
+            </step>
+          </steps>
+        </module>
+        <module>
+          <id>2002</id>
+          <number>02</number>
+          <name>Mud pumps</name>
+          <steps>
+            <step>
+              <id>3003</id>
+              <number>01</number>
+              <name>Mud pump 1 till X</name>
+              <actions>
+                <action>
+                  <id>4004</id>
+                  <number>01</number>
+                  <name>Unload and position supercharge skids</name>
+                  <description>
+                    Position the cranes according liftingplan 011.
+                    Position the supercharge skid against the mix/suction tank
+                    (see rig equipment lay-out)
+                    Lower the supercharge skid on the surface and check alignment.
+                    When it is ok, release the crane.
+                    Connect all pipe connections and hoses between mix/suction
+                    tank and supercharge skid. Check and clean seal and pipe
+                    connections.
+                    Use a little grease before connecting the pipe connections
+                    and hoses.
+                  </description>
+                  <images>
+                  </images>
+                </action>
+              </actions>
+            </step>
+          </steps>
+        </module>
+      </modules>
+    </rig>
+    <rig type="down">
+
+    </rig>
+    <rig type="move">
+
+    </rig>
+  </rigs>
+</project>

@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="ce0d8f7b-2fc9-4b97-b158-5283608804bc" Publisher="CN=Tejasvi" Version="1.0.0.9" />
+  <Identity Name="FacilityDocu" Publisher="CN=Tejasvi" Version="1.0.0.12" />
   <Properties>
-    <DisplayName>Tablet App</DisplayName>
-    <PublisherDisplayName>Tejasvi</PublisherDisplayName>
+    <DisplayName>FacilityDocu</DisplayName>
+    <PublisherDisplayName>RiskyPathak</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Prerequisites>

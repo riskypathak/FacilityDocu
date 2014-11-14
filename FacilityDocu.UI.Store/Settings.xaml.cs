@@ -31,268 +31,131 @@ namespace Tablet_App
     /// </summary>
     public sealed partial class Settings : Page
     {
-        int pathStatus = 0;
         public Settings()
         {
             this.InitializeComponent();
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
+
+        private void btnBack_Tapped(object sender, TappedRoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(MainPage));
         }
-        private void backButton_Tapped(object sender, TappedRoutedEventArgs e)
+
+        public void SetControls()
         {
-            this.Frame.Navigate(typeof(MainPage));
-        }
-        public async void viewPath()
-        {
-            int status = 0;
-            //load the paths from the config xml  file
-            try
-            {
-                try
-                {
-                    string DBXMLPath = System.IO.Path.Combine(KnownFolders.PicturesLibrary.Path, "Application\\Config.xml");
-                    StorageFile a = await ApplicationData.Current.LocalFolder.GetFileAsync("Application\\Config.xml");  
-                     XDocument loadedData = XDocument.Load(a.Path );
-                    var data = from query in loadedData.Descendants("paths")
-                               select new
-                               {
-                                   xmlPath = query.Element("xml_path").Value,
-                                   dataPath = query.Element("data_path").Value,
-                                   backupPath = query.Element("backup_path").Value,
-                               };
-                    foreach (var read in data)
-                    {
-
-                        xml_path.Text = read.xmlPath;
-                        data_path.Text = read.dataPath;
-                        backup_path.Text = read.backupPath;
-
-
-                    }
-                    status = 1;
-                   
-                }
-                catch
-                {
-
-                }
-                if (status != 1)
-                {
-                    OfflineData.xmlp = ApplicationData.Current.LocalFolder.Path + "\\Data\\FacilityDocu\\Data";
-                    StorageFolder picfol = await KnownFolders.PicturesLibrary.CreateFolderAsync("FacilityDocuImages", CreationCollisionOption.OpenIfExists);
-                    OfflineData.datap = picfol.Path;
-                    StorageFolder picfol1 = await KnownFolders.PicturesLibrary.CreateFolderAsync("FacilityDocuBackup", CreationCollisionOption.OpenIfExists);
-                    OfflineData.backupp = picfol1.Path;
-                    xml_path.Text = OfflineData.xmlp;
-                    data_path.Text = OfflineData.datap;
-                    backup_path.Text = OfflineData.backupp;
-                  //  msg.show(OfflineData.xmlp);
-                }
-
-               
-            }
-                    catch
-                    {
-
-                    }
+            txtProjectPath.Text = Data.ProjectXmlPath;
+            txtImagesPath.Text = Data.ImagesPath;
+            txtBackupPath.Text = Data.BackupPath;
 
         }
+
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            viewPath();
+            SetControls();
 
         }
-        XmlDocument dom;
-        public void setXmlData()
+
+        private async void btnSave_Tapped(object sender, TappedRoutedEventArgs e)
         {
             try
             {
-                dom = new XmlDocument();
-                XmlElement x;
-                x = dom.CreateElement("setting");
-                dom.AppendChild(x);
-               
-                    XmlElement x1 = dom.CreateElement("paths");
+                StorageFolder projectFolder = await StorageFolder.GetFolderFromPathAsync(txtProjectPath.Text);
+                await projectFolder.CreateFileAsync("temp");
 
-                    XmlElement x11 = dom.CreateElement("xml_path");
-
-                    x11.InnerText = OfflineData.xmlp;
-
-                    x1.AppendChild(x11);
-                
-                XmlElement x12 = dom.CreateElement("data_path");
-
-                x12.InnerText = OfflineData.datap;
-
-                x1.AppendChild(x12);
-
-                XmlElement x13 = dom.CreateElement("backup_path");
-
-                x13.InnerText = OfflineData.backupp;
-
-                x1.AppendChild(x13);
-
-                x.AppendChild(x1);
+                StorageFile tempFile = await projectFolder.GetFileAsync("temp");
+                await tempFile.DeleteAsync();
             }
-            catch
+            catch (Exception)
             {
-                MessageDialog msgsh = new MessageDialog("Problem Occured To Do PerForm", "Failed");
-                msgsh.ShowAsync();
-            }
-        }
-        public async void writeConfigXml()
-        {
-            
-               
-                Windows.Storage.StorageFolder storage_folder = await Package.Current.InstalledLocation.GetFolderAsync("Assets");
-
-
-                Windows.Storage.StorageFile filepath = await storage_folder.GetFileAsync("Application\\Config.xml");
-                // await aaa.RenameAsync("Employee1.xml", NameCollisionOption.GenerateUniqueName  );
-               await filepath.DeleteAsync();
-                //await  filepath.OpenStreamForWriteAsync();
-
-               StorageFile st = await storage_folder.CreateFileAsync("Application\\Config.xml", CreationCollisionOption.GenerateUniqueName);
-                await dom.SaveToFileAsync(st);
-                viewPath();
-                try
-                {
-            }
-            catch
-            {
-                MessageDialog showmsg = new MessageDialog("Error to Reset Handling");
-                showmsg.ShowAsync();
+                (new MessageDialog("ProjectXml path is either doesnot exist or does not have read/write access", "Error")).ShowAsync();
+                return;
             }
 
-
-        }
-        public async void checkpath(string path)
-        {
-            pathStatus = 0;
-            string[] tempPath = path.Split('\\');
-            string getPath;
-            string pp="";
-            getPath = tempPath[0];
-            int status = 0;
-            ////////////check path status
-            StorageFolder sf;
             try
             {
-                for (int i = 1; i < tempPath.Count(); i++)
-                    {
-                try
-                {
-                    pp = getPath;
-                        getPath = getPath + "\\" + tempPath[i];
-                     sf=   await StorageFolder.GetFolderFromPathAsync(getPath);
-                    
-                }
-                catch
-                {
-                    status = 1;
-                }
-                    if(status==1)
-                    {
-                        status = 0;
-                        sf = await StorageFolder.GetFolderFromPathAsync(pp);
-                        await sf.CreateFolderAsync(getPath);
-                        
-                    }
+                StorageFolder imagesFolder = await StorageFolder.GetFolderFromPathAsync(txtImagesPath.Text);
+                await imagesFolder.CreateFileAsync("temp");
 
-                    }  
+                StorageFile tempFile = await imagesFolder.GetFileAsync("temp");
+                await tempFile.DeleteAsync();
             }
-            catch
+            catch (Exception)
             {
-                pathStatus = 1;
+                (new MessageDialog("Data path is either doesnot exist or does not have read/write access", "Error")).ShowAsync();
+                return;
             }
 
-           
-        }
-        private async void Button_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-          //  checkpath(xml_path.Text);
-            if(pathStatus==0)
-            {
-                OfflineData.xmlp = xml_path.Text;
-                MessageDialog msgsh = new MessageDialog("Sucess Fully save your Data", "Done");
-
-                await msgsh.ShowAsync();
-            }
-            else
-            {
-                 OfflineData.xmlp = KnownFolders.PicturesLibrary.Path;
-                 MessageDialog msgsh = new MessageDialog("Unsuported Path default path becomes >>" + OfflineData.xmlp, "Invalid");
-                await msgsh.ShowAsync();
-               
-            }
-          //  checkpath(data_path.Text);
-            if (pathStatus == 0)
-            {
-                OfflineData.datap = data_path.Text;
-                MessageDialog msgsh = new MessageDialog("Sucess Fully save your Data", "Done");
-
-                await msgsh.ShowAsync();
-            }
-            else
-            {
-                OfflineData.datap = KnownFolders.PicturesLibrary.Path;
-                MessageDialog msgsh = new MessageDialog("Unsuported Path default path becomes >>" + OfflineData.datap, "Invalid");
-                await msgsh.ShowAsync();
-            }
-            checkpath(backup_path.Text);
-            if (pathStatus == 0)
-            {
-                OfflineData.backupp = backup_path.Text;
-                MessageDialog msgsh = new MessageDialog("Sucess Fully save your Data", "Done");
-
-                await msgsh.ShowAsync();
-            }
-            else
-            {
-                OfflineData.backupp = KnownFolders.PicturesLibrary.Path;
-                MessageDialog msgsh = new MessageDialog("Unsuported Path default path becomes >>" + OfflineData.backupp, "Invalid");
-                await msgsh.ShowAsync();
-               
-            }
-              
-                setXmlData();
-                writeConfigXml();
-
-        }
-
-        private async void Button_Tapped_1(object sender, TappedRoutedEventArgs e)
-        {
-           
-            //load the paths from the config xml  file
             try
             {
-               
-                   
-                   OfflineData.xmlp = Package.Current.InstalledLocation.Path + "Data\\FacilityDocu\\Data";
-                    StorageFolder picfol = await KnownFolders.PicturesLibrary.CreateFolderAsync("FacilityDocuImages", CreationCollisionOption.OpenIfExists);
-                    OfflineData.datap = picfol.Path;
-                    StorageFolder picfol1 = await KnownFolders.PicturesLibrary.CreateFolderAsync("FacilityDocuBackup", CreationCollisionOption.OpenIfExists);
-                    OfflineData.backupp = picfol1.Path;
-                    //xml_path.Text = OfflineData.xmlp;
-                    data_path.Text = OfflineData.datap;
-                    backup_path.Text = OfflineData.backupp;
-                    //   msg.show(OfflineData.xmlp);
-                
-            setXmlData();
-            writeConfigXml();
-                     MessageDialog msgsh = new MessageDialog("Sucessfully data reset.", "Complete");
+                StorageFolder backupFolder = await StorageFolder.GetFolderFromPathAsync(txtBackupPath.Text);
+                await backupFolder.CreateFileAsync("temp");
 
-            await msgsh.ShowAsync();
-                   
-                    }
-            catch
+                StorageFile tempFile = await backupFolder.GetFileAsync("temp");
+                await tempFile.DeleteAsync();
+            }
+            catch (Exception)
             {
-msg.show("Reset Unsuccessful");
+                (new MessageDialog("Backup path is either doesnot exist or does not have read/write access", "Error")).ShowAsync();
+                return;
             }
 
-           
+            StorageFile configFile = await ApplicationData.Current.LocalFolder.CreateFileAsync("config.xml", CreationCollisionOption.ReplaceExisting);
+
+            var stream = await configFile.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite);
+
+            using (var outputStream = stream.AsStreamForWrite())
+            {
+
+                XElement xmltree = new XElement("settings",
+                       new XElement("projectxml", txtProjectPath.Text),
+                       new XElement("images", txtImagesPath.Text),
+                       new XElement("backup", txtBackupPath.Text));
+
+                xmltree.Save(outputStream);
+            }
+
+            Data.ProjectXmlPath = txtProjectPath.Text;
+            Data.ImagesPath = txtImagesPath.Text;
+            Data.BackupPath = txtBackupPath.Text;
+
+            await (new MessageDialog("Path changed sucessfully", "Success")).ShowAsync();
+        }
+
+        private async void btnReset_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            try
+            {
+                StorageFolder projectXmlPath = await ApplicationData.Current.LocalFolder.CreateFolderAsync("ProjectXML", CreationCollisionOption.OpenIfExists);
+                StorageFolder imagesPath = await ApplicationData.Current.LocalFolder.CreateFolderAsync("Images", CreationCollisionOption.OpenIfExists);
+                StorageFolder backupPath = await ApplicationData.Current.LocalFolder.CreateFolderAsync("Backup", CreationCollisionOption.OpenIfExists);
+
+                txtBackupPath.Text = backupPath.Path;
+                txtImagesPath.Text = imagesPath.Path;
+                txtProjectPath.Text = projectXmlPath.Path;
+            }
+            catch
+            {
+                ScreenMessage.Show("Reset Unsuccessful");
+            }
+        }
+
+        private void btnSync_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            try
+            {
+                //test
+                //SyncManager manager = new SyncManager(new List<int> { 1, 2 });
+                //manager.UpdateProjectXml();
+                SyncManager manager = new SyncManager();
+                IList<int> projectIds = manager.IsSyncRequired();
+
+                SyncManager updateCall = new SyncManager(projectIds);
+                updateCall.UpdateProjectXml();
+            }
+            catch
+            {
+
+            }
         }
 
 

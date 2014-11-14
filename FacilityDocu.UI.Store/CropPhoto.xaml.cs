@@ -29,7 +29,7 @@ namespace Tablet_App
     /// </summary>
     public sealed partial class CropPage : Tablet_App.Common.LayoutAwarePage
     {
-       ServiceReference1.Service1Client MyService;
+        // ServiceReference1.Service1Client MyService;
 
         InkManager MyInkManager = new InkManager();
         string DrawingTool;
@@ -43,14 +43,14 @@ namespace Tablet_App
         uint PenID, TouchID;
         SelectedRegion selectedRegion;
         double sourceImageScale = 1;
-       
+
         StorageFile sourceImageFile = null;
 
         uint sourceImagePixelWidth;
         uint sourceImagePixelHeight;
         Dictionary<uint, Point?> pointerPositionHistory = new Dictionary<uint, Point?>();
         double cornerSize;
-       
+
         double CornerSize
         {
             get
@@ -67,7 +67,7 @@ namespace Tablet_App
         {
             this.InitializeComponent();
 
-          
+
 
             selectRegion.ManipulationMode = ManipulationModes.Scale |
                 ManipulationModes.TranslateX | ManipulationModes.TranslateY;
@@ -77,7 +77,7 @@ namespace Tablet_App
         }
 
         #region Drawing Tools Click Events
-          protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
@@ -135,14 +135,14 @@ namespace Tablet_App
             if (e.NewSize.IsEmpty || double.IsNaN(e.NewSize.Height) || e.NewSize.Height <= 0)
             {
                 this.imageCanvas.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-               // this.saveImageButton.IsEnabled = false;
+                // this.saveImageButton.IsEnabled = false;
                 this.selectedRegion.OuterRect = Rect.Empty;
                 this.selectedRegion.ResetCorner(0, 0, 0, 0);
             }
             else
             {
                 this.imageCanvas.Visibility = Windows.UI.Xaml.Visibility.Visible;
-               // this.saveImageButton.IsEnabled = true;
+                // this.saveImageButton.IsEnabled = true;
 
                 this.imageCanvas.Height = e.NewSize.Height;
                 this.imageCanvas.Width = e.NewSize.Width;
@@ -240,136 +240,143 @@ namespace Tablet_App
         {
             try
             {
-          //  StorageFile sourceImageFile = Camera_Page.stf();
-            double sourceImageWidthScale = imageCanvas.Width / this.sourceImagePixelWidth;
-            double sourceImageHeightScale = imageCanvas.Height / this.sourceImagePixelHeight;
+                //  StorageFile sourceImageFile = Camera_Page.stf();
+                double sourceImageWidthScale = imageCanvas.Width / this.sourceImagePixelWidth;
+                double sourceImageHeightScale = imageCanvas.Height / this.sourceImagePixelHeight;
 
 
-            Size previewImageSize = new Size(
-                this.selectedRegion.SelectedRect.Width / sourceImageWidthScale,
-                this.selectedRegion.SelectedRect.Height / sourceImageHeightScale);
+                Size previewImageSize = new Size(
+                    this.selectedRegion.SelectedRect.Width / sourceImageWidthScale,
+                    this.selectedRegion.SelectedRect.Height / sourceImageHeightScale);
 
-            double previewImageScale = 1;
+                double previewImageScale = 1;
 
-            if (previewImageSize.Width <= imageCanvas.Width &&
-                previewImageSize.Height <= imageCanvas.Height)
-            {
-                this.previewImage.Stretch = Windows.UI.Xaml.Media.Stretch.None;
-            }
-            else
-            {
-                this.previewImage.Stretch = Windows.UI.Xaml.Media.Stretch.Uniform;
+                if (previewImageSize.Width <= imageCanvas.Width &&
+                    previewImageSize.Height <= imageCanvas.Height)
+                {
+                    this.previewImage.Stretch = Windows.UI.Xaml.Media.Stretch.None;
+                }
+                else
+                {
+                    this.previewImage.Stretch = Windows.UI.Xaml.Media.Stretch.Uniform;
 
-                previewImageScale = Math.Min(imageCanvas.Width / previewImageSize.Width,
-                    imageCanvas.Height / previewImageSize.Height);
-            }
-
-            
-           previewImage.Source = await CropBitmap.GetCroppedBitmapAsync(
-                   this.sourceImageFile,
-                   new Point(this.selectedRegion.SelectedRect.X / sourceImageWidthScale, this.selectedRegion.SelectedRect.Y / sourceImageHeightScale),
-                   previewImageSize,
-                   previewImageScale);
-        }
-        catch
-           {
-        msg.show("error in crop processing");
-            }
-
-        }
-        
-        #endregion
-         private void backButton_Click(object sender, RoutedEventArgs e)
-         {
-             this.Frame.GoBack();
-         }
-         private async void pageRoot_Loaded(object sender, RoutedEventArgs e)
-         {
-
-             sourceImage.Source = OfflineData.editpic;
-             sourceImageFile = OfflineData.tempPhotoloc;
-             StorageFile imgFile = sourceImageFile;
-              try
-              {
-                 using (IRandomAccessStream fileStream = await imgFile.OpenAsync(Windows.Storage.FileAccessMode.Read))
-                 {
-                 this.sourceImageFile = imgFile;
-                 BitmapDecoder decoder = await BitmapDecoder.CreateAsync(fileStream);
-
-                 this.sourceImagePixelHeight = decoder.PixelHeight;
-                 this.sourceImagePixelWidth = decoder.PixelWidth;
-                 }
-              }
-             catch
-              {
-                  msg.show("error in your Image File");
-                  this.Frame.Navigate(typeof(Camera_Page));
-               }
+                    previewImageScale = Math.Min(imageCanvas.Width / previewImageSize.Width,
+                        imageCanvas.Height / previewImageSize.Height);
+                }
 
 
-              loadPicFrame();
-         }
-        public async void loadPicFrame()
-         {
-             try
-             {
-
-                 using (IRandomAccessStream fileStream = await OfflineData.tempPhotoloc.OpenAsync(Windows.Storage.FileAccessMode.Read))
-                 {
-                     this.sourceImageFile = OfflineData.tempPhotoloc;
-                     BitmapDecoder decoder = await BitmapDecoder.CreateAsync(fileStream);
-
-                     this.sourceImagePixelHeight = decoder.PixelHeight;
-                     this.sourceImagePixelWidth = decoder.PixelWidth;
-                 }
-
-
-                 if (this.sourceImagePixelHeight < 2 * this.CornerSize ||
-                     this.sourceImagePixelWidth < 2 * this.CornerSize)
-                 {
-                     //this.NotifyUser(string.Format("Please select an image which is larger than {0}*{0}",
-                     //    2 * this.CornerSize));
-                     return;
-                 }
-                 else
-                 {
-                     sourceImageScale = 0;
-
-                     if (this.sourceImagePixelHeight < this.sourceImageGrid.ActualHeight &&
-                         this.sourceImagePixelWidth < this.sourceImageGrid.ActualWidth)
-                     {
-                         this.sourceImage.Stretch = Windows.UI.Xaml.Media.Stretch.None;
-                     }
-                     else
-                     {
-                         sourceImageScale = Math.Min(this.sourceImageGrid.ActualWidth / this.sourceImagePixelWidth,
-                              this.sourceImageGrid.ActualHeight / this.sourceImagePixelHeight);
-                         this.sourceImage.Stretch = Windows.UI.Xaml.Media.Stretch.Uniform;
-                     }
-
-
-                     this.sourceImage.Source = await CropBitmap.GetCroppedBitmapAsync(
+                previewImage.Source = await CropBitmap.GetCroppedBitmapAsync(
                         this.sourceImageFile,
-                        new Point(0, 0),
-                        new Size(this.sourceImagePixelWidth, this.sourceImagePixelHeight),
-                        sourceImageScale);
-                     this.originalImageInfoText.Text = string.Format("Original Image Size: {0}*{1} ",
-                         this.sourceImagePixelWidth, this.sourceImagePixelHeight);
-                     BitmapImage imgs = (BitmapImage)asd.ImageSource;
-                     im = imgs;
-                 }
-             }
-             catch
-             {
-                 msg.show("Error In Handling");
-                 this.Frame.Navigate(typeof(edit));
-             }
-         }
-       
-       ImageBrush  asd = new ImageBrush();
-       BitmapImage im=new BitmapImage();
-      
-       
+                        new Point(this.selectedRegion.SelectedRect.X / sourceImageWidthScale, this.selectedRegion.SelectedRect.Y / sourceImageHeightScale),
+                        previewImageSize,
+                        previewImageScale);
+            }
+            catch
+            {
+            }
+
+        }
+
+        #endregion
+        private void backButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.GoBack();
+        }
+
+        private ImageSource CurrentEditPic;
+        private StorageFile CurrentImageFile;
+
+        private async void pageRoot_Loaded(object sender, RoutedEventArgs e)
+        {
+            BitmapImage bitmapImage = new BitmapImage();
+            CurrentImageFile = await StorageFile.GetFileFromPathAsync(System.IO.Path.Combine(Data.ImagesPath, "temp.jpg"));
+
+            using (IRandomAccessStream fileStream = await CurrentImageFile.OpenAsync(Windows.Storage.FileAccessMode.Read))
+            {
+                await bitmapImage.SetSourceAsync(fileStream);
+                sourceImage.Source = CurrentEditPic =  bitmapImage;
+            }
+
+            StorageFile imgFile = CurrentImageFile;
+            try
+            {
+                using (IRandomAccessStream fileStream = await imgFile.OpenAsync(Windows.Storage.FileAccessMode.Read))
+                {
+                    this.sourceImageFile = imgFile;
+                    BitmapDecoder decoder = await BitmapDecoder.CreateAsync(fileStream);
+
+                    this.sourceImagePixelHeight = decoder.PixelHeight;
+                    this.sourceImagePixelWidth = decoder.PixelWidth;
+                }
+            }
+            catch
+            {
+                this.Frame.Navigate(typeof(EditPhoto));
+            }
+
+
+            loadPicFrame();
+        }
+        public async void loadPicFrame()
+        {
+            try
+            {
+
+                using (IRandomAccessStream fileStream = await CurrentImageFile.OpenAsync(Windows.Storage.FileAccessMode.Read))
+                {
+                    this.sourceImageFile = CurrentImageFile;
+                    BitmapDecoder decoder = await BitmapDecoder.CreateAsync(fileStream);
+
+                    this.sourceImagePixelHeight = decoder.PixelHeight;
+                    this.sourceImagePixelWidth = decoder.PixelWidth;
+                }
+
+
+                if (this.sourceImagePixelHeight < 2 * this.CornerSize ||
+                    this.sourceImagePixelWidth < 2 * this.CornerSize)
+                {
+                    //this.NotifyUser(string.Format("Please select an image which is larger than {0}*{0}",
+                    //    2 * this.CornerSize));
+                    return;
+                }
+                else
+                {
+                    sourceImageScale = 0;
+
+                    if (this.sourceImagePixelHeight < this.sourceImageGrid.ActualHeight &&
+                        this.sourceImagePixelWidth < this.sourceImageGrid.ActualWidth)
+                    {
+                        this.sourceImage.Stretch = Windows.UI.Xaml.Media.Stretch.None;
+                    }
+                    else
+                    {
+                        sourceImageScale = Math.Min(this.sourceImageGrid.ActualWidth / this.sourceImagePixelWidth,
+                             this.sourceImageGrid.ActualHeight / this.sourceImagePixelHeight);
+                        this.sourceImage.Stretch = Windows.UI.Xaml.Media.Stretch.Uniform;
+                    }
+
+
+                    this.sourceImage.Source = await CropBitmap.GetCroppedBitmapAsync(
+                       this.sourceImageFile,
+                       new Point(0, 0),
+                       new Size(this.sourceImagePixelWidth, this.sourceImagePixelHeight),
+                       sourceImageScale);
+                    this.originalImageInfoText.Text = string.Format("Original Image Size: {0}*{1} ",
+                        this.sourceImagePixelWidth, this.sourceImagePixelHeight);
+                    BitmapImage imgs = (BitmapImage)asd.ImageSource;
+                    im = imgs;
+                }
+            }
+            catch
+            {
+                this.Frame.Navigate(typeof(EditPhoto));
+            }
+        }
+
+        ImageBrush asd = new ImageBrush();
+        BitmapImage im = new BitmapImage();
+
+
         private void backButton_Copy_Click(object sender, RoutedEventArgs e)
         {
             fp.Visibility = Visibility.Collapsed;
@@ -388,8 +395,8 @@ namespace Tablet_App
                     new Point(this.selectedRegion.SelectedRect.X / widthScale, this.selectedRegion.SelectedRect.Y / heightScale),
                     new Size(this.selectedRegion.SelectedRect.Width / widthScale, this.selectedRegion.SelectedRect.Height / heightScale));
 
-                OfflineData.editpic = im;
-                this.Frame.Navigate(typeof(edit));
+                CurrentEditPic = im;
+                this.Frame.Navigate(typeof(EditPhoto));
             }
             catch
             {
@@ -411,15 +418,17 @@ namespace Tablet_App
                     new Point(this.selectedRegion.SelectedRect.X / widthScale, this.selectedRegion.SelectedRect.Y / heightScale),
                     new Size(this.selectedRegion.SelectedRect.Width / widthScale, this.selectedRegion.SelectedRect.Height / heightScale));
 
-                OfflineData.editpic = im;
-                this.Frame.Navigate(typeof(edit));
+                CurrentEditPic = im;
+                Data.IsFromCrop = true;
+
+                this.Frame.Navigate(typeof(EditPhoto));
             }
             catch
             {
 
             }
-        } 
-        
+        }
+
 
     }
 }

@@ -10,32 +10,65 @@
     <Grid Background="#FF07299C">
 
         <CaptureElement Name="capturePreview"  Tapped="capturePreview_Tapped" Stretch="Fill" IsTapEnabled="False" />
-        <TextBlock HorizontalAlignment="Left" Margin="320,704,0,0" Tapped="capturePreview_Tapped" TextWrapping="Wrap" Text="Tap The Screen To Capture Image" VerticalAlignment="Top" Height="64" Width="716" Foreground="#FF22DC19" FontSize="45" Opacity="0.5"/>
+        <TextBlock HorizontalAlignment="Left" Margin="320,704,0,-17" Tapped="capturePreview_Tapped" TextWrapping="Wrap" Text="Tap The Screen To Capture Image" VerticalAlignment="Top" Height="81" Width="716" Foreground="#FF22DC19" FontSize="45" Opacity="0.5"/>
 
-        <Button x:Name="backButton" Margin="39,59,0,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
+        <Button x:Name="btnBack" Margin="39,59,0,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
         	Style="{StaticResource NavigationBackButtonNormalStyle}"
         	VerticalAlignment="Top"
         	AutomationProperties.Name="Back"
         	AutomationProperties.AutomationId="BackButton"
-        	AutomationProperties.ItemType="Navigation Button" Tapped="backButton_Tapped" Foreground="#FFFBF5F5" BorderBrush="#33F3EBEB" Background="#B3F30606"/>
-        <Grid x:Name="preview_grid" HorizontalAlignment="Left" Height="768" VerticalAlignment="Top" Width="1366" Background="#FF2F7AAE" Visibility="Collapsed">
+        	AutomationProperties.ItemType="Navigation Button" Tapped="btnBack_Tapped" Foreground="#FFFBF5F5" BorderBrush="#33F3EBEB" Background="#B3F30606"/>
+        
+        <Grid x:Name="gdvPreview" Visibility="Collapsed" HorizontalAlignment="Left" Height="768" VerticalAlignment="Top" Width="1366" Background="#FF07299C">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="573*"/>
-                <ColumnDefinition Width="110*"/>
+                <ColumnDefinition Width="486*"/>
+                <ColumnDefinition Width="197*"/>
             </Grid.ColumnDefinitions>
-            <Image x:Name="preview_pic" HorizontalAlignment="Center" Height="768" VerticalAlignment="Center" Width="1156" Source="Assets/Background/167.jpg" Margin="0,0,210,0" Grid.ColumnSpan="2" Stretch="Fill"/>
-            <TextBlock Text="Your Preview Image" Foreground="#FF09FB1F" FontSize="35" Margin="10,716,802,10"/>
-            <Button FontFamily="Segoe UI Symbol" FontSize="60" Content="&#xE0AC;" Margin="45,643,0,29" BorderBrush="{x:Null}" Height="96" Tapped="Button_Click" Background="{x:Null}" Foreground="White" Grid.Column="1" Width="106" />
-            <Button x:Name="backButton_Copy" Margin="35,87,0,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
+            <Rectangle Fill="#FF296A7E" HorizontalAlignment="Left" Height="75" Margin="5,140,0,0" VerticalAlignment="Top" Width="380" Grid.Column="1"/>
+            <Rectangle Fill="#FF296A7E" HorizontalAlignment="Left" Height="87" Margin="5,224,0,0" VerticalAlignment="Top" Width="382" Grid.Column="1"/>
+            <Rectangle Fill="#FF296A7E" HorizontalAlignment="Left" Height="65" Margin="5,68,0,0" VerticalAlignment="Top" Width="380" Grid.Column="1"/>
+            <Rectangle Fill="#FF127491" HorizontalAlignment="Left" Height="61" Margin="5,2,0,0" VerticalAlignment="Top" Width="377" Grid.Column="1"/>
+            <TextBox x:Name="txtActionDescription" HorizontalAlignment="Left" Margin="3,413,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="165" Width="388" FontSize="18" IsReadOnly="True" BorderBrush="{x:Null}" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Column="1" PlaceholderText="Your Description"  />
+            <TextBlock HorizontalAlignment="Left" Margin="9,9,0,0" TextWrapping="Wrap" Text="Project:" VerticalAlignment="Top" Height="23" Width="130" Foreground="White" FontSize="25" Grid.Column="1" />
+            <TextBlock x:Name="txtProjectID" HorizontalAlignment="Left" Margin="139,11,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="50" Width="241" Foreground="White" FontSize="22" Grid.Column="1"/>
+            <TextBlock x:Name="txtRigType" HorizontalAlignment="Left" Margin="27,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="59" Width="339" Foreground="White" FontSize="35" FontWeight="Bold"  Grid.Column="1"/>
+            <TextBlock x:Name="txtModule" HorizontalAlignment="Left" Margin="26,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="75" Width="357" Foreground="White" FontSize="30" Grid.Column="1"/>
+            <TextBlock x:Name="txtStep" HorizontalAlignment="Left" Margin="27,225,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="80" Width="367" Foreground="White" FontSize="25" Grid.Column="1"/>
+
+            <ScrollViewer ZoomMode="Enabled" HorizontalAlignment="Left" Height="768" Margin="4,0,0,0" VerticalAlignment="Top" Width="972">
+                <Image x:Name="preview_pic" HorizontalAlignment="Center" Height="768" VerticalAlignment="Center" Width="968" Source="Assets/Background/167.jpg" Margin="4,-5,0,-5" Stretch="Fill"/>
+
+            </ScrollViewer>
+
+            <TextBlock Text="Your Preview Image" Foreground="#FF09FB1F" FontSize="35" Margin="10,716,607,10"/>
+            <Button x:Name="btnBack_Copy" Margin="35,87,0,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
             	Style="{StaticResource NavigationBackButtonNormalStyle}"
             	VerticalAlignment="Top"
             	AutomationProperties.Name="Back"
             	AutomationProperties.AutomationId="BackButton"
-            	AutomationProperties.ItemType="Navigation Button" Tapped="backButton_Copy_Tapped" Foreground="#FF0E0B0B" Background="#FF62627C" BorderBrush="#FF0B0B0C"/>
+            	AutomationProperties.ItemType="Navigation Button" Tapped="btnBack_Copy_Tapped" Foreground="#FF0E0B0B" Background="#FF62627C" BorderBrush="#FF0B0B0C" Height="41" Width="41" Visibility="Collapsed"/>
+            <Button x:Name="Save_Next_btn" Content="Save&amp;Next" Grid.Column="1" HorizontalAlignment="Left" Margin="7,681,0,0" VerticalAlignment="Top" Height="85" Width="191" Background="#FF1C2459" Foreground="#FFF9F7F7" FontSize="25" Tapped="Save_Next_btn_Tapped">
+                <Button.BorderBrush>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FFF9F5F5" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.BorderBrush>
+            </Button>
+            <Button x:Name="Save_New_btn" Content="Save&amp;New" Grid.Column="1" HorizontalAlignment="Left" Margin="200,591,0,0" VerticalAlignment="Top" Height="85" Width="191" Background="#FF1C2459" Foreground="#FFF9F7F7" FontSize="25" BorderBrush="#33BDB1B1" Tapped="Save_New_btn_Tapped"/>
+            <Button x:Name="discard_New_btn" Content="Discard&amp;New" Grid.Column="1" HorizontalAlignment="Left" Margin="7,590,0,0" VerticalAlignment="Top" Height="85" Width="191" Background="#FF1C2459" Foreground="#FFF9F7F7" FontSize="25" BorderBrush="#33BDB1B1" Tapped="discard_New_btn_Tapped"/>
+            <Button x:Name="Save_Close_btn" Content="Save&amp;Close" Grid.Column="1" HorizontalAlignment="Left" Margin="200,681,0,0" VerticalAlignment="Top" Height="85" Width="191" Background="#FF1C2459" Foreground="#FFF9F7F7" FontSize="25" BorderBrush="#33BDB1B1" Tapped="Save_Close_btn_Tapped"/>
+            <Button x:Name="Edit_btn" Content="Edit" Grid.Column="1" HorizontalAlignment="Left" Height="60" Margin="290,516,0,0" VerticalAlignment="Top" Width="94" Tapped="Edit_btn_Tapped"/>
+            <Rectangle Fill="#FF296A7E" HorizontalAlignment="Left" Height="87" Margin="5,318,0,0" VerticalAlignment="Top" Width="382" Grid.Column="1"/>
+            <TextBlock x:Name="txtActionName" HorizontalAlignment="Left" Margin="27,319,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="80" Width="367" Foreground="White" FontSize="20" Grid.Column="1"/>
+            <Grid x:Name="gdvImageDetailEdit" HorizontalAlignment="Left" Height="771" Margin="0,0,0,-3" VerticalAlignment="Top" Width="394" Background="#FF091A8B" Grid.Column="1" Visibility="Collapsed">
+                <TextBox x:Name="tags" HorizontalAlignment="Left" Height="178" Margin="10,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="364" FontSize="25" AcceptsReturn="True" PlaceholderText="Write image Tags Here"/>
+                <TextBox x:Name="commenttext" HorizontalAlignment="Left" Height="187" Margin="10,213,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="364" FontSize="25" AcceptsReturn="True" PlaceholderText="Write Image Comment Here"/>
+                <TextBox x:Name="description" HorizontalAlignment="Left" Height="271" Margin="10,423,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="364" FontSize="25" AcceptsReturn="True" PlaceholderText="Write Image Description Here"/>
+                <Button x:Name="cancel" Content="Cancel" HorizontalAlignment="Left" Height="64" Margin="11,700,0,0" VerticalAlignment="Top" Width="170" FontSize="25" Tapped="cancel_Tapped"/>
+                <Button x:Name="ok" Content="ok" HorizontalAlignment="Left" Height="64" Margin="210,700,0,0" VerticalAlignment="Top" Width="165" FontSize="25" Tapped="ok_Tapped"/>
+            </Grid>
         </Grid>
-
-
-
 
     </Grid>
 </Page>

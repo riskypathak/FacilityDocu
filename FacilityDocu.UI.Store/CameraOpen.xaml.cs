@@ -1,24 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Graphics.Imaging;
+using Tablet_App.ServiceReference1;
 using Windows.Media.Capture;
 using Windows.Storage;
-using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -34,75 +23,79 @@ namespace Tablet_App
     public sealed partial class Camera_Page : Page
     {
         MediaCapture media;
-        BitmapImage bitmapImage;
-        int tagcom = 0;
-        int takepic = 0;
+        ImageDTO currentImage;
+
         public Camera_Page()
         {
             this.InitializeComponent();
-
         }
 
-        private void backButton_Tapped(object sender, TappedRoutedEventArgs e)
+        private void btnBack_Tapped(object sender, TappedRoutedEventArgs e)
         {
+            WriteImages();
+
             media.Dispose();
-            this.Frame.Navigate(typeof(add_details));
+            this.Frame.Navigate(typeof(ActionSelect));
         }
 
         private async void capturePreview_Tapped(object sender, TappedRoutedEventArgs e)
         {
+            try
+            {
+                StorageFolder imagesFolder = await StorageFolder.GetFolderFromPathAsync(Data.ImagesPath);
 
+                string imageID = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+                string fileName = string.Format("{0}.jpg", imageID);
 
-           
-                StorageFolder facilityDocuFol = await StorageFolder.GetFolderFromPathAsync(OfflineData.datap);
+                StorageFile file = await imagesFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
 
-                string fileName = "image" + OfflineData.picCount.ToString() + ".png";
-                fileName = Path.GetFileName(fileName);
-                await facilityDocuFol.CreateFolderAsync(OfflineData.folderName, CreationCollisionOption.OpenIfExists);
-
-                StorageFile file = await facilityDocuFol.CreateFileAsync(OfflineData.folderName + "\\" + fileName, CreationCollisionOption.ReplaceExisting);
-               
-                await media.CapturePhotoToStorageFileAsync(Windows.Media.MediaProperties.ImageEncodingProperties.CreatePng(), file);
+                await media.CapturePhotoToStorageFileAsync(Windows.Media.MediaProperties.ImageEncodingProperties.CreateJpeg(), file);
 
                 using (IRandomAccessStream fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read))
                 {
                     // Set the image source to the selected bitmap
-                    bitmapImage = new BitmapImage();
+                    BitmapImage bitmapImage = new BitmapImage();
                     await bitmapImage.SetSourceAsync(fileStream);
                     preview_pic.Source = bitmapImage;
-                    OfflineData.editpic = bitmapImage;
+                    
 
-                   
+                    currentImage = new ImageDTO()
+                    {
+                        CreationDate = DateTime.Now,
+                        ImageID = imageID,
+                        Path = System.IO.Path.Combine(Data.ImagesPath, string.Format("{0}.jpg", imageID))
+                    };
                 }
-                OfflineData.tempPhotoloc = file;
-                media.Dispose();
-                OfflineData.imagebk.Add(bitmapImage);
-                this.Frame.Navigate(typeof(edit));
-                try
-                {
+
+                gdvPreview.Visibility = Visibility.Visible;
+                ChangeScreenControls();
             }
             catch
             {
-                msg.show(" its failed !  try aggain");
+                ScreenMessage.Show(" its failed !  try aggain");
             }
 
         }
 
-        //cancel button click
+        private void ChangeScreenControls()
+        {
+            txtProjectID.Text = Data.CURRENT_PROJECT.Description;
+            txtRigType.Text = "RIG " + Data.CURRENT_RIG.Name;
+            txtModule.Text = Data.CURRENT_MODULE.Name;
+            txtStep.Text = Data.CURRENT_STEP.Name;
+            txtActionName.Text = Data.CURRENT_ACTION.Name;
+            txtActionDescription.Text = Data.CURRENT_ACTION.Description;
+        }
+
         private void cancel_Click(object sender, RoutedEventArgs e)
         {
-
-            preview_grid.Visibility = Visibility.Collapsed;
-
-
+            gdvPreview.Visibility = Visibility.Collapsed;
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-
             try
             {
-
                 media = new MediaCapture();
                 await media.InitializeAsync();
                 this.capturePreview.Source = media;
@@ -111,33 +104,108 @@ namespace Tablet_App
             }
             catch
             {
-                msg.show("Error loading Camera Device");
+                ScreenMessage.Show("Error loading Camera Device");
+            }
+        }
+
+        private void btnBack_Copy_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            gdvPreview.Visibility = Visibility.Collapsed;
+        }
+
+        private void cancel_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            gdvImageDetailEdit.Visibility = Visibility.Collapsed;
+        }
+
+        private void ok_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            currentImage.Description = description.Text;
+            currentImage.Tags = new System.Collections.ObjectModel.ObservableCollection<string>();
+            gdvImageDetailEdit.Visibility = Visibility.Collapsed;
+
+        }
+
+        private void Edit_btn_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            gdvImageDetailEdit.Visibility = Visibility.Visible;
+        }
+
+        private void discard_New_btn_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            gdvPreview.Visibility = Visibility.Collapsed;
+        }
+
+        private void Save_New_btn_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Data.CURRENT_ACTION.Images.Add(currentImage);
+            gdvPreview.Visibility = Visibility.Collapsed;
+        }
+
+        private void Save_Next_btn_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Data.CURRENT_ACTION.Images.Add(currentImage);
+
+            int currentActionIdex = Data.CURRENT_STEP.Actions.IndexOf(Data.CURRENT_ACTION);
+
+            if (currentActionIdex == Data.CURRENT_STEP.Actions.Count - 1)
+            {
+                int currentStepIdex = Data.CURRENT_MODULE.Steps.IndexOf(Data.CURRENT_STEP);
+
+                if (currentStepIdex == Data.CURRENT_MODULE.Steps.Count - 1)
+                {
+                    int currentModuleIdex = Data.CURRENT_RIG.Modules.IndexOf(Data.CURRENT_MODULE);
+
+                    if (currentModuleIdex == Data.CURRENT_RIG.Modules.Count - 1)
+                    {
+                        int currentRigIndex = Data.CURRENT_PROJECT.RigTypes.IndexOf(Data.CURRENT_RIG);
+
+                        if (currentRigIndex == Data.CURRENT_PROJECT.RigTypes.Count - 1)
+                        {
+                            (new MessageDialog("No more actions :)")).ShowAsync();
+                        }
+                        else
+                        {
+                            Data.CURRENT_RIG = Data.CURRENT_PROJECT.RigTypes[currentRigIndex + 1];
+                            Data.CURRENT_MODULE = Data.CURRENT_RIG.Modules[0];
+                            Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps[0];
+                            Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[0];
+                        }
+                    }
+                    else
+                    {
+                        Data.CURRENT_MODULE = Data.CURRENT_RIG.Modules[currentModuleIdex + 1];
+                        Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps[0];
+                        Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[0];
+                    }
+                }
+                else
+                {
+                    Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps[currentStepIdex + 1];
+                    Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[0];
+                }
+            }
+            else
+            {
+                Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[currentActionIdex + 1];
             }
 
-
+            gdvPreview.Visibility = Visibility.Collapsed;
+            ChangeScreenControls();
         }
 
-        private void backButton_Click(object sender, RoutedEventArgs e)
+        private void Save_Close_btn_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            media.Dispose();
-            this.Frame.Navigate(typeof(add_details));
+            Data.CURRENT_ACTION.Images.Add(currentImage);
+
+            WriteImages();
+
+            this.Frame.Navigate(typeof(MainPage));
         }
 
-      
-        private async void Button_Click(object sender, TappedRoutedEventArgs e)
+        private void WriteImages()
         {
-           
-                media.Dispose();
-                OfflineData.imagebk.Add(bitmapImage);
-                this.Frame.Navigate(typeof(CropPage));
-          
-        }
-
-        private void backButton_Copy_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-           
-            preview_grid.Visibility = Visibility.Collapsed;
+            ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
         }
     }
-
 }
