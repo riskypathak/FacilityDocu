@@ -287,9 +287,11 @@ namespace Tablet_App
             this.Frame.Navigate(typeof(EditPhoto));
         }
 
-        private void btnPublish_Click(object sender, RoutedEventArgs e)
+        private async void btnPublish_Click(object sender, RoutedEventArgs e)
         {
-            (new SyncManager()).UploadImages(Data.CURRENT_PROJECT.ProjectID);
+            ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+            Data.CURRENT_PROJECT = await (new SyncManager()).UploadImages(Data.CURRENT_PROJECT.ProjectID);
+            ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)

@@ -29,6 +29,6 @@
         <TextBox x:Name="txtProjectPath" HorizontalAlignment="Left" Height="43" Margin="0,186,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="883" Grid.Column="1" FontSize="18"/>
         <TextBox x:Name="txtImagesPath" HorizontalAlignment="Left" Height="43" Margin="0,349,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="883" Grid.Column="1" FontSize="18"/>
         <TextBox x:Name="txtBackupPath" HorizontalAlignment="Left" Height="43" Margin="0,515,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="883" Grid.Column="1" FontSize="18"/>
-        <Button x:Name="btnSync" Content="Sync" Grid.Column="1" HorizontalAlignment="Left" Height="67" Margin="711,45,-1,0" VerticalAlignment="Top" Width="173" FontSize="35" Tapped="btnSync_Tapped"/>
+        <Button x:Name="btnSync" Content="Sync" Grid.Column="1" HorizontalAlignment="Left" Height="67" Margin="707,45,0,0" VerticalAlignment="Top" Width="173" FontSize="35" Tapped="btnSync_Tapped"/>
     </Grid>
 </Page>
