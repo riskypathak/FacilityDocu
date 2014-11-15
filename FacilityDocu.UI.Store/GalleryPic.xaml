@@ -34,6 +34,7 @@
             <TextBlock x:Name="txtRigType" HorizontalAlignment="Left" Margin="14,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="59" Width="354" Foreground="White" FontSize="50" FontWeight="Bold"/>
             <TextBlock x:Name="txtModule" HorizontalAlignment="Left" Margin="14,200,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="73" Width="352" Foreground="White" FontSize="30" />
             <TextBlock x:Name="txtStep" HorizontalAlignment="Left" Margin="14,281,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="77" Width="395" Foreground="White" FontSize="20" />
+            
             <Button x:Name="btnEditImage" FontFamily="Segoe UI Symbol" FontSize="20" Content="&#xE1C2;" Margin="346,561,0,143" Foreground="White" Background="#B3BF04F5" Width="56" Height="44" Tapped="btnEditImage_Tapped" Opacity="0.6" >
                 <Button.BorderBrush>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -65,7 +66,7 @@
         <ListBox x:Name="lstAllImages"  HorizontalAlignment="Left" Height="800" Margin="53,81,0,0" VerticalAlignment="Top" Width="300" SelectionChanged="lstAllImages_SelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Image Width="300" Height="200" Source="{Binding Image}" Stretch="None"/>
+                    <Image Width="300" Height="200" Source="{Binding Image}" Stretch="UniformToFill"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
@@ -78,7 +79,6 @@
                             <TextBlock Text="{Binding User}"></TextBlock>
                             <TextBlock Text="{Binding CommentedAt}"></TextBlock>
                         </StackPanel>
-                        <AppBarSeparator></AppBarSeparator>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -94,7 +94,7 @@
         	AutomationProperties.ItemType="Navigation Button" Tapped="btnBack_Tapped" Background="#B3FFFFFF" Foreground="White" Height="41" Width="41" Margin="53,23,0,0"/>
 
         <Grid x:Name="gdvEditImage" Visibility="Collapsed" HorizontalAlignment="Left" Height="768" Margin="882,0,0,0" VerticalAlignment="Top" Width="432" Background="#FF05456D">
-            <TextBox x:Name="txtEditTag" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="140" Width="412" FontSize="25" AcceptsReturn="True" ToolTipService.ToolTip="" PlaceholderText="Your Tag"/>
+            <TextBox x:Name="txtEditTag" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="140" Width="412" FontSize="25" AcceptsReturn="True"  PlaceholderText="Your Tag"/>
             <TextBox x:Name="txtEditComment" HorizontalAlignment="Left" Margin="10,158,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="204" Width="412" FontSize="25" AcceptsReturn="True" PlaceholderText="Write Comment"/>
             <TextBox x:Name="txtDescriptionEdit" HorizontalAlignment="Left" Margin="10,373,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="304" Width="412" FontSize="25" AcceptsReturn="True" PlaceholderText="Image Description"/>
             <Button Name="btnSaveEdit" Tapped="btnSaveEdit_Tapped" Content="Save" HorizontalAlignment="Left" Margin="243,686,0,0" VerticalAlignment="Top" FontSize="35" Height="69" Width="178"/>
@@ -102,7 +102,5 @@
         </Grid>
         <Button x:Name="btnSave" HorizontalAlignment="Left" Margin="728,486,0,0" VerticalAlignment="Top" Height="57" Width="152" Background="#FF127491" Foreground="#FFFFFDFD" FontSize="30" Content="Save" Click="btnSave_Click"/>
         <Button x:Name="btnPublish" HorizontalAlignment="Left" Margin="728,552,0,0" VerticalAlignment="Top" Height="57" Width="152" Background="#FF127491" Foreground="#FFFFFDFD" FontSize="30" Content="Publish" Click="btnPublish_Click"/>
-
-
     </Grid>
 </Page>

@@ -1,23 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tablet_App.ServiceReference1;
-using Windows.ApplicationModel;
-using Windows.Storage;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Imaging;
+﻿using Tablet_App.ServiceReference1;
 
 namespace Tablet_App
 {
-
-
     class Data
     {
-        //wcf service
-       // public static ServiceReference1.Service1Client MyService = new ServiceReference1.Service1Client();
-
         public static ProjectDTO CURRENT_PROJECT;
         public static RigTypeDTO CURRENT_RIG;
         public static ModuleDTO CURRENT_MODULE;
@@ -27,9 +13,9 @@ namespace Tablet_App
 
         public static int menuClick = 0;
 
-        public static string ProjectXmlPath = "";         //xml path
-        public static string ImagesPath = "";           //data path
-        public static string BackupPath = "";          //backup path
+        public static string ProjectXmlPath = string.Empty;         
+        public static string ImagesPath = string.Empty;
+        public static string BackupPath = string.Empty;
 
         public static bool IsFromCrop;
     }

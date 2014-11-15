@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using Tablet_App.ServiceReference1;
 using Windows.ApplicationModel.Search;
 using Windows.Storage;
+using Windows.Storage.FileProperties;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
@@ -111,9 +112,13 @@ namespace Tablet_App
             txtImageName.Text = currentImage.ImageID;
             txtImageDescription.Text = currentImage.Description;
 
-            //txtEditTag.Text = string.Join(';',currentImage.Tags.ToArray());
             txtPICId.Text = currentImage.Number;
-            //txtImageSize.Text = bmp.
+
+            BasicProperties pro = await imgFile.GetBasicPropertiesAsync();
+            txtImageSize.Text = pro.Size.ToString();
+
+
+
             txtImageResolution.Text = bitmapImage.PixelWidth.ToString() + " X " + bitmapImage.PixelHeight.ToString();
 
             lstComments.ItemsSource = currentImage.Comments;
@@ -198,7 +203,7 @@ namespace Tablet_App
                 {
 
                     ScreenMessage.Show(srchSearch.QueryText + "  >  No Data Items Match");
-                    srchSearch.QueryText = "";
+                    srchSearch.QueryText = string.Empty;
                     rctSearch.Visibility = Visibility.Visible;
                     srchSearch.IsEnabled = false;
                     //ShowPage(0);
@@ -284,12 +289,12 @@ namespace Tablet_App
 
         private void btnPublish_Click(object sender, RoutedEventArgs e)
         {
-            ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+            (new SyncManager()).UploadImages(Data.CURRENT_PROJECT.ProjectID);
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            //(new SyncManager()).UpdateDatabase();
+            ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
         }
     }
 }

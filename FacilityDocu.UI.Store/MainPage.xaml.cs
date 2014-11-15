@@ -98,7 +98,7 @@ namespace Tablet_App
             StorageFolder projectXmlPath = await ApplicationData.Current.LocalFolder.CreateFolderAsync("ProjectXML", CreationCollisionOption.OpenIfExists);
             StorageFolder imagesPath = await ApplicationData.Current.LocalFolder.CreateFolderAsync("Images", CreationCollisionOption.OpenIfExists);
             StorageFolder backupPath = await ApplicationData.Current.LocalFolder.CreateFolderAsync("Backup", CreationCollisionOption.OpenIfExists);
-            
+
             var stream = await configFile.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite);
 
             using (var outputStream = stream.AsStreamForWrite())
@@ -118,11 +118,8 @@ namespace Tablet_App
     {
         public static async void Show(string message)
         {
-                MessageDialog messageDialog = new MessageDialog(message, "FacilityDocu");
-                await messageDialog.ShowAsync();
+            MessageDialog messageDialog = new MessageDialog(message, "FacilityDocu");
+            await messageDialog.ShowAsync();
         }
     }
-
-
-
 }
