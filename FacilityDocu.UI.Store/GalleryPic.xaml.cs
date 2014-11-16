@@ -137,7 +137,7 @@ namespace Tablet_App
         }
 
         public IEnumerable<string> searchdata()
-        geImge{
+        {
             IEnumerable<string> suggestionList;
 
             suggestionList = Data.CURRENT_ACTION.Images.Select(i => i.Description);
@@ -278,9 +278,9 @@ namespace Tablet_App
 
         private async void btnPublish_Click(object sender, RoutedEventArgs e)
         {
-            ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
-            Data.CURRENT_PROJECT = await (new SyncManager()).UploadImages(Data.CURRENT_PROJECT.ProjectID);
-            ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+            //ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+            //Data.CURRENT_PROJECT = await (new SyncManager()).UploadImages(Data.CURRENT_PROJECT.ProjectID);
+            //ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)

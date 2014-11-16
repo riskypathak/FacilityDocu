@@ -76,7 +76,6 @@ namespace Tablet_App
             }
             catch
             {
-                ScreenMessage.Show(" its failed !  try aggain");
             }
 
         }

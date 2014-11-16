@@ -25,15 +25,18 @@ namespace Tablet_App
 
         public async Task Sync()
         {
-            foreach (int projectID in IsSyncRequired())
+            IList<int> projectIDS = await IsSyncRequired();
+
+            this.ProjectIDs = new ObservableCollection<int>();
+            foreach (int projectID in projectIDS)
             {
                 this.ProjectIDs.Add(projectID);
             }
 
-            UpdateProjectXml();
+            await UpdateProjectXml();
         }
 
-        private void GetAllProjects()
+        private async Task GetAllProjects()
         {
             List<string> fileTypeFilter = new List<string>();
             fileTypeFilter.Add(".xml");
@@ -42,12 +45,12 @@ namespace Tablet_App
             StorageFolder sf = StorageFolder.GetFolderFromPathAsync(Data.ProjectXmlPath).GetResults();
 
             var folderFile = sf.CreateFileQueryWithOptions(queryOptions);
-            xmlFiles = folderFile.GetFilesAsync().GetResults();
+            xmlFiles = await folderFile.GetFilesAsync();
         }
 
-        public IList<int> IsSyncRequired()
+        public async Task<IList<int>> IsSyncRequired()
         {
-            GetAllProjects();
+            await GetAllProjects();
 
             Dictionary<int, DateTime> projectIDs = new Dictionary<int, DateTime>();
 
@@ -77,7 +80,7 @@ namespace Tablet_App
             }
         }
 
-        public void UpdateProjectXml()
+        public async Task UpdateProjectXml()
         {
             foreach (var projectID in ProjectIDs)
             {
@@ -95,18 +98,21 @@ namespace Tablet_App
 
             foreach (ActionDTO action in actions)
             {
-                foreach (ImageDTO image in action.Images)
+                if (action.Images.Count > 0)
                 {
-                    StorageFile file = await StorageFile.GetFileFromPathAsync(image.Path);
-                    using (IRandomAccessStream stream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read))
+                    foreach (ImageDTO image in action.Images)
                     {
-                        BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
-                        PixelDataProvider pixelData = await decoder.GetPixelDataAsync();
+                        StorageFile file = await StorageFile.GetFileFromPathAsync(image.Path);
+                        using (IRandomAccessStream stream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read))
+                        {
+                            BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
+                            PixelDataProvider pixelData = await decoder.GetPixelDataAsync();
 
-                        image.FileByteStream = pixelData.DetachPixelData();
+                            image.FileByteStream = pixelData.DetachPixelData();
+                        }
                     }
+                    await service.UpdateActionImagesAsync(action);
                 }
-                await service.UpdateActionImagesAsync(action);
             }
 
             ProjectDTO projectDTO = await service.GetProjectDetailsAsync(Convert.ToInt32(project.ProjectID));
