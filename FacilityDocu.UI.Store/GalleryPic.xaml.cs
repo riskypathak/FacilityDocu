@@ -109,15 +109,13 @@ namespace Tablet_App
             txtActionName.Text = Data.CURRENT_ACTION.Name;
             txtDescriptionEdit.Text = Data.CURRENT_ACTION.Description;
 
-            txtImageName.Text = currentImage.ImageID;
+            txtImageName.Text = string.Format("{0}.jpg", currentImage.ImageID);
             txtImageDescription.Text = currentImage.Description;
 
             txtPICId.Text = currentImage.Number;
 
             BasicProperties pro = await imgFile.GetBasicPropertiesAsync();
-            txtImageSize.Text = pro.Size.ToString();
-
-
+            txtImageSize.Text = string.Format("{0} bytes", pro.Size.ToString());
 
             txtImageResolution.Text = bitmapImage.PixelWidth.ToString() + " X " + bitmapImage.PixelHeight.ToString();
 
@@ -138,15 +136,11 @@ namespace Tablet_App
             }
         }
 
-        public string[] searchdata()
-        {
-            string[] suggestionList = new string[50];
+        public IEnumerable<string> searchdata()
+        geImge{
+            IEnumerable<string> suggestionList;
 
-            //suggestionList = new string[Data.ImageID.Count];
-            //for (int i = 0; i < Data.ImageID.Count; i++)
-            //{
-            //    suggestionList[i] = Data.ImageID[i].ToString() + " " + ":" + " " + Data.Action[i];
-            //}
+            suggestionList = Data.CURRENT_ACTION.Images.Select(i => i.Description);
 
             return suggestionList;
         }
@@ -155,69 +149,67 @@ namespace Tablet_App
 
         private async void srchSearch_SuggestionsRequested(SearchBox sender, SearchBoxSuggestionsRequestedEventArgs e)
         {
-            try
+            if (!string.IsNullOrEmpty(srchSearch.QueryText))
             {
-                if (!string.IsNullOrEmpty(srchSearch.QueryText))
+                foreach (string suggestion in searchdata())
                 {
-                    foreach (string suggestion in searchdata())
+                    SearchSuggestionCollection suggestionCollection = e.Request.SearchSuggestionCollection;
+
+                    if (suggestion.Contains(srchSearch.QueryText))
                     {
-                        SearchSuggestionCollection suggestionCollection = e.Request.SearchSuggestionCollection;
-
-                        if (suggestion.StartsWith(srchSearch.QueryText, StringComparison.CurrentCultureIgnoreCase))
-                        {
-
-                            suggestionCollection.AppendQuerySuggestion(suggestion);
-                            // suggestionCollection.AppendQuerySuggestion(Data.ImagePath[0]);
-                        }
+                        suggestionCollection.AppendQuerySuggestion(suggestion);
                     }
                 }
-
-                if (e.Request.SearchSuggestionCollection.Size > 0)
-                {
-                    i = 1;
-                }
-                else
-                {
-                    i = 0;
-
-                }
             }
-            catch
+
+            if (e.Request.SearchSuggestionCollection.Size > 0)
             {
+                i = 1;
+            }
+            else
+            {
+                i = 0;
 
             }
         }
 
-        private void srchSearch_QuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
+        private async void srchSearch_QuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
         {
             try
             {
                 if (i == 1)
                 {
-                    string[] idg = srchSearch.QueryText.Split(':');
-                    int ii = Convert.ToInt32(idg[0]);
-                    lstAllImages.SelectedIndex = ii;
+                    Images = new List<ImageModel>();
+                    foreach (ImageDTO image in Data.CURRENT_ACTION.Images.Where(ii => ii.Description.Contains(srchSearch.QueryText)))
+                    {
+                        BitmapImage bitmapImage = new BitmapImage();
+
+                        StorageFile imgFile = await StorageFile.GetFileFromPathAsync(image.Path);
+
+                        using (IRandomAccessStream fileStream = await imgFile.OpenAsync(Windows.Storage.FileAccessMode.Read))
+                        {
+                            await bitmapImage.SetSourceAsync(fileStream);
+
+                            Images.Add(new ImageModel() { ImageID = image.ImageID, Image = bitmapImage, Description = image.Description });
+                        }
+                    }
+                    // lstAllImages.Items.Clear();
+                    lstAllImages.ItemsSource = Images;
                     //ShowPage(ii);
                 }
                 else
                 {
-
                     ScreenMessage.Show(srchSearch.QueryText + "  >  No Data Items Match");
-                    srchSearch.QueryText = string.Empty;
+                    srchSearch.QueryText = "";
                     rctSearch.Visibility = Visibility.Visible;
                     srchSearch.IsEnabled = false;
-                    //ShowPage(0);
+                    //ShowPage(o);
                 }
             }
             catch
             {
 
             }
-
-        }
-
-        private void srchSearch_Tapped(object sender, TappedRoutedEventArgs e)
-        {
 
         }
 
@@ -263,10 +255,7 @@ namespace Tablet_App
 
             if (!string.IsNullOrEmpty(txtEditComment.Text.Trim()))
             {
-                //string username = string.Format("{0} {1}", await Windows.System.UserProfile.UserInformation.GetFirstNameAsync()
-                //    , await Windows.System.UserProfile.UserInformation.GetLastNameAsync());
-
-                string userName = "riskypathak";
+                string userName = await Data.GetUserName();
 
                 if (currentImage.Comments == null)
                 {
@@ -297,6 +286,62 @@ namespace Tablet_App
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+        }
+
+        private void btnSaveNext_Click(object sender, RoutedEventArgs e)
+        {
+            ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+
+            int currentActionIdex = Data.CURRENT_STEP.Actions.IndexOf(Data.CURRENT_ACTION);
+
+            if (currentActionIdex == Data.CURRENT_STEP.Actions.Count - 1)
+            {
+                int currentStepIdex = Data.CURRENT_MODULE.Steps.IndexOf(Data.CURRENT_STEP);
+
+                if (currentStepIdex == Data.CURRENT_MODULE.Steps.Count - 1)
+                {
+                    int currentModuleIdex = Data.CURRENT_RIG.Modules.IndexOf(Data.CURRENT_MODULE);
+
+                    if (currentModuleIdex == Data.CURRENT_RIG.Modules.Count - 1)
+                    {
+                        int currentRigIndex = Data.CURRENT_PROJECT.RigTypes.IndexOf(Data.CURRENT_RIG);
+
+                        if (currentRigIndex == Data.CURRENT_PROJECT.RigTypes.Count - 1)
+                        {
+                            ScreenMessage.Show("No more actions :)");
+                        }
+                        else
+                        {
+                            Data.CURRENT_RIG = Data.CURRENT_PROJECT.RigTypes[currentRigIndex + 1];
+                            Data.CURRENT_MODULE = Data.CURRENT_RIG.Modules[0];
+                            Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps[0];
+                            Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[0];
+                        }
+                    }
+                    else
+                    {
+                        Data.CURRENT_MODULE = Data.CURRENT_RIG.Modules[currentModuleIdex + 1];
+                        Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps[0];
+                        Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[0];
+                    }
+                }
+                else
+                {
+                    Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps[currentStepIdex + 1];
+                    Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[0];
+                }
+            }
+            else
+            {
+                Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[currentActionIdex + 1];
+            }
+            ChangeScreenControls();
+        }
+
+        private void btnSaveClose_Click(object sender, RoutedEventArgs e)
+        {
+            ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+            this.Frame.Navigate(typeof(MainPage));
         }
     }
 }

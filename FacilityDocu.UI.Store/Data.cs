@@ -1,4 +1,6 @@
-﻿using Tablet_App.ServiceReference1;
+﻿using System.Threading.Tasks;
+using Tablet_App.ServiceReference1;
+using System;
 
 namespace Tablet_App
 {
@@ -18,5 +20,12 @@ namespace Tablet_App
         public static string BackupPath = string.Empty;
 
         public static bool IsFromCrop;
+
+        public async static Task<string> GetUserName()
+        {
+            string userName = string.Format("{0} {1}", await Windows.System.UserProfile.UserInformation.GetFirstNameAsync()
+                   , await Windows.System.UserProfile.UserInformation.GetLastNameAsync());
+            return userName;
+        }
     }
 }
