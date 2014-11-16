@@ -121,6 +121,7 @@ namespace Tablet_App
             await (new MessageDialog("Path changed sucessfully", "Success")).ShowAsync();
         }
 
+      
         private async void btnReset_Tapped(object sender, TappedRoutedEventArgs e)
         {
             try
