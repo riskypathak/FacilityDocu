@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
@@ -12,7 +13,6 @@ using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Input.Inking;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -45,12 +45,11 @@ namespace Tablet_App
         uint PenID, TouchID;
         BitmapImage finalImage = new BitmapImage();
         ImageBrush img = new ImageBrush();
-        int count = 0;
-
+       
         StorageFile file;
 
         BitmapImage bitmapImage;
-
+        int redoundoCount = 0;
         private static List<PropertyInfo> LoadColors()
         {
             List<PropertyInfo> colors = new List<PropertyInfo>();
@@ -74,8 +73,6 @@ namespace Tablet_App
             return colors;
         }
 
-
-
         public EditPhoto()
         {
             this.InitializeComponent();
@@ -88,22 +85,19 @@ namespace Tablet_App
                 canvas.PointerExited += canvas_PointerExited;
                 canvas.PointerEntered += canvas_PointerEntered;
 
-                for (int i = 30; i < 100; i += 5)
+                for (int i = 10; i < 55; i += 10)
                 {
                     ComboBoxItem Items = new ComboBoxItem();
                     Items.Content = i;
                     cmbStrokeThickness.Items.Add(Items);
                 }
 
-                cmbStrokeThickness.SelectedIndex = 3;
-
-                cbBorderColor.ItemsSource = LoadColors();
-
+                cmbStrokeThickness.SelectedIndex = 0;
                 BorderColor = Colors.White;
             }
             catch
             {
-                ScreenMessage.Show("Somethig is missing");
+                ScreenMessage.Show("Something is missing");
             }
 
         }
@@ -166,6 +160,11 @@ namespace Tablet_App
                             NewLine.StrokeThickness = StrokeThickness;
                             NewLine.Stroke = new SolidColorBrush(BorderColor);
                             canvas.Children.Add(NewLine);
+                            redoundoCount++;
+                            if (redoundoCount != canvas.Children.Count)
+                            {
+                                canvasSet();
+                            }
 
 
                         }
@@ -205,6 +204,11 @@ namespace Tablet_App
                             NewRectangle.Stroke = new SolidColorBrush(BorderColor);
                             NewRectangle.Fill = new SolidColorBrush(FillColor);
                             canvas.Children.Add(NewRectangle);
+                            redoundoCount++;
+                            if (redoundoCount != canvas.Children.Count)
+                            {
+                                canvasSet();
+                            }
                             NewRectangle.ManipulationMode = ManipulationModes.All;
 
 
@@ -228,6 +232,11 @@ namespace Tablet_App
                             NewEllipse.Stroke = new SolidColorBrush(BorderColor);
                             NewEllipse.Fill = new SolidColorBrush(FillColor);
                             canvas.Children.Add(NewEllipse);
+                            redoundoCount++;
+                            if (redoundoCount != canvas.Children.Count)
+                            {
+                                canvasSet();
+                            }
 
                         }
                         break;
@@ -276,6 +285,11 @@ namespace Tablet_App
 
                                     PreviousContactPoint = CurrentContactPoint;
                                     canvas.Children.Add(line);
+                                    redoundoCount++;
+                                    if (redoundoCount != canvas.Children.Count)
+                                    {
+                                        canvasSet();
+                                    }
                                     MyInkManager.ProcessPointerUpdate(e.GetCurrentPoint(canvas));
                                 }
                             }
@@ -423,13 +437,14 @@ namespace Tablet_App
             NewLine = null;
             NewRectangle = null;
             NewEllipse = null;
-
+            SaveCanvas();
         }
         #endregion
 
         private void cmbStrokeThickness_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            StrokeThickness = Convert.ToDouble(cmbStrokeThickness.SelectedIndex + 1);
+            StrokeThickness = Convert.ToDouble((cmbStrokeThickness.SelectedIndex + 1)*10);
+            //StrokeThickness = Convert.ToDouble(cmbStrokeThickness.SelectedItem.ToString());
         }
 
         private async Task SaveToPNG(RenderTargetBitmap bitmap)
@@ -452,6 +467,17 @@ namespace Tablet_App
                 // Flush encoder.  
                 await encoder.FlushAsync();
             }
+
+
+            using (IRandomAccessStream fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read))
+            {
+                // Set the image source to the selected bitmap
+                bitmapImage = new BitmapImage();
+                await bitmapImage.SetSourceAsync(fileStream);
+                imgPreview.Source = bitmapImage;
+            }
+
+
         }
 
         private async Task<RenderTargetBitmap> CanvasToBMP()
@@ -525,6 +551,7 @@ namespace Tablet_App
 
         private async void btnNext_Click(object sender, TappedRoutedEventArgs e)
         {
+           
             await SaveCanvas();
             StorageFile modifyImage = await StorageFile.GetFileFromPathAsync(Data.MODIFYIMAGE.Path);
             await file.CopyAndReplaceAsync(modifyImage);
@@ -562,6 +589,9 @@ namespace Tablet_App
                 canvas.Width = 1280;
                 canvas.Height = 1024;
             }
+
+            width = canvas.Width;
+            height = canvas.Height;
         }
 
         private void cmbFillColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -573,5 +603,51 @@ namespace Tablet_App
         {
             BorderColor = (((e.AddedItems[0] as ComboBoxItem).Content as Rectangle).Fill as SolidColorBrush).Color;
         }
+
+        private void canvasSet()
+        {
+            while (canvas.Children.Count > redoundoCount)
+            {
+                canvas.Children.RemoveAt(canvas.Children.Count - 1);
+            }
+            redoundoCount = canvas.Children.Count;
+        }
+        private void btn_Redo_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (canvas.Children.Count != redoundoCount)
+            {
+                btn_Undo.IsEnabled = true;
+
+                canvas.Children.Cast<UIElement>().ElementAt(redoundoCount).Visibility = Visibility.Visible;
+                redoundoCount++;
+
+                if (canvas.Children.Count == redoundoCount)
+                {
+                    btn_Redo.IsEnabled = false;
+                }
+            }
+        }
+
+        private void btn_Undo_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (redoundoCount != 0)
+            {
+                btn_Redo.IsEnabled = true;
+                redoundoCount--;
+                canvas.Children.Cast<UIElement>().ElementAt(redoundoCount).Visibility = Visibility.Collapsed;
+
+                if (redoundoCount == 0)
+                {
+                    btn_Undo.IsEnabled = false;
+                }
+            }
+        }
+
+        private void canvas_PointerMoved_1(object sender, PointerRoutedEventArgs e)
+        {
+
+        }
+
+
     }
 }
