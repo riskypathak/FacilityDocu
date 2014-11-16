@@ -23,16 +23,26 @@ namespace Tablet_App
 
         FacilityDocuServiceClient service;
 
-        private async void GetAllProjects()
+        public async Task Sync()
+        {
+            foreach (int projectID in IsSyncRequired())
+            {
+                this.ProjectIDs.Add(projectID);
+            }
+
+            UpdateProjectXml();
+        }
+
+        private void GetAllProjects()
         {
             List<string> fileTypeFilter = new List<string>();
             fileTypeFilter.Add(".xml");
 
             var queryOptions = new QueryOptions(CommonFileQuery.OrderByName, fileTypeFilter);
-            StorageFolder sf = await StorageFolder.GetFolderFromPathAsync(Data.ProjectXmlPath);
+            StorageFolder sf = StorageFolder.GetFolderFromPathAsync(Data.ProjectXmlPath).GetResults();
 
             var folderFile = sf.CreateFileQueryWithOptions(queryOptions);
-            xmlFiles = await folderFile.GetFilesAsync();
+            xmlFiles = folderFile.GetFilesAsync().GetResults();
         }
 
         public IList<int> IsSyncRequired()
@@ -67,20 +77,15 @@ namespace Tablet_App
             }
         }
 
-        public async void UpdateProjectXml()
+        public void UpdateProjectXml()
         {
-
-            //get Projects From Database to be update
-
-            ObservableCollection<ProjectDTO> projects = await service.GetProjectDetailsAsync(ProjectIDs);
-
-            foreach (var project in projects)
+            foreach (var projectID in ProjectIDs)
             {
-                ProjectXmlWriter.Write(project);
+                ProjectXmlWriter.Write(service.GetProjectDetailsAsync(projectID).Result);
             }
         }
 
-        public async void UploadImages(string projectID)
+        public async Task<ProjectDTO> UploadImages(string projectID)
         {
             string projectPath = Path.Combine(Data.ProjectXmlPath, string.Format("{0}.xml", projectID));
 
@@ -103,6 +108,9 @@ namespace Tablet_App
                 }
                 await service.UpdateActionImagesAsync(action);
             }
+
+            ProjectDTO projectDTO = await service.GetProjectDetailsAsync(Convert.ToInt32(project.ProjectID));
+            return projectDTO;
         }
     }
 }

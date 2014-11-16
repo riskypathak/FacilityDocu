@@ -21,15 +21,14 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:51256/FacilityDocuService.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://tlof.no-ip.biz:9876/FacilityDocu/FacilityDocuService.svc?wsdl" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="FacilityDocuService.xsd" MetadataType="Schema" ID="c42f1b4d-e191-4969-b232-b63cb8093181" SourceId="1" SourceUrl="http://localhost:51256/FacilityDocuService.svc?xsd=xsd3" />
-    <MetadataFile FileName="FacilityDocuService.disco" MetadataType="Disco" ID="b9987ec7-4ee4-4074-9e1a-20c3ef96186d" SourceId="1" SourceUrl="http://localhost:51256/FacilityDocuService.svc?disco" />
-    <MetadataFile FileName="FacilityDocuService1.xsd" MetadataType="Schema" ID="fa98989b-e701-4c07-a382-336bc3e18763" SourceId="1" SourceUrl="http://localhost:51256/FacilityDocuService.svc?xsd=xsd1" />
-    <MetadataFile FileName="FacilityDocuService2.xsd" MetadataType="Schema" ID="fd7e90ed-bcb9-4f23-a537-52674f22ef95" SourceId="1" SourceUrl="http://localhost:51256/FacilityDocuService.svc?xsd=xsd2" />
-    <MetadataFile FileName="FacilityDocuService.wsdl" MetadataType="Wsdl" ID="672333de-d9aa-429a-b6ad-1e3ef38b45d0" SourceId="1" SourceUrl="http://localhost:51256/FacilityDocuService.svc?wsdl" />
-    <MetadataFile FileName="FacilityDocuService3.xsd" MetadataType="Schema" ID="30f9a9f3-f3a3-4ea2-8372-6721f45bd511" SourceId="1" SourceUrl="http://localhost:51256/FacilityDocuService.svc?xsd=xsd0" />
+    <MetadataFile FileName="FacilityDocuService4.xsd" MetadataType="Schema" ID="aedac5ae-c034-4f38-bfd9-efee21e963c9" SourceId="1" SourceUrl="http://tlof.no-ip.biz:9876/FacilityDocu/FacilityDocuService.svc?xsd=xsd1" />
+    <MetadataFile FileName="FacilityDocuService41.xsd" MetadataType="Schema" ID="728a3d50-68db-4f51-a30e-7e0233579706" SourceId="1" SourceUrl="http://tlof.no-ip.biz:9876/FacilityDocu/FacilityDocuService.svc?xsd=xsd2" />
+    <MetadataFile FileName="FacilityDocuService42.xsd" MetadataType="Schema" ID="bfcc1a40-af8c-4d90-8f67-4a5d39acb42a" SourceId="1" SourceUrl="http://tlof.no-ip.biz:9876/FacilityDocu/FacilityDocuService.svc?xsd=xsd0" />
+    <MetadataFile FileName="FacilityDocuService1.wsdl" MetadataType="Wsdl" ID="fe6cdf46-a008-42ad-b861-ed4a3efe411a" SourceId="1" SourceUrl="http://tlof.no-ip.biz:9876/FacilityDocu/FacilityDocuService.svc?wsdl" />
+    <MetadataFile FileName="FacilityDocuService43.xsd" MetadataType="Schema" ID="e4a70ef0-1d17-49de-b8ce-0dfe52e845fb" SourceId="1" SourceUrl="http://tlof.no-ip.biz:9876/FacilityDocu/FacilityDocuService.svc?xsd=xsd3" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

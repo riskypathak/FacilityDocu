@@ -1,25 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
 using System.Xml.Linq;
-using Windows.ApplicationModel;
-using Windows.Data.Xml.Dom;
-using Windows.Devices.Enumeration;
-using Windows.Devices.Portable;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 //test
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
@@ -121,7 +108,6 @@ namespace Tablet_App
             await (new MessageDialog("Path changed sucessfully", "Success")).ShowAsync();
         }
 
-      
         private async void btnReset_Tapped(object sender, TappedRoutedEventArgs e)
         {
             try
@@ -140,25 +126,12 @@ namespace Tablet_App
             }
         }
 
-        private void btnSync_Tapped(object sender, TappedRoutedEventArgs e)
+        private async void btnSync_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            try
-            {
-                //test
-                //SyncManager manager = new SyncManager(new List<int> { 1, 2 });
-                //manager.UpdateProjectXml();
-                SyncManager manager = new SyncManager();
-                IList<int> projectIds = manager.IsSyncRequired();
+            await (new SyncManager()).Sync();
 
-                SyncManager updateCall = new SyncManager(projectIds);
-                updateCall.UpdateProjectXml();
-            }
-            catch
-            {
-
-            }
+            ScreenMessage.Show("Data Sync Done!!!");
         }
-
 
     }
 }

@@ -199,7 +199,7 @@ namespace Tablet_App
             Data.CURRENT_ACTION.Images.Add(currentImage);
 
             WriteImages();
-
+            media.Dispose();
             this.Frame.Navigate(typeof(MainPage));
         }
 
