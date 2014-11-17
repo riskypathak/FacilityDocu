@@ -165,6 +165,8 @@ namespace Tablet_App
 
                 IList<CommentDTO> comments = ReadComments(xImage);
 
+                image.Comments = new System.Collections.ObjectModel.ObservableCollection<CommentDTO>();
+
                 foreach (var comment in comments)
                 {
                     image.Comments.Add(comment);

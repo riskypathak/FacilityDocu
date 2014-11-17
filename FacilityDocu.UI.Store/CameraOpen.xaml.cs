@@ -8,6 +8,8 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
+using System.Collections.Generic;
+using System.Linq;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -63,7 +65,9 @@ namespace Tablet_App
                     {
                         CreationDate = DateTime.Now,
                         ImageID = imageID,
-                        Path = System.IO.Path.Combine(Data.ImagesPath, string.Format("{0}.jpg", imageID))
+                        Path = System.IO.Path.Combine(Data.ImagesPath, string.Format("{0}.jpg", imageID)),
+                        Tags = new System.Collections.ObjectModel.ObservableCollection<string>(),
+                        Comments = new System.Collections.ObjectModel.ObservableCollection<CommentDTO>()
                     };
                 }
 
@@ -72,7 +76,6 @@ namespace Tablet_App
             }
             catch
             {
-                ScreenMessage.Show(" its failed !  try aggain");
             }
 
         }
@@ -118,10 +121,28 @@ namespace Tablet_App
             gdvImageDetailEdit.Visibility = Visibility.Collapsed;
         }
 
-        private void ok_Tapped(object sender, TappedRoutedEventArgs e)
+        private async void ok_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            currentImage.Description = description.Text;
+            currentImage.Description = txtImageDescription.Text;
             currentImage.Tags = new System.Collections.ObjectModel.ObservableCollection<string>();
+
+            foreach (string tag in txtTags.Text.Split(';'))
+            {
+                currentImage.Tags.Add(tag);
+            }
+
+            if (!string.IsNullOrEmpty(txtComment.Text.Trim()))
+            {
+                string userName = await Data.GetUserName();
+
+                if (currentImage.Comments == null)
+                {
+                    currentImage.Comments = new System.Collections.ObjectModel.ObservableCollection<CommentDTO>();
+                }
+
+                currentImage.Comments.Add(new CommentDTO() { CommentedAt = DateTime.Now, CommentID = DateTime.Now.ToString("yyyyMMddHHmmssfff"), Text = txtComment.Text.Trim(), User = userName.ToString() });
+            }
+
             gdvImageDetailEdit.Visibility = Visibility.Collapsed;
 
         }

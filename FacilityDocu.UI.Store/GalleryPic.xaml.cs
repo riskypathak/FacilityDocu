@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using Tablet_App.ServiceReference1;
 using Windows.ApplicationModel.Search;
@@ -15,6 +14,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
 
+// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Tablet_App
 {
@@ -109,28 +109,19 @@ namespace Tablet_App
             txtActionName.Text = Data.CURRENT_ACTION.Name;
             txtDescriptionEdit.Text = Data.CURRENT_ACTION.Description;
 
-            txtImageName.Text = currentImage.ImageID;
+            txtImageName.Text = string.Format("{0}.jpg", currentImage.ImageID);
             txtImageDescription.Text = currentImage.Description;
 
             txtPICId.Text = currentImage.Number;
 
             BasicProperties pro = await imgFile.GetBasicPropertiesAsync();
-            txtImageSize.Text = pro.Size.ToString();
-
-
+            txtImageSize.Text = string.Format("{0} bytes", pro.Size.ToString());
 
             txtImageResolution.Text = bitmapImage.PixelWidth.ToString() + " X " + bitmapImage.PixelHeight.ToString();
 
             lstComments.ItemsSource = currentImage.Comments;
 
             ShowImages();
-        }
-
-        public async Task<string> username()
-        {
-            string userName = string.Format("{0} {1}", await Windows.System.UserProfile.UserInformation.GetFirstNameAsync()
-                   , await Windows.System.UserProfile.UserInformation.GetLastNameAsync());
-            return userName;
         }
 
         private void btnEditImage_Tapped(object sender, TappedRoutedEventArgs e)
@@ -150,9 +141,6 @@ namespace Tablet_App
             IEnumerable<string> suggestionList;
 
             suggestionList = Data.CURRENT_ACTION.Images.Select(i => i.Description);
-            // suggestionList =suggestionList+ Data.CURRENT_ACTION.Images.Select(i => i.Comments);
-            // suggestionList =suggestionList+ Data.CURRENT_ACTION.Images.Select(i => i.tags);
-
 
             return suggestionList;
         }
@@ -161,36 +149,26 @@ namespace Tablet_App
 
         private async void srchSearch_SuggestionsRequested(SearchBox sender, SearchBoxSuggestionsRequestedEventArgs e)
         {
-            try
+            if (!string.IsNullOrEmpty(srchSearch.QueryText))
             {
-
-                if (!string.IsNullOrEmpty(srchSearch.QueryText))
+                foreach (string suggestion in searchdata())
                 {
-                    foreach (string suggestion in searchdata())
+                    SearchSuggestionCollection suggestionCollection = e.Request.SearchSuggestionCollection;
+
+                    if (suggestion.Contains(srchSearch.QueryText))
                     {
-                        SearchSuggestionCollection suggestionCollection = e.Request.SearchSuggestionCollection;
-
-                        if (suggestion.Contains(srchSearch.QueryText))
-                        {
-
-                            suggestionCollection.AppendQuerySuggestion(suggestion);
-
-                        }
+                        suggestionCollection.AppendQuerySuggestion(suggestion);
                     }
                 }
-
-                if (e.Request.SearchSuggestionCollection.Size > 0)
-                {
-                    i = 1;
-                }
-                else
-                {
-                    i = 0;
-
-                }
             }
-            catch
+
+            if (e.Request.SearchSuggestionCollection.Size > 0)
             {
+                i = 1;
+            }
+            else
+            {
+                i = 0;
 
             }
         }
@@ -201,9 +179,6 @@ namespace Tablet_App
             {
                 if (i == 1)
                 {
-
-                    // lstAllImages.SelectedIndex = srchSearch.QueryText;
-
                     Images = new List<ImageModel>();
                     foreach (ImageDTO image in Data.CURRENT_ACTION.Images.Where(ii => ii.Description.Contains(srchSearch.QueryText)))
                     {
@@ -224,7 +199,6 @@ namespace Tablet_App
                 }
                 else
                 {
-
                     ScreenMessage.Show(srchSearch.QueryText + "  >  No Data Items Match");
                     srchSearch.QueryText = "";
                     rctSearch.Visibility = Visibility.Visible;
@@ -236,11 +210,6 @@ namespace Tablet_App
             {
 
             }
-
-        }
-
-        private void srchSearch_Tapped(object sender, TappedRoutedEventArgs e)
-        {
 
         }
 
@@ -286,10 +255,7 @@ namespace Tablet_App
 
             if (!string.IsNullOrEmpty(txtEditComment.Text.Trim()))
             {
-                //string username = string.Format("{0} {1}", await Windows.System.UserProfile.UserInformation.GetFirstNameAsync()
-                //    , await Windows.System.UserProfile.UserInformation.GetLastNameAsync());
-
-                string userName = await username(); 
+                string userName = await Data.GetUserName();
 
                 if (currentImage.Comments == null)
                 {
@@ -312,14 +278,70 @@ namespace Tablet_App
 
         private async void btnPublish_Click(object sender, RoutedEventArgs e)
         {
-            ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
-            Data.CURRENT_PROJECT = await (new SyncManager()).UploadImages(Data.CURRENT_PROJECT.ProjectID);
-            ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+            //ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+            //Data.CURRENT_PROJECT = await (new SyncManager()).UploadImages(Data.CURRENT_PROJECT.ProjectID);
+            //ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+        }
+
+        private void btnSaveNext_Click(object sender, RoutedEventArgs e)
+        {
+            ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+
+            int currentActionIdex = Data.CURRENT_STEP.Actions.IndexOf(Data.CURRENT_ACTION);
+
+            if (currentActionIdex == Data.CURRENT_STEP.Actions.Count - 1)
+            {
+                int currentStepIdex = Data.CURRENT_MODULE.Steps.IndexOf(Data.CURRENT_STEP);
+
+                if (currentStepIdex == Data.CURRENT_MODULE.Steps.Count - 1)
+                {
+                    int currentModuleIdex = Data.CURRENT_RIG.Modules.IndexOf(Data.CURRENT_MODULE);
+
+                    if (currentModuleIdex == Data.CURRENT_RIG.Modules.Count - 1)
+                    {
+                        int currentRigIndex = Data.CURRENT_PROJECT.RigTypes.IndexOf(Data.CURRENT_RIG);
+
+                        if (currentRigIndex == Data.CURRENT_PROJECT.RigTypes.Count - 1)
+                        {
+                            ScreenMessage.Show("No more actions :)");
+                        }
+                        else
+                        {
+                            Data.CURRENT_RIG = Data.CURRENT_PROJECT.RigTypes[currentRigIndex + 1];
+                            Data.CURRENT_MODULE = Data.CURRENT_RIG.Modules[0];
+                            Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps[0];
+                            Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[0];
+                        }
+                    }
+                    else
+                    {
+                        Data.CURRENT_MODULE = Data.CURRENT_RIG.Modules[currentModuleIdex + 1];
+                        Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps[0];
+                        Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[0];
+                    }
+                }
+                else
+                {
+                    Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps[currentStepIdex + 1];
+                    Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[0];
+                }
+            }
+            else
+            {
+                Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[currentActionIdex + 1];
+            }
+            ChangeScreenControls();
+        }
+
+        private void btnSaveClose_Click(object sender, RoutedEventArgs e)
+        {
+            ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+            this.Frame.Navigate(typeof(MainPage));
         }
     }
 }

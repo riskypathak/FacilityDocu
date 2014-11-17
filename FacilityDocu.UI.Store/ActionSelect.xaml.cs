@@ -40,6 +40,11 @@ namespace Tablet_App
             }
 
             cmbProjects.ItemsSource = projects;
+
+            if (Data.CURRENT_PROJECT != null)
+            {
+                cmbProjects.SelectedItem = Data.CURRENT_PROJECT;
+            }
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
