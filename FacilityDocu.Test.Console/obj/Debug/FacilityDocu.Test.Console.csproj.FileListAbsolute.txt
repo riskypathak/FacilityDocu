@@ -1,1 +1,10 @@
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Test.Console\bin\Debug\FacilityDocu.Test.Console.exe.config
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Test.Console\bin\Debug\FacilityDocu.Test.Console.exe
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Test.Console\bin\Debug\FacilityDocu.Test.Console.pdb
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Test.Console\bin\Debug\FacilityDocu.UI.Utilities.dll
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Test.Console\bin\Debug\itextsharp.dll
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Test.Console\bin\Debug\FacilityDocu.UI.Utilities.pdb
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Test.Console\bin\Debug\itextsharp.xml
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Test.Console\obj\Debug\FacilityDocu.Test.Console.csprojResolveAssemblyReference.cache
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Test.Console\obj\Debug\FacilityDocu.Test.Console.exe
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Test.Console\obj\Debug\FacilityDocu.Test.Console.pdb

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Tablet_App.ServiceReference1;
 using Windows.ApplicationModel.Search;
@@ -14,7 +15,6 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
 
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Tablet_App
 {
@@ -126,6 +126,13 @@ namespace Tablet_App
             ShowImages();
         }
 
+        public async Task<string> username()
+        {
+            string userName = string.Format("{0} {1}", await Windows.System.UserProfile.UserInformation.GetFirstNameAsync()
+                   , await Windows.System.UserProfile.UserInformation.GetLastNameAsync());
+            return userName;
+        }
+
         private void btnEditImage_Tapped(object sender, TappedRoutedEventArgs e)
         {
             gdvEditImage.Visibility = Visibility.Visible;
@@ -138,15 +145,14 @@ namespace Tablet_App
             }
         }
 
-        public string[] searchdata()
+        public IEnumerable<string> searchdata()
         {
-            string[] suggestionList = new string[50];
+            IEnumerable<string> suggestionList;
 
-            //suggestionList = new string[Data.ImageID.Count];
-            //for (int i = 0; i < Data.ImageID.Count; i++)
-            //{
-            //    suggestionList[i] = Data.ImageID[i].ToString() + " " + ":" + " " + Data.Action[i];
-            //}
+            suggestionList = Data.CURRENT_ACTION.Images.Select(i => i.Description);
+            // suggestionList =suggestionList+ Data.CURRENT_ACTION.Images.Select(i => i.Comments);
+            // suggestionList =suggestionList+ Data.CURRENT_ACTION.Images.Select(i => i.tags);
+
 
             return suggestionList;
         }
@@ -157,17 +163,18 @@ namespace Tablet_App
         {
             try
             {
+
                 if (!string.IsNullOrEmpty(srchSearch.QueryText))
                 {
                     foreach (string suggestion in searchdata())
                     {
                         SearchSuggestionCollection suggestionCollection = e.Request.SearchSuggestionCollection;
 
-                        if (suggestion.StartsWith(srchSearch.QueryText, StringComparison.CurrentCultureIgnoreCase))
+                        if (suggestion.Contains(srchSearch.QueryText))
                         {
 
                             suggestionCollection.AppendQuerySuggestion(suggestion);
-                            // suggestionCollection.AppendQuerySuggestion(Data.ImagePath[0]);
+
                         }
                     }
                 }
@@ -188,25 +195,41 @@ namespace Tablet_App
             }
         }
 
-        private void srchSearch_QuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
+        private async void srchSearch_QuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
         {
             try
             {
                 if (i == 1)
                 {
-                    string[] idg = srchSearch.QueryText.Split(':');
-                    int ii = Convert.ToInt32(idg[0]);
-                    lstAllImages.SelectedIndex = ii;
+
+                    // lstAllImages.SelectedIndex = srchSearch.QueryText;
+
+                    Images = new List<ImageModel>();
+                    foreach (ImageDTO image in Data.CURRENT_ACTION.Images.Where(ii => ii.Description.Contains(srchSearch.QueryText)))
+                    {
+                        BitmapImage bitmapImage = new BitmapImage();
+
+                        StorageFile imgFile = await StorageFile.GetFileFromPathAsync(image.Path);
+
+                        using (IRandomAccessStream fileStream = await imgFile.OpenAsync(Windows.Storage.FileAccessMode.Read))
+                        {
+                            await bitmapImage.SetSourceAsync(fileStream);
+
+                            Images.Add(new ImageModel() { ImageID = image.ImageID, Image = bitmapImage, Description = image.Description });
+                        }
+                    }
+                    // lstAllImages.Items.Clear();
+                    lstAllImages.ItemsSource = Images;
                     //ShowPage(ii);
                 }
                 else
                 {
 
                     ScreenMessage.Show(srchSearch.QueryText + "  >  No Data Items Match");
-                    srchSearch.QueryText = string.Empty;
+                    srchSearch.QueryText = "";
                     rctSearch.Visibility = Visibility.Visible;
                     srchSearch.IsEnabled = false;
-                    //ShowPage(0);
+                    //ShowPage(o);
                 }
             }
             catch
@@ -266,7 +289,7 @@ namespace Tablet_App
                 //string username = string.Format("{0} {1}", await Windows.System.UserProfile.UserInformation.GetFirstNameAsync()
                 //    , await Windows.System.UserProfile.UserInformation.GetLastNameAsync());
 
-                string userName = "riskypathak";
+                string userName = await username(); 
 
                 if (currentImage.Comments == null)
                 {
