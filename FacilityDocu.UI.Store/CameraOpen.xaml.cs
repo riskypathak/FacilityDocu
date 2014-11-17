@@ -149,22 +149,32 @@ namespace Tablet_App
 
         private void Edit_btn_Tapped(object sender, TappedRoutedEventArgs e)
         {
+            txtComment.Text = "";
+            txtTags.Text = "";
+            txtImageDescription.Text = "";
             gdvImageDetailEdit.Visibility = Visibility.Visible;
         }
 
         private void discard_New_btn_Tapped(object sender, TappedRoutedEventArgs e)
         {
+            txtComment.Text = "";
+            txtTags.Text = "";
+            txtImageDescription.Text = "";
             gdvPreview.Visibility = Visibility.Collapsed;
         }
 
         private void Save_New_btn_Tapped(object sender, TappedRoutedEventArgs e)
         {
             Data.CURRENT_ACTION.Images.Add(currentImage);
+            txtComment.Text = "";
+            txtTags.Text = "";
+            txtImageDescription.Text = "";
             gdvPreview.Visibility = Visibility.Collapsed;
         }
 
         private void Save_Next_btn_Tapped(object sender, TappedRoutedEventArgs e)
         {
+
             Data.CURRENT_ACTION.Images.Add(currentImage);
 
             int currentActionIdex = Data.CURRENT_STEP.Actions.IndexOf(Data.CURRENT_ACTION);
@@ -187,6 +197,7 @@ namespace Tablet_App
                         }
                         else
                         {
+                            gdvPreview.Visibility = Visibility.Collapsed;
                             Data.CURRENT_RIG = Data.CURRENT_PROJECT.RigTypes[currentRigIndex + 1];
                             Data.CURRENT_MODULE = Data.CURRENT_RIG.Modules[0];
                             Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps[0];
@@ -195,6 +206,7 @@ namespace Tablet_App
                     }
                     else
                     {
+                        gdvPreview.Visibility = Visibility.Collapsed;
                         Data.CURRENT_MODULE = Data.CURRENT_RIG.Modules[currentModuleIdex + 1];
                         Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps[0];
                         Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[0];
@@ -202,26 +214,37 @@ namespace Tablet_App
                 }
                 else
                 {
+                    gdvPreview.Visibility = Visibility.Collapsed;
                     Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps[currentStepIdex + 1];
                     Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[0];
                 }
             }
             else
             {
+                gdvPreview.Visibility = Visibility.Collapsed;
                 Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[currentActionIdex + 1];
             }
-
-            gdvPreview.Visibility = Visibility.Collapsed;
+            txtComment.Text = "";
+            txtTags.Text = "";
+            txtImageDescription.Text = "";
+           
             ChangeScreenControls();
         }
 
         private void Save_Close_btn_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            Data.CURRENT_ACTION.Images.Add(currentImage);
+            
+           
 
+            Data.CURRENT_ACTION.Images.Add(currentImage);
             WriteImages();
             media.Dispose();
             this.Frame.Navigate(typeof(MainPage));
+            txtComment.Text = "";
+            txtTags.Text = "";
+            txtImageDescription.Text = "";
+            ScreenMessage.Show("Saved successfully!");
+            
         }
 
         private void WriteImages()

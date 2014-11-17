@@ -26,6 +26,7 @@ namespace Tablet_App
         public MainPage()
         {
             this.InitializeComponent();
+            configFileCheck();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -48,6 +49,19 @@ namespace Tablet_App
         {
             Data.menuClick = 2;
             this.Frame.Navigate(typeof(ActionSelect));
+        }
+        public async void configFileCheck()
+        {
+            StorageFile configFile;
+            try
+            {
+                configFile = await ApplicationData.Current.LocalFolder.GetFileAsync("config.xml");
+            }
+            catch (FileNotFoundException)
+            {
+                Initialize();
+            }
+
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
