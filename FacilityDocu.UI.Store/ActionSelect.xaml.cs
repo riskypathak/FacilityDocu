@@ -18,6 +18,11 @@ namespace Tablet_App
         {
             this.InitializeComponent();
 
+            Data.CURRENT_ACTION = null;
+            Data.CURRENT_MODULE = null;
+            Data.CURRENT_PROJECT = null;
+            Data.CURRENT_RIG = null;
+            Data.CURRENT_STEP = null;
         }
 
         public async void LoadAllProjects()
@@ -25,7 +30,6 @@ namespace Tablet_App
             IReadOnlyList<StorageFile> selectFiles;
             List<string> fileTypeFilter = new List<string>();
             fileTypeFilter.Add(".xml");
-
 
             var queryOptions = new QueryOptions(CommonFileQuery.OrderByName, fileTypeFilter);
             StorageFolder sf = await StorageFolder.GetFolderFromPathAsync(Data.ProjectXmlPath);
@@ -83,24 +87,29 @@ namespace Tablet_App
 
         private void Button_Click(object sender, TappedRoutedEventArgs e)
         {
-            if (cmbActions.SelectedIndex != -1
-                && cmbProjects.SelectedIndex != -1
-                && cmbModules.SelectedIndex != -1
-                && cmbSteps.SelectedIndex != -1)
+            if (Data.menuClick != null && Data.menuClick.GetType() == typeof(Camera_Page))
             {
-
-                if (Data.menuClick == 3)
+                if (cmbActions.SelectedIndex != -1 && cmbProjects.SelectedIndex != -1 
+                    && cmbModules.SelectedIndex != -1 && cmbSteps.SelectedIndex != -1)
                 {
                     this.Frame.Navigate(typeof(Camera_Page));
                 }
                 else
                 {
-                    this.Frame.Navigate(typeof(Gallery));
+                    ScreenMessage.Show("All fields are mandatory.");
                 }
             }
-            else
+            else if (Data.menuClick != null && Data.menuClick.GetType() == typeof(Gallery))
             {
-                ScreenMessage.Show("All fields are mandatory.");
+
+                if (cmbRigTypes.SelectedIndex != -1 && cmbProjects.SelectedIndex != -1)
+                {
+                    this.Frame.Navigate(typeof(Gallery));
+                }
+                else
+                {
+                    ScreenMessage.Show("Project & RigType fileds are mandatory.");
+                }
             }
         }
 

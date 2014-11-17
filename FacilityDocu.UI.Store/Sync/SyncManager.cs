@@ -11,6 +11,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.Storage.Streams;
 using Windows.Graphics.Imaging;
 using System.Threading.Tasks;
+using System.ServiceModel;
 
 namespace Tablet_App
 {
@@ -42,7 +43,7 @@ namespace Tablet_App
             fileTypeFilter.Add(".xml");
 
             var queryOptions = new QueryOptions(CommonFileQuery.OrderByName, fileTypeFilter);
-            StorageFolder sf = StorageFolder.GetFolderFromPathAsync(Data.ProjectXmlPath).GetResults();
+            StorageFolder sf = await StorageFolder.GetFolderFromPathAsync(Data.ProjectXmlPath);
 
             var folderFile = sf.CreateFileQueryWithOptions(queryOptions);
             xmlFiles = await folderFile.GetFilesAsync();
@@ -68,7 +69,20 @@ namespace Tablet_App
 
         public SyncManager()
         {
-            service = new FacilityDocuServiceClient();
+            string strUri = "http://tlof.no-ip.biz:9876/FacilityDocu/FacilityDocuService.svc";
+            BasicHttpBinding binding = new BasicHttpBinding();
+            
+            binding.MaxReceivedMessageSize = 2147483647;
+            binding.MaxBufferSize = 2147483647;
+            binding.MaxBufferPoolSize = 2147483647;
+            
+
+            binding.ReaderQuotas.MaxDepth = 2147483647;
+            binding.ReaderQuotas.MaxArrayLength = 2147483647;
+            binding.ReaderQuotas.MaxBytesPerRead = 2147483647;
+            binding.ReaderQuotas.MaxNameTableCharCount = 2147483647;
+
+            service = new FacilityDocuServiceClient(binding, new EndpointAddress(strUri));
         }
 
         public SyncManager(IList<int> projectIDs)

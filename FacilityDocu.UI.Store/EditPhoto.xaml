@@ -67,7 +67,7 @@
             <ComboBox SelectionChanged="cmbBorderColor_SelectionChanged" FontSize="25" x:Name="cbBorderColor" Margin="108,113,0,608">
                 <ComboBox.Items>
                     <ComboBoxItem>
-                        <Rectangle Width="35" Height="30" Fill="Transparent"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                        <Rectangle Width="35" Height="30" Fill="White"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                     </ComboBoxItem>
                     <ComboBoxItem>
                         <Rectangle Width="35" Height="30" Fill="Red"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>

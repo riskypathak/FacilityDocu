@@ -71,6 +71,11 @@ namespace Tablet_App
                     };
                 }
 
+                string originalFileName = string.Format("{0}.jpg_org", imageID);
+
+                StorageFile originalFile = await imagesFolder.CreateFileAsync(originalFileName, CreationCollisionOption.ReplaceExisting);
+                await file.CopyAndReplaceAsync(originalFile);
+
                 gdvPreview.Visibility = Visibility.Visible;
                 ChangeScreenControls();
             }

@@ -13,7 +13,7 @@ namespace Tablet_App
         public static ActionDTO CURRENT_ACTION;
         public static ImageDTO MODIFYIMAGE;
 
-        public static int menuClick = 0;
+        public static object menuClick;
 
         public static string ProjectXmlPath = string.Empty;         
         public static string ImagesPath = string.Empty;

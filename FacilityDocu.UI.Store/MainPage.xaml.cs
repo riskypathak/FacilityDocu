@@ -34,7 +34,7 @@ namespace Tablet_App
 
         private void btnTakePicture_Click(object sender, RoutedEventArgs e)
         {
-            Data.menuClick = 3;
+            Data.menuClick = new Camera_Page();
             this.Frame.Navigate(typeof(ActionSelect));
 
         }
@@ -46,7 +46,7 @@ namespace Tablet_App
 
         private void btnGallery_Click(object sender, RoutedEventArgs e)
         {
-            Data.menuClick = 2;
+            Data.menuClick = new Gallery();
             this.Frame.Navigate(typeof(ActionSelect));
         }
 

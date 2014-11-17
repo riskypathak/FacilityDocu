@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -28,8 +26,6 @@ namespace Tablet_App
 
     public sealed partial class EditPhoto : Page
     {
-        Windows.Storage.StorageFolder saveFolder = ApplicationData.Current.LocalFolder;
-        int redo_undo = 0;
         InkManager MyInkManager = new InkManager();
         string DrawingTool;
         double X1, X2, Y1, Y2, StrokeThickness = 1;
@@ -39,67 +35,38 @@ namespace Tablet_App
 
         Line NewLine;
         Ellipse NewEllipse;
-        Polyline Pencil;
         Rectangle NewRectangle;
+        Polyline Pencil;
         Color BorderColor, FillColor;
         uint PenID, TouchID;
         BitmapImage finalImage = new BitmapImage();
         ImageBrush img = new ImageBrush();
-       
+
         StorageFile file;
 
         BitmapImage bitmapImage;
         int redoundoCount = 0;
-        private static List<PropertyInfo> LoadColors()
-        {
-            List<PropertyInfo> colors = new List<PropertyInfo>();
-
-            var t = typeof(Colors);
-            var ti = t.GetTypeInfo();
-            var dp = ti.DeclaredProperties;
-            foreach (var item in dp)
-            {
-                if (item.Name.Equals("Red")
-                    || item.Name.Equals("White")
-                    || item.Name.Equals("Black")
-                    || item.Name.Equals("Blue")
-                    || item.Name.Equals("Green")
-                    || item.Name.Equals("Yellow"))
-                {
-                    colors.Add(item);
-                }
-            }
-
-            return colors;
-        }
 
         public EditPhoto()
         {
             this.InitializeComponent();
 
-            try
-            {
-                canvas.PointerMoved += canvas_PointerMoved;
-                canvas.PointerReleased += canvas_PointerReleased;
-                canvas.PointerPressed += canvas_PointerPressed;
-                canvas.PointerExited += canvas_PointerExited;
-                canvas.PointerEntered += canvas_PointerEntered;
+            canvas.PointerMoved += canvas_PointerMoved;
+            canvas.PointerReleased += canvas_PointerReleased;
+            canvas.PointerPressed += canvas_PointerPressed;
+            canvas.PointerExited += canvas_PointerExited;
+            canvas.PointerEntered += canvas_PointerEntered;
 
-                for (int i = 10; i < 55; i += 10)
-                {
-                    ComboBoxItem Items = new ComboBoxItem();
-                    Items.Content = i;
-                    cmbStrokeThickness.Items.Add(Items);
-                }
-
-                cmbStrokeThickness.SelectedIndex = 0;
-                BorderColor = Colors.White;
-            }
-            catch
+            for (int i = 2; i <= 10; i += 2)
             {
-                ScreenMessage.Show("Something is missing");
+                ComboBoxItem Items = new ComboBoxItem();
+                Items.Content = i;
+                cmbStrokeThickness.Items.Add(Items);
             }
 
+            cmbStrokeThickness.SelectedIndex = 0;
+            cbFillColor.SelectedIndex = 0;
+            cbBorderColor.SelectedIndex = 0;
         }
         #region Drawing Tools Click Events
 
@@ -443,8 +410,7 @@ namespace Tablet_App
 
         private void cmbStrokeThickness_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            StrokeThickness = Convert.ToDouble((cmbStrokeThickness.SelectedIndex + 1)*10);
-            //StrokeThickness = Convert.ToDouble(cmbStrokeThickness.SelectedItem.ToString());
+            StrokeThickness = Convert.ToDouble((e.AddedItems[0] as ComboBoxItem).Content);
         }
 
         private async Task SaveToPNG(RenderTargetBitmap bitmap)
@@ -476,8 +442,6 @@ namespace Tablet_App
                 await bitmapImage.SetSourceAsync(fileStream);
                 imgPreview.Source = bitmapImage;
             }
-
-
         }
 
         private async Task<RenderTargetBitmap> CanvasToBMP()
@@ -551,7 +515,7 @@ namespace Tablet_App
 
         private async void btnNext_Click(object sender, TappedRoutedEventArgs e)
         {
-           
+
             await SaveCanvas();
             StorageFile modifyImage = await StorageFile.GetFileFromPathAsync(Data.MODIFYIMAGE.Path);
             await file.CopyAndReplaceAsync(modifyImage);
