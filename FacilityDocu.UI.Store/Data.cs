@@ -20,6 +20,7 @@ namespace Tablet_App
         public static string BackupPath = string.Empty;
 
         public static bool IsFromCrop;
+        public static bool SYNC_PROCESS;
 
         public async static Task<string> GetUserName()
         {

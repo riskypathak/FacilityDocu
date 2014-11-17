@@ -120,7 +120,7 @@ namespace Tablet_App
             }
         }
 
-        private static void WriteImage(IList<ImageDTO> images, XElement xAction)
+        private static async void WriteImage(IList<ImageDTO> images, XElement xAction)
         {
             XElement xImages = new XElement("images");
             xAction.Add(xImages);
@@ -137,7 +137,8 @@ namespace Tablet_App
                 xImage.Add(new XElement("creationdate", image.CreationDate));
                 xImage.Add(new XElement("description", image.Description));
 
-                xImage.Add(new XElement("path", SaveImage(image)));
+                string path = await SaveImage(image);
+                xImage.Add(new XElement("path", path));
                 xImage.Add(new XElement("tags", string.Join(";",image.Tags.ToArray())));
 
                 WriteImageComments(image.Comments, xImage);
@@ -146,9 +147,28 @@ namespace Tablet_App
             }
         }
         
-        private static string SaveImage(ImageDTO image)
+        private static async Task<string> SaveImage(ImageDTO image)
         {
             string savedPath = Path.Combine(Data.ImagesPath, string.Format("{0}.jpg", image.ImageID.ToString()));
+
+            if (Data.SYNC_PROCESS)
+            {
+                using (HttpClient webClient = new HttpClient())
+                {
+                    Stream imageStream = await webClient.GetStreamAsync(image.Path);
+
+                    byte[] imageData = new byte[imageStream.Length];
+                    using (StreamReader reader = new StreamReader(imageStream))
+                    {
+                        await reader.BaseStream.ReadAsync(imageData, 0, imageData.Length);
+                    }
+
+                    IStorageFolder folder = await StorageFolder.GetFolderFromPathAsync(Data.ImagesPath);
+                    IStorageFile file = await folder.CreateFileAsync(string.Format("{0}.jpg", image.ImageID.ToString()), CreationCollisionOption.ReplaceExisting);
+
+                    await FileIO.WriteBytesAsync(file, imageData);
+                }
+            }
 
             return savedPath;
         }

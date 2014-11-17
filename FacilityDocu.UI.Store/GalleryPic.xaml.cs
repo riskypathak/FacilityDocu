@@ -332,15 +332,16 @@ namespace Tablet_App
         {
             Data.CURRENT_ACTION.Images.Remove(currentImage);
 
-            if (Data.CURRENT_ACTION.Images.Count <= 0)
+
+            if (allImages.Count() <= 0)
             {
-                ScreenMessage.Show("No images for this action. \n Please select another action");
+                ScreenMessage.Show("No images now. \n Please select another action");
                 this.Frame.Navigate(typeof(ActionSelect));
                
             }
             else
             {
-                currentImage = Data.CURRENT_ACTION.Images.First();
+                currentImage = allImages.First();
                 await ChangeScreenControls();
             }
         }

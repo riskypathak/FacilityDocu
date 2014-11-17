@@ -62,25 +62,30 @@ namespace Tablet_App
                 projectIDs.Add(Convert.ToInt32(project.ProjectID), project.LastUpdatedAt);
             }
 
-            var result = service.IsSyncAsync(projectIDs);
+            var result = await service.IsSyncAsync(projectIDs);
 
-            return result.Result.Where(r => r.Value).Select(r => r.Key).ToList();
+            return result.Where(r => r.Value).Select(r => r.Key).ToList();
         }
 
         public SyncManager()
         {
             string strUri = "http://tlof.no-ip.biz:9876/FacilityDocu/FacilityDocuService.svc";
             BasicHttpBinding binding = new BasicHttpBinding();
-            
+
             binding.MaxReceivedMessageSize = 2147483647;
             binding.MaxBufferSize = 2147483647;
             binding.MaxBufferPoolSize = 2147483647;
-            
+
 
             binding.ReaderQuotas.MaxDepth = 2147483647;
             binding.ReaderQuotas.MaxArrayLength = 2147483647;
             binding.ReaderQuotas.MaxBytesPerRead = 2147483647;
             binding.ReaderQuotas.MaxNameTableCharCount = 2147483647;
+
+            //binding.CloseTimeout = TimeSpan.FromMinutes(5);
+            //binding.OpenTimeout = TimeSpan.FromMinutes(5);
+            //binding.ReceiveTimeout = TimeSpan.FromMinutes(5);
+            //binding.SendTimeout = TimeSpan.FromMinutes(5);
 
             service = new FacilityDocuServiceClient(binding, new EndpointAddress(strUri));
         }
@@ -96,10 +101,14 @@ namespace Tablet_App
 
         public async Task UpdateProjectXml()
         {
+            Data.SYNC_PROCESS = true;
+
             foreach (var projectID in ProjectIDs)
             {
                 ProjectXmlWriter.Write(service.GetProjectDetailsAsync(projectID).Result);
             }
+
+            Data.SYNC_PROCESS = true;
         }
 
         public async Task<ProjectDTO> UploadImages(string projectID)
@@ -117,15 +126,34 @@ namespace Tablet_App
                     foreach (ImageDTO image in action.Images)
                     {
                         StorageFile file = await StorageFile.GetFileFromPathAsync(image.Path);
-                        using (IRandomAccessStream stream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read))
-                        {
-                            BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
-                            PixelDataProvider pixelData = await decoder.GetPixelDataAsync();
 
-                            image.FileByteStream = pixelData.DetachPixelData();
+                        var stream = await file.OpenReadAsync();
+
+                        using (var dataReader = new DataReader(stream))
+                        {
+                            var bytes = new byte[stream.Size];
+                            await dataReader.LoadAsync((uint)stream.Size);
+                            dataReader.ReadBytes(bytes);
+
+                            image.FileByteStream = bytes;
                         }
+
+                        //using (IRandomAccessStream stream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read))
+                        //{
+                        //    BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
+                        //    PixelDataProvider pixelData = await decoder.GetPixelDataAsync();
+
+                        //     = pixelData.DetachPixelData();
+                        //}
                     }
-                    await service.UpdateActionImagesAsync(action);
+
+                    try
+                    {
+                        await service.UpdateActionImagesAsync(action);
+                    }
+                    catch (FaultException exception)
+                    {
+                    }
                 }
             }
 
