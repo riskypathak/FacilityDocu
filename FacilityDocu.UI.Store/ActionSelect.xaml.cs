@@ -93,6 +93,7 @@ namespace Tablet_App
                     && cmbModules.SelectedIndex != -1 && cmbSteps.SelectedIndex != -1)
                 {
                     this.Frame.Navigate(typeof(Camera_Page));
+                    return;
                 }
                 else
                 {
@@ -105,6 +106,7 @@ namespace Tablet_App
                 if (cmbRigTypes.SelectedIndex != -1 && cmbProjects.SelectedIndex != -1)
                 {
                     this.Frame.Navigate(typeof(Gallery));
+                    return;
                 }
                 else
                 {
@@ -116,6 +118,7 @@ namespace Tablet_App
         private void backButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(MainPage));
+            
         }
     }
 }

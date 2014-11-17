@@ -38,6 +38,7 @@ namespace Tablet_App
 
             media.Dispose();
             this.Frame.Navigate(typeof(ActionSelect));
+           
         }
 
         private async void capturePreview_Tapped(object sender, TappedRoutedEventArgs e)
@@ -227,6 +228,7 @@ namespace Tablet_App
             WriteImages();
             media.Dispose();
             this.Frame.Navigate(typeof(MainPage));
+           
         }
 
         private void WriteImages()

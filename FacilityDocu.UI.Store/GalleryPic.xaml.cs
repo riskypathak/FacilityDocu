@@ -57,6 +57,7 @@ namespace Tablet_App
                 {
                     ScreenMessage.Show("No images for this rig. \n Please select another rig/project");
                     this.Frame.Navigate(typeof(ActionSelect));
+                    return;
                 }
             }
             else if (Data.CURRENT_MODULE != null && Data.CURRENT_STEP == null)
@@ -67,6 +68,7 @@ namespace Tablet_App
                 {
                     ScreenMessage.Show("No images for this module. \n Please select another module");
                     this.Frame.Navigate(typeof(ActionSelect));
+                    return;
                 }
             }
             else if (Data.CURRENT_STEP != null && Data.CURRENT_ACTION == null)
@@ -77,6 +79,7 @@ namespace Tablet_App
                 {
                     ScreenMessage.Show("No images for this step. \n Please select another step");
                     this.Frame.Navigate(typeof(ActionSelect));
+                    return;
                 }
             }
             else if (Data.CURRENT_ACTION != null)
@@ -87,6 +90,7 @@ namespace Tablet_App
                 {
                     ScreenMessage.Show("No images for this action. \n Please select another action");
                     this.Frame.Navigate(typeof(ActionSelect));
+                    return;
                 }
             }
 
@@ -152,6 +156,7 @@ namespace Tablet_App
         private async void OkBtn_Back_Click(IUICommand command)
         {
             this.Frame.Navigate(typeof(ActionSelect));
+            
         }
 
         private void lstAllImages_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -331,6 +336,7 @@ namespace Tablet_App
             {
                 ScreenMessage.Show("No images for this action. \n Please select another action");
                 this.Frame.Navigate(typeof(ActionSelect));
+               
             }
             else
             {
@@ -392,6 +398,7 @@ namespace Tablet_App
 
             Data.MODIFYIMAGE = currentImage;
             this.Frame.Navigate(typeof(EditPhoto));
+           
         }
 
         private async void btnPublish_Click(object sender, RoutedEventArgs e)
@@ -455,6 +462,7 @@ namespace Tablet_App
         {
             ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
             this.Frame.Navigate(typeof(MainPage));
+           
         }
     }
 }
