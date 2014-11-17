@@ -26,7 +26,6 @@ namespace Tablet_App
         public MainPage()
         {
             this.InitializeComponent();
-            configFileCheck();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -35,7 +34,7 @@ namespace Tablet_App
 
         private void btnTakePicture_Click(object sender, RoutedEventArgs e)
         {
-            Data.menuClick = 3;
+            Data.menuClick = new Camera_Page();
             this.Frame.Navigate(typeof(ActionSelect));
 
         }
@@ -47,21 +46,8 @@ namespace Tablet_App
 
         private void btnGallery_Click(object sender, RoutedEventArgs e)
         {
-            Data.menuClick = 2;
+            Data.menuClick = new Gallery();
             this.Frame.Navigate(typeof(ActionSelect));
-        }
-        public async void configFileCheck()
-        {
-            StorageFile configFile;
-            try
-            {
-                configFile = await ApplicationData.Current.LocalFolder.GetFileAsync("config.xml");
-            }
-            catch (FileNotFoundException)
-            {
-                Initialize();
-            }
-
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)

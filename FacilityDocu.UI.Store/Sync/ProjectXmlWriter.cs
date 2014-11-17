@@ -17,7 +17,7 @@ namespace Tablet_App
     public static class ProjectXmlWriter
     {
 
-        public static async void Write(ProjectDTO project)
+        public static async Task Write(ProjectDTO project)
         {
             XElement xProject = new XElement("project");
 
