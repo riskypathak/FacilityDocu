@@ -1,0 +1,94 @@
+﻿<Page x:ConnectionId='1'
+    x:Class="Tablet_App.ActionSelect"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Tablet_App"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"                     >
+
+    <Grid x:Name="title" Background="#FF05456D" Margin="12,0,-12,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="66*"/>
+            <RowDefinition Height="661*"/>
+            <RowDefinition Height="41*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="45*"/>
+            <ColumnDefinition Width="638*"/>
+        </Grid.ColumnDefinitions>
+        <Ellipse Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="46" Margin="34,18,0,0" Grid.Row="1" Stroke="Black" VerticalAlignment="Top" Width="43"/>
+
+        <TextBlock x:Name="head" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" Text="Select Action" VerticalAlignment="Top" Height="89" Width="817" FontSize="70" Foreground="White" Grid.Column="1" Grid.Row="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="3,130,0,0" TextWrapping="Wrap" Text="Project Name :" VerticalAlignment="Top" FontSize="45" Foreground="White" Grid.Column="1" Grid.Row="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="3,239,0,0" TextWrapping="Wrap" Text="Rig Type :" VerticalAlignment="Top" FontSize="45" Foreground="White" Grid.Column="1" Grid.Row="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="3,341,0,0" TextWrapping="Wrap" Text="Category :" VerticalAlignment="Top" FontSize="45" Foreground="White" Grid.Column="1" Grid.Row="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="3,444,0,0" TextWrapping="Wrap" Text="Sub Category :" VerticalAlignment="Top" FontSize="45" Foreground="White" Grid.Column="1" Grid.Row="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="3,559,0,0" TextWrapping="Wrap" Text="Action :" VerticalAlignment="Top" FontSize="45" Foreground="White" Grid.Column="1" Grid.Row="1"/>
+        <ComboBox x:ConnectionId='2'  x:Name="cmbProjects" HorizontalAlignment="Left" Margin="359,132,0,0" VerticalAlignment="Top" Width="520" Height="55" FontSize="20" Grid.Column="1" Grid.Row="1" PlaceholderText="Choose Your Project"                                                >
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Description}"></TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <ComboBox x:ConnectionId='3' x:Name="cmbModules" HorizontalAlignment="Left" Margin="359,349,0,0"  VerticalAlignment="Top" Width="520" Height="55" FontSize="20"                                                Grid.Column="1" Grid.Row="1" PlaceholderText="Choose an item" >
+            <ComboBox.Transitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition FromHorizontalOffset="1200"/>
+                </TransitionCollection>
+            </ComboBox.Transitions>
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"></TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <ComboBox x:ConnectionId='4' x:Name="cmbSteps" HorizontalAlignment="Left" Margin="359,450,0,0"  VerticalAlignment="Top" Width="520" Height="55" FontSize="20"                                              Grid.Column="1" Grid.Row="1" PlaceholderText="Choose an item" >
+            <ComboBox.Transitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition FromHorizontalOffset="1800"/>
+                </TransitionCollection>
+            </ComboBox.Transitions>
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"></TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <Button x:ConnectionId='5' FontFamily="Segoe UI Symbol" FontSize="60" Content="&#xE0AC;" Margin="1101,577,0,29" BorderBrush="{x:Null}" Height="96"                       Background="{x:Null}" Foreground="White" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Width="106" />
+        <Button x:ConnectionId='6' x:Name="backButton" Margin="35,21,0,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
+        	Style="{StaticResource NavigationBackButtonNormalStyle}"
+        	VerticalAlignment="Top"
+        	AutomationProperties.Name="Back"
+        	AutomationProperties.AutomationId="BackButton"
+        	AutomationProperties.ItemType="Navigation Button"                            Foreground="#FF0E0B0B" Background="#FF62627C" BorderBrush="#FF0B0B0C" Grid.Row="1"/>
+
+        <ComboBox x:ConnectionId='7' x:Name="cmbRigTypes" HorizontalAlignment="Left" Margin="359,239,0,0" VerticalAlignment="Top" Width="520" Height="55" FontSize="20"                                                 Grid.Column="1" Grid.Row="1" PlaceholderText="Choose an item">
+            <ComboBox.Transitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition FromHorizontalOffset="600"/>
+                </TransitionCollection>
+            </ComboBox.Transitions>
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"></TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <ComboBox x:ConnectionId='8' x:Name="cmbActions" HorizontalAlignment="Left" Margin="359,559,0,0" VerticalAlignment="Top" Height="55" Width="520" FontSize="20"                                                Grid.Column="1" Grid.Row="1" PlaceholderText="Choose an item">
+            <ComboBox.Transitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition FromHorizontalOffset="2400"/>
+                </TransitionCollection>
+            </ComboBox.Transitions>
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"></TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+    </Grid>
+</Page>
+

@@ -1,0 +1,8 @@
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Utilities\bin\Debug\FacilityDocu.UI.Utilities.dll.config
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Utilities\bin\Debug\FacilityDocu.UI.Utilities.dll
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Utilities\bin\Debug\FacilityDocu.UI.Utilities.pdb
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Utilities\bin\Debug\itextsharp.dll
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Utilities\bin\Debug\itextsharp.xml
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Utilities\obj\Debug\FacilityDocu.UI.Utilities.dll
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Utilities\obj\Debug\FacilityDocu.UI.Utilities.pdb
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Utilities\obj\Debug\FacilityDocu.UI.Utilities.csprojResolveAssemblyReference.cache

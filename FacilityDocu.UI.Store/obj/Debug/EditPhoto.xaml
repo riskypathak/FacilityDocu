@@ -1,0 +1,107 @@
+﻿<Page x:ConnectionId='1'
+    x:Class="Tablet_App.EditPhoto"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Tablet_App"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"                       >
+
+    <Page.Resources>
+        <Style x:Key="PaintButton" TargetType="Button">
+            <Setter Property="FontFamily" Value="Segoe UI Symbol"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Width" Value="auto"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Grid.Row" Value="0"/>
+        </Style>
+    </Page.Resources>
+    <Grid Background="#FF174D83">
+        <Grid HorizontalAlignment="Left" Height="766" Margin="1126,2,0,0" VerticalAlignment="Top" Width="240" Background="#FF174D83">
+            <ComboBox x:ConnectionId='5' x:Name="cmbStrokeThickness"                                                        Margin="108,163,0,556" FontSize="25"/>
+            <Button x:ConnectionId='6' x:Name="btnLine"                       Content="╱" Style="{StaticResource PaintButton}" ToolTipService.ToolTip="Line" Margin="83,239,0,475" Height="52" Width="79"/>
+            <Button x:ConnectionId='7' x:Name="btnEllipse"                          Style="{StaticResource PaintButton}" Content="O" ToolTipService.ToolTip="Ellipse" Margin="164,239,-2,475" Height="52" Width="78"/>
+            <Button x:ConnectionId='8' x:Name="btnPencil"                         Style="{StaticResource PaintButton}" Content="✎" ToolTipService.ToolTip="Pencil" Margin="3,241,0,475" Height="50" Width="78" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+            <Button x:ConnectionId='9' x:Name="btnRectangle"                            Style="{StaticResource PaintButton}" Content="▭" ToolTipService.ToolTip="Rectangle" Margin="5,297,0,417" Height="52" Width="80" ScrollViewer.VerticalScrollBarVisibility="Disabled" RenderTransformOrigin="0.262,0.154"/>
+
+            <Image x:Name="imgPreview" HorizontalAlignment="Left" Height="219" Margin="6,418,0,0" VerticalAlignment="Top" Width="234"/>
+            <Button x:ConnectionId='10' x:Name="btnCrop" Content="Crop" HorizontalAlignment="Left" Height="37" Margin="158,362,0,0" VerticalAlignment="Top" Width="71"                        />
+
+
+            <TextBlock Text="Fill" HorizontalAlignment="Left" Margin="6,53,0,0" VerticalAlignment="Top" Foreground="#FFF7F0F0"  Width="120" Height="47" FontSize="25"/>
+            <TextBlock Text="Border" HorizontalAlignment="Left" Margin="0,125,0,0" VerticalAlignment="Top" Foreground="#FFF7F0F0"  Width="120" Height="47" FontSize="25"/>
+            <TextBlock HorizontalAlignment="Left" Height="47" Margin="6,170,0,0" TextWrapping="Wrap" Text="Size" VerticalAlignment="Top" Width="89" Foreground="#FFFDFAFA" FontSize="25"/>
+
+            <ComboBox x:ConnectionId='11'                                               Name="cmbResize" PlaceholderText="Resize" HorizontalAlignment="Left" Margin="2,366,0,0" VerticalAlignment="Top" Width="120">
+                <ComboBox.Items>
+                    <ComboBoxItem>640X480</ComboBoxItem>
+                    <ComboBoxItem>1024X768</ComboBoxItem>
+                    <ComboBoxItem>1280X1024</ComboBoxItem>
+                </ComboBox.Items>
+            </ComboBox>
+            <ComboBox x:ConnectionId='12'                                                  x:Name="cbFillColor" FontSize="25" Margin="108,38,0,674">
+                <ComboBox.Items>
+
+                    <ComboBoxItem>
+                        <Rectangle Width="35" Height="30" Fill="Transparent"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <Rectangle Width="35" Height="30" Fill="Red"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <Rectangle Width="35" Height="30" Fill="Blue"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <Rectangle Width="35" Height="30" Fill="Green"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <Rectangle Width="35" Height="30" Fill="Yellow"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <Rectangle Width="35" Height="30" Fill="Black"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    </ComboBoxItem>
+                </ComboBox.Items>
+            </ComboBox>
+            <ComboBox x:ConnectionId='13'                                                    FontSize="25" x:Name="cbBorderColor" Margin="108,113,0,608">
+                <ComboBox.Items>
+                    <ComboBoxItem>
+                        <Rectangle Width="35" Height="30" Fill="Transparent"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <Rectangle Width="35" Height="30" Fill="Red"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <Rectangle Width="35" Height="30" Fill="Blue"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <Rectangle Width="35" Height="30" Fill="Green"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <Rectangle Width="35" Height="30" Fill="Yellow"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <Rectangle Width="35" Height="30" Fill="Black"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    </ComboBoxItem>
+                </ComboBox.Items>
+            </ComboBox>
+            <Button x:ConnectionId='14' x:Name="btn_Undo" FontFamily="Segoe UI Symbol" Content="&#xE10E;" HorizontalAlignment="Left" Height="54" Margin="89,295,0,0" VerticalAlignment="Top" Width="68"                         />
+            <Button x:ConnectionId='15' x:Name="btn_Redo" FontFamily="Segoe UI Symbol" Content="&#xE10D;" HorizontalAlignment="Left" Height="55" Margin="161,294,0,0" VerticalAlignment="Top" Width="77"                         />
+        </Grid>
+
+        <ScrollViewer  HorizontalAlignment="Left" Height="768" VerticalAlignment="Top" Width="1024" BorderBrush="{x:Null}" BorderThickness="5,0,0,0"  Margin="82,0,0,0" ZoomMode="Enabled" MinZoomFactor="0.7" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="{x:Null}">
+            <Canvas x:ConnectionId='4'   Margin="0,0,0,0" x:Name="canvas" HorizontalAlignment="Left" VerticalAlignment="Top" Height="768" RenderTransformOrigin="0.5,0.5" Width="1024"                                     >
+            </Canvas>
+        </ScrollViewer>
+
+        <Button x:ConnectionId='2' FontFamily="Segoe UI Symbol" FontSize="60" Content="&#xE0AC;" Margin="1187,652,0,13" BorderBrush="{x:Null}" Height="103"                        Background="{x:Null}" Foreground="White" Width="107" />
+        <Button x:ConnectionId='3' x:Name="backButton_Copy" Margin="31,21,0,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
+        	Style="{StaticResource NavigationBackButtonNormalStyle}"
+        	VerticalAlignment="Top"
+        	AutomationProperties.Name="Back"
+        	AutomationProperties.AutomationId="BackButton"
+        	AutomationProperties.ItemType="Navigation Button"                        />
+    </Grid>
+</Page>
+

@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>GEEKISHOR-PC</Machine>
+    <WindowsUser>KishorBikram</WindowsUser>
+    <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
+    <SolutionConfiguration>Debug|AnyCPU</SolutionConfiguration>
+    <PackageArchitecture>neutral</PackageArchitecture>
+    <PackageIdentityName>FacilityDocu</PackageIdentityName>
+    <IntermediateOutputPath>C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\</IntermediateOutputPath>
+    <RegisteredManifestChecksum>95C0123B7CC4601DE0FA7B613C9F26FB04116C678130210A7E240EE6835D78FE</RegisteredManifestChecksum>
+    <RegisteredPackageMoniker>FacilityDocu_1.0.0.13_neutral__09kc7k807qqzm</RegisteredPackageMoniker>
+    <RegisteredUserModeAppID>FacilityDocu_09kc7k807qqzm!App</RegisteredUserModeAppID>
+    <RegisteredPackageID>FacilityDocu</RegisteredPackageID>
+    <RegisteredPackagePublisher>CN=Tejasvi</RegisteredPackagePublisher>
+    <RegisteredVersion>1.0.0.13</RegisteredVersion>
+    <JitOptimizationSuppressed>True</JitOptimizationSuppressed>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2014-11-17T15:31:16.798</Modified>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\Tablet App.exe">
+      <PackagePath>Tablet App.exe</PackagePath>
+      <Modified>2014-11-17T15:31:16.327</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\Assets\Logo.scale-100.png">
+      <PackagePath>Assets\Logo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2014-11-15T09:35:25.108</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\Assets\Sample.png">
+      <PackagePath>Assets\Sample.png</PackagePath>
+      <Modified>2014-11-15T09:35:25.116</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\Assets\SmallLogo.scale-100.png">
+      <PackagePath>Assets\SmallLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2014-11-15T09:35:25.117</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\Assets\SplashScreen.scale-100.png">
+      <PackagePath>Assets\SplashScreen.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2014-11-15T09:35:25.118</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\Assets\StoreLogo.scale-100.png">
+      <PackagePath>Assets\StoreLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2014-11-15T09:35:25.119</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\App.xbf">
+      <PackagePath>App.xbf</PackagePath>
+      <Modified>2014-11-17T15:31:15.742</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\ActionSelect.xbf">
+      <PackagePath>ActionSelect.xbf</PackagePath>
+      <Modified>2014-11-17T15:31:15.745</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\CameraOpen.xbf">
+      <PackagePath>CameraOpen.xbf</PackagePath>
+      <Modified>2014-11-17T15:31:15.748</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\Common\CommonStyles.xbf">
+      <PackagePath>Common\CommonStyles.xbf</PackagePath>
+      <Modified>2014-11-17T15:31:15.786</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\Common\HighContrastDictionary.xbf">
+      <PackagePath>Common\HighContrastDictionary.xbf</PackagePath>
+      <Modified>2014-11-17T15:31:15.788</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\Common\StandardStyles.xbf">
+      <PackagePath>Common\StandardStyles.xbf</PackagePath>
+      <Modified>2014-11-17T15:31:15.791</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\CropPhoto.xbf">
+      <PackagePath>CropPhoto.xbf</PackagePath>
+      <Modified>2014-11-17T15:31:15.794</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\EditPhoto.xbf">
+      <PackagePath>EditPhoto.xbf</PackagePath>
+      <Modified>2014-11-17T15:31:15.797</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\GalleryPic.xbf">
+      <PackagePath>GalleryPic.xbf</PackagePath>
+      <Modified>2014-11-17T15:31:15.800</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\MainPage.xbf">
+      <PackagePath>MainPage.xbf</PackagePath>
+      <Modified>2014-11-17T15:31:15.803</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\Settings.xbf">
+      <PackagePath>Settings.xbf</PackagePath>
+      <Modified>2014-11-17T15:31:15.806</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\Tablet App.xr.xml">
+      <PackagePath>Tablet App.xr.xml</PackagePath>
+      <Modified>2014-11-17T09:46:16.980</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+      <Modified>2014-11-17T15:31:16.523</Modified>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>

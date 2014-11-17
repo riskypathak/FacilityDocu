@@ -1,0 +1,77 @@
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\App.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\ActionSelect.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\CameraOpen.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\Common\CommonStyles.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\Common\HighContrastDictionary.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\Common\StandardStyles.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\CropPhoto.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\EditPhoto.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\GalleryPic.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\MainPage.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\Settings.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\Tablet App.xr.xml
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\Tablet App.exe
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\Tablet App.pdb
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\resources.pri
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\AppxManifest.xml
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\bin\Debug\Tablet App.build.appxrecipe
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\App.g.i.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\App.g.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\ActionSelect.g.i.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\ActionSelect.g.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\CameraOpen.g.i.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\CameraOpen.g.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\Common\CommonStyles.g.i.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\Common\CommonStyles.g.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\Common\HighContrastDictionary.g.i.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\Common\HighContrastDictionary.g.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\Common\StandardStyles.g.i.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\Common\StandardStyles.g.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\CropPhoto.g.i.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\CropPhoto.g.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\EditPhoto.g.i.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\EditPhoto.g.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\GalleryPic.g.i.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\GalleryPic.g.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\MainPage.g.i.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\MainPage.g.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\Settings.g.i.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\Settings.g.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\XamlTypeInfo.g.cs
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\App.xaml
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\ActionSelect.xaml
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\CameraOpen.xaml
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\Common\CommonStyles.xaml
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\Common\HighContrastDictionary.xaml
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\Common\StandardStyles.xaml
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\CropPhoto.xaml
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\EditPhoto.xaml
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\GalleryPic.xaml
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\MainPage.xaml
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\Settings.xaml
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\App.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\ActionSelect.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\CameraOpen.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\Common\CommonStyles.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\Common\HighContrastDictionary.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\Common\StandardStyles.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\CropPhoto.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\EditPhoto.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\GalleryPic.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\MainPage.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\Settings.xbf
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\XamlSaveStateFile.xml
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\Tablet App.exe
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\Tablet App.pdb
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\priconfig.xml
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\priconfig.xml.intermediate
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\layout.resfiles
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\layout.resfiles.intermediate
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\resources.resfiles
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\resources.resfiles.intermediate
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\pri.resfiles
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\pri.resfiles.intermediate
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\qualifiers.txt
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\qualifiers.txt.intermediate
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\MultipleQualifiersPerDimensionFound.txt
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.Store\obj\Debug\ProjectArchitectures.txt
