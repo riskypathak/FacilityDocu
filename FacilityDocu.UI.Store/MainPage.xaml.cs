@@ -26,6 +26,7 @@ namespace Tablet_App
         public MainPage()
         {
             this.InitializeComponent();
+            CheckConfigXML();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -50,20 +51,25 @@ namespace Tablet_App
             this.Frame.Navigate(typeof(ActionSelect));
         }
 
+        public async void CheckConfigXML()
+        {
+            StorageFile configFile;
+            try
+            {
+                configFile = await ApplicationData.Current.LocalFolder.GetFileAsync("config.xml");
+            }
+            catch (FileNotFoundException)
+            {
+                Initialize();
+            }
+        }
+
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
-                StorageFile configFile;
-                try
-                {
-                    configFile = await ApplicationData.Current.LocalFolder.GetFileAsync("config.xml");
-                }
-                catch (FileNotFoundException)
-                {
-                    Initialize();
-                }
 
+                StorageFile configFile;
                 configFile = await ApplicationData.Current.LocalFolder.GetFileAsync("config.xml");
 
                 XDocument loadedData = XDocument.Load(configFile.Path);

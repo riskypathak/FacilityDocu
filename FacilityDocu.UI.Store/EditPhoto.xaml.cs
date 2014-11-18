@@ -515,10 +515,12 @@ namespace Tablet_App
 
         private async void btnNext_Click(object sender, TappedRoutedEventArgs e)
         {
-
             await SaveCanvas();
             StorageFile modifyImage = await StorageFile.GetFileFromPathAsync(Data.MODIFYIMAGE.Path);
             await file.CopyAndReplaceAsync(modifyImage);
+
+            IStorageFolder backupFolder = await StorageFolder.GetFolderFromPathAsync(Data.BackupPath);
+            await file.CopyAsync(backupFolder, file.Name, NameCollisionOption.ReplaceExisting);
 
             this.Frame.Navigate(typeof(Gallery));
         }

@@ -11,7 +11,6 @@ using System.ServiceModel.Web;
 using System.Text;
 using FacilityDocu.Services.EntityDTOConverter;
 using System.IO;
-using System.Drawing.Imaging;
 
 namespace FacilityDocu.Services
 {
@@ -370,9 +369,9 @@ namespace FacilityDocu.Services
 
             string filePath = System.Web.Hosting.HostingEnvironment.MapPath(string.Format("~/Data/Images/{0}.{1}", imageId, extension));
 
-            using (Stream file = File.Create(filePath))
+            using (MemoryStream ms = new MemoryStream(item.FileByteStream))
             {
-                file.Write(item.FileByteStream, 0, item.FileByteStream.Length);
+                System.Drawing.Image.FromStream(ms).Save(filePath);
             }
 
             return dbImagePath;

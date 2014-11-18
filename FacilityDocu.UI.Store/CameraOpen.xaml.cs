@@ -73,8 +73,10 @@ namespace Tablet_App
 
                 string originalFileName = string.Format("{0}.jpg_org", imageID);
 
-                StorageFile originalFile = await imagesFolder.CreateFileAsync(originalFileName, CreationCollisionOption.ReplaceExisting);
-                await file.CopyAndReplaceAsync(originalFile);
+                await file.CopyAsync(imagesFolder, originalFileName, NameCollisionOption.ReplaceExisting);
+
+                IStorageFolder backupFolder = await StorageFolder.GetFolderFromPathAsync(Data.BackupPath);
+                await file.CopyAsync(backupFolder, file.Name, NameCollisionOption.ReplaceExisting);
 
                 gdvPreview.Visibility = Visibility.Visible;
                 ChangeScreenControls();
@@ -155,17 +157,26 @@ namespace Tablet_App
         private void Edit_btn_Tapped(object sender, TappedRoutedEventArgs e)
         {
             gdvImageDetailEdit.Visibility = Visibility.Visible;
+            txtComment.Text = "";
+            txtImageDescription.Text = "";
+            txtTags.Text = "";
         }
 
         private void discard_New_btn_Tapped(object sender, TappedRoutedEventArgs e)
         {
             gdvPreview.Visibility = Visibility.Collapsed;
+            txtComment.Text = "";
+            txtImageDescription.Text = "";
+            txtTags.Text = "";
         }
 
         private void Save_New_btn_Tapped(object sender, TappedRoutedEventArgs e)
         {
             Data.CURRENT_ACTION.Images.Add(currentImage);
             gdvPreview.Visibility = Visibility.Collapsed;
+            txtComment.Text = "";
+            txtImageDescription.Text = "";
+            txtTags.Text = "";
         }
 
         private void Save_Next_btn_Tapped(object sender, TappedRoutedEventArgs e)
@@ -196,17 +207,20 @@ namespace Tablet_App
                             Data.CURRENT_MODULE = Data.CURRENT_RIG.Modules[0];
                             Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps[0];
                             Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[0];
+                            gdvPreview.Visibility = Visibility.Collapsed;           //
                         }
                     }
                     else
                     {
                         Data.CURRENT_MODULE = Data.CURRENT_RIG.Modules[currentModuleIdex + 1];
-                        Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps[0];
-                        Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[0];
+                        Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps[0];     
+                        Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[0];   
+                        gdvPreview.Visibility = Visibility.Collapsed;        //
                     }
                 }
                 else
                 {
+                    gdvPreview.Visibility = Visibility.Collapsed;        //
                     Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps[currentStepIdex + 1];
                     Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[0];
                 }
@@ -214,10 +228,13 @@ namespace Tablet_App
             else
             {
                 Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[currentActionIdex + 1];
+                gdvPreview.Visibility = Visibility.Collapsed;          //
             }
 
-            gdvPreview.Visibility = Visibility.Collapsed;
             ChangeScreenControls();
+            txtComment.Text = "";
+            txtImageDescription.Text = "";
+            txtTags.Text = "";
         }
 
         private void Save_Close_btn_Tapped(object sender, TappedRoutedEventArgs e)
@@ -227,6 +244,10 @@ namespace Tablet_App
             WriteImages();
             media.Dispose();
             this.Frame.Navigate(typeof(MainPage));
+            txtComment.Text = "";
+            txtImageDescription.Text = "";
+            txtTags.Text = "";
+            ScreenMessage.Show("Successfully saved!");
         }
 
         private void WriteImages()
