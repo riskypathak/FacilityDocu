@@ -205,20 +205,20 @@ namespace Tablet_App
                             Data.CURRENT_MODULE = Data.CURRENT_RIG.Modules[0];
                             Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps[0];
                             Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[0];
-                            gdvPreview.Visibility = Visibility.Collapsed;
+                            gdvPreview.Visibility = Visibility.Collapsed;           //
                         }
                     }
                     else
                     {
                         Data.CURRENT_MODULE = Data.CURRENT_RIG.Modules[currentModuleIdex + 1];
-                        Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps[0];
-                        Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[0];
-                        gdvPreview.Visibility = Visibility.Collapsed;
+                        Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps[0];     
+                        Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[0];   
+                        gdvPreview.Visibility = Visibility.Collapsed;        //
                     }
                 }
                 else
                 {
-                    gdvPreview.Visibility = Visibility.Collapsed;
+                    gdvPreview.Visibility = Visibility.Collapsed;        //
                     Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps[currentStepIdex + 1];
                     Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[0];
                 }
@@ -226,7 +226,7 @@ namespace Tablet_App
             else
             {
                 Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions[currentActionIdex + 1];
-                gdvPreview.Visibility = Visibility.Collapsed;
+                gdvPreview.Visibility = Visibility.Collapsed;          //
             }
 
             ChangeScreenControls();
