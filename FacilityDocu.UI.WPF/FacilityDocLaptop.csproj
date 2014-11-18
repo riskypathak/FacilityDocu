@@ -117,6 +117,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Data\ProjectXml\sample.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Data\Output\sample.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -130,15 +136,9 @@
     <Content Include="Assets\warningdisable.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Attachments\InsertData.xlsx">
+    <None Include="Data\Attachments\sample.atc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Attachments\Invoice.pdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Attachments\PRARisky.pdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
     <None Include="FacilityDocLaptop_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\FacilityDocu.UI.Utilities.Services.ActionDTO.datasource" />
@@ -212,21 +212,9 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\Images\2.jpeg">
+    <None Include="Data\Images\sample.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Images\3.jpeg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Images\4.jpeg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Images\5.jpeg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Output\2.jpeg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -245,9 +233,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\ProjectXml\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

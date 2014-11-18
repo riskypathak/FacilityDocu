@@ -53,6 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Data\Attachments\sample.atc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\DataSources\FacilityDocu.UI.Utilities.Services.ProjectDTO.datasource" />
     <None Include="Properties\DataSources\FacilityDocu.UI.Utilities.Services.ToolDTO.datasource" />
     <None Include="Service References\Services\FacilityDocuService.wsdl" />
@@ -94,6 +97,21 @@
     <None Include="Service References\Services\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\Images\sample.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\Output\sample.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\ProjectXml\sample.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

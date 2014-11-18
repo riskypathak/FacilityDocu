@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="FacilityDocLaptop.exe" size="79872">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="FacilityDocLaptop.exe" size="79360">
       <assemblyIdentity name="FacilityDocLaptop" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>eJckqtEKyyoplHwyZsyTIjeOWEVeS6zmA1/7M5t4jBY=</dsig:DigestValue>
+        <dsig:DigestValue>xo5g+B1ZNksw4JMRzuZMPPgKyszp4C2oa3jY1iVFfsY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -61,7 +61,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>797pjhDne052M+1bJRn87bvyvdkStURZv11pFXiNHcA=</dsig:DigestValue>
+        <dsig:DigestValue>+WMo1h96U671jNBCGKieOpmc8prVZLiloaanz5KVhLI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -77,13 +77,13 @@
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="Assets\config.xml" size="90" writeableType="applicationData">
+  <file name="Assets\config.xml" size="87" writeableType="applicationData">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>hCv190A5HX6Au7S3fh604qhbaLadG4ksUKX7thdYHuo=</dsig:DigestValue>
+      <dsig:DigestValue>4BTp8LIyiU3igY8whaVk+hQERZEH8SoKiSGWljlG82k=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Assets\sync.jpg" size="4200">
@@ -113,85 +113,13 @@
       <dsig:DigestValue>goHqEaQGWFgKpBljNtPB8OtxLp5ntB/1Tzni6SecOtw=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Data\Attachments\InsertData.xlsx" size="118209">
+  <file name="FacilityDocLaptop.exe.config" size="1119">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>WuU2MX2XNfuYR1YMVyG3Fy2xLpunkRuMd/CpEREG+MA=</dsig:DigestValue>
-    </hash>
-  </file>
-  <file name="Data\Attachments\Invoice.pdf" size="25581">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>fhqciwvP8K5CA4Wgxf0VlZ2zIqxLWMVf3piHGG59afY=</dsig:DigestValue>
-    </hash>
-  </file>
-  <file name="Data\Attachments\PRARisky.pdf" size="1139685">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>e/7kNCx/nV3gWaRdhX3d2y1Z4yjza+nfBUaQF+XfK7c=</dsig:DigestValue>
-    </hash>
-  </file>
-  <file name="Data\Images\2.jpeg" size="62751">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>vAK7sAl6iOeRpns6gNz3d53lSMatzosD3dirkAoy1to=</dsig:DigestValue>
-    </hash>
-  </file>
-  <file name="Data\Images\3.jpeg" size="62751">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>vAK7sAl6iOeRpns6gNz3d53lSMatzosD3dirkAoy1to=</dsig:DigestValue>
-    </hash>
-  </file>
-  <file name="Data\Images\4.jpeg" size="1233">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>cxQGhpNqXnjwVCKgKdRvvXQYv4gRc/RLm6eWAsgxWD0=</dsig:DigestValue>
-    </hash>
-  </file>
-  <file name="Data\Images\5.jpeg" size="31560">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>p0UKEe/eXxhhsBqKrlYsazZfZ2W/HWb5dOIWUjpwFk0=</dsig:DigestValue>
-    </hash>
-  </file>
-  <file name="Data\Output\2.jpeg" size="62751">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>vAK7sAl6iOeRpns6gNz3d53lSMatzosD3dirkAoy1to=</dsig:DigestValue>
-    </hash>
-  </file>
-  <file name="FacilityDocLaptop.exe.config" size="1145">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>HAANppPba4CDqEORkY9E1hk5dx1SzZnKiaB5dUk3alo=</dsig:DigestValue>
+      <dsig:DigestValue>UpaqZ2DXekyEfOPT+5hu61US1+1DGVemMRNGYgn4PuQ=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>
