@@ -48,42 +48,42 @@ namespace Tablet_App
             try
             {
                 StorageFolder projectFolder = await StorageFolder.GetFolderFromPathAsync(txtProjectPath.Text);
-                await projectFolder.CreateFileAsync("temp");
+                await projectFolder.CreateFileAsync("temp.jpg");
 
-                StorageFile tempFile = await projectFolder.GetFileAsync("temp");
+                StorageFile tempFile = await projectFolder.GetFileAsync("temp.jpg");
                 await tempFile.DeleteAsync();
             }
             catch (Exception)
             {
-                (new MessageDialog("ProjectXml path is either doesnot exist or does not have read/write access", "Error")).ShowAsync();
+                (new MessageDialog("ProjectXml path either doesnot exist or does not have read/write access", "Error")).ShowAsync();
                 return;
             }
 
             try
             {
                 StorageFolder imagesFolder = await StorageFolder.GetFolderFromPathAsync(txtImagesPath.Text);
-                await imagesFolder.CreateFileAsync("temp");
+                await imagesFolder.CreateFileAsync("temp.jpg");
 
-                StorageFile tempFile = await imagesFolder.GetFileAsync("temp");
+                StorageFile tempFile = await imagesFolder.GetFileAsync("temp.jpg");
                 await tempFile.DeleteAsync();
             }
             catch (Exception)
             {
-                (new MessageDialog("Data path is either doesnot exist or does not have read/write access", "Error")).ShowAsync();
+                (new MessageDialog("Data path either doesnot exist or does not have read/write access", "Error")).ShowAsync();
                 return;
             }
 
             try
             {
                 StorageFolder backupFolder = await StorageFolder.GetFolderFromPathAsync(txtBackupPath.Text);
-                await backupFolder.CreateFileAsync("temp");
+                await backupFolder.CreateFileAsync("temp.jpg");
 
-                StorageFile tempFile = await backupFolder.GetFileAsync("temp");
+                StorageFile tempFile = await backupFolder.GetFileAsync("temp.jpg");
                 await tempFile.DeleteAsync();
             }
             catch (Exception)
             {
-                (new MessageDialog("Backup path is either doesnot exist or does not have read/write access", "Error")).ShowAsync();
+                (new MessageDialog("Backup path either doesnot exist or does not have read/write access", "Error")).ShowAsync();
                 return;
             }
 

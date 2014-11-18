@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Windows.ApplicationModel;
 using Windows.Storage;
@@ -26,7 +27,7 @@ namespace Tablet_App
         public MainPage()
         {
             this.InitializeComponent();
-            CheckConfigXML();
+            
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -51,8 +52,10 @@ namespace Tablet_App
             this.Frame.Navigate(typeof(ActionSelect));
         }
 
-        public async void CheckConfigXML()
+        public async Task CheckConfigXML()
         {
+            bool isInit = true;
+
             StorageFile configFile;
             try
             {
@@ -60,44 +63,48 @@ namespace Tablet_App
             }
             catch (FileNotFoundException)
             {
-                Initialize();
+                isInit = false;
+            }
+
+            if (!isInit)
+            {
+                await Initialize();
             }
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            try
+            await CheckConfigXML();
+            await Read();
+
+        }
+
+        private static async Task Read()
+        {
+            StorageFile configFile;
+            configFile = await ApplicationData.Current.LocalFolder.GetFileAsync("config.xml");
+
+            XDocument loadedData = XDocument.Load(configFile.Path);
+
+            var data = from query in loadedData.Elements("settings")
+                       select new
+                       {
+                           ProjectXmlPath = query.Element("projectxml").Value,
+                           ImagesPath = query.Element("images").Value,
+                           BackupPath = query.Element("backup").Value,
+                       };
+
+
+            foreach (var read in data)
             {
 
-                StorageFile configFile;
-                configFile = await ApplicationData.Current.LocalFolder.GetFileAsync("config.xml");
-
-                XDocument loadedData = XDocument.Load(configFile.Path);
-
-                var data = from query in loadedData.Elements("settings")
-                           select new
-                           {
-                               ProjectXmlPath = query.Element("projectxml").Value,
-                               ImagesPath = query.Element("images").Value,
-                               BackupPath = query.Element("backup").Value,
-                           };
-
-
-                foreach (var read in data)
-                {
-
-                    Data.ProjectXmlPath = read.ProjectXmlPath;
-                    Data.ImagesPath = read.ImagesPath;
-                    Data.BackupPath = read.BackupPath;
-                }
-            }
-            catch
-            {
-                ScreenMessage.Show("Error to Loading Page");
+                Data.ProjectXmlPath = read.ProjectXmlPath;
+                Data.ImagesPath = read.ImagesPath;
+                Data.BackupPath = read.BackupPath;
             }
         }
 
-        public async void Initialize()
+        public async Task Initialize()
         {
             StorageFile configFile = await ApplicationData.Current.LocalFolder.CreateFileAsync("config.xml", CreationCollisionOption.ReplaceExisting);
 

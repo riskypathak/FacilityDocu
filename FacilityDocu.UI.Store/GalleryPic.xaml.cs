@@ -367,8 +367,7 @@ namespace Tablet_App
 
             try
             {
-                Data.CURRENT_PROJECT = await (new SyncManager()).UploadImages(Data.CURRENT_PROJECT.ProjectID);
-                await ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+                await (new SyncManager()).UploadImages(Data.CURRENT_PROJECT.ProjectID);
                 isSyncDone = true;
             }
             catch (EndpointNotFoundException ex)
@@ -380,6 +379,7 @@ namespace Tablet_App
             if (isSyncDone)
             {
                 ScreenMessage.Show("Project Published!!!");
+                this.Frame.Navigate(typeof(MainPage));
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -21,6 +22,15 @@ namespace Tablet_App
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            // set sync context for ui thread so async void exceptions can be handled, keeps process alive
+            //AsyncSynchronizationContext.Register();
+
+            // ensure unobserved task exceptions (unawaited async methods returning Task or Task<T>) are handled
+            TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+
+            // ensure general app exceptions are handled
+            UnhandledException += App_UnhandledException;
         }
 
         /// <summary>
@@ -68,6 +78,23 @@ namespace Tablet_App
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+            ;
+            string errorMessage = string.Format("{0}\n\n{1}\n{2}", "Something went wrong :(", e.Exception.Message, e.Exception.StackTrace);
+                ScreenMessage.Show(errorMessage);
+        }
+
+        static void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            e.SetObserved();
+
+            string errorMessage = string.Format("{0}\n\n{1}\n{2}", "Something went wrong :(", e.Exception.Message, e.Exception.StackTrace);
+                ScreenMessage.Show(errorMessage);
+
         }
     }
 }

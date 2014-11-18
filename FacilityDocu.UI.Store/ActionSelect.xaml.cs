@@ -45,7 +45,7 @@ namespace Tablet_App
         {
             LoadAllProjects();
         }
-        private void cmbProjects_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void cmbProjects_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Data.CURRENT_PROJECT = ProjectXmlReader.ReadProjectXml(Path.Combine(Data.ProjectXmlPath, string.Format("{0}.xml", (e.AddedItems[0] as ProjectDTO).ProjectID)), false);
             cmbRigTypes.ItemsSource = Data.CURRENT_PROJECT.RigTypes;

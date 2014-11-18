@@ -23,7 +23,7 @@ namespace Tablet_App
         public async Task Sync()
         {
             IList<int> projectIDS = await IsSyncRequired();
-            this.ProjectIDs = new ObservableCollection<int>();
+
             foreach (int projectID in projectIDS)
             {
                 this.ProjectIDs.Add(projectID);
@@ -71,6 +71,8 @@ namespace Tablet_App
             //binding.ReceiveTimeout = TimeSpan.FromMinutes(5);
             //binding.SendTimeout = TimeSpan.FromMinutes(5);
             service = new FacilityDocuServiceClient(binding, new EndpointAddress(strUri));
+
+            this.ProjectIDs = new ObservableCollection<int>();
         }
 
         public SyncManager(IList<int> projectIDs)
@@ -89,11 +91,12 @@ namespace Tablet_App
             {
                 ProjectXmlWriter.Write(service.GetProjectDetailsAsync(projectID).Result);
             }
-            Data.SYNC_PROCESS = true;
+            Data.SYNC_PROCESS = false;
         }
 
         public async Task<ProjectDTO> UploadImages(string projectID)
         {
+
             string projectPath = Path.Combine(Data.ProjectXmlPath, string.Format("{0}.xml", projectID));
             ProjectDTO project = ProjectXmlReader.ReadProjectXml(projectPath, false);
             List<ActionDTO> actions = project.RigTypes.SelectMany(r => r.Modules).SelectMany(m => m.Steps).SelectMany(s => s.Actions).ToList();
@@ -112,12 +115,6 @@ namespace Tablet_App
                             dataReader.ReadBytes(bytes);
                             image.FileByteStream = bytes;
                         }
-                        //using (IRandomAccessStream stream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read))
-                        //{
-                        // BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
-                        // PixelDataProvider pixelData = await decoder.GetPixelDataAsync();
-                        // = pixelData.DetachPixelData();
-                        //}
                     }
                     try
                     {
@@ -128,7 +125,12 @@ namespace Tablet_App
                     }
                 }
             }
-            ProjectDTO projectDTO = await service.GetProjectDetailsAsync(Convert.ToInt32(project.ProjectID));
+
+            ProjectIDs.Add(Convert.ToInt32(projectID));
+            await UpdateProjectXml();
+
+            ProjectDTO projectDTO = ProjectXmlReader.ReadProjectXml(Path.Combine(Data.ProjectXmlPath, string.Format("{0}.xml", projectID)), false);
+
             return projectDTO;
         }
     }
