@@ -91,7 +91,7 @@
         </Grid>
 
         <ScrollViewer  HorizontalAlignment="Left" Height="768" VerticalAlignment="Top" Width="1024" BorderBrush="{x:Null}" BorderThickness="5,0,0,0"  Margin="82,0,0,0" ZoomMode="Enabled" MinZoomFactor="0.7" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="{x:Null}">
-            <Canvas   Margin="0,0,0,0" x:Name="canvas" HorizontalAlignment="Left" VerticalAlignment="Top" Height="768" RenderTransformOrigin="0.5,0.5" Width="1024" PointerMoved="canvas_PointerMoved_1">
+            <Canvas ManipulationMode="All"   Margin="0,0,0,0" x:Name="canvas" HorizontalAlignment="Left" VerticalAlignment="Top" Height="768" RenderTransformOrigin="0.5,0.5" Width="1024">
             </Canvas>
         </ScrollViewer>
 

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="FacilityDocu" Publisher="CN=Tejasvi" Version="1.0.0.13" />
+  <Identity Name="FacilityDocu" Publisher="CN=Tejasvi" Version="1.0.0.15" />
   <Properties>
     <DisplayName>FacilityDocu</DisplayName>
     <PublisherDisplayName>RiskyPathak</PublisherDisplayName>
@@ -15,8 +15,11 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Tablet_App.App">
-      <m2:VisualElements DisplayName="FacilityDocu" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="Tablet App" ForegroundText="light" BackgroundColor="#464646">
+      <m2:VisualElements DisplayName="FacilityDocu" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="FacilityDocu" ForegroundText="light" BackgroundColor="#464646">
         <m2:SplashScreen Image="Assets\SplashScreen.png" />
+        <m2:InitialRotationPreference>
+          <m2:Rotation Preference="landscape" />
+        </m2:InitialRotationPreference>
       </m2:VisualElements>
       <Extensions>
         <Extension Category="windows.search" />
@@ -25,17 +28,17 @@
   </Applications>
   <Capabilities>
     <Capability Name="internetClient" />
-    <Capability Name="videosLibrary" />
+    <Capability Name="internetClientServer" />
     <Capability Name="picturesLibrary" />
     <Capability Name="removableStorage" />
-    <Capability Name="sharedUserCertificates" />
-    <Capability Name="privateNetworkClientServer" />
-    <Capability Name="musicLibrary" />
     <Capability Name="enterpriseAuthentication" />
-    <Capability Name="internetClientServer" />
+    <Capability Name="musicLibrary" />
+    <Capability Name="privateNetworkClientServer" />
+    <Capability Name="videosLibrary" />
+    <Capability Name="sharedUserCertificates" />
     <DeviceCapability Name="webcam" />
     <DeviceCapability Name="microphone" />
-    <DeviceCapability Name="location" />
     <DeviceCapability Name="proximity" />
+    <DeviceCapability Name="location" />
   </Capabilities>
 </Package>

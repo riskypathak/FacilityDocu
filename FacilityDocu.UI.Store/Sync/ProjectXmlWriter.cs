@@ -120,19 +120,19 @@ namespace Tablet_App
                 xImage.Add(new XElement("number", count.ToString("00")));
                 xImage.Add(new XElement("creationdate", image.CreationDate));
                 xImage.Add(new XElement("description", image.Description));
-                string path = SaveImage(image).Result;
-                xImage.Add(new XElement("path", path));
                 xImage.Add(new XElement("tags", string.Join(";", image.Tags.ToArray())));
-                
+                string savedPath = Path.Combine(Data.ImagesPath, string.Format("{0}.jpg", image.ImageID.ToString()));
+                xImage.Add(new XElement("path", savedPath));
                 WriteImageComments(image.Comments, xImage);
 
                 count++;
+
+                await SaveImage(image);
             }
         }
 
-        private static async Task<string> SaveImage(ImageDTO image)
+        private static async Task SaveImage(ImageDTO image)
         {
-            string savedPath = Path.Combine(Data.ImagesPath, string.Format("{0}.jpg", image.ImageID.ToString()));
             if (Data.SYNC_PROCESS)
             {
                 using (HttpClient webClient = new HttpClient())
@@ -149,7 +149,6 @@ namespace Tablet_App
                     await FileIO.WriteBytesAsync(file, imageData);
                 }
             }
-            return savedPath;
         }
 
         private static void WriteImageComments(IList<CommentDTO> comments, XElement xImage)

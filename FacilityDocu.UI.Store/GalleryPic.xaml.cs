@@ -89,6 +89,7 @@ namespace Tablet_App
             if (Data.MODIFYIMAGE != null)
             {
                 currentImage = Data.MODIFYIMAGE;
+                Data.MODIFYIMAGE = null;
             }
             else
             {
