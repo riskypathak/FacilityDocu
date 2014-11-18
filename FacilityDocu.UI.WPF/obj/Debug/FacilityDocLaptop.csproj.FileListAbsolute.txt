@@ -1,4 +1,3 @@
-C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.WPF\bin\Debug\FacilityDocLaptop.exe.config
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.WPF\bin\Debug\Assets\sync.jpg
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.WPF\bin\Debug\Assets\warningenable.png
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.WPF\bin\Debug\Assets\warningdisable.png
@@ -11,6 +10,7 @@ C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.WPF\bin\Debu
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.WPF\bin\Debug\Data\Images\4.jpeg
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.WPF\bin\Debug\Data\Images\5.jpeg
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.WPF\bin\Debug\Data\Output\2.jpeg
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.WPF\bin\Debug\FacilityDocLaptop.exe.config
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.WPF\bin\Debug\FacilityDocLaptop.exe.manifest
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.WPF\bin\Debug\FacilityDocLaptop.application
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.UI.WPF\bin\Debug\FacilityDocLaptop.exe

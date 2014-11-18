@@ -5,6 +5,6 @@ C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Data\bin\Debug\
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Data\bin\Debug\EntityFramework.SqlServer.dll
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Data\bin\Debug\EntityFramework.xml
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Data\bin\Debug\EntityFramework.SqlServer.xml
-C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Data\obj\Debug\FacilityDocu.Data.csprojResolveAssemblyReference.cache
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Data\obj\Debug\FacilityDocu.Data.dll
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Data\obj\Debug\FacilityDocu.Data.pdb
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Data\obj\Debug\FacilityDocu.Data.csprojResolveAssemblyReference.cache

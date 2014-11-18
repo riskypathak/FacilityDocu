@@ -1,3 +1,6 @@
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Services\bin\FacilityDocu.Services.dll.config
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Services\bin\FacilityDocu.Services.dll
+C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Services\bin\FacilityDocu.Services.pdb
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Services\bin\EntityFramework.dll
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Services\bin\EntityFramework.SqlServer.dll
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Services\bin\FacilityDocu.Data.dll
@@ -9,6 +12,3 @@ C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Services\bin\En
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Services\obj\Debug\FacilityDocu.Services.csprojResolveAssemblyReference.cache
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Services\obj\Debug\FacilityDocu.Services.dll
 C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Services\obj\Debug\FacilityDocu.Services.pdb
-C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Services\bin\FacilityDocu.Services.dll.config
-C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Services\bin\FacilityDocu.Services.dll
-C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDocu.Services\bin\FacilityDocu.Services.pdb

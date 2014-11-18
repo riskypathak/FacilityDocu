@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Tablet_App.ServiceReference1;
 using System;
-
 namespace Tablet_App
 {
     class Data
@@ -12,19 +11,16 @@ namespace Tablet_App
         public static StepDTO CURRENT_STEP;
         public static ActionDTO CURRENT_ACTION;
         public static ImageDTO MODIFYIMAGE;
-
         public static object menuClick;
-
-        public static string ProjectXmlPath = string.Empty;         
+        public static string ProjectXmlPath = string.Empty;
         public static string ImagesPath = string.Empty;
         public static string BackupPath = string.Empty;
-
         public static bool IsFromCrop;
-
+        public static bool SYNC_PROCESS;
         public async static Task<string> GetUserName()
         {
             string userName = string.Format("{0} {1}", await Windows.System.UserProfile.UserInformation.GetFirstNameAsync()
-                   , await Windows.System.UserProfile.UserInformation.GetLastNameAsync());
+            , await Windows.System.UserProfile.UserInformation.GetLastNameAsync());
             return userName;
         }
     }
