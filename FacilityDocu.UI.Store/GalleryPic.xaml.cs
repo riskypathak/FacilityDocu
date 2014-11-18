@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Tablet_App.ServiceReference1;
@@ -38,6 +39,7 @@ namespace Tablet_App
         private ImageDTO currentImage;
         private FileOpenPicker openPicker = new FileOpenPicker();
         private IEnumerable<ImageDTO> allImages = new List<ImageDTO>();
+
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             if (Data.CURRENT_RIG != null && Data.CURRENT_MODULE == null)
@@ -95,6 +97,7 @@ namespace Tablet_App
             SetData(currentImage.ImageID);
             ChangeScreenControls();
         }
+
         private async void ShowImages()
         {
             Images = new List<ImageModel>();
@@ -110,12 +113,14 @@ namespace Tablet_App
             }
             lstAllImages.ItemsSource = Images;
         }
+
         public Gallery()
         {
             this.InitializeComponent();
             openPicker.ViewMode = PickerViewMode.Thumbnail;
             openPicker.FileTypeFilter.Add(".jpg");
         }
+
         private async void btnBack_Tapped(object sender, TappedRoutedEventArgs e)
         {
             MessageDialog msgDialog = new MessageDialog("There might be some unsaved changes.\nDo you want to move back without saving?", "FacilityDocu");
@@ -129,10 +134,12 @@ namespace Tablet_App
             //Show message
             await msgDialog.ShowAsync();
         }
+
         private async void OkBtn_Back_Click(IUICommand command)
         {
             this.Frame.Navigate(typeof(ActionSelect));
         }
+
         private void lstAllImages_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count > 0)
@@ -143,12 +150,14 @@ namespace Tablet_App
                 ChangeScreenControls();
             }
         }
+
         private static void SetData(string selectedImageID)
         {
             Data.CURRENT_MODULE = Data.CURRENT_RIG.Modules.Single(m => m.Steps.Any(s => s.Actions.Any(a => a.Images.Any(i => i.ImageID == selectedImageID))));
             Data.CURRENT_STEP = Data.CURRENT_MODULE.Steps.Single(s => s.Actions.Any(a => a.Images.Any(i => i.ImageID == selectedImageID)));
             Data.CURRENT_ACTION = Data.CURRENT_STEP.Actions.Single(a => a.Images.Any(i => i.ImageID == selectedImageID));
         }
+
         public async Task ChangeScreenControls()
         {
             ShowImages();
@@ -174,6 +183,7 @@ namespace Tablet_App
             txtImageResolution.Text = bitmapImage.PixelWidth.ToString() + " X " + bitmapImage.PixelHeight.ToString();
             lstComments.ItemsSource = currentImage.Comments;
         }
+
         private void btnEditImage_Tapped(object sender, TappedRoutedEventArgs e)
         {
             gdvEditImage.Visibility = Visibility.Visible;
@@ -184,6 +194,7 @@ namespace Tablet_App
                 txtEditTag.Text = string.Join(";", currentImage.Tags.ToArray());
             }
         }
+
         public IEnumerable<string> searchdata()
         {
             IEnumerable<string> suggestionList;
@@ -213,6 +224,7 @@ namespace Tablet_App
                 i = 0;
             }
         }
+
         private async void srchSearch_QuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
         {
             try
@@ -247,11 +259,13 @@ namespace Tablet_App
             {
             }
         }
+
         private void rctSearch_Tapped(object sender, TappedRoutedEventArgs e)
         {
             srchSearch.IsEnabled = true;
             rctSearch.Visibility = Visibility.Collapsed;
         }
+
         private async void btnDeleteImage_Tapped(object sender, TappedRoutedEventArgs e)
         {
             MessageDialog msgDialog = new MessageDialog("Do you really want to delete image?\nThis will remove image and its properties from action.", "FacilityDocu");
@@ -265,6 +279,7 @@ namespace Tablet_App
             //Show message
             await msgDialog.ShowAsync();
         }
+
         private async void OkBtn_Delete_Click(IUICommand command)
         {
             Data.CURRENT_ACTION.Images.Remove(currentImage);
@@ -279,10 +294,12 @@ namespace Tablet_App
                 await ChangeScreenControls();
             }
         }
+
         private void btnCancelEdit_Tapped(object sender, TappedRoutedEventArgs e)
         {
             gdvEditImage.Visibility = Visibility.Collapsed;
         }
+
         private async void btnSaveEdit_Tapped(object sender, TappedRoutedEventArgs e)
         {
             currentImage.Description = txtDescriptionEdit.Text;
@@ -303,6 +320,7 @@ namespace Tablet_App
             ChangeScreenControls();
             gdvEditImage.Visibility = Visibility.Collapsed;
         }
+
         private void btnModifyImage_Click(object sender, RoutedEventArgs e)
         {
             if (selectionMode == SelectionMode.RigType)
@@ -323,6 +341,7 @@ namespace Tablet_App
             Data.MODIFYIMAGE = currentImage;
             this.Frame.Navigate(typeof(EditPhoto));
         }
+
         private async void btnPublish_Click(object sender, RoutedEventArgs e)
         {
             MessageDialog msgDialog = new MessageDialog("Do you really want to publish?\nThis will move all project's images to server.", "FacilityDocu");
@@ -336,16 +355,38 @@ namespace Tablet_App
             //Show message
             await msgDialog.ShowAsync();
         }
+
         private async void OkBtn_Publish_Click(IUICommand command)
         {
             await ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
-            Data.CURRENT_PROJECT = await (new SyncManager()).UploadImages(Data.CURRENT_PROJECT.ProjectID);
-            await ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+
+            bool isSyncDone = false;
+
+            progressRing.IsActive = true;
+
+            try
+            {
+                Data.CURRENT_PROJECT = await (new SyncManager()).UploadImages(Data.CURRENT_PROJECT.ProjectID);
+                await ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+                isSyncDone = true;
+            }
+            catch (EndpointNotFoundException ex)
+            {
+                ScreenMessage.Show(string.Format("No Internet Connectivity!!!\n\n{0}\n{1}", ex.Message, ex.StackTrace));
+            }
+
+            progressRing.IsActive = false;
+            if (isSyncDone)
+            {
+                ScreenMessage.Show("Project Published!!!");
+            }
         }
+
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
         }
+
         private async void btnReset_Click(object sender, RoutedEventArgs e)
         {
             MessageDialog msgDialog = new MessageDialog("Do you really want to reset this image to its original?", "FacilityDocu");
@@ -359,6 +400,7 @@ namespace Tablet_App
             //Show message
             await msgDialog.ShowAsync();
         }
+
         private async void OkBtn_Reset_Click(IUICommand command)
         {
             StorageFile modifiedFile = await StorageFile.GetFileFromPathAsync(Path.Combine(Data.ImagesPath, string.Format("{0}.jpg", currentImage.ImageID)));
@@ -366,6 +408,7 @@ namespace Tablet_App
             await originalFile.CopyAndReplaceAsync(modifiedFile);
             ChangeScreenControls();
         }
+
         private void btnSaveClose_Click(object sender, RoutedEventArgs e)
         {
             ProjectXmlWriter.Write(Data.CURRENT_PROJECT);

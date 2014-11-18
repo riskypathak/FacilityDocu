@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.ServiceModel;
 using System.Xml.Linq;
 using Windows.Storage;
 using Windows.UI.Popups;
@@ -108,7 +109,7 @@ namespace Tablet_App
             await (new MessageDialog("Path changed sucessfully", "Success")).ShowAsync();
         }
 
-      
+
         private async void btnReset_Tapped(object sender, TappedRoutedEventArgs e)
         {
             try
@@ -129,9 +130,25 @@ namespace Tablet_App
 
         private async void btnSync_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            await (new SyncManager()).Sync();
+            bool isSyncDone = false;
 
-            ScreenMessage.Show("Data Sync Done!!!");
+            progressRing.IsActive = true;
+
+            try
+            {
+                await (new SyncManager()).Sync();
+                isSyncDone = true;
+            }
+            catch (EndpointNotFoundException ex)
+            {
+                ScreenMessage.Show(string.Format("No Internet Connectivity!!!\n\n{0}\n{1}", ex.Message, ex.StackTrace));
+            }
+
+            progressRing.IsActive = false;
+            if (isSyncDone)
+            {
+                ScreenMessage.Show("Data Sync Done!!!");
+            }
         }
 
     }

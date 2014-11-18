@@ -32,7 +32,16 @@ namespace Tablet_App
             {
                 xProject.Save(fileStream);
             }
+
+            await Backup(xmlFile);
         }
+
+        private async static Task Backup(StorageFile xmlFile)
+        {
+            IStorageFolder backupFolder = await StorageFolder.GetFolderFromPathAsync(Data.BackupPath);
+            await xmlFile.CopyAsync(backupFolder, xmlFile.Name, NameCollisionOption.ReplaceExisting);
+        }
+
         private static void WriteRig(IList<RigTypeDTO> rigTypes, XElement xProject)
         {
             XElement xRigs = new XElement("rigs");
@@ -45,6 +54,7 @@ namespace Tablet_App
                 WriteModule(rigType.Modules, xRig);
             }
         }
+
         private static void WriteModule(IList<ModuleDTO> modules, XElement xRig)
         {
             XElement xModules = new XElement("modules");
@@ -61,6 +71,7 @@ namespace Tablet_App
                 count++;
             }
         }
+
         private static void WriteStep(IList<StepDTO> steps, XElement xModule)
         {
             XElement xSteps = new XElement("steps");
@@ -77,6 +88,7 @@ namespace Tablet_App
                 count++;
             }
         }
+
         private static void WriteAction(IList<ActionDTO> actions, XElement xStep)
         {
             XElement xStepActions = new XElement("actions");
@@ -94,6 +106,7 @@ namespace Tablet_App
                 count++;
             }
         }
+
         private static async void WriteImage(IList<ImageDTO> images, XElement xAction)
         {
             XElement xImages = new XElement("images");
@@ -107,13 +120,16 @@ namespace Tablet_App
                 xImage.Add(new XElement("number", count.ToString("00")));
                 xImage.Add(new XElement("creationdate", image.CreationDate));
                 xImage.Add(new XElement("description", image.Description));
-                string path = await SaveImage(image);
+                string path = SaveImage(image).Result;
                 xImage.Add(new XElement("path", path));
                 xImage.Add(new XElement("tags", string.Join(";", image.Tags.ToArray())));
+                
                 WriteImageComments(image.Comments, xImage);
+
                 count++;
             }
         }
+
         private static async Task<string> SaveImage(ImageDTO image)
         {
             string savedPath = Path.Combine(Data.ImagesPath, string.Format("{0}.jpg", image.ImageID.ToString()));
@@ -121,19 +137,21 @@ namespace Tablet_App
             {
                 using (HttpClient webClient = new HttpClient())
                 {
-                    Stream imageStream = await webClient.GetStreamAsync(image.Path);
-                    byte[] imageData = new byte[imageStream.Length];
-                    using (StreamReader reader = new StreamReader(imageStream))
-                    {
-                        await reader.BaseStream.ReadAsync(imageData, 0, imageData.Length);
-                    }
                     IStorageFolder folder = await StorageFolder.GetFolderFromPathAsync(Data.ImagesPath);
                     IStorageFile file = await folder.CreateFileAsync(string.Format("{0}.jpg", image.ImageID.ToString()), CreationCollisionOption.ReplaceExisting);
+
+                    byte[] imageData = await webClient.GetByteArrayAsync(image.Path);
+                    using (Stream stream = await file.OpenStreamForWriteAsync())
+                    {
+                        stream.Seek(0, SeekOrigin.End);
+                        await stream.WriteAsync(imageData, 0, imageData.Length);
+                    }
                     await FileIO.WriteBytesAsync(file, imageData);
                 }
             }
             return savedPath;
         }
+
         private static void WriteImageComments(IList<CommentDTO> comments, XElement xImage)
         {
             XElement xComments = new XElement("comments");

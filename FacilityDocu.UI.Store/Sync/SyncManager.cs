@@ -19,6 +19,7 @@ namespace Tablet_App
         public ObservableCollection<int> ProjectIDs { get; set; }
         private IReadOnlyList<StorageFile> xmlFiles;
         FacilityDocuServiceClient service;
+
         public async Task Sync()
         {
             IList<int> projectIDS = await IsSyncRequired();
@@ -29,6 +30,7 @@ namespace Tablet_App
             }
             await UpdateProjectXml();
         }
+
         private async Task GetAllProjects()
         {
             List<string> fileTypeFilter = new List<string>();
@@ -38,6 +40,7 @@ namespace Tablet_App
             var folderFile = sf.CreateFileQueryWithOptions(queryOptions);
             xmlFiles = await folderFile.GetFilesAsync();
         }
+
         public async Task<IList<int>> IsSyncRequired()
         {
             await GetAllProjects();
@@ -51,6 +54,7 @@ namespace Tablet_App
             var result = await service.IsSyncAsync(projectIDs);
             return result.Where(r => r.Value).Select(r => r.Key).ToList();
         }
+
         public SyncManager()
         {
             string strUri = "http://tlof.no-ip.biz:9876/FacilityDocu/FacilityDocuService.svc";
@@ -68,6 +72,7 @@ namespace Tablet_App
             //binding.SendTimeout = TimeSpan.FromMinutes(5);
             service = new FacilityDocuServiceClient(binding, new EndpointAddress(strUri));
         }
+
         public SyncManager(IList<int> projectIDs)
             : this()
         {
@@ -76,6 +81,7 @@ namespace Tablet_App
                 ProjectIDs.Add(pID);
             }
         }
+
         public async Task UpdateProjectXml()
         {
             Data.SYNC_PROCESS = true;
@@ -85,6 +91,7 @@ namespace Tablet_App
             }
             Data.SYNC_PROCESS = true;
         }
+
         public async Task<ProjectDTO> UploadImages(string projectID)
         {
             string projectPath = Path.Combine(Data.ProjectXmlPath, string.Format("{0}.xml", projectID));

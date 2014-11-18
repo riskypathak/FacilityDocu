@@ -73,8 +73,10 @@ namespace Tablet_App
 
                 string originalFileName = string.Format("{0}.jpg_org", imageID);
 
-                StorageFile originalFile = await imagesFolder.CreateFileAsync(originalFileName, CreationCollisionOption.ReplaceExisting);
-                await file.CopyAndReplaceAsync(originalFile);
+                await file.CopyAsync(imagesFolder, originalFileName, NameCollisionOption.ReplaceExisting);
+
+                IStorageFolder backupFolder = await StorageFolder.GetFolderFromPathAsync(Data.BackupPath);
+                await file.CopyAsync(backupFolder, file.Name, NameCollisionOption.ReplaceExisting);
 
                 gdvPreview.Visibility = Visibility.Visible;
                 ChangeScreenControls();
