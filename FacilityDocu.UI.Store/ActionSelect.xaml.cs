@@ -21,6 +21,7 @@ namespace Tablet_App
             Data.CURRENT_RIG = null;
             Data.CURRENT_STEP = null;
         }
+
         public async void LoadAllProjects()
         {
             IReadOnlyList<StorageFile> selectFiles;
@@ -41,6 +42,7 @@ namespace Tablet_App
                 cmbProjects.SelectedItem = Data.CURRENT_PROJECT;
             }
         }
+
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             LoadAllProjects();
@@ -50,25 +52,30 @@ namespace Tablet_App
             Data.CURRENT_PROJECT = ProjectXmlReader.ReadProjectXml(Path.Combine(Data.ProjectXmlPath, string.Format("{0}.xml", (e.AddedItems[0] as ProjectDTO).ProjectID)), false);
             cmbRigTypes.ItemsSource = Data.CURRENT_PROJECT.RigTypes;
         }
+
         private void Rigtypetext_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             cmbModules.ItemsSource = (e.AddedItems[0] as RigTypeDTO).Modules;
             Data.CURRENT_RIG = (e.AddedItems[0] as RigTypeDTO);
         }
+
         private void cmbModules_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             cmbSteps.ItemsSource = (e.AddedItems[0] as ModuleDTO).Steps;
             Data.CURRENT_MODULE = (e.AddedItems[0] as ModuleDTO);
         }
+
         private void cmbSteps_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             cmbActions.ItemsSource = (e.AddedItems[0] as StepDTO).Actions;
             Data.CURRENT_STEP = (e.AddedItems[0] as StepDTO);
         }
+
         private void cmbActions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Data.CURRENT_ACTION = (e.AddedItems[0] as ActionDTO);
         }
+
         private void Button_Click(object sender, TappedRoutedEventArgs e)
         {
             if (Data.menuClick != null && Data.menuClick.GetType() == typeof(Camera_Page))

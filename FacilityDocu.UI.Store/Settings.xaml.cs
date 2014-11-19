@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
 using System.Xml.Linq;
+using Tablet_App.ServiceReference1;
 using Windows.Storage;
+using Windows.Storage.Search;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -40,7 +42,24 @@ namespace Tablet_App
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             SetControls();
+            LoadAllProjects();
+        }
 
+        public async void LoadAllProjects()
+        {
+            IReadOnlyList<StorageFile> selectFiles;
+            List<string> fileTypeFilter = new List<string>();
+            fileTypeFilter.Add(".xml");
+            var queryOptions = new QueryOptions(CommonFileQuery.OrderByName, fileTypeFilter);
+            StorageFolder sf = await StorageFolder.GetFolderFromPathAsync(Data.ProjectXmlPath);
+            var folderFile = sf.CreateFileQueryWithOptions(queryOptions);
+            selectFiles = await folderFile.GetFilesAsync();
+            IList<ProjectDTO> projects = new List<ProjectDTO>();
+            foreach (var projectFile in selectFiles)
+            {
+                projects.Add(ProjectXmlReader.ReadProjectXml(projectFile.Path, true));
+            }
+            cmbProjects.ItemsSource = projects;
         }
 
         private async void btnSave_Tapped(object sender, TappedRoutedEventArgs e)
@@ -151,5 +170,63 @@ namespace Tablet_App
             }
         }
 
+        private async void btnPublish_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private async void OkBtn_Publish_Click(IUICommand command)
+        {
+            popupPublish.IsOpen = true;
+        }
+
+        private async void btnPublish_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            MessageDialog msgDialog = new MessageDialog("Do you really want to publish?\nThis will move all project's images to server.", "FacilityDocu");
+            //OK Button
+            UICommand okBtn = new UICommand("Yes");
+            okBtn.Invoked = OkBtn_Publish_Click;
+            msgDialog.Commands.Add(okBtn);
+            //Cancel Button
+            UICommand cancelBtn = new UICommand("No");
+            msgDialog.Commands.Add(cancelBtn);
+            //Show message
+            await msgDialog.ShowAsync();
+        }
+
+        private async void btnOK_Click(object sender, RoutedEventArgs e)
+        {
+            Data.CURRENT_PROJECT = Data.CURRENT_PROJECT = ProjectXmlReader.ReadProjectXml(Path.Combine(Data.ProjectXmlPath, string.Format("{0}.xml", (cmbProjects.SelectedItem as ProjectDTO).ProjectID)), false);
+
+            await ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+
+            bool isSyncDone = false;
+
+            progressRing.IsActive = true;
+
+            try
+            {
+                await(new SyncManager()).Publish(Data.CURRENT_PROJECT.ProjectID);
+                isSyncDone = true;
+            }
+            catch (EndpointNotFoundException ex)
+            {
+                ScreenMessage.Show(string.Format("No Internet Connectivity!!!\n\n{0}\n{1}", ex.Message, ex.StackTrace));
+            }
+
+            progressRing.IsActive = false;
+
+            if (isSyncDone)
+            {
+                ScreenMessage.Show("Project Published!!!");
+                this.Frame.Navigate(typeof(MainPage));
+            }
+
+            popupPublish.IsOpen = false;
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            popupPublish.IsOpen = false;
+        }
     }
 }

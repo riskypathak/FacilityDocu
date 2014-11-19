@@ -77,6 +77,9 @@ namespace Tablet_App
 
                 IStorageFolder backupFolder = await StorageFolder.GetFolderFromPathAsync(Data.BackupPath);
                 await file.CopyAsync(backupFolder, file.Name, NameCollisionOption.ReplaceExisting);
+                
+                //Copying original file too
+                await file.CopyAsync(backupFolder, originalFileName, NameCollisionOption.ReplaceExisting);
 
                 gdvPreview.Visibility = Visibility.Visible;
                 ChangeScreenControls();

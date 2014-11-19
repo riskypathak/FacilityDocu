@@ -103,7 +103,6 @@
             <Button Name="btnCancelEdit" Tapped="btnCancelEdit_Tapped"  Content="Cancel" HorizontalAlignment="Left" Margin="7,686,0,0" VerticalAlignment="Top" FontSize="35" Height="69" Width="178"/>
         </Grid>
         <Button x:Name="btnSave" HorizontalAlignment="Left" Margin="364,552,0,0" VerticalAlignment="Top" Height="57" Width="152" Background="#FF127491" Foreground="#FFFFFDFD" FontSize="30" Content="Save" Click="btnSave_Click"/>
-        <Button x:Name="btnPublish" HorizontalAlignment="Left" Margin="728,552,0,0" VerticalAlignment="Top" Height="57" Width="152" Background="#FF127491" Foreground="#FFFFFDFD" FontSize="30" Content="Publish" Click="btnPublish_Click"/>
         <Button x:Name="btnReset" HorizontalAlignment="Left" Margin="530,488,0,0" VerticalAlignment="Top" Height="57" Width="188" Background="#FF127491" Foreground="#FFFFFDFD" FontSize="30" Content="Reset" Click="btnReset_Click"/>
         <Button x:Name="btnSaveClose" HorizontalAlignment="Left" Margin="529,550,0,0" VerticalAlignment="Top" Height="57" Width="188" Background="#FF127491" Foreground="#FFFFFDFD" FontSize="30" Content="Save&amp;Close" Click="btnSaveClose_Click"/>
     </Grid>

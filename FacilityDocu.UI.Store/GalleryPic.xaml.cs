@@ -45,7 +45,8 @@ namespace Tablet_App
             if (Data.CURRENT_RIG != null && Data.CURRENT_MODULE == null)
             {
                 selectionMode = SelectionMode.RigType;
-                allImages = Data.CURRENT_RIG.Modules.SelectMany(m => m.Steps).SelectMany(s => s.Actions).SelectMany(a => a.Images);
+                allImages = Data.CURRENT_RIG.Modules.SelectMany(m => m.Steps).SelectMany(s => s.Actions)
+                    .SelectMany(a => a.Images.Where(i => !string.IsNullOrEmpty(i.Path)));
                 if (allImages.Count() <= 0)
                 {
                     ScreenMessage.Show("No images for this rig. \n Please select another rig/project");
@@ -56,7 +57,8 @@ namespace Tablet_App
             else if (Data.CURRENT_MODULE != null && Data.CURRENT_STEP == null)
             {
                 selectionMode = SelectionMode.Module;
-                allImages = Data.CURRENT_MODULE.Steps.SelectMany(s => s.Actions).SelectMany(a => a.Images);
+                allImages = Data.CURRENT_MODULE.Steps.SelectMany(s => s.Actions)
+                    .SelectMany(a => a.Images.Where(i => !string.IsNullOrEmpty(i.Path)));
                 if (allImages.Count() <= 0)
                 {
                     ScreenMessage.Show("No images for this module. \n Please select another module");
@@ -67,7 +69,8 @@ namespace Tablet_App
             else if (Data.CURRENT_STEP != null && Data.CURRENT_ACTION == null)
             {
                 selectionMode = SelectionMode.Step;
-                allImages = Data.CURRENT_STEP.Actions.SelectMany(s => s.Images);
+                allImages = Data.CURRENT_STEP.Actions
+                    .SelectMany(a => a.Images.Where(i => !string.IsNullOrEmpty(i.Path)));
                 if (allImages.Count() <= 0)
                 {
                     ScreenMessage.Show("No images for this step. \n Please select another step");
@@ -78,7 +81,7 @@ namespace Tablet_App
             else if (Data.CURRENT_ACTION != null)
             {
                 selectionMode = SelectionMode.Action;
-                allImages = Data.CURRENT_ACTION.Images;
+                allImages = Data.CURRENT_ACTION.Images.Where(i => !string.IsNullOrEmpty(i.Path));
                 if (allImages.Count() <= 0)
                 {
                     ScreenMessage.Show("No images for this action. \n Please select another action");
@@ -341,46 +344,6 @@ namespace Tablet_App
             }
             Data.MODIFYIMAGE = currentImage;
             this.Frame.Navigate(typeof(EditPhoto));
-        }
-
-        private async void btnPublish_Click(object sender, RoutedEventArgs e)
-        {
-            MessageDialog msgDialog = new MessageDialog("Do you really want to publish?\nThis will move all project's images to server.", "FacilityDocu");
-            //OK Button
-            UICommand okBtn = new UICommand("Yes");
-            okBtn.Invoked = OkBtn_Publish_Click;
-            msgDialog.Commands.Add(okBtn);
-            //Cancel Button
-            UICommand cancelBtn = new UICommand("No");
-            msgDialog.Commands.Add(cancelBtn);
-            //Show message
-            await msgDialog.ShowAsync();
-        }
-
-        private async void OkBtn_Publish_Click(IUICommand command)
-        {
-            await ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
-
-            bool isSyncDone = false;
-
-            progressRing.IsActive = true;
-
-            try
-            {
-                await (new SyncManager()).UploadImages(Data.CURRENT_PROJECT.ProjectID);
-                isSyncDone = true;
-            }
-            catch (EndpointNotFoundException ex)
-            {
-                ScreenMessage.Show(string.Format("No Internet Connectivity!!!\n\n{0}\n{1}", ex.Message, ex.StackTrace));
-            }
-
-            progressRing.IsActive = false;
-            if (isSyncDone)
-            {
-                ScreenMessage.Show("Project Published!!!");
-                this.Frame.Navigate(typeof(MainPage));
-            }
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)

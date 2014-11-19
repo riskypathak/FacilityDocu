@@ -145,36 +145,40 @@ namespace Tablet_App
 
         private static IList<ImageDTO> ReadImages(XElement xAction)
         {
-            IList<ImageDTO> images = new List<ImageDTO>();
+            IList<ImageDTO> images = null;
 
-            foreach (XElement xImage in xAction.Element("images").Elements("image"))
+            if (xAction.Element("images") != null)
             {
-                ImageDTO image = new ImageDTO();
+                images = new List<ImageDTO>();
 
-                image.ImageID = Convert.ToString(xImage.Element("id").Value);
-                image.CreationDate = Convert.ToDateTime(xImage.Element("creationdate").Value);
-                image.Description = Convert.ToString(xImage.Element("description").Value);
-                image.Number = Convert.ToString(xImage.Element("number").Value);
-                image.Path = Convert.ToString(xImage.Element("path").Value);
-                image.Tags = new System.Collections.ObjectModel.ObservableCollection<string>();
-
-                foreach (string tag in Convert.ToString(xImage.Element("tags").Value).Split(';').ToList())
+                foreach (XElement xImage in xAction.Element("images").Elements("image"))
                 {
-                    image.Tags.Add(tag);
+                    ImageDTO image = new ImageDTO();
+
+                    image.ImageID = Convert.ToString(xImage.Element("id").Value);
+                    image.CreationDate = Convert.ToDateTime(xImage.Element("creationdate").Value);
+                    image.Description = Convert.ToString(xImage.Element("description").Value);
+                    image.Number = Convert.ToString(xImage.Element("number").Value);
+                    image.Path = Convert.ToString(xImage.Element("path").Value);
+                    image.Tags = new System.Collections.ObjectModel.ObservableCollection<string>();
+
+                    foreach (string tag in Convert.ToString(xImage.Element("tags").Value).Split(';').ToList())
+                    {
+                        image.Tags.Add(tag);
+                    }
+
+                    IList<CommentDTO> comments = ReadComments(xImage);
+
+                    image.Comments = new System.Collections.ObjectModel.ObservableCollection<CommentDTO>();
+
+                    foreach (var comment in comments)
+                    {
+                        image.Comments.Add(comment);
+                    }
+
+                    images.Add(image);
                 }
-
-                IList<CommentDTO> comments = ReadComments(xImage);
-
-                image.Comments = new System.Collections.ObjectModel.ObservableCollection<CommentDTO>();
-
-                foreach (var comment in comments)
-                {
-                    image.Comments.Add(comment);
-                }
-
-                images.Add(image);
             }
-
             return images;
 
         }

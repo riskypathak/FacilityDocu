@@ -17,10 +17,10 @@ namespace Tablet_App
         public static string BackupPath = string.Empty;
         public static bool IsFromCrop;
         public static bool SYNC_PROCESS;
+        public static bool PUBLISH_PROCESS;
         public async static Task<string> GetUserName()
         {
-            string userName = string.Format("{0} {1}", await Windows.System.UserProfile.UserInformation.GetFirstNameAsync()
-            , await Windows.System.UserProfile.UserInformation.GetLastNameAsync());
+            string userName = string.Format("{0}", await Windows.System.UserProfile.UserInformation.GetDisplayNameAsync());
             return userName;
         }
     }

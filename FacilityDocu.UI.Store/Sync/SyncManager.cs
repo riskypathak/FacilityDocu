@@ -51,8 +51,28 @@ namespace Tablet_App
                 ProjectDTO project = ProjectXmlReader.ReadProjectXml(projectPath, true);
                 projectIDs.Add(Convert.ToInt32(project.ProjectID), project.LastUpdatedAt);
             }
-            var result = await service.IsSyncAsync(projectIDs);
-            return result.Where(r => r.Value).Select(r => r.Key).ToList();
+            var result = await service.IsSyncAsync(projectIDs, true);
+
+            DeleteCloseProjects(result.Where(r => r.Value.Equals("closed")).Select(r => r.Key).ToList());
+
+            return result.Where(r => r.Value.Equals("new") || r.Value.Equals("updated")).Select(r => r.Key).ToList();
+        }
+
+        private async void DeleteCloseProjects(List<int> projectClosed)
+        {
+            foreach (int projectID in projectClosed)
+            {
+                string projectPath = Path.Combine(Data.ProjectXmlPath, string.Format("{0}.xml", projectID));
+
+                StorageFolder projectFolder = await StorageFolder.GetFolderFromPathAsync(Data.ProjectXmlPath);
+
+                var item = await projectFolder.TryGetItemAsync(projectPath);
+
+                if (item != null)
+                {
+                    await item.DeleteAsync();
+                }
+            }
         }
 
         public SyncManager()
@@ -94,17 +114,18 @@ namespace Tablet_App
             Data.SYNC_PROCESS = false;
         }
 
-        public async Task<ProjectDTO> UploadImages(string projectID)
+        public async Task<ProjectDTO> Publish(string projectID)
         {
+            Data.PUBLISH_PROCESS = true;
 
             string projectPath = Path.Combine(Data.ProjectXmlPath, string.Format("{0}.xml", projectID));
             ProjectDTO project = ProjectXmlReader.ReadProjectXml(projectPath, false);
-            List<ActionDTO> actions = project.RigTypes.SelectMany(r => r.Modules).SelectMany(m => m.Steps).SelectMany(s => s.Actions).ToList();
+            var actions = project.RigTypes.SelectMany(r => r.Modules).SelectMany(m => m.Steps).SelectMany(s => s.Actions);
             foreach (ActionDTO action in actions)
             {
                 if (action.Images.Count > 0)
                 {
-                    foreach (ImageDTO image in action.Images)
+                    foreach (ImageDTO image in action.Images.Where(i => !string.IsNullOrEmpty(i.Path)))
                     {
                         StorageFile file = await StorageFile.GetFileFromPathAsync(image.Path);
                         var stream = await file.OpenReadAsync();
@@ -122,15 +143,16 @@ namespace Tablet_App
                     }
                     catch (FaultException exception)
                     {
+                        throw exception;
                     }
                 }
             }
 
-            ProjectIDs.Add(Convert.ToInt32(projectID));
-            await UpdateProjectXml();
+            await ProjectXmlWriter.Write(project);
 
             ProjectDTO projectDTO = ProjectXmlReader.ReadProjectXml(Path.Combine(Data.ProjectXmlPath, string.Format("{0}.xml", projectID)), false);
 
+            Data.PUBLISH_PROCESS = false;
             return projectDTO;
         }
     }
