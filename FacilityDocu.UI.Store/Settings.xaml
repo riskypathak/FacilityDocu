@@ -32,7 +32,7 @@
         <Button x:Name="btnSync" ToolTipService.ToolTip="Take latest project from server" Content="Sync" Grid.Column="1" HorizontalAlignment="Left" Height="67" Margin="700,45,0,0" VerticalAlignment="Top" Width="173" FontSize="35" Tapped="btnSync_Tapped"/>
         <ProgressRing Foreground="White" Name="progressRing" IsActive="False" Grid.Column="1" HorizontalAlignment="Left" Margin="464,30,0,0" VerticalAlignment="Top" Height="96" Width="224"/>
         <Button x:Name="btnPublish" ToolTipService.ToolTip="Move Unpublished images to server" Content="Publish" Grid.Column="1" HorizontalAlignment="Left" Height="67" Margin="488,45,0,0" VerticalAlignment="Top" Width="173" FontSize="35" Tapped="btnPublish_Tapped"/>
-        <Popup Opacity="100"  x:Name="popupPublish" IsOpen="false" IsLightDismissEnabled="True">
+        <Popup Opacity="80"  x:Name="popupPublish" IsOpen="False" IsLightDismissEnabled="True" Canvas.ZIndex="22"  Grid.Column="1" HorizontalAlignment="Left" Height="67" Margin="488,45,0,0" VerticalAlignment="Top">
             <StackPanel Orientation="Vertical">
             <ComboBox  x:Name="cmbProjects" HorizontalAlignment="Left" PlaceholderText="Choose Your Project">
                 <ComboBox.ItemTemplate>
@@ -42,7 +42,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
                 <StackPanel Orientation="Horizontal">
-                    <Button Name="btnOK" Content="Publish" Click="btnOK_Click"></Button>
+                    <Button Name="btnOK" Content="Publish" Click="btnOK_Click" ></Button>
                     <Button Name="btnCancel" Content="Cancel" Click="btnCancel_Click"></Button>
                 </StackPanel>
             </StackPanel>

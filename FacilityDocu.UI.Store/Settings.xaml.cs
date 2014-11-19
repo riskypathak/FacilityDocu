@@ -195,6 +195,14 @@ namespace Tablet_App
 
         private async void btnOK_Click(object sender, RoutedEventArgs e)
         {
+
+            if (cmbProjects.SelectedItem == null)
+            {
+
+                ScreenMessage.Show(string.Format("Please select a project to publish"));
+                return;
+            }
+
             Data.CURRENT_PROJECT = Data.CURRENT_PROJECT = ProjectXmlReader.ReadProjectXml(Path.Combine(Data.ProjectXmlPath, string.Format("{0}.xml", (cmbProjects.SelectedItem as ProjectDTO).ProjectID)), false);
 
             await ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
