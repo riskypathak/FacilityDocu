@@ -80,7 +80,7 @@ namespace FacilityDocu.UI.Utilities
 
             UpdateProjectXml();
 
-            return ProjectXmlReader.ReadProjectXml(Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml",updatedProject.ProjectID)),false);
+            return ProjectXmlReader.ReadProjectXml(Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", updatedProject.ProjectID)), false);
         }
 
         public IList<int> IsSyncRequired()
@@ -101,9 +101,24 @@ namespace FacilityDocu.UI.Utilities
                 }
             }
 
-            Dictionary<int, bool> result = service.IsSync(projectIDs);
+            Dictionary<int, string> result = service.IsSync(projectIDs, false);
 
-            return result.Where(r => r.Value).Select(r => r.Key).ToList();
+            DeleteCloseProjects(result.Where(r => r.Value.Equals("closed")).Select(r => r.Key).ToList());
+
+            return result.Where(r => r.Value.Equals("new") || r.Value.Equals("updated")).Select(r => r.Key).ToList();
+        }
+
+        private void DeleteCloseProjects(List<int> projectClosed)
+        {
+            foreach (int projectID in projectClosed)
+            {
+                string projectPath = Path.Combine(this.ProjectXmlFolderPath, string.Format("{0}.xml", projectID));
+
+                if(File.Exists(projectPath))
+                {
+                    File.Delete(projectPath);
+                }
+            }
         }
 
         public void UploadImages(string projectID)
@@ -145,7 +160,7 @@ namespace FacilityDocu.UI.Utilities
             actions.ForEach(a =>
             {
                 a.Attachments.ToList().ForEach(i => i.FileByteStream = ReadAttachment(i.Path));
-               service.UpdateActionAttachments(a);
+                service.UpdateActionAttachments(a);
             });
         }
 

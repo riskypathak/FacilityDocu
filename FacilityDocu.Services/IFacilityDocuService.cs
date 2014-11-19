@@ -17,7 +17,7 @@ namespace FacilityDocu.Services
         bool Login(string userName, string password);
 
         [OperationContract]
-        Dictionary<int, bool> IsSync(Dictionary<int, DateTime> ProjectsData);
+        Dictionary<int, string> IsSync(Dictionary<int, DateTime> inputProjects, bool fromTablet);
 
         [OperationContract]
         ProjectDTO GetProjectDetails(int projectID);

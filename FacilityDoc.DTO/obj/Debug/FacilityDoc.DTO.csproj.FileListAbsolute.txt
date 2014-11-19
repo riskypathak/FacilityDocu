@@ -1,4 +1,0 @@
-C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDoc.DTO\bin\Debug\FacilityDocu.DTO.dll
-C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDoc.DTO\bin\Debug\FacilityDocu.DTO.pdb
-C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDoc.DTO\obj\Debug\FacilityDocu.DTO.dll
-C:\Users\KishorBikram\Documents\GitHub\FacilityDocu\FacilityDoc.DTO\obj\Debug\FacilityDocu.DTO.pdb

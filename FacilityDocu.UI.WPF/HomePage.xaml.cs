@@ -1,27 +1,18 @@
 ﻿using FacilityDocu.UI.Utilities;
 using FacilityDocu.UI.Utilities.Services;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Xml.Linq;
 
 namespace FacilityDocLaptop
 {
@@ -34,8 +25,6 @@ namespace FacilityDocLaptop
 
     public partial class HomePage : Window
     {
-        Services.IFacilityDocuService service;
-
         private int currentRigIndex = 0;
         private int currentModuleIndex = 0;
         private int currentStepIndex = 0;
@@ -52,8 +41,6 @@ namespace FacilityDocLaptop
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             this.DataContext = this;
-
-            service = new Services.FacilityDocuServiceClient();
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -89,33 +76,12 @@ namespace FacilityDocLaptop
             IList<ProjectDTO> projects = new List<ProjectDTO>();
             projectFiles.ToList().ForEach(f => projects.Add(ProjectXmlReader.ReadProjectXml(f, true)));
 
-
-            //projects[0].CreatedBy.UserName
-
             listView.ItemsSource = projects.Where(p => !p.Template && !p.Closed);
         }
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
-            bool isLogin = false;
-
-            XDocument xdoc = XDocument.Load(Data.CONFIG_PATH);
-
-            try
-            {
-                isLogin = service.Login(userName.Text, password.Password);
-                if (isLogin)
-                {
-                    xdoc.Element("config").Element("lastlogin").Value = userName.Text;
-                }
-            }
-            catch (Exception)
-            {
-                if (xdoc.Element("config").Element("lastlogin").Value.Equals(userName.Text))
-                {
-                    isLogin = true;
-                }
-            }
+            bool isLogin = Helper.Login(userName.Text, password.Password);
 
             if (isLogin)
             {
@@ -637,12 +603,12 @@ namespace FacilityDocLaptop
 
         private void btnToolAdd_Click_1(object sender, RoutedEventArgs e)
         {
-            Data.AVAILABLE_TOOLS = service.GetTools();
-
+            Helper.GetTools();
 
             var notToolIds = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools.Select(n => n.ToolID);
 
             lstAddTools.ItemsSource = Data.AVAILABLE_TOOLS.Where(t => !notToolIds.Contains(t.ToolID));
+
             popTool.IsOpen = true;
         }
 

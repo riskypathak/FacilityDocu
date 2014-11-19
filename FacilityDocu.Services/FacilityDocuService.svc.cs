@@ -16,36 +16,45 @@ namespace FacilityDocu.Services
 {
     public class FacilityDocuService : IFacilityDocuService
     {
-        public Dictionary<int, bool> IsSync(Dictionary<int, DateTime> inputProjects)
+        public Dictionary<int, string> IsSync(Dictionary<int, DateTime> inputProjects, bool fromTablet)
         {
-            Dictionary<int, bool> _statusData = new Dictionary<int, bool>();
+            Dictionary<int, string> projectStatusData = new Dictionary<int, string>();
 
             using (var context = new TabletApp_DatabaseEntities())
             {
                 foreach (var project in context.Projects)
                 {
+                    if (fromTablet && project.Template)
+                    {
+                        continue;
+                    }
+
                     var inputProject = inputProjects.Where(i => i.Key == project.ProjectID);
 
                     if (inputProject.Count() <= 0)
                     {
-                        _statusData.Add(project.ProjectID, true);
+                        projectStatusData.Add(project.ProjectID, "new");
+                    }
+                    else if (project.Close.HasValue && project.Close.Value)
+                    {
+                        projectStatusData.Add(project.ProjectID, "closed");
                     }
                     else
                     {
                         DateTime inputDate = inputProject.First().Value;
                         if (inputProject != null && DateTime.Compare(project.LastUpdatedAt.GetValueOrDefault(), inputDate) > 0)
                         {
-                            _statusData.Add(project.ProjectID, true);
+                            projectStatusData.Add(project.ProjectID, "updated");
                         }
                         else
                         {
-                            _statusData.Add(project.ProjectID, false);
+                            projectStatusData.Add(project.ProjectID, "notupdated");
                         }
                     }
                 }
             }
 
-            return _statusData;
+            return projectStatusData;
         }
 
         public ProjectDTO GetProjectDetails(int projectID)
@@ -255,7 +264,7 @@ namespace FacilityDocu.Services
                     ProjectActionResource modifyActionResource = existingPD.ProjectActionResources.Single(r => r.ResourceID == updateActionResource.ResourceID);
 
                     modifyActionResource.ResourceCount = updateActionResource.ResourceCount;
-                    
+
                 }
                 else
                 {
@@ -436,7 +445,7 @@ namespace FacilityDocu.Services
 
             string filePath = System.Web.Hosting.HostingEnvironment.MapPath(string.Format("~/Data/Attachments/{0}.{1}", AttachmentId, extension));
 
-            using(FileStream fileStream = File.Create(filePath))
+            using (FileStream fileStream = File.Create(filePath))
             {
                 fileStream.Write(item.FileByteStream, 0, item.FileByteStream.Length);
             }

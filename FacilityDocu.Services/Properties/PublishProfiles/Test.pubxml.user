@@ -19,23 +19,32 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/Data/Attachments/3.pdf">
       <publishTime>11/07/2014 23:32:09</publishTime>
     </File>
+    <File Include="bin/Data/Attachments/sample.jpg">
+      <publishTime>11/19/2014 12:07:08</publishTime>
+    </File>
+    <File Include="bin/Data/Images/sample.jpg">
+      <publishTime>11/18/2014 12:12:10</publishTime>
+    </File>
     <File Include="bin/EntityFramework.dll">
-      <publishTime>10/27/2014 15:40:05</publishTime>
+      <publishTime>11/18/2014 12:43:29</publishTime>
     </File>
     <File Include="bin/EntityFramework.SqlServer.dll">
-      <publishTime>10/27/2014 15:40:04</publishTime>
+      <publishTime>11/18/2014 12:43:29</publishTime>
     </File>
     <File Include="bin/FacilityDocu.Data.dll">
-      <publishTime>11/13/2014 11:45:43</publishTime>
+      <publishTime>11/19/2014 17:46:56</publishTime>
     </File>
     <File Include="bin/FacilityDocu.DTO.dll">
-      <publishTime>11/13/2014 11:45:43</publishTime>
+      <publishTime>11/19/2014 17:46:56</publishTime>
     </File>
     <File Include="bin/FacilityDocu.Services.dll">
-      <publishTime>11/13/2014 11:45:44</publishTime>
+      <publishTime>11/19/2014 17:46:56</publishTime>
     </File>
     <File Include="bin/Tablet_ApplicationService.dll">
       <publishTime>10/27/2014 16:15:27</publishTime>
+    </File>
+    <File Include="Data/Attachments/sample.jpg">
+      <publishTime>11/19/2014 12:07:08</publishTime>
     </File>
     <File Include="Data/Images/1.PNG">
       <publishTime>11/05/2014 13:52:29</publishTime>
@@ -45,6 +54,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Data/Images/3.PNG">
       <publishTime>11/05/2014 13:52:29</publishTime>
+    </File>
+    <File Include="Data/Images/sample.jpg">
+      <publishTime>11/18/2014 12:12:10</publishTime>
     </File>
     <File Include="FacilityDocuService.svc">
       <publishTime>11/02/2014 22:43:43</publishTime>
@@ -56,7 +68,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/15/2014 15:33:24</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>11/13/2014 11:45:44</publishTime>
+      <publishTime>11/19/2014 17:46:56</publishTime>
     </File>
   </ItemGroup>
 </Project>

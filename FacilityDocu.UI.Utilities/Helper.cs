@@ -1,17 +1,57 @@
 ﻿using FacilityDocu.UI.Utilities.Services;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ServiceModel;
+using System.Xml.Linq;
 
 namespace FacilityDocu.UI.Utilities
 {
     public static class Helper
     {
+        public static bool Login(string userName, string password)
+        {
+            bool isLogin = false;
+
+            XDocument xdoc = XDocument.Load(Data.CONFIG_PATH);
+
+            try
+            {
+                IFacilityDocuService service = new FacilityDocuServiceClient();
+                isLogin = service.Login(userName, password);
+
+                if (isLogin)
+                {
+                    xdoc.Element("config").Element("lastlogin").Value = userName;
+                }
+            }
+            catch (EndpointNotFoundException)
+            {
+                if (xdoc.Element("config").Element("lastlogin").Value.Equals(userName))
+                {
+                    isLogin = true;
+                }
+            }
+
+            return isLogin;
+        }
+
+        public static void GetTools()
+        {
+            IFacilityDocuService service = new FacilityDocuServiceClient();
+
+            try
+            {
+                Data.AVAILABLE_TOOLS = service.GetTools();
+            }
+            catch (EndpointNotFoundException)
+            {
+                Data.AVAILABLE_TOOLS = new List<ToolDTO>();
+            }
+        }
+
         public static bool IsNew(string id)
         {
             bool returnValue;

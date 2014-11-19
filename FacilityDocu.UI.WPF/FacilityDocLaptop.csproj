@@ -86,11 +86,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Service References\Services\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Page Include="HomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -117,12 +112,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Resource Include="Data\ProjectXml\sample.jpg">
+    <Content Include="Data\ProjectXml\sample.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Data\Output\sample.jpg">
+    </Content>
+    <Content Include="Data\Output\sample.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    </Content>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -159,38 +154,10 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\Services\" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Assets\config.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\Services\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\Services\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\Services\FacilityDocuService1.wsdl" />
-    <None Include="Service References\Services\FacilityDocuService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Services\FacilityDocuService41.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Services\FacilityDocuService42.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Services\FacilityDocuService43.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Services\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FacilityDocu.UI.Utilities\FacilityDocu.UI.Utilities.csproj">
@@ -204,17 +171,14 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\Services\FacilityDocuService1.disco" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\remove.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\Images\sample.jpg">
+    <Content Include="Data\Images\sample.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
