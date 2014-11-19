@@ -24,7 +24,8 @@ namespace Tablet_App
             xProject.Add(new XElement("createdtime", project.CreationDate));
             xProject.Add(new XElement("description", project.Description));
             xProject.Add(new XElement("updatedtime", project.LastUpdatedAt));
-            xProject.Add(new XElement("updatedby", project.LastUpdatedBy.Name));
+            xProject.Add(new XElement("updatedby", project.LastUpdatedBy));
+
             WriteRig(project.RigTypes.ToList(), xProject);
             StorageFolder xmlPath = await StorageFolder.GetFolderFromPathAsync(Data.ProjectXmlPath);
             StorageFile xmlFile = await xmlPath.CreateFileAsync(project.ProjectID.ToString() + ".xml", CreationCollisionOption.ReplaceExisting);
@@ -38,8 +39,9 @@ namespace Tablet_App
 
         private async static Task Backup(StorageFile xmlFile)
         {
+            string newName = string.Format("{0}_{1}", xmlFile.Name, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
             IStorageFolder backupFolder = await StorageFolder.GetFolderFromPathAsync(Data.BackupPath);
-            await xmlFile.CopyAsync(backupFolder, xmlFile.Name, NameCollisionOption.ReplaceExisting);
+            await xmlFile.CopyAsync(backupFolder, newName, NameCollisionOption.ReplaceExisting);
         }
 
         private static void WriteRig(IList<RigTypeDTO> rigTypes, XElement xProject)
@@ -111,28 +113,39 @@ namespace Tablet_App
         {
             XElement xImages = new XElement("images");
             xAction.Add(xImages);
-            int count = 1;
-            foreach (ImageDTO image in images)
-            {
-                XElement xImage = new XElement("image");
-                xImages.Add(xImage);
-                xImage.Add(new XElement("id", image.ImageID));
-                xImage.Add(new XElement("number", count.ToString("00")));
-                xImage.Add(new XElement("creationdate", image.CreationDate));
-                xImage.Add(new XElement("description", image.Description));
-                string path = SaveImage(image).Result;
-                xImage.Add(new XElement("path", path));
-                xImage.Add(new XElement("tags", string.Join(";", image.Tags.ToArray())));
-                
-                WriteImageComments(image.Comments, xImage);
 
-                count++;
+            if (!Data.SYNC_PROCESS)
+            {
+                int count = 1;
+                foreach (ImageDTO image in images)
+                {
+                    XElement xImage = new XElement("image");
+                    xImages.Add(xImage);
+                    xImage.Add(new XElement("id", image.ImageID));
+                    xImage.Add(new XElement("number", count.ToString("00")));
+                    xImage.Add(new XElement("creationdate", image.CreationDate));
+                    xImage.Add(new XElement("description", image.Description));
+                    xImage.Add(new XElement("tags", string.Join(";", image.Tags.ToArray())));
+
+                    string savedPath = Path.Combine(Data.ImagesPath, string.Format("{0}.jpg", image.ImageID.ToString()));
+                    if(Data.PUBLISH_PROCESS)
+                    {
+                        savedPath = string.Empty;
+                    }
+                    
+                    xImage.Add(new XElement("path", savedPath));
+                    WriteImageComments(image.Comments, xImage);
+
+                    count++;
+
+                    //This wont be called ever
+                    await SaveImage(image);
+                }
             }
         }
 
-        private static async Task<string> SaveImage(ImageDTO image)
+        private static async Task SaveImage(ImageDTO image)
         {
-            string savedPath = Path.Combine(Data.ImagesPath, string.Format("{0}.jpg", image.ImageID.ToString()));
             if (Data.SYNC_PROCESS)
             {
                 using (HttpClient webClient = new HttpClient())
@@ -149,7 +162,6 @@ namespace Tablet_App
                     await FileIO.WriteBytesAsync(file, imageData);
                 }
             }
-            return savedPath;
         }
 
         private static void WriteImageComments(IList<CommentDTO> comments, XElement xImage)

@@ -1328,7 +1328,7 @@ namespace Tablet_App.ServiceReference1 {
         System.Threading.Tasks.Task<bool> LoginAsync(string userName, string password);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/IsSync", ReplyAction="http://tempuri.org/IFacilityDocuService/IsSyncResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<int, bool>> IsSyncAsync(System.Collections.Generic.Dictionary<int, System.DateTime> ProjectsData);
+        System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<int, string>> IsSyncAsync(System.Collections.Generic.Dictionary<int, System.DateTime> inputProjects, bool fromTablet);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetProjectDetails", ReplyAction="http://tempuri.org/IFacilityDocuService/GetProjectDetailsResponse")]
         System.Threading.Tasks.Task<Tablet_App.ServiceReference1.ProjectDTO> GetProjectDetailsAsync(int projectID);
@@ -1393,8 +1393,8 @@ namespace Tablet_App.ServiceReference1 {
             return base.Channel.LoginAsync(userName, password);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<int, bool>> IsSyncAsync(System.Collections.Generic.Dictionary<int, System.DateTime> ProjectsData) {
-            return base.Channel.IsSyncAsync(ProjectsData);
+        public System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<int, string>> IsSyncAsync(System.Collections.Generic.Dictionary<int, System.DateTime> inputProjects, bool fromTablet) {
+            return base.Channel.IsSyncAsync(inputProjects, fromTablet);
         }
         
         public System.Threading.Tasks.Task<Tablet_App.ServiceReference1.ProjectDTO> GetProjectDetailsAsync(int projectID) {
