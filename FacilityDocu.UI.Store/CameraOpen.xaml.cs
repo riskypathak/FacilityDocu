@@ -49,9 +49,13 @@ namespace Tablet_App
                 string imageID = DateTime.Now.ToString("yyyyMMddHHmmssfff");
                 string fileName = string.Format("{0}.jpg", imageID);
 
+                Windows.Media.MediaProperties.ImageEncodingProperties imgProperties = Windows.Media.MediaProperties.ImageEncodingProperties.CreateJpeg();
+                imgProperties.Height = 1024;
+                imgProperties.Width = 1280;
+
                 StorageFile file = await imagesFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
 
-                await media.CapturePhotoToStorageFileAsync(Windows.Media.MediaProperties.ImageEncodingProperties.CreateJpeg(), file);
+                await media.CapturePhotoToStorageFileAsync(imgProperties, file);
 
                 using (IRandomAccessStream fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read))
                 {

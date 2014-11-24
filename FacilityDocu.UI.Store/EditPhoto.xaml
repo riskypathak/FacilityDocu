@@ -21,13 +21,13 @@
     <Grid Background="#FF174D83">
         <Grid HorizontalAlignment="Left" Height="766" Margin="1126,2,0,0" VerticalAlignment="Top" Width="240" Background="#FF174D83">
             <ComboBox x:Name="cmbStrokeThickness" SelectionChanged="cmbStrokeThickness_SelectionChanged" Margin="108,163,0,556" FontSize="25"/>
-            <Button x:Name="btnLine" Click="btnLine_Click" Content="╱" Style="{StaticResource PaintButton}" ToolTipService.ToolTip="Line" Margin="83,239,0,475" Height="52" Width="79"/>
-            <Button x:Name="btnEllipse" Click="btnEllipse_Click" Style="{StaticResource PaintButton}" Content="O" ToolTipService.ToolTip="Ellipse" Margin="164,239,-2,475" Height="52" Width="78"/>
-            <Button x:Name="btnPencil" Click="btnPencil_Click" Style="{StaticResource PaintButton}" Content="✎" ToolTipService.ToolTip="Pencil" Margin="3,241,0,475" Height="50" Width="78" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
-            <Button x:Name="btnRectangle" Click="btnRectangle_Click" Style="{StaticResource PaintButton}" Content="▭" ToolTipService.ToolTip="Rectangle" Margin="5,297,0,417" Height="52" Width="80" ScrollViewer.VerticalScrollBarVisibility="Disabled" RenderTransformOrigin="0.262,0.154"/>
+            <Button x:Name="btnLine" Click="btnLine_Click" Content="╱" Style="{StaticResource PaintButton}" ToolTipService.ToolTip="Line" Margin="83,239,0,475" Height="52" Width="79" Background="Silver"/>
+            <Button x:Name="btnEllipse" Click="btnEllipse_Click" Style="{StaticResource PaintButton}" Content="O" ToolTipService.ToolTip="Ellipse" Margin="164,239,-2,475" Height="52" Width="78" Background="Silver"/>
+            <Button x:Name="btnPencil" Click="btnPencil_Click" Style="{StaticResource PaintButton}" Content="✎" ToolTipService.ToolTip="Pencil" Margin="3,241,0,475" Height="50" Width="78" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="Silver"/>
+            <Button x:Name="btnRectangle" Click="btnRectangle_Click" Style="{StaticResource PaintButton}" Content="▭" ToolTipService.ToolTip="Rectangle" Margin="5,297,0,417" Height="52" Width="80" ScrollViewer.VerticalScrollBarVisibility="Disabled" RenderTransformOrigin="0.262,0.154" Background="Silver"/>
 
-            <Image x:Name="imgPreview" HorizontalAlignment="Left" Height="219" Margin="6,418,0,0" VerticalAlignment="Top" Width="234"/>
-            <Button x:Name="btnCrop" Content="Crop" HorizontalAlignment="Left" Height="37" Margin="158,362,0,0" VerticalAlignment="Top" Width="71" Tapped="btnCrop_Tapped"/>
+            <Image x:Name="imgPreview" HorizontalAlignment="Left" Height="212" Margin="10,448,0,0" VerticalAlignment="Top" Width="220"/>
+            <Button x:Name="btnCrop" Content="Crop" HorizontalAlignment="Left" Height="39" Margin="124,363,0,0" VerticalAlignment="Top" Width="65" Tapped="btnCrop_Tapped" Background="Silver"/>
 
 
             <TextBlock Text="Fill" HorizontalAlignment="Left" Margin="6,53,0,0" VerticalAlignment="Top" Foreground="#FFF7F0F0"  Width="120" Height="47" FontSize="25"/>
@@ -86,12 +86,14 @@
                     </ComboBoxItem>
                 </ComboBox.Items>
             </ComboBox>
-            <Button x:Name="btn_Undo" FontFamily="Segoe UI Symbol" Content="&#xE10E;" HorizontalAlignment="Left" Height="54" Margin="89,295,0,0" VerticalAlignment="Top" Width="68" Tapped="btn_Undo_Tapped"/>
-            <Button x:Name="btn_Redo" FontFamily="Segoe UI Symbol" Content="&#xE10D;" HorizontalAlignment="Left" Height="55" Margin="161,294,0,0" VerticalAlignment="Top" Width="77" Tapped="btn_Redo_Tapped"/>
+            <Button x:Name="btn_Undo" FontFamily="Segoe UI Symbol" Content="&#xE10E;" HorizontalAlignment="Left" Height="54" Margin="89,295,0,0" VerticalAlignment="Top" Width="68" Tapped="btn_Undo_Tapped" Background="Silver" IsEnabled="False"/>
+            <Button x:Name="btn_Redo" FontFamily="Segoe UI Symbol" Content="&#xE10D;" HorizontalAlignment="Left" Height="55" Margin="161,294,0,0" VerticalAlignment="Top" Width="77" Tapped="btn_Redo_Tapped" Background="Silver" IsEnabled="False"/>
+            <Button x:Name="btnText" Content="T" HorizontalAlignment="Left" Margin="189,363,0,0" VerticalAlignment="Top" Background="Silver" FontFamily="Gungsuh" FontSize="25" Height="39" Tapped="btnText_Tapped"/>
         </Grid>
 
         <ScrollViewer  HorizontalAlignment="Left" Height="768" VerticalAlignment="Top" Width="1024" BorderBrush="{x:Null}" BorderThickness="5,0,0,0"  Margin="82,0,0,0" ZoomMode="Enabled" MinZoomFactor="0.7" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="{x:Null}">
-            <Canvas ManipulationMode="All"   Margin="0,0,0,0" x:Name="canvas" HorizontalAlignment="Left" VerticalAlignment="Top" Height="768" RenderTransformOrigin="0.5,0.5" Width="1024">
+            <Canvas ManipulationMode="All"    Margin="0,0,0,0" x:Name="canvas" HorizontalAlignment="Left" VerticalAlignment="Top" Height="768" RenderTransformOrigin="0.5,0.5" Width="1024">
+
             </Canvas>
         </ScrollViewer>
 

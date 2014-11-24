@@ -181,7 +181,7 @@ namespace Tablet_App
 
         private async void btnPublish_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            MessageDialog msgDialog = new MessageDialog("Do you really want to publish?\nThis will move all project's images to server.", "FacilityDocu");
+            MessageDialog msgDialog = new MessageDialog("Do you really want to publish?\nThis will move all project's images to server.", "PhotoDocu");
             //OK Button
             UICommand okBtn = new UICommand("Yes");
             okBtn.Invoked = OkBtn_Publish_Click;
@@ -195,6 +195,14 @@ namespace Tablet_App
 
         private async void btnOK_Click(object sender, RoutedEventArgs e)
         {
+
+            if (cmbProjects.SelectedItem == null)
+            {
+
+                ScreenMessage.Show(string.Format("Please select a project to publish"));
+                return;
+            }
+
             Data.CURRENT_PROJECT = Data.CURRENT_PROJECT = ProjectXmlReader.ReadProjectXml(Path.Combine(Data.ProjectXmlPath, string.Format("{0}.xml", (cmbProjects.SelectedItem as ProjectDTO).ProjectID)), false);
 
             await ProjectXmlWriter.Write(Data.CURRENT_PROJECT);

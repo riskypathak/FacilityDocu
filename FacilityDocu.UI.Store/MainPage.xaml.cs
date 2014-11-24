@@ -131,7 +131,7 @@ namespace Tablet_App
     {
         public static async void Show(string message)
         {
-            MessageDialog messageDialog = new MessageDialog(message, "FacilityDocu");
+            MessageDialog messageDialog = new MessageDialog(message, "PhotoDocu");
             await messageDialog.ShowAsync();
         }
     }

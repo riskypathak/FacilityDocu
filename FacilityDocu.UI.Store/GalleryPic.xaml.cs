@@ -127,7 +127,7 @@ namespace Tablet_App
 
         private async void btnBack_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            MessageDialog msgDialog = new MessageDialog("There might be some unsaved changes.\nDo you want to move back without saving?", "FacilityDocu");
+            MessageDialog msgDialog = new MessageDialog("There might be some unsaved changes.\nDo you want to move back without saving?", "PhotoDocu");
             //OK Button
             UICommand okBtn = new UICommand("Yes");
             okBtn.Invoked = OkBtn_Back_Click;
@@ -178,7 +178,7 @@ namespace Tablet_App
             txtStep.Text = Data.CURRENT_STEP.Name;
             txtImageCreationDate.Text = currentImage.CreationDate.ToString();
             txtActionName.Text = Data.CURRENT_ACTION.Name;
-            txtDescriptionEdit.Text = Data.CURRENT_ACTION.Description;
+            txtDescriptionEdit.Text= currentImage.Description;
             txtImageName.Text = string.Format("{0}.jpg", currentImage.ImageID);
             txtImageDescription.Text = currentImage.Description;
             txtPICId.Text = currentImage.Number;
@@ -272,7 +272,7 @@ namespace Tablet_App
 
         private async void btnDeleteImage_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            MessageDialog msgDialog = new MessageDialog("Do you really want to delete image?\nThis will remove image and its properties from action.", "FacilityDocu");
+            MessageDialog msgDialog = new MessageDialog("Do you really want to delete image?\nThis will remove image and its properties from action.", "PhotoDocu");
             //OK Button
             UICommand okBtn = new UICommand("Yes");
             okBtn.Invoked = OkBtn_Delete_Click;
@@ -353,7 +353,7 @@ namespace Tablet_App
 
         private async void btnReset_Click(object sender, RoutedEventArgs e)
         {
-            MessageDialog msgDialog = new MessageDialog("Do you really want to reset this image to its original?", "FacilityDocu");
+            MessageDialog msgDialog = new MessageDialog("Do you really want to reset this image to its original?", "PhotoDocu");
             //OK Button
             UICommand okBtn = new UICommand("Yes");
             okBtn.Invoked = OkBtn_Reset_Click;

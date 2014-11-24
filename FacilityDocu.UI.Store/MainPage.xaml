@@ -25,7 +25,7 @@
 
         <Button FontFamily="Segoe UI Symbol" FontSize="150" Content="&#xE115;" Margin="-5,278,0,44" Height="271" Width="318" BorderBrush="{x:Null}" Click="btnSettings_Click" Background="{x:Null}" Foreground="White" Grid.Column="1" Grid.Row="1" />
         <Button FontFamily="Segoe UI Symbol" FontSize="150" Content="&#xE114;" Margin="816,278,0,44" Height="271" Width="316" Background="{x:Null}" BorderBrush="{x:Null}" RenderTransformOrigin="0.452,0.571" Click="btnTakePicture_Click" Foreground="White" Grid.Column="1" Grid.Row="1" />
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="FacilityDocu" VerticalAlignment="Top" FontSize="100" Width="609" Foreground="White" Height="141" Margin="8,9,0,0" Grid.Row="1" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="PhotoDocu" VerticalAlignment="Top" FontSize="100" Width="609" Foreground="White" Height="141" Margin="8,9,0,0" Grid.Row="1" Grid.Column="1"/>
         <TextBlock HorizontalAlignment="Left" Margin="296,131,0,0" TextWrapping="Wrap" Text="Welcome" VerticalAlignment="Top" FontSize="60" Foreground="#FFD1C9C9" Height="78" Width="342" Grid.Column="1" Grid.Row="1"/>
         <Button FontFamily="Segoe UI Symbol" FontSize="100" Content="&#xE088;" Margin="419,278,0,44" BorderBrush="{x:Null}" Height="271" Click="btnGallery_Click" Background="{x:Null}" Foreground="White" Width="282" Grid.Column="1" Grid.Row="1" />
         <AppBarSeparator HorizontalAlignment="Left" Margin="309,392,0,0" VerticalAlignment="Top" Height="84" Width="75" Grid.Column="1" Grid.Row="1"/>

@@ -8,19 +8,17 @@
     xmlns:common="using:Tablet_App.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" Loaded="pageRoot_Loaded">
+    mc:Ignorable="d">
 
 
-    <Grid x:Name="G" Background="#FF1468AE" >
-        <Grid x:Name="contentRoot" Margin="-81,376,281,-336">
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" >
+        <Grid x:Name="contentRoot" Margin="100,20,100,20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <StackPanel Orientation="Horizontal" Margin="90,0,-43,0" Grid.Row="1">
-            </StackPanel>
 
 
             <!-- page title -->
@@ -30,8 +28,9 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Cropping" FontSize="30" Foreground="#FFFBF9F9" FontWeight="Bold" Margin="103,333,852,-374" Grid.RowSpan="3"/>
-
+                <TextBlock Grid.Row="0" Text="{StaticResource AppLogo}" Style="{StaticResource AppLogoStyle}"/>
+                <TextBlock Grid.Row="1" Text="{StaticResource AppName}" Style="{StaticResource AppHeaderStyle}"/>
+                <TextBlock Grid.Row="2" Text="{StaticResource AppDescription}" Style="{StaticResource AppDescriptionStyle}" />
             </Grid>
 
             <!-- page body -->
@@ -40,12 +39,11 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0" Margin="202,-254,-202,254">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="229*"/>
-                        <ColumnDefinition Width="309*"/>
-                        <ColumnDefinition Width="628*"/>
-                    </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0">
+                    <StackPanel x:Name="operationPanel" Orientation="Horizontal">
+                        <Button x:Name="openImageButton" Click="openImageButton_Click">Open an Image</Button>
+                        <Button x:Name="saveImageButton" Click="saveImageButton_Click" IsEnabled="False">Save Cropped Image</Button>
+                    </StackPanel>
                 </Grid>
 
                 <Grid Grid.Row="1" Margin="0,5,0,5" >
@@ -63,9 +61,9 @@
                             <RowDefinition Height="auto"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
                         </Grid.RowDefinitions>
-                        <TextBlock x:Name="originalImageInfoText" Style="{StaticResource BasicTextStyle}" Margin="174,-341,-80,341"/>
-                        <Grid  Background="{StaticResource ApplicationSecondaryForegroundThemeBrush}" Margin="83,-308,-80,379" Grid.RowSpan="2">
-                            <Image x:Name="sourceImage" Margin="3,-2,3,3"/>
+                        <TextBlock x:Name="originalImageInfoText" Style="{StaticResource BasicTextStyle}"></TextBlock>
+                        <Grid Grid.Row="1"  Background="{StaticResource ApplicationSecondaryForegroundThemeBrush}">
+                            <Image x:Name="sourceImage"/>
                             <Canvas x:Name="imageCanvas" Visibility="Collapsed" >
                                 <Path x:Name="nonselectRegion" Fill="{StaticResource ApplicationSecondaryForegroundThemeBrush}" Opacity="0.7">
                                     <Path.Data>
@@ -102,13 +100,13 @@
                             <RowDefinition Height="auto"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
                         </Grid.RowDefinitions>
-                        <TextBlock x:Name="selectInfoInBitmapText" Style="{StaticResource BasicTextStyle}" Margin="50,-341,-50,341" />
-                        <Grid x:Name="Dest"  Background="{StaticResource ApplicationSecondaryForegroundThemeBrush}" Margin="53,-307,-50,381" Grid.RowSpan="2">
+                        <TextBlock x:Name="selectInfoInBitmapText" Style="{StaticResource BasicTextStyle}" ></TextBlock>
+                        <Grid Grid.Row="1"  Background="{StaticResource ApplicationSecondaryForegroundThemeBrush}">
                             <Grid Width="{Binding ElementName=imageCanvas, Path=Width}"
                                   Height="{Binding ElementName=imageCanvas, Path=Height}"
                                   Visibility="{Binding ElementName=imageCanvas, Path=Visibility}">
-                                <Grid Background="{StaticResource ApplicationSecondaryForegroundThemeBrush}" Opacity="0.7"/>
-                                <Image x:Name="previewImage"/>
+                                <Grid Background="{StaticResource ApplicationSecondaryForegroundThemeBrush}" Opacity="0.7"></Grid>
+                                <Image x:Name="previewImage"></Image>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -151,28 +149,12 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Image Grid.Row="0"  Source="Assets/microsoft.png" AutomationProperties.Name="Microsoft Logo" Stretch="None" HorizontalAlignment="Left"/>
-                    <StackPanel x:Name="FooterPanel" Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right"/>
+                    <TextBlock Style="{StaticResource AppFooterStyle}" Text="© 2012 Microsoft Corporation. All rights reserved." TextWrapping="Wrap" Grid.Row="1" HorizontalAlignment="Left"/>
+                    <StackPanel x:Name="FooterPanel" Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right">
+                        <HyperlinkButton Content="All-In-One Code Framework" Tag="http://blogs.msdn.com/b/onecode" Click="Footer_Click" FontSize="12"/>
+                    </StackPanel>
                 </Grid>
             </Grid>
-        </Grid>
-        <Button x:Name="backButton" Margin="31,21,0,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
-        	Style="{StaticResource NavigationBackButtonNormalStyle}"
-        	VerticalAlignment="Top"
-        	AutomationProperties.Name="Back"
-        	AutomationProperties.AutomationId="BackButton"
-        	AutomationProperties.ItemType="Navigation Button"  Click="backButton_Click"/>
-        <Button FontFamily="Segoe UI Symbol" FontSize="60" Content="&#xE0AC;" Margin="1233,610,0,62" BorderBrush="{x:Null}" Height="96" Tapped="Button_Tapped_1" Background="{x:Null}" Foreground="White" Width="106" />
-        <Grid x:Name="fp" HorizontalAlignment="Left" Height="768" VerticalAlignment="Top" Width="1366" Background="#FF1468AE" Margin="-10,10,0,-10" Visibility="Collapsed">
-            <Image HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100"/>
-            <Image x:Name="j" HorizontalAlignment="Left" Height="748" Margin="10,10,0,0" VerticalAlignment="Top" Width="1136"/>
-            <Button x:Name="backButton_Copy" Margin="31,21,0,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
-            	Style="{StaticResource NavigationBackButtonNormalStyle}"
-            	VerticalAlignment="Top"
-            	AutomationProperties.Name="Back"
-            	AutomationProperties.AutomationId="BackButton"
-            	AutomationProperties.ItemType="Navigation Button"  Click="backButton_Copy_Click"/>
-            <Button FontFamily="Segoe UI Symbol" FontSize="60" Content="&#xE0AC;" Margin="1191,643,0,29" BorderBrush="{x:Null}" Height="96" Tapped="Button_Tapped" Background="{x:Null}" Foreground="White" Width="106" />
-            <TextBlock HorizontalAlignment="Left" Margin="10,706,0,0" TextWrapping="Wrap" Text="Your Preview" VerticalAlignment="Top" Width="573" Height="61" Foreground="#FF4FB94A" FontSize="50"/>
         </Grid>
         <VisualStateManager.VisualStateGroups>
 
@@ -251,6 +233,10 @@
                         </ObjectAnimationUsingKeyFrames>
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.Column)" Storyboard.TargetName="FooterPanel">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="0"/>
+                        </ObjectAnimationUsingKeyFrames>
+
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Orientation)" Storyboard.TargetName="operationPanel">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Vertical"/>
                         </ObjectAnimationUsingKeyFrames>
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.Row)" Storyboard.TargetName="previewGrid">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="1"/>

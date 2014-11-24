@@ -25,14 +25,19 @@
         <TextBlock HorizontalAlignment="Left" Margin="3,341,0,0" TextWrapping="Wrap" Text="Category :" VerticalAlignment="Top" FontSize="45" Foreground="White" Grid.Column="1" Grid.Row="1"/>
         <TextBlock HorizontalAlignment="Left" Margin="3,444,0,0" TextWrapping="Wrap" Text="Sub Category :" VerticalAlignment="Top" FontSize="45" Foreground="White" Grid.Column="1" Grid.Row="1"/>
         <TextBlock HorizontalAlignment="Left" Margin="3,559,0,0" TextWrapping="Wrap" Text="Action :" VerticalAlignment="Top" FontSize="45" Foreground="White" Grid.Column="1" Grid.Row="1"/>
-        <ComboBox  x:Name="cmbProjects" HorizontalAlignment="Left" Margin="359,132,0,0" VerticalAlignment="Top" Width="520" Height="55" FontSize="20" Grid.Column="1" Grid.Row="1" PlaceholderText="Choose Your Project" SelectionChanged="cmbProjects_SelectionChanged">
+        <ComboBox Width="500" Height="50" FontSize="25"  x:Name="cmbProjects" HorizontalAlignment="Left" Margin="359,132,0,0" VerticalAlignment="Top"  Grid.Column="1" Grid.Row="1" PlaceholderText="Choose Your Project" SelectionChanged="cmbProjects_SelectionChanged">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Description}"></TextBlock>
+                    <TextBlock Height="50" FontSize="25" Text="{Binding Description}"></TextBlock>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
+            <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
         </ComboBox>
-        <ComboBox x:Name="cmbModules" HorizontalAlignment="Left" Margin="359,349,0,0"  VerticalAlignment="Top" Width="520" Height="55" FontSize="20" SelectionChanged="cmbModules_SelectionChanged" Grid.Column="1" Grid.Row="1" PlaceholderText="Choose an item" >
+        <ComboBox Width="500" Height="50" FontSize="25" x:Name="cmbModules" HorizontalAlignment="Left" Margin="359,349,0,0"  VerticalAlignment="Top"  SelectionChanged="cmbModules_SelectionChanged" Grid.Column="1" Grid.Row="1" PlaceholderText="Choose an item" >
             <ComboBox.Transitions>
                 <TransitionCollection>
                     <EntranceThemeTransition FromHorizontalOffset="1200"/>
@@ -40,11 +45,16 @@
             </ComboBox.Transitions>
             <ComboBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}"></TextBlock>
+                    <TextBlock Height="50" FontSize="25" Text="{Binding Name}"></TextBlock>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
+            <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
         </ComboBox>
-        <ComboBox x:Name="cmbSteps" HorizontalAlignment="Left" Margin="359,450,0,0"  VerticalAlignment="Top" Width="520" Height="55" FontSize="20" SelectionChanged="cmbSteps_SelectionChanged" Grid.Column="1" Grid.Row="1" PlaceholderText="Choose an item" >
+        <ComboBox Width="500" Height="50" FontSize="25" x:Name="cmbSteps" HorizontalAlignment="Left" Margin="359,450,0,0"  VerticalAlignment="Top" SelectionChanged="cmbSteps_SelectionChanged" Grid.Column="1" Grid.Row="1" PlaceholderText="Choose an item" >
             <ComboBox.Transitions>
                 <TransitionCollection>
                     <EntranceThemeTransition FromHorizontalOffset="1800"/>
@@ -52,9 +62,14 @@
             </ComboBox.Transitions>
             <ComboBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}"></TextBlock>
+                    <TextBlock Height="50" FontSize="25" Text="{Binding Name}"></TextBlock>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
+            <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
         </ComboBox>
 
         <Button FontFamily="Segoe UI Symbol" FontSize="60" Content="&#xE0AC;" Margin="1101,577,0,29" BorderBrush="{x:Null}" Height="96" Tapped="Button_Click" Background="{x:Null}" Foreground="White" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Width="106" />
@@ -65,7 +80,7 @@
         	AutomationProperties.AutomationId="BackButton"
         	AutomationProperties.ItemType="Navigation Button" Tapped="backButton_Tapped" Foreground="#FF0E0B0B" Background="#FF62627C" BorderBrush="#FF0B0B0C" Grid.Row="1"/>
 
-        <ComboBox x:Name="cmbRigTypes" HorizontalAlignment="Left" Margin="359,239,0,0" VerticalAlignment="Top" Width="520" Height="55" FontSize="20" SelectionChanged="Rigtypetext_SelectionChanged" Grid.Column="1" Grid.Row="1" PlaceholderText="Choose an item">
+        <ComboBox Width="500" Height="50" FontSize="25" x:Name="cmbRigTypes" HorizontalAlignment="Left" Margin="359,239,0,0" VerticalAlignment="Top" SelectionChanged="Rigtypetext_SelectionChanged" Grid.Column="1" Grid.Row="1" PlaceholderText="Choose an item">
             <ComboBox.Transitions>
                 <TransitionCollection>
                     <EntranceThemeTransition FromHorizontalOffset="600"/>
@@ -73,11 +88,16 @@
             </ComboBox.Transitions>
             <ComboBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}"></TextBlock>
+                    <TextBlock Height="50" FontSize="25" Text="{Binding Name}"></TextBlock>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
+            <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
         </ComboBox>
-        <ComboBox x:Name="cmbActions" HorizontalAlignment="Left" Margin="359,559,0,0" VerticalAlignment="Top" Height="55" Width="520" FontSize="20" SelectionChanged="cmbActions_SelectionChanged" Grid.Column="1" Grid.Row="1" PlaceholderText="Choose an item">
+        <ComboBox Width="500" Height="50" FontSize="25" x:Name="cmbActions" HorizontalAlignment="Left" Margin="359,559,0,0" VerticalAlignment="Top" SelectionChanged="cmbActions_SelectionChanged" Grid.Column="1" Grid.Row="1" PlaceholderText="Choose an item">
             <ComboBox.Transitions>
                 <TransitionCollection>
                     <EntranceThemeTransition FromHorizontalOffset="2400"/>
@@ -85,9 +105,14 @@
             </ComboBox.Transitions>
             <ComboBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}"></TextBlock>
+                    <TextBlock Height="50" FontSize="25" Text="{Binding Name}"></TextBlock>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
+            <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
         </ComboBox>
     </Grid>
 </Page>

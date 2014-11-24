@@ -11,6 +11,7 @@ using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Input.Inking;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -27,21 +28,23 @@ namespace Tablet_App
     public sealed partial class EditPhoto : Page
     {
         InkManager MyInkManager = new InkManager();
-        string DrawingTool;
+        string DrawingTool = "NotSelect";
         double X1, X2, Y1, Y2, StrokeThickness = 1;
         Point PreviousContactPoint, CurrentContactPoint;
 
         double width = 0, height = 0;
 
         Line NewLine;
+        TextBox NewText;
         Ellipse NewEllipse;
         Rectangle NewRectangle;
         Polyline Pencil;
+        UIElement selectedItem;
         Color BorderColor, FillColor;
         uint PenID, TouchID;
         BitmapImage finalImage = new BitmapImage();
         ImageBrush img = new ImageBrush();
-
+        int selectedIndex = 0;
         StorageFile file;
 
         BitmapImage bitmapImage;
@@ -70,26 +73,129 @@ namespace Tablet_App
         }
         #region Drawing Tools Click Events
 
+        private void defaultBtnColor()
+        {
+            Brush bkcolor = new SolidColorBrush(Colors.Silver);
+            btnPencil.Background = bkcolor;
+            btnLine.Background = bkcolor;
+            btnEllipse.Background = bkcolor;
+            btnRectangle.Background = bkcolor;
+            btnText.Background = bkcolor;
+
+        }
         private void btnPencil_Click(object sender, RoutedEventArgs e)
         {
-            DrawingTool = "Pencil";
+            defaultBtnColor();
+            if (DrawingTool != "Pencil")
+            {
+                Brush bkcolor = new SolidColorBrush(Colors.Red);
+                btnPencil.Background = bkcolor;
+                DrawingTool = "Pencil";
+                if (redoundoCount != canvas.Children.Count)
+                {
+                    canvasSet();
+                }
+
+            }
+            else
+            {
+
+                DrawingTool = "NotSelect";
+
+            }
+
+
         }
 
         private void btnLine_Click(object sender, RoutedEventArgs e)
         {
-            DrawingTool = "Line";
+
+            defaultBtnColor();
+            if (DrawingTool != "Line")
+            {
+                Brush bkcolor = new SolidColorBrush(Colors.Red);
+                btnLine.Background = bkcolor;
+                DrawingTool = "Line";
+                if (redoundoCount != canvas.Children.Count)
+                {
+                    canvasSet();
+                }
+
+            }
+            else
+            {
+
+                DrawingTool = "NotSelect";
+
+            }
         }
 
         private void btnEllipse_Click(object sender, RoutedEventArgs e)
         {
-            DrawingTool = "Ellipse";
+
+            defaultBtnColor();
+            if (DrawingTool != "Ellipse")
+            {
+                Brush bkcolor = new SolidColorBrush(Colors.Red);
+                btnEllipse.Background = bkcolor;
+                DrawingTool = "Ellipse";
+                if (redoundoCount != canvas.Children.Count)
+                {
+                    canvasSet();
+                }
+
+            }
+            else
+            {
+
+                DrawingTool = "NotSelect";
+
+            }
         }
 
         private void btnRectangle_Click(object sender, RoutedEventArgs e)
         {
-            DrawingTool = "Rectangle";
-        }
 
+            defaultBtnColor();
+            if (DrawingTool != "Rectangle")
+            {
+                Brush bkcolor = new SolidColorBrush(Colors.Red);
+                btnRectangle.Background = bkcolor;
+                DrawingTool = "Rectangle";
+                if (redoundoCount != canvas.Children.Count)
+                {
+                    canvasSet();
+                }
+
+            }
+            else
+            {
+
+                DrawingTool = "NotSelect";
+
+            }
+        }
+        private void btnText_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            defaultBtnColor();
+            if (DrawingTool != "Text")
+            {
+                Brush bkcolor = new SolidColorBrush(Colors.Red);
+                btnText.Background = bkcolor;
+                DrawingTool = "Text";
+                if (redoundoCount != canvas.Children.Count)
+                {
+                    canvasSet();
+                }
+
+            }
+            else
+            {
+
+                DrawingTool = "NotSelect";
+
+            }
+        }
         #endregion
 
         #region Pointer Events
@@ -100,8 +206,23 @@ namespace Tablet_App
         }
         void canvas_PointerExited(object sender, PointerRoutedEventArgs e)
         {
-            sset = 0;
-            Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Hand, 1);
+            if (sset == 1 && DrawingTool != "NotSelect")
+            {
+                xl = X2;
+                yl = Y2;
+                btn_Redo.IsEnabled = false;
+                btn_Undo.IsEnabled = true;
+                Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Cross, 1);
+
+                SaveCanvas();
+            }
+            else
+            {
+                sset = 0;
+                Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Arrow, 1);
+            }
+
+
         }
         int sset = 0;
         double xCor = 0;
@@ -127,11 +248,10 @@ namespace Tablet_App
                             NewLine.StrokeThickness = StrokeThickness;
                             NewLine.Stroke = new SolidColorBrush(BorderColor);
                             canvas.Children.Add(NewLine);
+                            NewLine.ManipulationDelta += MoveableContainer_ManipulationDelta;
+                            NewLine.ManipulationMode = ManipulationModes.All;
                             redoundoCount++;
-                            if (redoundoCount != canvas.Children.Count)
-                            {
-                                canvasSet();
-                            }
+
 
 
                         }
@@ -172,11 +292,9 @@ namespace Tablet_App
                             NewRectangle.Fill = new SolidColorBrush(FillColor);
                             canvas.Children.Add(NewRectangle);
                             redoundoCount++;
-                            if (redoundoCount != canvas.Children.Count)
-                            {
-                                canvasSet();
-                            }
+
                             NewRectangle.ManipulationMode = ManipulationModes.All;
+                            NewRectangle.ManipulationDelta += MoveableContainer_ManipulationDelta;
 
 
 
@@ -200,11 +318,8 @@ namespace Tablet_App
                             NewEllipse.Fill = new SolidColorBrush(FillColor);
                             canvas.Children.Add(NewEllipse);
                             redoundoCount++;
-                            if (redoundoCount != canvas.Children.Count)
-                            {
-                                canvasSet();
-                            }
-
+                            NewEllipse.ManipulationDelta += MoveableContainer_ManipulationDelta;
+                            NewEllipse.ManipulationMode = ManipulationModes.All;
                         }
                         break;
 
@@ -253,10 +368,7 @@ namespace Tablet_App
                                     PreviousContactPoint = CurrentContactPoint;
                                     canvas.Children.Add(line);
                                     redoundoCount++;
-                                    if (redoundoCount != canvas.Children.Count)
-                                    {
-                                        canvasSet();
-                                    }
+
                                     MyInkManager.ProcessPointerUpdate(e.GetCurrentPoint(canvas));
                                 }
                             }
@@ -341,12 +453,13 @@ namespace Tablet_App
         {
             try
             {
-                if (DrawingTool != "Eraser" && DrawingTool != "Select")
-                    Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Cross, 1);
-                else if (DrawingTool == "Select")
+                if (DrawingTool == "NotSelect")
+                {
                     Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Arrow, 1);
+                    //  moveChildrens(e);
+                }
                 else
-                    Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.UniversalNo, 1);
+                    Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Cross, 1);
 
                 finalPoint(e);
             }
@@ -357,20 +470,33 @@ namespace Tablet_App
         }
         void canvas_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            if (DrawingTool != "Eraser" && DrawingTool != "Select")
-            {
-                sset = 1;
-                Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Cross, 1);
-            }
-            else if (DrawingTool == "Select")
+
+            if (DrawingTool == "NotSelect")
             {
                 sset = 0;
-                Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Hand, 1);
+                Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Arrow, 1);
+
+            }
+            else if (DrawingTool == "Text")
+            {
+                NewText = new TextBox();
+                NewText.Foreground = new SolidColorBrush(BorderColor);
+                NewText.Background = new SolidColorBrush(FillColor);
+                NewText.FontSize = 15 + (StrokeThickness - 2) * 2;
+                NewText.Margin = new Thickness(e.GetCurrentPoint(canvas).Position.X, e.GetCurrentPoint(canvas).Position.Y, 0, 0);
+                NewText.AcceptsReturn = true;
+                canvas.Children.Add(NewText);
+                NewText.ManipulationMode = ManipulationModes.All;
+                NewText.ManipulationDelta += MoveableContainer_ManipulationDelta;
+                redoundoCount++;
+                defaultBtnColor();
+                DrawingTool = "NotSelect";
+
             }
             else
             {
                 sset = 1;
-                Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Hand, 1);
+                Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Cross, 1);
             }
 
             xCor = e.GetCurrentPoint(canvas).Position.X;
@@ -378,6 +504,29 @@ namespace Tablet_App
             initialPoint(e);
 
         }
+
+        private UIElement FindCanvasChild(DependencyObject dependencyObject)
+        {
+            // throw new NotImplementedException();
+            while (dependencyObject != null)
+            {
+                // If the current object is a UIElement which is a child of the
+                // Canvas, exit the loop and return it.
+                UIElement elem = dependencyObject as UIElement;
+                if (elem != null && canvas.Children.Contains(elem))
+                    break;
+
+                // VisualTreeHelper works with objects of type Visual or Visual3D.
+                // If the current object is not derived from Visual or Visual3D,
+                // then use the LogicalTreeHelper to find the parent element.
+                //if (dependencyObject is Visual || depObj is Visual3D)
+                //    depObj = VisualTreeHelper.GetParent(depObj);
+                //else
+                //    depObj = LogicalTreeHelper.GetParent(depObj);
+            }
+            return dependencyObject as UIElement;
+        }
+
         private double Distance(double x1, double y1, double x2, double y2)
         {
             double d = 0;
@@ -391,10 +540,12 @@ namespace Tablet_App
             if (e.Pointer.PointerId == PenID || e.Pointer.PointerId == TouchID)
                 MyInkManager.ProcessPointerUp(e.GetCurrentPoint(canvas));
 
-            if (sset == 1)
+            if (sset == 1 && DrawingTool != "NotSelect")
             {
                 xl = X2;
                 yl = Y2;
+                btn_Redo.IsEnabled = false;
+                btn_Undo.IsEnabled = true;
 
             }
             TouchID = 0;
@@ -405,6 +556,7 @@ namespace Tablet_App
             NewRectangle = null;
             NewEllipse = null;
             SaveCanvas();
+            sset = 0;
         }
         #endregion
 
@@ -568,6 +720,7 @@ namespace Tablet_App
         private void cmbBorderColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             BorderColor = (((e.AddedItems[0] as ComboBoxItem).Content as Rectangle).Fill as SolidColorBrush).Color;
+
         }
 
         private void canvasSet()
@@ -580,6 +733,9 @@ namespace Tablet_App
         }
         private void btn_Redo_Tapped(object sender, TappedRoutedEventArgs e)
         {
+            SaveCanvas();
+            defaultBtnColor();
+            DrawingTool = "NotSelect";
             if (canvas.Children.Count != redoundoCount)
             {
                 btn_Undo.IsEnabled = true;
@@ -596,6 +752,9 @@ namespace Tablet_App
 
         private void btn_Undo_Tapped(object sender, TappedRoutedEventArgs e)
         {
+            SaveCanvas();
+            defaultBtnColor();
+            DrawingTool = "NotSelect";
             if (redoundoCount != 0)
             {
                 btn_Redo.IsEnabled = true;
@@ -609,10 +768,27 @@ namespace Tablet_App
             }
         }
 
-        private void canvas_PointerMoved_1(object sender, PointerRoutedEventArgs e)
+        private void MoveableContainer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
 
+            if (DrawingTool == "NotSelect")
+            {
+
+                selectedItem = e.Container;
+                var x = Canvas.GetLeft(selectedItem);
+                var y = Canvas.GetTop(selectedItem);
+                Canvas.SetLeft(selectedItem, x + e.Delta.Translation.X);
+                Canvas.SetTop(selectedItem, y + e.Delta.Translation.Y);
+
+            }
+
         }
+
+        private void canvas_PointerMoved_1(object sender, PointerRoutedEventArgs e)
+        {
+        }
+
+
 
 
     }

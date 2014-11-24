@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="PhotoDocu" Publisher="CN=Tejasvi" Version="1.0.0.21" />
+  <Identity Name="PhotoDocu" Publisher="CN=Tejasvi" Version="1.0.0.24" />
   <Properties>
     <DisplayName>PhotoDocu</DisplayName>
     <PublisherDisplayName>RiskyPathak</PublisherDisplayName>
@@ -15,7 +15,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Tablet_App.App">
-      <m2:VisualElements DisplayName="FacilityDocu" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="FacilityDocu" ForegroundText="light" BackgroundColor="#464646">
+      <m2:VisualElements DisplayName="PhotoDocu" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="PhotoDocu" ForegroundText="light" BackgroundColor="#464646">
         <m2:SplashScreen Image="Assets\SplashScreen.png" />
         <m2:InitialRotationPreference>
           <m2:Rotation Preference="landscape" />
