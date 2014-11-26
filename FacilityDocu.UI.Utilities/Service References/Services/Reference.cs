@@ -573,6 +573,9 @@ namespace FacilityDocu.UI.Utilities.Services {
         private string ImportantNameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IsAnalysisField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsDescriptionwarningField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -696,6 +699,19 @@ namespace FacilityDocu.UI.Utilities.Services {
                 if ((object.ReferenceEquals(this.ImportantNameField, value) != true)) {
                     this.ImportantNameField = value;
                     this.RaisePropertyChanged("ImportantName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsAnalysis {
+            get {
+                return this.IsAnalysisField;
+            }
+            set {
+                if ((this.IsAnalysisField.Equals(value) != true)) {
+                    this.IsAnalysisField = value;
+                    this.RaisePropertyChanged("IsAnalysis");
                 }
             }
         }

@@ -102,6 +102,7 @@
           <Property Name="ActionDescriptionWarning" Type="bit" />
           <Property Name="ImportantActionname" Type="varchar(max)" />
           <Property Name="ImportantActionDescription" Type="varchar(max)" />
+          <Property Name="IsAnalysis" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Resource">
           <Key>
@@ -633,6 +634,7 @@
           <Property Name="ActionDescriptionWarning" Type="Boolean" />
           <Property Name="ImportantActionname" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="ImportantActionDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsAnalysis" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Project" Relationship="TabletApp_DatabaseModel.FK_PD_P" FromRole="ProjectDetail" ToRole="Project" />
           <NavigationProperty Name="ProjectActionAttachments" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__160F4887" FromRole="ProjectDetail" ToRole="ProjectActionAttachment" />
           <NavigationProperty Name="ProjectActionImages" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__3E52440B" FromRole="ProjectDetail" ToRole="ProjectActionImage" />
@@ -996,6 +998,7 @@
           <EntitySetMapping Name="ProjectDetails">
             <EntityTypeMapping TypeName="TabletApp_DatabaseModel.ProjectDetail">
               <MappingFragment StoreEntitySet="ProjectDetail">
+                <ScalarProperty Name="IsAnalysis" ColumnName="IsAnalysis" />
                 <ScalarProperty Name="ImportantActionDescription" ColumnName="ImportantActionDescription" />
                 <ScalarProperty Name="ImportantActionname" ColumnName="ImportantActionname" />
                 <ScalarProperty Name="ActionDescriptionWarning" ColumnName="ActionDescriptionWarning" />

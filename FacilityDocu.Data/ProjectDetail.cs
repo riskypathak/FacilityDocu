@@ -58,6 +58,8 @@ public partial class ProjectDetail
 
     public string ImportantActionDescription { get; set; }
 
+    public bool IsAnalysis { get; set; }
+
 
 
     public virtual Project Project { get; set; }

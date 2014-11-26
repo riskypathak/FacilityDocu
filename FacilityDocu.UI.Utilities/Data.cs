@@ -20,6 +20,7 @@ namespace FacilityDocu.UI.Utilities
         public static bool SYNC_DOWNLOAD_UPDATE = false;
 
         public static ProjectDTO CURRENT_PROJECT;
+        public static RigTypeDTO CURRENT_RIG;
 
         public static string CURRENT_USER;
 

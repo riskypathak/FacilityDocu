@@ -26,6 +26,9 @@ namespace FacilityDocu.DTO
         public bool IsDescriptionwarning { get; set; }
 
         [DataMember]
+        public bool IsAnalysis { get; set; }
+
+        [DataMember]
         public string ImportantName { get; set; }
 
         [DataMember]

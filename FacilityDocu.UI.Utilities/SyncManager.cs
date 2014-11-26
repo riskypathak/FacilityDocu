@@ -130,24 +130,17 @@ namespace FacilityDocu.UI.Utilities
 
             actions.ForEach(a =>
                 {
-                    a.Images.ToList().ForEach(i => i.FileByteStream = ReadImage(i.Path));
-                    service.UpdateActionImages(a);
+                    if (a.Images.Count() > 0)
+                    {
+                        a.Images.ToList().ForEach(i => i.FileByteStream = ReadImage(i.Path));
+                        service.UpdateActionImages(a);
+                    }
                 });
         }
 
         private byte[] ReadImage(string imagePath)
         {
-            byte[] bytes = null;
-
-            Image image = Image.FromFile(imagePath);
-            using (MemoryStream stream = new MemoryStream())
-            {
-                // Save image to stream.
-                image.Save(stream, ImageFormat.Jpeg);
-                bytes = stream.ToArray();
-            }
-
-            return bytes;
+            return System.IO.File.ReadAllBytes(imagePath);
         }
 
         public void UploadAttachments(string projectID)
@@ -159,8 +152,11 @@ namespace FacilityDocu.UI.Utilities
 
             actions.ForEach(a =>
             {
-                a.Attachments.ToList().ForEach(i => i.FileByteStream = ReadAttachment(i.Path));
-                service.UpdateActionAttachments(a);
+                if (a.Attachments.Count() > 0)
+                {
+                    a.Attachments.ToList().ForEach(i => i.FileByteStream = ReadAttachment(i.Path));
+                    service.UpdateActionAttachments(a);
+                }
             });
         }
 

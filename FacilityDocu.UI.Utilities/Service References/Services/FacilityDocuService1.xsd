@@ -83,6 +83,7 @@
       <xs:element minOccurs="0" name="Images" nillable="true" type="tns:ArrayOfImageDTO" />
       <xs:element minOccurs="0" name="ImportantDescription" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ImportantName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IsAnalysis" type="xs:boolean" />
       <xs:element minOccurs="0" name="IsDescriptionwarning" type="xs:boolean" />
       <xs:element minOccurs="0" name="IsNameWarning" type="xs:boolean" />
       <xs:element minOccurs="0" name="LiftingGears" nillable="true" type="xs:string" />

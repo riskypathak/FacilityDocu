@@ -67,8 +67,6 @@ namespace FacilityDocu.UI.Utilities
 
         public static IList<string> GeneratePdf(ProjectDTO project)
         {
-            string[] action_id = new string[100];
-
             IList<string> outputs = new List<string>();
 
             foreach (RigTypeDTO rigType in project.RigTypes)
@@ -82,7 +80,7 @@ namespace FacilityDocu.UI.Utilities
                 PdfWriter writer = PdfWriter.GetInstance(doc, fs);
 
 
-                doc.AddTitle("FacilityDocu");
+                doc.AddTitle("RigDocu");
                 doc.AddAuthor(project.CreatedBy.Name);
                 doc.Open();
                 PdfContentByte cb = writer.DirectContent;
@@ -94,7 +92,7 @@ namespace FacilityDocu.UI.Utilities
                 ColumnText ct1 = new ColumnText(cb);
                 ct1.SetSimpleColumn(new Phrase(new Chunk(string.Format("{0}", "Table of contents"), FontFactory.GetFont(FontFactory.HELVETICA, 25, Font.BOLD))), 190, 1150, 530, 36, 25, Element.ALIGN_TOP | Element.ALIGN_TOP);
                 ct1.Go();
-                iTextSharp.text.Paragraph paragraph = new iTextSharp.text.Paragraph("\n\n\n\n\n\n");
+                Paragraph paragraph = new Paragraph("\n\n\n\n\n\n");
                 doc.Add(paragraph);
 
                 PdfPTable tblcontent = new PdfPTable(3);
@@ -110,8 +108,8 @@ namespace FacilityDocu.UI.Utilities
                 tblcontent.HorizontalAlignment = 1;
                 tblcontent.DefaultCell.HorizontalAlignment = Element.ALIGN_CENTER;
 
+                tblcontent.AddCell("S.No");
                 tblcontent.AddCell("Chapter");
-                tblcontent.AddCell("Description");
                 tblcontent.AddCell("Page");
 
                 tblcontent.AddCell("\n");
@@ -120,10 +118,10 @@ namespace FacilityDocu.UI.Utilities
 
                 foreach (ModuleDTO module in rigType.Modules)
                 {
-
                     tblcontent.AddCell(Format(module.Number));
                     tblcontent.AddCell(Format(module.Name));
-                    tblcontent.AddCell(doc.PageNumber.ToString());
+                    //tblcontent.AddCell(doc.PageNumber.ToString());
+                    tblcontent.AddCell(string.Empty);
 
                     tblcontent.AddCell("\n");
                     tblcontent.AddCell("\n");
@@ -131,12 +129,10 @@ namespace FacilityDocu.UI.Utilities
                 }
 
                 doc.Add(tblcontent);
+
                 foreach (ModuleDTO module in rigType.Modules)
                 {
-
                     doc.NewPage();
-
-
                     ColumnText ct = new ColumnText(cb);
                     ct.SetSimpleColumn(new Phrase(new Chunk(string.Format("{0} {1}", module.Number, module.Name), FontFactory.GetFont(FontFactory.HELVETICA, 20, Font.BOLD))), 190, 1150, 530, 36, 25, Element.ALIGN_TOP | Element.ALIGN_TOP);
                     ct.Go();
@@ -172,10 +168,9 @@ namespace FacilityDocu.UI.Utilities
 
                         foreach (ActionDTO action in step.Actions)
                         {
-
                             tblAction.AddCell(Format(action.Name));
                             tblAction.AddCell(Format(action.Description));
-                            tblAction.AddCell(Format(string.Join("\n", action.Resources.Select(r => r.ResourceCount + " " + r.Name).ToArray())));
+                            tblAction.AddCell(Format(string.Join("\n", action.Resources.Where(r => System.Convert.ToInt32(r.ResourceCount) > 0).Select(r => r.ResourceCount + " " + r.Name).ToArray())));
                             IList<string> tools = action.Tools.Select(r => r.Name).ToList();
                             tools.Add("\n"); tools.Add("Lifting Gears"); tools.Add(action.LiftingGears);
                             tblAction.AddCell(Format(string.Join("\n", tools)));
@@ -209,10 +204,7 @@ namespace FacilityDocu.UI.Utilities
                             PdfPCell imageCell = new PdfPCell(img);
 
                             tblImage.AddCell(imageCell);
-
-
                         }
-
 
                         foreach (ImageDTO image in step.Actions.SelectMany(a => a.Images))
                         {
@@ -245,26 +237,11 @@ namespace FacilityDocu.UI.Utilities
 
             public override void OnEndPage(PdfWriter writer, Document doc)
             {
-
                 BaseColor grey = new BaseColor(128, 128, 128);
                 iTextSharp.text.Font font = FontFactory.GetFont("Arial", 9, iTextSharp.text.Font.NORMAL, grey);
                 //tbl footer
                 PdfPTable footerTbl = new PdfPTable(1);
                 footerTbl.TotalWidth = doc.PageSize.Width;
-                //    Paragraph footer = new Paragraph("FacilityDocu", FontFactory.GetFont(FontFactory.TIMES, 10, iTextSharp.text.Font.NORMAL));
-                //    footer.Alignment = Element.ALIGN_RIGHT;
-                //    PdfPTable footerTbl = new PdfPTable(1);
-                //    footerTbl.TotalWidth = 300;
-                //    footerTbl.HorizontalAlignment = Element.ALIGN_CENTER;
-
-                //    PdfPCell cell = new PdfPCell(footer);
-                //    cell.Border = 0;
-                //    cell.PaddingLeft = 10;
-
-                //    footerTbl.AddCell(cell);
-                //    footerTbl.WriteSelectedRows(0, -1, 415, 30, writer.DirectContent);
-
-                //numero de la page
 
                 Chunk myFooter = new Chunk("Page " + (doc.PageNumber), FontFactory.GetFont(FontFactory.HELVETICA_OBLIQUE, 8, grey));
                 PdfPCell footer = new PdfPCell(new Phrase(myFooter));
@@ -278,7 +255,6 @@ namespace FacilityDocu.UI.Utilities
             public override void OnCloseDocument(PdfWriter writer, Document document)
             {
                 base.OnCloseDocument(writer, document);
-
             }
         }
 

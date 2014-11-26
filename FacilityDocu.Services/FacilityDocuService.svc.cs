@@ -1,16 +1,10 @@
-﻿using FacilityDocu.DTO;
-using FacilityDocu.Data;
+﻿using FacilityDocu.Data;
+using FacilityDocu.DTO;
+using FacilityDocu.Services.EntityDTOConverter;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
-using FacilityDocu.Services.EntityDTOConverter;
 using System.IO;
+using System.Linq;
 
 namespace FacilityDocu.Services
 {
@@ -150,10 +144,13 @@ namespace FacilityDocu.Services
                     modifyAction.ImportantActionDescription = updateProject.ImportantActionDescription;
                     modifyAction.ImportantActionname = updateProject.ImportantActionname;
 
+                    modifyAction.IsAnalysis = updateProject.IsAnalysis;
+
                     UpdateActionTool(updateProject, existingPD);
                     UpdateActionResource(updateProject, existingPD);
                     UpdateActionRiskAnalysis(updateProject, existingPD);
                     UpdateActionImages(updateProject, existingPD);
+                    UpdateActionAttachments(updateProject, existingPD);
                 }
                 else
                 {
@@ -189,6 +186,29 @@ namespace FacilityDocu.Services
 
             List<ProjectActionImage> newRA = updateProject.ProjectActionImages.Where(p => Helper.IsNew(p.ImageID.ToString())).ToList();
             newRA.ForEach(np => existingPD.ProjectActionImages.Add(np));
+        }
+
+        private void UpdateActionAttachments(ProjectDetail updateProject, ProjectDetail existingPD)
+        {
+            foreach (ProjectActionAttachment existingPAI in existingPD.ProjectActionAttachments.ToList())
+            {
+                ProjectActionAttachment updatePAI = updateProject.ProjectActionAttachments.FirstOrDefault(p => p.AttachmentID == existingPAI.AttachmentID);
+
+                if (updatePAI != null)
+                {
+                    ProjectActionAttachment modifyPAI = existingPD.ProjectActionAttachments.Single(a => a.AttachmentID == updatePAI.AttachmentID);
+
+                    modifyPAI.Attachment.Name = updatePAI.Attachment.Name;
+                    modifyPAI.Attachment.Path = updatePAI.Attachment.Path;
+                }
+                else
+                {
+                    existingPD.ProjectActionAttachments.Remove(existingPD.ProjectActionAttachments.Single(p => p.AttachmentID == existingPAI.AttachmentID));
+                }
+            }
+
+            List<ProjectActionAttachment> newRA = updateProject.ProjectActionAttachments.Where(p => Helper.IsNew(p.AttachmentID.ToString())).ToList();
+            newRA.ForEach(np => existingPD.ProjectActionAttachments.Add(np));
         }
 
         private void UpdateActionRiskAnalysis(ProjectDetail updateProject, ProjectDetail existingPD)
@@ -398,7 +418,6 @@ namespace FacilityDocu.Services
                     //insert
                     if (Helper.IsNew(attachmentDTO.AttachmentID))
                     {
-
                         ProjectActionAttachment projectAttachment = new ProjectActionAttachment();
                         projectAttachment.ProjectDetailID = actionID;
 

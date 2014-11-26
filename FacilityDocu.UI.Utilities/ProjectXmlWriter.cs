@@ -102,6 +102,7 @@ namespace FacilityDocu.UI.Utilities
                 xStepAction.Add(new XElement("descriptionwarning", stepAction.IsDescriptionwarning));
                 xStepAction.Add(new XElement("importantname", stepAction.ImportantName));
                 xStepAction.Add(new XElement("importantdescription", stepAction.ImportantDescription));
+                xStepAction.Add(new XElement("isanalysis", stepAction.IsAnalysis));
 
                 xStepAction.Add(new XElement("id", stepAction.ActionID));
                 xStepAction.Add(new XElement("number", count.ToString("00")));
@@ -241,7 +242,7 @@ namespace FacilityDocu.UI.Utilities
 
         private static string SaveAttachment(AttachmentDTO attachment)
         {
-            string savedPath = Path.Combine(Data.PROJECT_IMAGES_FOLDER, string.Format("{0}.pdf", attachment.AttachmentID));
+            string savedPath = Path.Combine(Data.PROJECT_ATTACHMENTS_FOLDER, string.Format("{0}.pdf", attachment.AttachmentID));
 
             if (Data.SYNC_DOWNLOAD_UPDATE)
             {

@@ -110,6 +110,7 @@ namespace FacilityDocu.Services.EntityDTOConverter
                 actionDTO.IsDescriptionwarning = projectDetail.ActionDescriptionWarning.Value;
                 actionDTO.ImportantName = projectDetail.ImportantActionname;
                 actionDTO.ImportantDescription = projectDetail.ImportantActionDescription;
+                actionDTO.IsAnalysis = projectDetail.IsAnalysis;
 
                 actionDTO.Images = TOImagesDTO(projectDetail);
                 actionDTO.Attachments = ToAttachmentsDTO(projectDetail);

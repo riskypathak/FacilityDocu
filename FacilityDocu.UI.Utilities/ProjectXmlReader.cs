@@ -111,6 +111,7 @@ namespace FacilityDocu.UI.Utilities
                 action.IsDescriptionwarning = Convert.ToBoolean(xAction.Element("descriptionwarning").Value);
                 action.ImportantName = Convert.ToString(xAction.Element("importantname").Value);
                 action.ImportantDescription = Convert.ToString(xAction.Element("importantdescription").Value);
+                action.IsAnalysis = Convert.ToBoolean(xAction.Element("isanalysis").Value);
 
                 IList<Services.ImageDTO> images = ReadImages(xAction);
                 action.Images = images.ToArray();

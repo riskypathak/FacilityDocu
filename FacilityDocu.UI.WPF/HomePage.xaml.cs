@@ -25,7 +25,6 @@ namespace FacilityDocLaptop
 
     public partial class HomePage : Window
     {
-        private int currentRigIndex = 0;
         private int currentModuleIndex = 0;
         private int currentStepIndex = 0;
         private int currentActionIndex = 0;
@@ -76,7 +75,7 @@ namespace FacilityDocLaptop
             IList<ProjectDTO> projects = new List<ProjectDTO>();
             projectFiles.ToList().ForEach(f => projects.Add(ProjectXmlReader.ReadProjectXml(f, true)));
 
-            listView.ItemsSource = projects.Where(p => !p.Template && !p.Closed);
+            lsvProjects.ItemsSource = projects.Where(p => !p.Template && !p.Closed);
         }
 
         private void login_Click(object sender, RoutedEventArgs e)
@@ -85,7 +84,7 @@ namespace FacilityDocLaptop
 
             if (isLogin)
             {
-                MakeVisible(gridHomePage);
+                MakeVisible(gridHome);
                 Data.CURRENT_USER = userName.Text;
             }
             else
@@ -119,7 +118,7 @@ namespace FacilityDocLaptop
 
             txtNewProjectName.Text = string.Empty;
 
-            homePage.Title = "FacilityDocu - New Project";
+            homePage.Title = "RigDocu - New Project";
 
             gdvNew.Visibility = Visibility.Visible;
         }
@@ -137,24 +136,25 @@ namespace FacilityDocLaptop
 
             if (result == false) return;
 
-            IList<ImageDTO> images = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Images.ToList();
+            IList<ImageDTO> images = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Images.ToList();
 
             openFileDialogue.FileNames.ToList().ForEach(i =>
                 {
                     int counter = 1;
                     ImageDTO image = new ImageDTO()
                     {
+                        Used = true,
                         CreationDate = DateTime.Now,
                         Description = "Image Added",
                         ImageID = string.Concat(DateTime.Now.ToString("yyyyMMddHHmmssfff"), counter),
                         Path = System.IO.Path.Combine(Data.PROJECT_IMAGES_FOLDER, string.Format("{0}.jpg", string.Concat(DateTime.Now.ToString("yyyyMMddHHmmssfff"), counter++)))
                     };
 
-                    System.IO.File.Copy(i, image.Path);
+                    System.IO.File.Copy(i, image.Path, true);
                     images.Add(image);
                 });
 
-            Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Images = images.ToArray();
+            Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Images = images.ToArray();
 
             ChangeScreenControls();
         }
@@ -215,7 +215,7 @@ namespace FacilityDocLaptop
 
             MessageBox.Show("Published");
 
-            MakeVisible(gridHomePage);
+            MakeVisible(gridHome);
         }
 
         private void homePage_Loaded(object sender, RoutedEventArgs e)
@@ -232,97 +232,152 @@ namespace FacilityDocLaptop
 
                 ChangeScreenControls();
 
-                MakeVisible(editPage_grid);
+                MakeVisible(gridEdit);
 
-                listView.SelectedIndex = -1;
+                lsvProjects.SelectedIndex = -1;
             }
         }
 
         private void ChangeScreenControls()
         {
-            lstChapters.ItemsSource = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules;
-            lstSteps.ItemsSource = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps;
+            if (Data.CURRENT_RIG == null)
+            {
+                Data.CURRENT_RIG = Data.CURRENT_PROJECT.RigTypes.FirstOrDefault();
+            }
+
+            lstChapters.ItemsSource = Data.CURRENT_RIG.Modules;
+            lstSteps.ItemsSource = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps;
 
             txtUser.Text = Data.CURRENT_USER;
             txtProjectID.Text = Data.CURRENT_PROJECT.ProjectID;
             txtProjectDescription.Text = Data.CURRENT_PROJECT.Description;
 
-            txtRigType.Text = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Name;
+            txtRigType.Text = string.Format("Rig {0}", Data.CURRENT_RIG.Name);
 
-            ModuleDTO module = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex];
+            ModuleDTO module = Data.CURRENT_RIG.Modules[currentModuleIndex];
             txtModule.Text = string.Format("{0} {1}", module.Number, module.Name);
 
-            StepDTO step = module.Steps[currentStepIndex];
-            txtStepName.Text = string.Format("{0} {1}", step.Number, step.Name);
-
-            if (step.Actions.Length > 0)
+            if (currentStepIndex >= 0 && currentStepIndex < module.Steps.Count())
             {
-                ActionDTO action = step.Actions[currentActionIndex];
 
-                txtAction.Document.Blocks.Clear();
-                txtAction.Document.Blocks.Add(new System.Windows.Documents.Paragraph(new Run(action.Name)));
+                StepDTO step = module.Steps[currentStepIndex];
+                txtStepName.Text = string.Format("{0} {1}", step.Number, step.Name);
 
-                EnableNameWarning();
-
-                txtActionDetails.Document.Blocks.Clear();
-                txtActionDetails.Document.Blocks.Add(new System.Windows.Documents.Paragraph(new Run(action.Description)));
-
-                EnableActionDetailsWarning();
-
-                txtActionNumber.Text = action.Number.Trim();
-                txtActionDimensions.Text = action.Dimensions.Trim();
-                txtActionLiftingGears.Text = action.LiftingGears.Trim();
-                txtActionRisks.Text = action.Risks.Trim();
-
-                lstActionTools.ItemsSource = action.Tools;
-
-                lstActionResourcesP.ItemsSource = action.Resources.Where(r => r.Type.Equals("people")).ToList();
-                lstActionResourcesM.ItemsSource = action.Resources.Where(r => r.Type.Equals("machine")).ToList();
-
-                ShowImages(action.Images);
-
-                lstAttachments.ItemsSource = action.Attachments;
-
-                if (IsAnalysisIndexCorrect())
+                if (step.Actions.Length > 0)
                 {
-                    RiskAnalysisDTO analysis = action.RiskAnalysis[currentAnalysisIndex];
-                    txtAnalysisActivity.Text = analysis.Activity;
-                    txtAnalysisB.Text = analysis.B.ToString();
-                    txtAnalysisB_.Text = analysis.B_.ToString();
-                    txtAnalysisControl.Text = analysis.Controls;
-                    txtAnalysisDanger.Text = analysis.Activity;
-                    txtAnalysisE.Text = analysis.E.ToString();
-                    txtAnalysisE_.Text = analysis.E_.ToString();
-                    txtAnalysisK.Text = analysis.K.ToString();
-                    txtAnalysisK_.Text = analysis.K_.ToString();
-                    txtAnalysisRisk.Text = analysis.Risk.ToString();
-                    txtAnalysisRisk_.Text = analysis.Risk_.ToString();
+                    ActionDTO action = step.Actions[currentActionIndex];
 
-                    txtActivityNumbers.Text = string.Format("RiskyAnalysis#{0} of {1}", currentAnalysisIndex + 1, action.RiskAnalysis.Count());
+                    txtAction.Document.Blocks.Clear();
+                    txtAction.Document.Blocks.Add(new System.Windows.Documents.Paragraph(new Run(action.Name)));
+
+                    EnableNameWarning();
+
+                    txtActionDetails.Document.Blocks.Clear();
+                    txtActionDetails.Document.Blocks.Add(new System.Windows.Documents.Paragraph(new Run(action.Description)));
+
+                    EnableActionDetailsWarning();
+
+                    txtActionNumber.Text = action.Number.Trim();
+                    txtActionDimensions.Text = action.Dimensions.Trim();
+                    txtActionLiftingGears.Text = action.LiftingGears.Trim();
+                    txtActionRisks.Text = action.Risks.Trim();
+
+                    lstActionTools.ItemsSource = action.Tools;
+
+                    lstActionResourcesP.ItemsSource = action.Resources.Where(r => r.Type.Equals("people")).ToList();
+                    lstActionResourcesM.ItemsSource = action.Resources.Where(r => r.Type.Equals("machine")).ToList();
+
+                    ShowImages(action.Images);
+
+                    lstAttachments.ItemsSource = action.Attachments;
+
+                    chkRiskAnalysis.IsChecked = action.IsAnalysis;
+
+                    if (IsAnalysisIndexCorrect())
+                    {
+                        RiskAnalysisDTO analysis = action.RiskAnalysis[currentAnalysisIndex];
+                        txtAnalysisActivity.Text = analysis.Activity;
+                        txtAnalysisB.Text = analysis.B.ToString();
+                        txtAnalysisB_.Text = analysis.B_.ToString();
+                        txtAnalysisControl.Text = analysis.Controls;
+                        txtAnalysisDanger.Text = analysis.Activity;
+                        txtAnalysisE.Text = analysis.E.ToString();
+                        txtAnalysisE_.Text = analysis.E_.ToString();
+                        txtAnalysisK.Text = analysis.K.ToString();
+                        txtAnalysisK_.Text = analysis.K_.ToString();
+                        txtAnalysisRisk.Text = analysis.Risk.ToString();
+                        txtAnalysisRisk_.Text = analysis.Risk_.ToString();
+
+                        txtActivityNumbers.Text = string.Format("RiskyAnalysis#{0} of {1}", currentAnalysisIndex + 1, action.RiskAnalysis.Count());
+                    }
+                    else
+                    {
+                        txtActivityNumbers.Visibility = System.Windows.Visibility.Collapsed;
+                    }
+
+                    if (Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].RiskAnalysis.Count() == 0)
+                    {
+                        txtAnalysisActivity.Text = string.Empty;
+                        txtAnalysisB.Text = string.Empty;
+                        txtAnalysisB_.Text = string.Empty;
+                        txtAnalysisControl.Text = string.Empty;
+                        txtAnalysisDanger.Text = string.Empty;
+                        txtAnalysisE.Text = string.Empty;
+                        txtAnalysisE_.Text = string.Empty;
+                        txtAnalysisK.Text = string.Empty;
+                        txtAnalysisK_.Text = string.Empty;
+                        txtAnalysisRisk.Text = string.Empty;
+                        txtAnalysisRisk_.Text = string.Empty;
+                        txtActivityNumbers.Visibility = System.Windows.Visibility.Collapsed;
+                    }
                 }
-                else
+            }
+
+            if (Data.CURRENT_PROJECT.RigTypes.SingleOrDefault(r => r.RigTypeID.Equals("1")) != null)
+            {
+                mniUp.IsEnabled = true;
+                if (Data.CURRENT_RIG.RigTypeID.Equals("1"))
                 {
-                    txtActionNumber.Visibility = System.Windows.Visibility.Collapsed;
+                    mniUp.IsChecked = true;
+                    mniDown.IsChecked = false;
+                    mniMove.IsChecked = false;
                 }
             }
+            else
+            {
+                mniUp.IsEnabled = false;
 
-            if (currentRigIndex == 0)
-            {
-                mniUp.IsChecked = true;
-                mniDown.IsChecked = false;
-                mniMove.IsChecked = false;
             }
-            else if (currentRigIndex == 1)
+
+            if (Data.CURRENT_PROJECT.RigTypes.SingleOrDefault(r => r.RigTypeID.Equals("2")) != null)
             {
-                mniUp.IsChecked = false;
-                mniDown.IsChecked = true;
-                mniMove.IsChecked = false;
+                mniDown.IsEnabled = true;
+                if (Data.CURRENT_RIG.RigTypeID.Equals("2"))
+                {
+                    mniUp.IsChecked = false;
+                    mniDown.IsChecked = true;
+                    mniMove.IsChecked = false;
+                }
             }
-            else if (currentRigIndex == 2)
+            else
             {
-                mniUp.IsChecked = false;
-                mniDown.IsChecked = false;
-                mniMove.IsChecked = true;
+                mniDown.IsEnabled = false;
+
+            }
+
+            if (Data.CURRENT_PROJECT.RigTypes.SingleOrDefault(r => r.RigTypeID.Equals("3")) != null)
+            {
+                mniMove.IsEnabled = true;
+                if (Data.CURRENT_RIG.RigTypeID.Equals("3"))
+                {
+                    mniUp.IsChecked = false;
+                    mniDown.IsChecked = false;
+                    mniMove.IsChecked = true;
+                }
+            }
+            else
+            {
+                mniMove.IsEnabled = false;
             }
         }
 
@@ -347,7 +402,7 @@ namespace FacilityDocLaptop
 
         private void btnStepRight_Click(object sender, RoutedEventArgs e)
         {
-            if (currentStepIndex < (Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps.Count() - 1))
+            if (currentStepIndex < (Data.CURRENT_RIG.Modules[currentModuleIndex].Steps.Count() - 1))
             {
                 currentStepIndex++;
                 currentActionIndex = 0;
@@ -371,7 +426,7 @@ namespace FacilityDocLaptop
 
         private void btnActionRight_Click(object sender, RoutedEventArgs e)
         {
-            if (currentActionIndex < (Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Count() - 1))
+            if (currentActionIndex < (Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Count() - 1))
             {
                 SaveActionDetail();
                 currentActionIndex++;
@@ -382,13 +437,14 @@ namespace FacilityDocLaptop
 
         private void SaveActionDetail()
         {
-            ActionDTO action = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex];
+            ActionDTO action = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex];
 
             action.Dimensions = txtActionDimensions.Text;
             action.LiftingGears = txtActionLiftingGears.Text;
             action.Name = new TextRange(txtAction.Document.ContentStart, txtAction.Document.ContentEnd).Text;
             action.Description = new TextRange(txtActionDetails.Document.ContentStart, txtActionDetails.Document.ContentEnd).Text;
             action.Risks = txtActionRisks.Text;
+            action.IsAnalysis = chkRiskAnalysis.IsChecked.Value;
 
             SaveAnalysisDetail();
         }
@@ -397,7 +453,7 @@ namespace FacilityDocLaptop
         {
             if (IsAnalysisIndexCorrect())
             {
-                RiskAnalysisDTO analysis = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].
+                RiskAnalysisDTO analysis = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].
                     RiskAnalysis[currentAnalysisIndex];
 
                 analysis.Activity = txtAnalysisActivity.Text;
@@ -435,7 +491,7 @@ namespace FacilityDocLaptop
                     Dimensions = "New Action's Dimesnions",
                     LiftingGears = "New Action's Lifting Gears",
                     Risks = "New Action's Risks",
-                    Number = (Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Length + 1).ToString("00"),
+                    Number = (Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Length + 1).ToString("00"),
                     Resources = (new List<ResourceDTO>()).ToArray(),
                     RiskAnalysis = (new List<RiskAnalysisDTO>() { new RiskAnalysisDTO() }).ToArray(),
                     Tools = (new List<ToolDTO>()).ToArray(),
@@ -445,12 +501,12 @@ namespace FacilityDocLaptop
 
 
 
-            IList<ActionDTO> actions = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions.ToList();
+            IList<ActionDTO> actions = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.ToList();
             actions.Add(action);
 
-            Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions = actions.ToArray();
+            Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions = actions.ToArray();
 
-            currentActionIndex = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Count() - 1;
+            currentActionIndex = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Count() - 1;
 
             currentAnalysisIndex = 0;
             ChangeScreenControls();
@@ -468,7 +524,7 @@ namespace FacilityDocLaptop
 
         private void btAnalysisRight_Click_1(object sender, RoutedEventArgs e)
         {
-            if (currentAnalysisIndex < (Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentAnalysisIndex].RiskAnalysis.Count() - 1))
+            if (currentAnalysisIndex < (Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].RiskAnalysis.Count() - 1))
             {
                 SaveAnalysisDetail();
                 currentAnalysisIndex++;
@@ -487,7 +543,7 @@ namespace FacilityDocLaptop
 
             if (result == false) return;
 
-            IList<AttachmentDTO> attachments = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Attachments.ToList();
+            IList<AttachmentDTO> attachments = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Attachments.ToList();
 
             openFileDialogue.FileNames.ToList().ForEach(i =>
             {
@@ -503,19 +559,19 @@ namespace FacilityDocLaptop
                 attachments.Add(attachment);
             });
 
-            Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Attachments = attachments.ToArray();
+            Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Attachments = attachments.ToArray();
 
             ChangeScreenControls();
         }
 
         private void btnRemoveAttachment_Click_1(object sender, RoutedEventArgs e)
         {
-            IList<AttachmentDTO> attachments = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Attachments.ToList();
+            IList<AttachmentDTO> attachments = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Attachments.ToList();
 
             AttachmentDTO removeAttachment = attachments.Single(a => a.AttachmentID.Equals((sender as Button).CommandParameter));
             attachments.Remove(removeAttachment);
 
-            Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Attachments = attachments.ToArray();
+            Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Attachments = attachments.ToArray();
 
             ChangeScreenControls();
         }
@@ -538,13 +594,13 @@ namespace FacilityDocLaptop
 
         private void MakeVisible(Grid grid)
         {
-            grdViewLogin.Visibility = Visibility.Collapsed;
-            gridHomePage.Visibility = Visibility.Collapsed;
-            editPage_grid.Visibility = Visibility.Collapsed;
+            gridLogin.Visibility = Visibility.Collapsed;
+            gridHome.Visibility = Visibility.Collapsed;
+            gridEdit.Visibility = Visibility.Collapsed;
 
             grid.Visibility = Visibility.Visible;
 
-            if (grid.Name.Equals("editPage_grid"))
+            if (grid.Name.Equals("gridEdit"))
             {
                 dpnMenu.Visibility = System.Windows.Visibility.Visible;
             }
@@ -565,7 +621,7 @@ namespace FacilityDocLaptop
 
             gdvNew.Visibility = Visibility.Collapsed;
 
-            MakeVisible(editPage_grid);
+            MakeVisible(gridEdit);
 
             string newProjectID = DateTime.Now.ToString("yyyyMMddHHmmssfff");
             string oldProjectPath = System.IO.Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", (cmbTemplates.SelectedItem as ProjectDTO).ProjectID));
@@ -598,14 +654,14 @@ namespace FacilityDocLaptop
 
         private void btnBack_Click_1(object sender, RoutedEventArgs e)
         {
-            MakeVisible(gridHomePage);
+            MakeVisible(gridHome);
         }
 
         private void btnToolAdd_Click_1(object sender, RoutedEventArgs e)
         {
             Helper.GetTools();
 
-            var notToolIds = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools.Select(n => n.ToolID);
+            var notToolIds = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools.Select(n => n.ToolID);
 
             lstAddTools.ItemsSource = Data.AVAILABLE_TOOLS.Where(t => !notToolIds.Contains(t.ToolID));
 
@@ -618,11 +674,11 @@ namespace FacilityDocLaptop
 
             foreach (ToolDTO selected in lstAddTools.SelectedItems)
             {
-                IList<ToolDTO> tools = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools.ToList();
+                IList<ToolDTO> tools = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools.ToList();
                 tools.Add(selected);
 
 
-                Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools = tools.ToArray();
+                Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools = tools.ToArray();
             }
             ChangeScreenControls();
         }
@@ -636,13 +692,13 @@ namespace FacilityDocLaptop
         {
             string toolToRemoveID = (sender as Button).CommandParameter.ToString();
 
-            IList<ToolDTO> tools = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools.ToList();
+            IList<ToolDTO> tools = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools.ToList();
 
             ToolDTO toolToRemove = tools.Single(t => t.ToolID.Equals(toolToRemoveID));
             tools.Remove(toolToRemove);
 
 
-            Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools = tools.ToArray();
+            Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools = tools.ToArray();
 
             ChangeScreenControls();
         }
@@ -651,7 +707,7 @@ namespace FacilityDocLaptop
         {
             string imageToRemoveID = (sender as Button).CommandParameter.ToString();
 
-            ImageDTO removeImage = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].
+            ImageDTO removeImage = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].
                 Actions[currentActionIndex].Images.Single(i => i.ImageID.Equals(imageToRemoveID));
 
             removeImage.Used = false;
@@ -663,7 +719,7 @@ namespace FacilityDocLaptop
         {
             IList<ImageModel> addImages = new List<ImageModel>();
 
-            Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Images.Where(i => i.Used == false)
+            Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Images.Where(i => i.Used == false)
                 .ToList().ForEach(i =>
             {
                 BitmapImage bitmap = new BitmapImage();
@@ -686,7 +742,7 @@ namespace FacilityDocLaptop
 
             foreach (ImageModel selected in lstAddImages.SelectedItems)
             {
-                ImageDTO modified = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Images.Single(i => i.ImageID.Equals(selected.ImageID));
+                ImageDTO modified = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Images.Single(i => i.ImageID.Equals(selected.ImageID));
                 modified.Used = true;
             }
             ChangeScreenControls();
@@ -701,13 +757,13 @@ namespace FacilityDocLaptop
         {
             if (currentActionIndex >= 0)
             {
-                IList<ActionDTO> actions = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions.ToList();
+                IList<ActionDTO> actions = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.ToList();
 
                 if (actions.Count > 1)
                 {
-                    actions.Remove(Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex]);
+                    actions.Remove(Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex]);
 
-                    Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions = actions.ToArray();
+                    Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions = actions.ToArray();
 
                     currentActionIndex--;
                     currentAnalysisIndex = 0;
@@ -730,13 +786,13 @@ namespace FacilityDocLaptop
                 Danger = "New RiskAnalysis's Danger"
             };
 
-            IList<RiskAnalysisDTO> RiskAnalysiss = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex]
+            IList<RiskAnalysisDTO> RiskAnalysiss = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex]
                 .Actions[currentActionIndex].RiskAnalysis.ToList();
             RiskAnalysiss.Add(RiskAnalysis);
 
-            Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].RiskAnalysis = RiskAnalysiss.ToArray();
+            Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].RiskAnalysis = RiskAnalysiss.ToArray();
 
-            currentAnalysisIndex = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex]
+            currentAnalysisIndex = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex]
                 .Actions[currentActionIndex].RiskAnalysis.Count() - 1;
             ChangeScreenControls();
         }
@@ -745,13 +801,13 @@ namespace FacilityDocLaptop
         {
             if (IsAnalysisIndexCorrect())
             {
-                IList<RiskAnalysisDTO> RiskAnalysiss = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex]
+                IList<RiskAnalysisDTO> RiskAnalysiss = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex]
                     .Actions[currentActionIndex].RiskAnalysis.ToList();
 
-                RiskAnalysiss.Remove(Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex]
+                RiskAnalysiss.Remove(Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex]
                     .Actions[currentActionIndex].RiskAnalysis[currentAnalysisIndex]);
 
-                Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex]
+                Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex]
                     .Actions[currentActionIndex].RiskAnalysis = RiskAnalysiss.ToArray();
 
                 currentAnalysisIndex--;
@@ -766,7 +822,7 @@ namespace FacilityDocLaptop
 
         private void EnableNameWarning(bool isToggle = false)
         {
-            ActionDTO action = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex]
+            ActionDTO action = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex]
         .Actions[currentActionIndex];
 
             Brush color = new SolidColorBrush(Colors.Yellow);
@@ -826,7 +882,7 @@ namespace FacilityDocLaptop
 
         private void EnableActionDetailsWarning(bool isToggle = false)
         {
-            ActionDTO action = Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex]
+            ActionDTO action = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex]
         .Actions[currentActionIndex];
 
             Brush color = new SolidColorBrush(Colors.Yellow);
@@ -880,23 +936,24 @@ namespace FacilityDocLaptop
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
-            int rigIndex = Convert.ToInt32((sender as MenuItem).CommandParameter);
+            string selectedRigTypeID = Convert.ToString((sender as MenuItem).CommandParameter);
 
+            RigTypeDTO selectedRig = Data.CURRENT_PROJECT.RigTypes.SingleOrDefault(r => r.RigTypeID.Equals(selectedRigTypeID));
 
+            if (selectedRig != null)
+            {
+                Data.CURRENT_RIG = selectedRig;
+                currentModuleIndex = 0;
+                currentStepIndex = 0;
+                currentActionIndex = 0;
 
-
-            currentRigIndex = rigIndex;
-
-            currentModuleIndex = 0;
-            currentStepIndex = 0;
-            currentActionIndex = 0;
-
-            ChangeScreenControls();
+                ChangeScreenControls();
+            }
         }
 
         private void mniLogout_Click_1(object sender, RoutedEventArgs e)
         {
-            MakeVisible(grdViewLogin);
+            MakeVisible(gridLogin);
         }
 
         private void mniExit_Click_1(object sender, RoutedEventArgs e)
@@ -965,7 +1022,7 @@ namespace FacilityDocLaptop
 
         private bool IsAnalysisIndexCorrect()
         {
-            if (Data.CURRENT_PROJECT.RigTypes[currentRigIndex].Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].RiskAnalysis.Count() > 0
+            if (Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].RiskAnalysis.Count() > 0
                 && currentAnalysisIndex >= 0)
             {
                 return true;
@@ -974,6 +1031,18 @@ namespace FacilityDocLaptop
             {
                 return false;
             }
+        }
+
+        private void chkRiskAnalysis_Checked_1(object sender, RoutedEventArgs e)
+        {
+
+            Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex]
+                    .Actions[currentActionIndex].IsAnalysis = (sender as CheckBox).IsChecked.Value;
+        }
+
+        private void btnReset_Click_1(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
