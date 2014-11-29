@@ -245,14 +245,14 @@ namespace FacilityDocLaptop
                 Data.CURRENT_RIG = Data.CURRENT_PROJECT.RigTypes.FirstOrDefault();
             }
 
-            lstChapters.ItemsSource = Data.CURRENT_RIG.Modules;
+            lstChapters.ItemsSource = Data.CURRENT_RIG.Modules.Where(m => m.Steps.Count() > 0); //Only those modules having step count > 0
             lstSteps.ItemsSource = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps;
 
             txtUser.Text = Data.CURRENT_USER;
             txtProjectID.Text = Data.CURRENT_PROJECT.ProjectID;
             txtProjectDescription.Text = Data.CURRENT_PROJECT.Description;
 
-            txtRigType.Text = string.Format("Rig {0}", Data.CURRENT_RIG.Name);
+            txtRigType.Text = string.Format("RIG - {0}", Data.CURRENT_RIG.Name);
 
             ModuleDTO module = Data.CURRENT_RIG.Modules[currentModuleIndex];
             txtModule.Text = string.Format("{0} {1}", module.Number, module.Name);
@@ -277,7 +277,7 @@ namespace FacilityDocLaptop
 
                     EnableActionDetailsWarning();
 
-                    txtActionNumber.Text = action.Number.Trim();
+                    txtActionNumber.Text = string.Format("{0}/{1}", action.Number.TrimStart('0'), step.Actions.Count());
                     txtActionDimensions.Text = action.Dimensions.Trim();
                     txtActionLiftingGears.Text = action.LiftingGears.Trim();
                     txtActionRisks.Text = action.Risks.Trim();
@@ -308,7 +308,7 @@ namespace FacilityDocLaptop
                         txtAnalysisRisk.Text = analysis.Risk.ToString();
                         txtAnalysisRisk_.Text = analysis.Risk_.ToString();
 
-                        txtActivityNumbers.Text = string.Format("RiskyAnalysis#{0} of {1}", currentAnalysisIndex + 1, action.RiskAnalysis.Count());
+                        txtActivityNumbers.Text = string.Format("{0}/{1}", currentAnalysisIndex + 1, action.RiskAnalysis.Count());
                     }
                     else
                     {
@@ -484,6 +484,13 @@ namespace FacilityDocLaptop
 
         private void btnActionAdd_Click_1(object sender, RoutedEventArgs e)
         {
+            IList<ResourceDTO> masterResources = new List<ResourceDTO>();
+
+            Data.CURRENT_RIG.Modules.SelectMany(m => m.Steps).SelectMany(s => s.Actions).Single().Resources.ToList().ForEach(r =>
+
+                masterResources.Add(new ResourceDTO() { ResourceID = r.ResourceID, Name = r.Name, ResourceCount = r.ResourceCount })
+            );
+
             ActionDTO action = new ActionDTO()
                 {
                     Name = "New Action",
@@ -492,13 +499,12 @@ namespace FacilityDocLaptop
                     LiftingGears = "New Action's Lifting Gears",
                     Risks = "New Action's Risks",
                     Number = (Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Length + 1).ToString("00"),
-                    Resources = (new List<ResourceDTO>()).ToArray(),
+                    Resources = masterResources.ToArray(),
                     RiskAnalysis = (new List<RiskAnalysisDTO>() { new RiskAnalysisDTO() }).ToArray(),
                     Tools = (new List<ToolDTO>()).ToArray(),
                     Images = (new List<ImageDTO>()).ToArray(),
                     ActionID = "0"
                 };
-
 
 
             IList<ActionDTO> actions = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.ToList();
@@ -647,6 +653,11 @@ namespace FacilityDocLaptop
 
         private void btnExport_Click_1(object sender, RoutedEventArgs e)
         {
+            SaveProject();
+
+            string projectPath = System.IO.Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", Data.CURRENT_PROJECT.ProjectID));
+
+            Data.CURRENT_PROJECT = ProjectXmlReader.ReadProjectXml(projectPath, false);
             IList<string> outputs = Helper.GeneratePdf(Data.CURRENT_PROJECT);
 
             MessageBox.Show(string.Concat("Files Generated at\n", string.Join("\n", outputs.ToArray())));
@@ -708,7 +719,7 @@ namespace FacilityDocLaptop
             string imageToRemoveID = (sender as Button).CommandParameter.ToString();
 
             ImageDTO removeImage = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].
-                Actions[currentActionIndex].Images.Single(i => i.ImageID.Equals(imageToRemoveID));
+                Actions[currentActionIndex].Images.First(i => i.ImageID.Equals(imageToRemoveID));
 
             removeImage.Used = false;
 
@@ -963,23 +974,10 @@ namespace FacilityDocLaptop
 
         private void txtModule_MouseDown_1(object sender, MouseButtonEventArgs e)
         {
-            lstChapters.Visibility = System.Windows.Visibility.Visible;
-
-            Mouse.Capture(this, CaptureMode.SubTree);
-            AddHandler();
+            popChapters.IsOpen = true;
         }
 
-        private void AddHandler()
-        {
-            AddHandler(Mouse.PreviewMouseDownOutsideCapturedElementEvent, new MouseButtonEventHandler(HandleClickOutsideOfControl), true);
-        }
 
-        private void HandleClickOutsideOfControl(object sender, MouseButtonEventArgs e)
-        {
-            lstChapters.Visibility = System.Windows.Visibility.Collapsed;
-            lstSteps.Visibility = System.Windows.Visibility.Collapsed;
-            ReleaseMouseCapture();
-        }
 
         private void lstChapters_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
@@ -988,8 +986,7 @@ namespace FacilityDocLaptop
             currentActionIndex = 0;
             currentAnalysisIndex = 0;
 
-            lstChapters.Visibility = System.Windows.Visibility.Collapsed;
-            ReleaseMouseCapture();
+            popChapters.IsOpen = false;
 
             ChangeScreenControls();
         }
@@ -1000,18 +997,14 @@ namespace FacilityDocLaptop
             currentActionIndex = 0;
             currentAnalysisIndex = 0;
 
-            lstSteps.Visibility = System.Windows.Visibility.Collapsed;
-            ReleaseMouseCapture();
+            popSteps.IsOpen = false;
 
             ChangeScreenControls();
         }
 
         private void txtStepName_MouseDown_1(object sender, MouseButtonEventArgs e)
         {
-            lstSteps.Visibility = System.Windows.Visibility.Visible;
-
-            Mouse.Capture(this, CaptureMode.SubTree);
-            AddHandler();
+            popSteps.IsOpen = true;
         }
 
         private void TextBlock_MouseDown_1(object sender, MouseButtonEventArgs e)
@@ -1035,14 +1028,8 @@ namespace FacilityDocLaptop
 
         private void chkRiskAnalysis_Checked_1(object sender, RoutedEventArgs e)
         {
-
             Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex]
                     .Actions[currentActionIndex].IsAnalysis = (sender as CheckBox).IsChecked.Value;
-        }
-
-        private void btnReset_Click_1(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

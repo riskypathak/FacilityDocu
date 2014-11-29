@@ -203,13 +203,15 @@ namespace FacilityDocu.UI.Utilities
             XElement xImages = new XElement("images");
             xAction.Add(xImages);
 
+            int count = 1;
+
             foreach (ImageDTO image in images)
             {
                 XElement xImage = new XElement("image");
                 xImages.Add(xImage);
 
                 xImage.Add(new XElement("id", image.ImageID));
-                xImage.Add(new XElement("number", image.Number));
+                xImage.Add(new XElement("number", count.ToString("00")));
                 xImage.Add(new XElement("creationdate", image.CreationDate));
                 xImage.Add(new XElement("description", image.Description));
                 xImage.Add(new XElement("used", image.Used));
@@ -218,6 +220,8 @@ namespace FacilityDocu.UI.Utilities
                 xImage.Add(new XElement("tags", image.Tags));
 
                 WriteImageComments(image.Comments, xImage);
+
+                count++;
             }
         }
 
