@@ -320,9 +320,9 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Row="0" Orientation="Horizontal">
-                            <Button Name="btnActionLeft" VerticalAlignment="Bottom" FontFamily="Marlett" FontSize="20" Content="3" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="#FFC6D625" Click="btnActionLeft_Click"  />
+                            <Button Name="btnActionLeft" VerticalAlignment="Bottom" FontFamily="Marlett" FontSize="20" Content="3" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="#FFC6D625" Click="btnActionLeft_Click" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}"  />
                             <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Left" Text="Action" FontSize="20" Foreground="White"/>
-                            <Button  VerticalAlignment="Bottom" Name="btnActionRight" FontFamily="Marlett" FontSize="20" Content="4" BorderBrush="{x:Null}" Foreground="#FFB7C718" Background="{x:Null}"  Click="btnActionRight_Click" />
+                            <Button  VerticalAlignment="Bottom" Name="btnActionRight" FontFamily="Marlett" FontSize="20" Content="4" BorderBrush="{x:Null}" Foreground="#FFB7C718"  Background="{x:Null}"  Click="btnActionRight_Click"   IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}"  />
                         </StackPanel>
                         <Image Grid.Row="1" HorizontalAlignment="Right" x:Name="btnWarningAction" Height="28" Width="32" Stretch="Fill" MouseDown="btnWarningAction_MouseDown_1"/>
                     </Grid>
@@ -431,7 +431,7 @@
                     <TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="11" Grid.Row="1" HorizontalAlignment="Left" Text="Risks" FontSize="20"/>
                     <TextBox Grid.Column="11" Grid.Row="3"  x:Name="txtActionRisks" />
 
-                    <TextBlock Margin="0,10,0,-20" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Width="350" Background="#FF1D2040" Grid.Column="9" Grid.Row="5"  Text="Resources" FontSize="20" Foreground="White"/>
+                    <TextBlock Margin="23,19,179,-10" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Width="184" Background="#FF1D2040" Grid.Column="9" Grid.Row="5"  Text="Resources" FontSize="20" Foreground="White" Grid.RowSpan="2"/>
 
                 </Grid>
 
