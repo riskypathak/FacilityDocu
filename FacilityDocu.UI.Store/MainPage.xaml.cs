@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Navigation;
 //test
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
-
+  //start page
 namespace Tablet_App
 {
     /// <summary>
