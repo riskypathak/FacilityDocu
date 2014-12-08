@@ -52,7 +52,7 @@ namespace Tablet_App
                 Windows.Media.MediaProperties.ImageEncodingProperties imgProperties = Windows.Media.MediaProperties.ImageEncodingProperties.CreateJpeg();
                 imgProperties.Height = 1024;
                 imgProperties.Width = 1280;
-
+          
                 StorageFile file = await imagesFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
 
                 await media.CapturePhotoToStorageFileAsync(imgProperties, file);
@@ -260,6 +260,16 @@ namespace Tablet_App
         private void WriteImages()
         {
             ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
+        }
+
+        private void Button_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Data.CURRENT_ACTION.Images.Add(currentImage);
+
+            WriteImages();
+            media.Dispose();
+           
+            this.Frame.Navigate(typeof(Gallery));
         }
     }
 }

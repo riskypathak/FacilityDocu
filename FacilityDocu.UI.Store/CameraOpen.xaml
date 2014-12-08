@@ -18,8 +18,8 @@
         	AutomationProperties.Name="Back"
         	AutomationProperties.AutomationId="BackButton"
         	AutomationProperties.ItemType="Navigation Button" Tapped="btnBack_Tapped" Foreground="#FFFBF5F5" BorderBrush="#33F3EBEB" Background="#B3F30606"/>
-        
-        <Grid x:Name="gdvPreview" Visibility="Collapsed" HorizontalAlignment="Left" Height="768" VerticalAlignment="Top" Width="1366" Background="#FF07299C">
+
+        <Grid x:Name="gdvPreview" Visibility="Collapsed"  HorizontalAlignment="Left" Height="768" VerticalAlignment="Top" Width="1366" Background="#FF07299C">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="486*"/>
                 <ColumnDefinition Width="197*"/>
@@ -68,6 +68,7 @@
                 <Button x:Name="cancel" Content="Cancel" HorizontalAlignment="Left" Height="64" Margin="11,700,0,0" VerticalAlignment="Top" Width="170" FontSize="25" Tapped="cancel_Tapped"/>
                 <Button x:Name="ok" Content="Ok" HorizontalAlignment="Left" Height="64" Margin="210,700,0,0" VerticalAlignment="Top" Width="165" FontSize="25" Tapped="ok_Tapped"/>
             </Grid>
+            <Button Content="Gallary" HorizontalAlignment="Left" Height="60" VerticalAlignment="Top" Width="78" Tapped="Button_Tapped" Grid.Column="1" Margin="200,516,0,0"/>
         </Grid>
 
     </Grid>
