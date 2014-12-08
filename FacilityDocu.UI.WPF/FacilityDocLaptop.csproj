@@ -119,6 +119,7 @@
     <Resource Include="Assets\Add.jpg" />
     <Resource Include="Assets\remove.png" />
     <Resource Include="Assets\back.jpg" />
+    <Resource Include="Assets\warningdisable.png" />
     <Content Include="Data\ProjectXml\sample.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -133,9 +134,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\warningenable.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\warningdisable.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Data\Attachments\sample.atc">
