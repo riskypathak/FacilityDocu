@@ -602,12 +602,12 @@ namespace Tablet_App
             Size canvasSize = this.canvas.RenderSize;
             Point defaultPoint = this.canvas.RenderTransformOrigin;
             // Sezing to output image dimension.  
-            this.canvas.Measure(canvasSize);
-            this.canvas.UpdateLayout();
-            this.canvas.Arrange(new Rect(defaultPoint, canvasSize));
+            this.canvasMain.Measure(canvasSize);
+            this.canvasMain.UpdateLayout();
+            this.canvasMain.Arrange(new Rect(defaultPoint, canvasSize));
             // Convert canvas to bmp.  
             var bitmap = new RenderTargetBitmap();
-            await bitmap.RenderAsync(this.canvas);
+            await bitmap.RenderAsync(this.canvasMain);
 
 
             return bitmap;
@@ -619,6 +619,7 @@ namespace Tablet_App
             {
                 canvas.Width = width;
                 canvas.Height = height;
+            
 
                 RenderTargetBitmap bitmap = await CanvasToBMP();
                 await SaveToPNG(bitmap);
@@ -787,8 +788,31 @@ namespace Tablet_App
         private void canvas_PointerMoved_1(object sender, PointerRoutedEventArgs e)
         {
         }
+        int degree = 0;
+        private void imageRotate()
+        {
+            canvasMain.Width = canvas.Width;
+            canvasMain.Height = canvas.Height;
+            RotateTransform rotateTransform2 = new RotateTransform();
+            rotateTransform2.Angle = degree;
+            canvas.RenderTransform = rotateTransform2;
+        }
 
+        private void btn_RotateLeft_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            degree = degree - 90;
+            imageRotate();
+           
+        }
 
+        private void btn_RotateRight_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            degree = degree + 90;
+            imageRotate();
+        }
+
+       
+       
 
 
     }

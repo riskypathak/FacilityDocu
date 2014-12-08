@@ -27,14 +27,14 @@
             <Button x:Name="btnRectangle" Click="btnRectangle_Click" Style="{StaticResource PaintButton}" Content="▭" ToolTipService.ToolTip="Rectangle" Margin="5,297,0,417" Height="52" Width="80" ScrollViewer.VerticalScrollBarVisibility="Disabled" RenderTransformOrigin="0.262,0.154" Background="Silver"/>
 
             <Image x:Name="imgPreview" HorizontalAlignment="Left" Height="212" Margin="10,448,0,0" VerticalAlignment="Top" Width="220"/>
-            <Button x:Name="btnCrop" Content="Crop" HorizontalAlignment="Left" Height="39" Margin="124,363,0,0" VerticalAlignment="Top" Width="65" Tapped="btnCrop_Tapped" Background="Silver"/>
+            <Button x:Name="btnCrop" Content="Crop" HorizontalAlignment="Left" Height="39" Margin="124,402,0,0" VerticalAlignment="Top" Width="65" Tapped="btnCrop_Tapped" Background="Silver"/>
 
 
             <TextBlock Text="Fill" HorizontalAlignment="Left" Margin="6,53,0,0" VerticalAlignment="Top" Foreground="#FFF7F0F0"  Width="120" Height="47" FontSize="25"/>
             <TextBlock Text="Border" HorizontalAlignment="Left" Margin="0,125,0,0" VerticalAlignment="Top" Foreground="#FFF7F0F0"  Width="120" Height="47" FontSize="25"/>
             <TextBlock HorizontalAlignment="Left" Height="47" Margin="6,170,0,0" TextWrapping="Wrap" Text="Size" VerticalAlignment="Top" Width="89" Foreground="#FFFDFAFA" FontSize="25"/>
 
-            <ComboBox SelectionChanged="cmbResize_SelectionChanged" Name="cmbResize" PlaceholderText="Resize" HorizontalAlignment="Left" Margin="2,366,0,0" VerticalAlignment="Top" Width="120">
+            <ComboBox SelectionChanged="cmbResize_SelectionChanged" Name="cmbResize" PlaceholderText="Resize" HorizontalAlignment="Left" Margin="2,404,0,0" VerticalAlignment="Top" Width="120">
                 <ComboBox.Items>
                     <ComboBoxItem>640X480</ComboBoxItem>
                     <ComboBoxItem>1024X768</ComboBoxItem>
@@ -88,12 +88,19 @@
             </ComboBox>
             <Button x:Name="btn_Undo" FontFamily="Segoe UI Symbol" Content="&#xE10E;" HorizontalAlignment="Left" Height="54" Margin="89,295,0,0" VerticalAlignment="Top" Width="68" Tapped="btn_Undo_Tapped" Background="Silver" IsEnabled="False"/>
             <Button x:Name="btn_Redo" FontFamily="Segoe UI Symbol" Content="&#xE10D;" HorizontalAlignment="Left" Height="55" Margin="161,294,0,0" VerticalAlignment="Top" Width="77" Tapped="btn_Redo_Tapped" Background="Silver" IsEnabled="False"/>
-            <Button x:Name="btnText" Content="T" HorizontalAlignment="Left" Margin="189,363,0,0" VerticalAlignment="Top" Background="Silver" FontFamily="Gungsuh" FontSize="25" Height="39" Tapped="btnText_Tapped"/>
+            <Button x:Name="btnText" Content="T" HorizontalAlignment="Left" Margin="189,401,0,0" VerticalAlignment="Top" Background="Silver" FontFamily="Gungsuh" FontSize="25" Height="39" Tapped="btnText_Tapped"/>
+            <Button x:Name="btn_RotateLeft" Content="rotate left" HorizontalAlignment="Left" Height="48" Margin="90,353,0,0" VerticalAlignment="Top" Width="67" Tapped="btn_RotateLeft_Tapped"/>
+            <Button x:Name="btn_RotateRight" Content="rotate right" HorizontalAlignment="Left" Height="48" Margin="169,354,0,0" VerticalAlignment="Top" Width="67" Tapped="btn_RotateRight_Tapped"/>
         </Grid>
 
         <ScrollViewer  HorizontalAlignment="Left" Height="768" VerticalAlignment="Top" Width="1024" BorderBrush="{x:Null}" BorderThickness="5,0,0,0"  Margin="82,0,0,0" ZoomMode="Enabled" MinZoomFactor="0.7" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="{x:Null}">
+            <Canvas Margin="0,0,0,0" x:Name="canvasMain" HorizontalAlignment="Left" VerticalAlignment="Top" Height="768" RenderTransformOrigin="0.5,0.5" Width="1024">
             <Canvas ManipulationMode="All"    Margin="0,0,0,0" x:Name="canvas" HorizontalAlignment="Left" VerticalAlignment="Top" Height="768" RenderTransformOrigin="0.5,0.5" Width="1024">
+                <Canvas.RenderTransform>
+                    <RotateTransform CenterX="0" CenterY="0" Angle="0" />
+                </Canvas.RenderTransform>
 
+            </Canvas>
             </Canvas>
         </ScrollViewer>
 
