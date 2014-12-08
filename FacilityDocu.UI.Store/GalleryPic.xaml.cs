@@ -378,5 +378,10 @@ namespace Tablet_App
             ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
             this.Frame.Navigate(typeof(MainPage));
         }
+
+        private void openCam_btn_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Camera_Page));
+        }
     }
 }
