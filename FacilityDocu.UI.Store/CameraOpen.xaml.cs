@@ -10,6 +10,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
 using System.Collections.Generic;
 using System.Linq;
+using Windows.Media.MediaProperties;
+using System.Diagnostics;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -39,6 +41,30 @@ namespace Tablet_App
             media.Dispose();
             this.Frame.Navigate(typeof(ActionSelect));
         }
+        public async void SetResolution()
+        {
+            System.Collections.Generic.IReadOnlyList<IMediaEncodingProperties> res;
+            res = this.media.VideoDeviceController.GetAvailableMediaStreamProperties(MediaStreamType.VideoPreview);
+            uint maxResolution = 0;
+            int indexMaxResolution = 0;
+
+            if (res.Count >= 1)
+            {
+                for (int i = 0; i < res.Count; i++)
+                {
+                    VideoEncodingProperties vp = (VideoEncodingProperties)res[i];
+
+                    if (vp.Width > maxResolution)
+                    {
+                        indexMaxResolution = i;
+                        maxResolution = vp.Width;
+                       // Debug.WriteLine("Resolution: " + vp.Width);
+                    }
+                }
+                await this.media.VideoDeviceController.SetMediaStreamPropertiesAsync(MediaStreamType.VideoPreview, res[indexMaxResolution]);
+            }
+        }
+
 
         private async void capturePreview_Tapped(object sender, TappedRoutedEventArgs e)
         {
@@ -48,7 +74,8 @@ namespace Tablet_App
 
                 string imageID = DateTime.Now.ToString("yyyyMMddHHmmssfff");
                 string fileName = string.Format("{0}.jpg", imageID);
-
+               // CameraCaptureUIMaxPhotoResolution.HighestAvailable ;
+               
                 Windows.Media.MediaProperties.ImageEncodingProperties imgProperties = Windows.Media.MediaProperties.ImageEncodingProperties.CreateJpeg();
                 imgProperties.Height = 1024;
                 imgProperties.Width = 1280;
@@ -118,6 +145,10 @@ namespace Tablet_App
                 this.capturePreview.Source = media;
                 await media.StartPreviewAsync();
                 capturePreview.IsTapEnabled = true;
+
+                var captureUI = new Windows.Media.Capture.CameraCaptureUI();
+                captureUI.PhotoSettings.MaxResolution = Windows.Media.Capture.CameraCaptureUIMaxPhotoResolution.HighestAvailable;
+
             }
             catch
             {
@@ -262,14 +293,16 @@ namespace Tablet_App
             ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
         }
 
+        private void gallery()
+        {
+            this.Frame.Navigate(typeof(Gallery));
+        }
         private void Button_Tapped(object sender, TappedRoutedEventArgs e)
         {
             Data.CURRENT_ACTION.Images.Add(currentImage);
-
             WriteImages();
             media.Dispose();
-           
-            this.Frame.Navigate(typeof(Gallery));
+            gallery();
         }
     }
 }

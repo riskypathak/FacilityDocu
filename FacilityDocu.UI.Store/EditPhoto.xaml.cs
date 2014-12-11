@@ -290,6 +290,11 @@ namespace Tablet_App
                             NewRectangle.StrokeThickness = StrokeThickness;
                             NewRectangle.Stroke = new SolidColorBrush(BorderColor);
                             NewRectangle.Fill = new SolidColorBrush(FillColor);
+
+                            RotateTransform rotateTransform2 = new RotateTransform();
+                            rotateTransform2.Angle = -degree;
+                            NewRectangle.RenderTransform = rotateTransform2;
+
                             canvas.Children.Add(NewRectangle);
                             redoundoCount++;
 
@@ -316,6 +321,11 @@ namespace Tablet_App
                             NewEllipse.StrokeThickness = StrokeThickness;
                             NewEllipse.Stroke = new SolidColorBrush(BorderColor);
                             NewEllipse.Fill = new SolidColorBrush(FillColor);
+
+                            RotateTransform rotateTransform2 = new RotateTransform();
+                            rotateTransform2.Angle = -degree;
+                            NewEllipse.RenderTransform = rotateTransform2;
+
                             canvas.Children.Add(NewEllipse);
                             redoundoCount++;
                             NewEllipse.ManipulationDelta += MoveableContainer_ManipulationDelta;
@@ -480,11 +490,18 @@ namespace Tablet_App
             else if (DrawingTool == "Text")
             {
                 NewText = new TextBox();
+                NewText.Text = "Type Here";
+                NewText.BorderThickness =new Thickness(0) ;
                 NewText.Foreground = new SolidColorBrush(BorderColor);
                 NewText.Background = new SolidColorBrush(FillColor);
-                NewText.FontSize = 15 + (StrokeThickness - 2) * 2;
+                NewText.FontSize =50-(20-StrokeThickness*3);
                 NewText.Margin = new Thickness(e.GetCurrentPoint(canvas).Position.X, e.GetCurrentPoint(canvas).Position.Y, 0, 0);
                 NewText.AcceptsReturn = true;
+               
+                RotateTransform rotateTransform2 = new RotateTransform();
+                rotateTransform2.Angle = -degree;
+                NewText.RenderTransform = rotateTransform2;
+
                 canvas.Children.Add(NewText);
                 NewText.ManipulationMode = ManipulationModes.All;
                 NewText.ManipulationDelta += MoveableContainer_ManipulationDelta;

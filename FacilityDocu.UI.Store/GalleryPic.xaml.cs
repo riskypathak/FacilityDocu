@@ -267,6 +267,7 @@ namespace Tablet_App
         private void rctSearch_Tapped(object sender, TappedRoutedEventArgs e)
         {
             srchSearch.IsEnabled = true;
+            srchSearch.FocusOnKeyboardInput=true;
             rctSearch.Visibility = Visibility.Collapsed;
         }
 
