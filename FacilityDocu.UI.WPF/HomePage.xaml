@@ -12,7 +12,6 @@
         </ResourceDictionary>
     </Window.Resources>
 
-
     <DockPanel Margin="2,2,2,2">
         <Menu Name="dpnMenu" DockPanel.Dock="Top" Visibility="Collapsed">
             <MenuItem Header="File">
@@ -30,7 +29,11 @@
             </MenuItem>
             <MenuItem Header="Save">
                 <MenuItem Header="Save" Click="btnSave_Click" />
-                <MenuItem Header="Export Files" Click="btnExport_Click_1" />
+                <MenuItem Header="Export Files">
+                    <MenuItem Header="Layout01 - Landscape Full Page" CommandParameter="landscape" Click="btnExport_Click_1" />
+                    <MenuItem Header="Layout02 - Ladnscape List Mode" CommandParameter="listview" Click="btnExport_Click_1" />
+                    <MenuItem Header="Layout03 - A4" CommandParameter="a4" Click="btnExport_Click_1" />
+                </MenuItem>
                 <MenuItem Header="Publish" Click="btnPublish_Click" />
             </MenuItem>
         </Menu>
@@ -107,12 +110,18 @@
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"  TextWrapping="Wrap" Text="Home" FontSize="80" Width="279" Height="103" Foreground="#FFCBD6DA"/>
 
 
-                <Button Grid.Column="4" Grid.Row="0" x:Name="btnSync" Click="btnSync_Click_1"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" RenderTransformOrigin="7.3,-1.227">
-                    <StackPanel>
-                        <Image Source="Assets\sync.jpg" />
-                    </StackPanel>
-                </Button>
-
+                <StackPanel Orientation="Horizontal" Grid.Column="4" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Button x:Name="btnSync" Click="btnSync_Click_1"   Width="75" RenderTransformOrigin="7.3,-1.227">
+                        <StackPanel>
+                            <Image Source="Assets\sync.jpg" />
+                        </StackPanel>
+                    </Button>
+                    <Button ToolTipService.ToolTip="New Template" x:Name="btnTemplate" Click="btnTemplate_Click"  Width="75" RenderTransformOrigin="7.3,-1.227">
+                        <StackPanel>
+                            <Image Source="Assets\template.png" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
                 <Button Grid.Row="2" Grid.Column="0" x:Name="NewProject_btn" HorizontalAlignment="Left" VerticalAlignment="Top" Width="214" Click="NewProject_btn_Click">
                     <StackPanel Orientation="Vertical">
                         <TextBlock FontSize="25" HorizontalAlignment="Right" Text="New"></TextBlock>
@@ -320,9 +329,9 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Row="0" Orientation="Horizontal">
-                            <Button Name="btnActionLeft" VerticalAlignment="Bottom" FontFamily="Marlett" FontSize="20" Content="3" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="#FFC6D625" Click="btnActionLeft_Click" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}"  />
+                            <Button Name="btnActionLeft" VerticalAlignment="Bottom" FontFamily="Marlett" FontSize="20" Content="3" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="#FFC6D625" Click="btnActionLeft_Click" />
                             <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Left" Text="Action" FontSize="20" Foreground="White"/>
-                            <Button  VerticalAlignment="Bottom" Name="btnActionRight" FontFamily="Marlett" FontSize="20" Content="4" BorderBrush="{x:Null}" Foreground="#FFB7C718"  Background="{x:Null}"  Click="btnActionRight_Click"   IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}"  />
+                            <Button  VerticalAlignment="Bottom" Name="btnActionRight" FontFamily="Marlett" FontSize="20" Content="4" BorderBrush="{x:Null}" Foreground="#FFB7C718"  Background="{x:Null}"  Click="btnActionRight_Click" />
                         </StackPanel>
                         <Image Grid.Row="1" HorizontalAlignment="Right" x:Name="btnWarningAction" Height="28" Width="32" Stretch="Fill" MouseDown="btnWarningAction_MouseDown_1"/>
                     </Grid>

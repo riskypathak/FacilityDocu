@@ -483,5 +483,54 @@ namespace FacilityDocu.Services
 
             return tools;
         }
+
+        public void CreateTemplate(ProjectDTO projectDTO)
+        {
+            using (TabletApp_DatabaseEntities context = new TabletApp_DatabaseEntities())
+            {
+                Project project = DTOConverter.ToProject(projectDTO, false);
+                project.User = context.Users.Single(u => u.UserName.Equals(projectDTO.CreatedBy.UserName));
+                project.User1 = context.Users.Single(u => u.UserName.Equals(projectDTO.LastUpdatedBy.UserName));
+
+                context.Projects.Add(project);
+
+                foreach (RigTypeDTO rigDTO in projectDTO.RigTypes)
+                {
+                    foreach (ModuleDTO moduleDTO in rigDTO.Modules)
+                    {
+                        Module module = new Module();
+                        module.ModuleID = Helper.GetUniqueID();
+                        module.ModuleName = moduleDTO.Name;
+                        module.RigTypeID = Convert.ToInt32(rigDTO.RigTypeID);
+                        //context.Modules.Add(module);
+
+                        foreach (StepDTO stepDTO in moduleDTO.Steps)
+                        {
+                            Step step = new Step();
+                            step.StepID = Helper.GetUniqueID();
+                            step.StepName = stepDTO.Name;
+                            //step.ModuleID = module.ModuleID;
+                            step.Module = module;
+
+                            //context.Steps.Add(step);
+
+                            foreach (ActionDTO actionDTO in stepDTO.Actions)
+                            {
+                                ProjectDetail projectDetail = new ProjectDetail();
+                                projectDetail.ActionName = actionDTO.Name;
+                                projectDetail.Description = actionDTO.Description;
+                                projectDetail.ProjectID = project.ProjectID;
+                                //projectDetail.StepID = step.StepID;
+                                projectDetail.Step = step;
+
+                                context.ProjectDetails.Add(projectDetail);
+                            }
+                        }
+                    }
+                }
+
+                context.SaveChanges();
+            }
+        }
     }
 }

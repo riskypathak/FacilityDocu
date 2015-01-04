@@ -486,9 +486,9 @@ namespace FacilityDocLaptop
         {
             IList<ResourceDTO> masterResources = new List<ResourceDTO>();
 
-            Data.CURRENT_RIG.Modules.SelectMany(m => m.Steps).SelectMany(s => s.Actions).Single().Resources.ToList().ForEach(r =>
+            Data.CURRENT_RIG.Modules.SelectMany(m => m.Steps).SelectMany(s => s.Actions).First().Resources.ToList().ForEach(r =>
 
-                masterResources.Add(new ResourceDTO() { ResourceID = r.ResourceID, Name = r.Name, ResourceCount = r.ResourceCount })
+                masterResources.Add(new ResourceDTO() { ResourceID = r.ResourceID, Type=r.Type, Name = r.Name, ResourceCount = r.ResourceCount })
             );
 
             ActionDTO action = new ActionDTO()
@@ -658,7 +658,7 @@ namespace FacilityDocLaptop
             string projectPath = System.IO.Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", Data.CURRENT_PROJECT.ProjectID));
 
             Data.CURRENT_PROJECT = ProjectXmlReader.ReadProjectXml(projectPath, false);
-            IList<string> outputs = Helper.GeneratePdf(Data.CURRENT_PROJECT);
+            IList<string> outputs = Helper.GeneratePdf(Data.CURRENT_PROJECT, (sender as MenuItem).CommandParameter.ToString());
 
             MessageBox.Show(string.Concat("Files Generated at\n", string.Join("\n", outputs.ToArray())));
         }
@@ -1030,6 +1030,12 @@ namespace FacilityDocLaptop
         {
             Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex]
                     .Actions[currentActionIndex].IsAnalysis = (sender as CheckBox).IsChecked.Value;
+        }
+
+        private void btnTemplate_Click(object sender, RoutedEventArgs e)
+        {
+            CustomTemplate customTemplate = new CustomTemplate();
+            customTemplate.Show();
         }
     }
 }

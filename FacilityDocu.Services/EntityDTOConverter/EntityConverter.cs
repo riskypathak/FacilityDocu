@@ -51,7 +51,6 @@ namespace FacilityDocu.Services.EntityDTOConverter
                 rigTypeDTO.Modules = ToModulesDTO(projectDetails.Where(p => p.Step.Module.RigType.RigTypeID.Equals(projectDetail.Step.Module.RigTypeID.Value)));
 
                 rigTypesDTO.Add(rigTypeDTO);
-
             }
 
             return rigTypesDTO;
@@ -69,8 +68,6 @@ namespace FacilityDocu.Services.EntityDTOConverter
 
                 moduleDTO.Steps = ToStepsDTO(projectDetails.Where(p => p.Step.Module.ModuleID.Equals(projectDetail.Step.Module.ModuleID)));
                 modulesDTO.Add(moduleDTO);
-
-
             }
 
             return modulesDTO;
@@ -84,7 +81,7 @@ namespace FacilityDocu.Services.EntityDTOConverter
             {
                 StepDTO stepDTO = new StepDTO();
                 stepDTO.Name = projectDetail.Step.StepName;
-                stepDTO.StepID = projectDetail.Step.StepID;
+                stepDTO.StepID = projectDetail.Step.StepID.ToString();
 
                 stepDTO.Actions = ToActionDTO(projectDetails.Where(p => p.Step.StepID.Equals(projectDetail.Step.StepID)));
                 stepsDTO.Add(stepDTO);
@@ -184,7 +181,7 @@ namespace FacilityDocu.Services.EntityDTOConverter
                 resourcesDTO.Add(resourceDTO);
             }
 
-            IList<string> existingIDs = resourcesDTO.Select(r=>r.ResourceID).ToList();
+            IList<string> existingIDs = resourcesDTO.Select(r => r.ResourceID).ToList();
             AllResources.ForEach(r =>
                 {
                     if (!existingIDs.Contains(r.ResourceID))
@@ -271,7 +268,7 @@ namespace FacilityDocu.Services.EntityDTOConverter
         {
             StepDTO stepDTO = new StepDTO();
             stepDTO.Name = step.StepName;
-            stepDTO.StepID = step.StepID;
+            stepDTO.StepID = step.StepID.ToString();
 
             return stepDTO;
         }

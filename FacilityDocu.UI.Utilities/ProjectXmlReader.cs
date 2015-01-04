@@ -80,7 +80,7 @@ namespace FacilityDocu.UI.Utilities
             foreach (XElement xStep in xModule.Element("steps").Elements("step"))
             {
                 StepDTO step = new StepDTO();
-                step.StepID = Convert.ToInt32(xStep.Element("id").Value);
+                step.StepID = Convert.ToString(xStep.Element("id").Value);
                 step.Name = Convert.ToString(xStep.Element("name").Value);
                 step.Number = Convert.ToString(xStep.Element("number").Value);
 

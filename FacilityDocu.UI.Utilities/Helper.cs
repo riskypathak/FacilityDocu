@@ -52,6 +52,13 @@ namespace FacilityDocu.UI.Utilities
             }
         }
 
+        public static void AddTemplate(ProjectDTO projectDTO)
+        {
+            IFacilityDocuService service = new FacilityDocuServiceClient();
+
+            service.CreateTemplate(projectDTO);
+        }
+
         public static bool IsNew(string id)
         {
             bool returnValue;
@@ -65,7 +72,7 @@ namespace FacilityDocu.UI.Utilities
             return new Phrase(input.ToString(), FontFactory.GetFont(FontFactory.HELVETICA, 8));
         }
 
-        public static IList<string> GeneratePdf(ProjectDTO project)
+        public static IList<string> GeneratePdf(ProjectDTO project, string layoutview)
         {
             IList<string> outputs = new List<string>();
 
@@ -74,24 +81,37 @@ namespace FacilityDocu.UI.Utilities
                 string pdfPath = System.IO.Path.Combine(Data.PROJECT_OUTPUT_FOLDER, string.Format("{0}_{1}.pdf", project.Description, rigType.Name));
                 outputs.Add(pdfPath);
 
-                GenerateRigPDF(project, rigType, pdfPath);
+                GenerateRigPDF(project, rigType, pdfPath, layoutview);
 
                 pdfPath = System.IO.Path.Combine(Data.PROJECT_OUTPUT_FOLDER, string.Format("{0}_{1}_RiskAnalysis.pdf", project.Description, rigType.Name));
                 outputs.Add(pdfPath);
 
-                GenerateRigRiskAnalysisPDF(project, rigType, pdfPath);
+                GenerateRigRiskAnalysisPDF(project, rigType, pdfPath, layoutview);
             }
 
             return outputs;
         }
 
-        private static void GenerateRigRiskAnalysisPDF(ProjectDTO project, RigTypeDTO rigType, string pdfPath)
+        private static void GenerateRigRiskAnalysisPDF(ProjectDTO project, RigTypeDTO rigType, string pdfPath, string layoutview)
         {
             FileStream fs = new FileStream(pdfPath, FileMode.Create, FileAccess.Write);
 
-            Document doc = new Document(new RectangleReadOnly(842, 595), 88f, 88f, 10f, 10f);
-            PdfWriter writer = PdfWriter.GetInstance(doc, fs);
+            Document doc = null;
 
+            if (layoutview == "landscape")
+            {
+                doc = new Document(new RectangleReadOnly(842, 595), 88f, 88f, 10f, 10f);
+            }
+            else if (layoutview == "listview")
+            {
+                doc = new Document(new RectangleReadOnly(842, 595), 88f, 88f, 10f, 10f);
+            }
+            else
+            {
+                doc = new Document(new RectangleReadOnly(595, 842), 10f, 10f, 10f, 10f);
+            }
+
+            PdfWriter writer = PdfWriter.GetInstance(doc, fs);
 
             doc.AddTitle("RigDocu - Risk Analysis");
             doc.AddAuthor(project.CreatedBy.Name);
@@ -160,11 +180,24 @@ namespace FacilityDocu.UI.Utilities
             doc.Close();
         }
 
-        private static void GenerateRigPDF(ProjectDTO project, RigTypeDTO rigType, string pdfPath)
+        private static void GenerateRigPDF(ProjectDTO project, RigTypeDTO rigType, string pdfPath, string layoutview)
         {
             FileStream fs = new FileStream(pdfPath, FileMode.Create, FileAccess.Write);
 
-            Document doc = new Document(new RectangleReadOnly(842, 595), 88f, 88f, 10f, 10f);
+            Document doc = null;
+
+            if (layoutview == "landscape")
+            {
+                doc = new Document(new RectangleReadOnly(842, 595), 88f, 88f, 10f, 10f);
+            }
+            else if (layoutview == "listview")
+            {
+                doc = new Document(new RectangleReadOnly(842, 595), 88f, 88f, 10f, 10f);
+            }
+            else
+            {
+                doc = new Document(new RectangleReadOnly(595, 842), 88f, 88f, 10f, 10f);
+            }
             PdfWriter writer = PdfWriter.GetInstance(doc, fs);
 
 

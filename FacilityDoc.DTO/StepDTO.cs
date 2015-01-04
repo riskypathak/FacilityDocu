@@ -12,7 +12,7 @@ namespace FacilityDocu.DTO
     public class StepDTO
     {
         [DataMember]
-        public int StepID { get; set; }
+        public string StepID { get; set; }
 
         [DataMember]
         public string Number { get; set; }

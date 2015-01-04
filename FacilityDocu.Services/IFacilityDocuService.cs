@@ -33,6 +33,9 @@ namespace FacilityDocu.Services
 
         [OperationContract]
         IList<ToolDTO> GetTools();
+
+        [OperationContract]
+        void CreateTemplate(ProjectDTO projectDTO);
     }
 }
 

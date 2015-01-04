@@ -50,6 +50,12 @@
   <wsdl:message name="IFacilityDocuService_GetTools_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetToolsResponse" />
   </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_CreateTemplate_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateTemplate" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_CreateTemplate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateTemplateResponse" />
+  </wsdl:message>
   <wsdl:portType name="IFacilityDocuService">
     <wsdl:operation name="Login">
       <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/Login" message="tns:IFacilityDocuService_Login_InputMessage" />
@@ -78,6 +84,10 @@
     <wsdl:operation name="GetTools">
       <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/GetTools" message="tns:IFacilityDocuService_GetTools_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/GetToolsResponse" message="tns:IFacilityDocuService_GetTools_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateTemplate">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/CreateTemplate" message="tns:IFacilityDocuService_CreateTemplate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/CreateTemplateResponse" message="tns:IFacilityDocuService_CreateTemplate_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IFacilityDocuService" type="tns:IFacilityDocuService">
@@ -138,6 +148,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetTools">
       <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/GetTools" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateTemplate">
+      <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/CreateTemplate" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

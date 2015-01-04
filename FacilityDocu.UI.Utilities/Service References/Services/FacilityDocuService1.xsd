@@ -64,7 +64,7 @@
       <xs:element minOccurs="0" name="Actions" nillable="true" type="tns:ArrayOfActionDTO" />
       <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Number" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="StepID" type="xs:int" />
+      <xs:element minOccurs="0" name="StepID" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="StepDTO" nillable="true" type="tns:StepDTO" />
