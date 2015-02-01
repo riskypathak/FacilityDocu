@@ -36,9 +36,41 @@ namespace FacilityDocLaptop
             cmbRig.SelectedIndex = 0;
         }
 
+        public CustomTemplate(int templateID)
+        {
+            InitializeComponent();
+
+            template = Helper.GetTemplate(templateID);
+
+
+
+            int counter = 1;
+            foreach (RigTypeDTO rig in template.RigTypes)
+            {
+                foreach (ModuleDTO module in rig.Modules)
+                {
+                    module.ModuleID = string.Concat(DateTime.Now.ToString("yyyyMMddHHmmssfff"), counter++);
+
+                    foreach (StepDTO step in module.Steps)
+                    {
+                        step.StepID = string.Concat(DateTime.Now.ToString("yyyyMMddHHmmssfff"), counter++);
+                    }
+                }
+            }
+
+            //    string.Concat(DateTime.Now.ToString("yyyyMMddHHmmssfff"), counter++)
+
+
+
+            cmbRig.Items.Add("Rig Up");
+            cmbRig.Items.Add("Rig Down");
+            cmbRig.Items.Add("Rig Move");
+
+            cmbRig.SelectedIndex = 0;
+        }
+
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-
             template.Closed = false;
             template.CreatedBy = new UserDTO() { UserName = Data.CURRENT_USER };
             template.CreationDate = DateTime.Now;
@@ -61,6 +93,7 @@ namespace FacilityDocLaptop
             }
 
             Helper.AddTemplate(template);
+            (new SyncManager()).Sync();
 
             MessageBox.Show("Template saved sucessfully!!!");
             this.Close();

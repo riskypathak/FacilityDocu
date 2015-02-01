@@ -29,10 +29,7 @@
             </MenuItem>
             <MenuItem Header="Save">
                 <MenuItem Header="Save" Click="btnSave_Click" />
-                <MenuItem Header="Export Files">
-                    <MenuItem Header="Layout01 - Landscape Full Page" CommandParameter="landscape" Click="btnExport_Click_1" />
-                    <MenuItem Header="Layout02 - Ladnscape List Mode" CommandParameter="listview" Click="btnExport_Click_1" />
-                    <MenuItem Header="Layout03 - A4" CommandParameter="a4" Click="btnExport_Click_1" />
+                <MenuItem Header="Export Files" Click="btnExport_Click_1">
                 </MenuItem>
                 <MenuItem Header="Publish" Click="btnPublish_Click" />
             </MenuItem>
@@ -59,16 +56,8 @@
                     <TextBlock HorizontalAlignment="Right" Text="Welcome" VerticalAlignment="Top" FontSize="40" Foreground="#FFADDDFF"/>
                 </StackPanel>
 
-                <Button Grid.Row="0" Grid.Column="4" HorizontalAlignment="Left" Height="148" VerticalAlignment="Bottom" Width="189">
-                    <Path Data="F1M484.766,361.437C484.766,361.272 484.766,361.044 484.766,360.702 484.766,354.202 473.334,347.86 463.161,344.493 462.697,344.342 459.766,343.021 461.598,337.451L461.572,337.451C466.346,332.535 469.995,324.617 469.995,316.825 469.995,304.846 462.027,298.566 452.769,298.566 443.505,298.566 435.583,304.846 435.583,316.825 435.583,324.647 439.212,332.596 444.014,337.502 445.887,342.413 442.538,344.236 441.837,344.493 432.143,348 420.766,354.392 420.766,360.702 420.766,361.044 420.766,361.272 420.766,361.437L484.766,361.437z" Stretch="Uniform" Fill="#FFFFFFFF" RenderTransformOrigin="0.5,0.5" Height="123.82" Width="130.373">
-                        <Path.RenderTransform>
-                            <TransformGroup>
-                                <RotateTransform Angle="0" />
-                                <ScaleTransform ScaleX="1" ScaleY="1" />
-                            </TransformGroup>
-                        </Path.RenderTransform>
-                    </Path>
-                </Button>
+                <Image Margin="10,10,10,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="0" Grid.Column="4" Source="Assets\rig_big.png" />
+
 
                 <Grid HorizontalAlignment="Left" Grid.Row="2" Grid.Column="2">
                     <Grid.ColumnDefinitions>
@@ -87,8 +76,10 @@
                     <TextBox Grid.ColumnSpan="3" Grid.Column="2" Grid.Row="0" x:Name="userName" HorizontalAlignment="Center" Height="58"  TextWrapping="Wrap" VerticalAlignment="Center" Width="400" FontSize="45"/>
                     <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" Text="Password:" VerticalAlignment="Center" FontSize="40" Foreground="White"/>
                     <PasswordBox Grid.Column="2" Grid.Row="2" x:Name="password" FontSize="45" HorizontalAlignment="Center" Height="58" VerticalAlignment="Center" Width="400" />
-                    <Button Grid.Column="2" Grid.Row="4" Content="Login" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="login_Click" FontSize="30"/>
+                    <Button IsDefault="True" Grid.Column="2" Grid.Row="4" Content="Login" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="login_Click" FontSize="30"/>
                 </Grid>
+
+                <Image Margin="10,10,10,10" Grid.Row="4" Grid.Column="2" Source="Assets\footer.jpg" />
             </Grid>
 
             <Grid x:Name="gridHome" Visibility="Collapsed">
@@ -102,7 +93,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="20"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1.1*"/>
                     <RowDefinition Height="20"/>
                     <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
@@ -110,30 +101,26 @@
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"  TextWrapping="Wrap" Text="Home" FontSize="80" Width="279" Height="103" Foreground="#FFCBD6DA"/>
 
 
-                <StackPanel Orientation="Horizontal" Grid.Column="4" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button x:Name="btnSync" Click="btnSync_Click_1"   Width="75" RenderTransformOrigin="7.3,-1.227">
+                <StackPanel Orientation="Horizontal" Grid.Column="4" Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="tOP">
+                    <Button ToolTipService.ToolTip="Sync" x:Name="btnSync" Click="btnSync_Click_1"   Width="75" RenderTransformOrigin="7.3,-1.227">
                         <StackPanel>
-                            <Image Source="Assets\sync.jpg" />
+                            <Image Name="imgSync" Source="Assets\sync.jpg" />
                         </StackPanel>
                     </Button>
                     <Button ToolTipService.ToolTip="New Template" x:Name="btnTemplate" Click="btnTemplate_Click"  Width="75" RenderTransformOrigin="7.3,-1.227">
                         <StackPanel>
-                            <Image Source="Assets\template.png" />
+                            <Image Name="imgTemplate" Source="Assets\template.png" />
+                        </StackPanel>
+                    </Button>
+                    <Button ToolTipService.ToolTip="Import Project Xml" x:Name="btnImportXml" Click="btnImportXml_Click"  Width="75" RenderTransformOrigin="7.3,-1.227">
+                        <StackPanel>
+                            <Image Name="imgImportXml" Source="Assets\importxml.png" />
                         </StackPanel>
                     </Button>
                 </StackPanel>
-                <Button Grid.Row="2" Grid.Column="0" x:Name="NewProject_btn" HorizontalAlignment="Left" VerticalAlignment="Top" Width="214" Click="NewProject_btn_Click">
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock FontSize="25" HorizontalAlignment="Right" Text="New"></TextBlock>
-                        <Path Data="M26.283646,18.626712C25.578564,18.625717 24.870488,18.877655 24.305667,19.389528 23.101716,20.477525 23.00672,22.33552 24.098676,23.539514 25.18563,24.74451 27.043555,24.836511 28.250504,23.747514 29.454455,22.658518 29.546452,20.798525 28.456496,19.594528 27.87799,18.953842 27.08274,18.627839 26.283646,18.626712z M26.285584,16.825022C27.575473,16.828347 28.859135,17.354848 29.791442,18.386532 31.274381,20.027527 31.394376,22.415519 30.229424,24.179512L33.069306,27.318502C33.50929,27.803501 33.468293,28.551498 32.98531,28.987497 32.50533,29.423496 31.756362,29.388496 31.319379,28.900497L28.477496,25.762508C26.606572,26.745504 24.242669,26.388506 22.76073,24.745512 21.003802,22.807518 21.153796,19.805526 23.093716,18.050533 24.00446,17.226473 25.147446,16.82209 26.285584,16.825022z M9.136998,7.8089907C8.6249979,7.8089907 8.209998,8.1949904 8.209998,8.6719892 8.209998,9.1459892 8.6249979,9.5319884 9.136998,9.5319884L17.588,9.5319884C18.098,9.5319884 18.513001,9.1459892 18.513001,8.6719892 18.513001,8.1949904 18.098,7.8089907 17.588,7.8089907z M9.0219982,4.120995C8.4969986,4.120995 8.0719984,4.5219945 8.0719984,5.016994 8.0719984,5.5119934 8.4969986,5.912993 9.0219982,5.9129932L17.668999,5.9129932C18.192,5.912993 18.617001,5.5119934 18.617001,5.016994 18.617001,4.6389943 18.368001,4.3149948 18.017001,4.1839948L18.017001,4.1829947 18.012,4.1829947C17.905,4.1429949,17.79,4.120995,17.668999,4.120995z M0,3.3599535L4.6150001,3.3599535 4.6150001,7.1138582 4.6150001,10.08395 4.6150001,20.706871C4.6150001,21.943931 3.5819965,22.442953 2.3090032,22.442953 1.0350024,22.442953 0,21.439903 0,20.202842L0,10.08395 0,7.1138582z M6.820998,0L25.574002,0 25.579003,15.224982C22.379002,15.350981 19.823001,17.981979 19.823001,21.213976 19.823001,21.638975 19.868001,22.051973 19.951001,22.451973L6.820998,22.451973z" Stretch="Uniform" Fill="#FFAB45E7" Width="150" Height="120" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
-                            <Path.RenderTransform>
-                                <TransformGroup>
-                                    <RotateTransform Angle="0" />
-                                    <ScaleTransform ScaleX="1" ScaleY="1" />
-                                </TransformGroup>
-                            </Path.RenderTransform>
-                        </Path>
-                    </StackPanel>
+
+                <Button Grid.Row="2" Grid.Column="0" x:Name="NewProject_btn" HorizontalAlignment="Left" VerticalAlignment="Top" Click="NewProject_btn_Click">
+                    <Image Source="Assets\newproject.png"></Image>
                 </Button>
 
                 <Grid Grid.Row="2" Grid.Column="2" x:Name="gdvNew" Visibility="Collapsed">
@@ -142,13 +129,18 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="5"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="5"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <TextBlock TextWrapping="Wrap" Text="Templates" Foreground="White" FontSize="20" FontWeight="Bold" Grid.Row="1" Grid.Column="1"/>
@@ -157,14 +149,24 @@
                             <DataTemplate>
                                 <TextBlock Text="{Binding Description}"/>
                             </DataTemplate>
-
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <TextBlock TextWrapping="Wrap" Text="Project Name:" Foreground="White" FontSize="20" FontWeight="Bold" Grid.Row="1" Grid.Column="3"/>
                     <TextBox x:Name="txtNewProjectName" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Grid.Row="3" Grid.Column="3"/>
 
+                    <TextBlock TextWrapping="Wrap" Text="Client:" Foreground="White" FontSize="20" FontWeight="Bold" Grid.Row="5" Grid.Column="1"/>
+                    <TextBox x:Name="txtNewProjectClient" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Grid.Row="5" Grid.Column="3"/>
 
-                    <Button Grid.Row="5" Grid.Column="3" Click="btnCreate_Click_1"  x:Name="btnCreate" Content="Create" Height="50" Width="100" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="15" />
+                    <TextBlock TextWrapping="Wrap" Text="Location:" Foreground="White" FontSize="20" FontWeight="Bold" Grid.Row="6" Grid.Column="1"/>
+                    <TextBox x:Name="txtNewProjectLocation" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Grid.Row="6" Grid.Column="3"/>
+
+                    <TextBlock TextWrapping="Wrap" Text="Persons:" Foreground="White" FontSize="20" FontWeight="Bold" Grid.Row="7" Grid.Column="1"/>
+                    <TextBox x:Name="txtNewProjectPersons" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Grid.Row="7" Grid.Column="3"/>
+
+                    <TextBlock TextWrapping="Wrap" Text="Project No:" Foreground="White" FontSize="20" FontWeight="Bold" Grid.Row="8" Grid.Column="1"/>
+                    <TextBox x:Name="txtNewProjectProjectNo" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Grid.Row="8" Grid.Column="3"/>
+
+                    <Button Grid.Row="3" Grid.Column="5" Grid.RowSpan="4" Click="btnCreate_Click_1"  x:Name="btnCreate" Content="Create" Height="50" Width="100" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="15" />
                 </Grid>
 
                 <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4">
@@ -182,6 +184,32 @@
                         </ListView.View>
                     </ListView>
                 </StackPanel>
+
+                <Popup StaysOpen="False"  Placement="MousePoint" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" Name="popNewTemplate" IsOpen="False" Height="70" Width="200">
+                    <ScrollViewer  VerticalScrollBarVisibility="Visible" MaxHeight="200">
+                        <Grid Background="#FF5C6368">
+                            <StackPanel  Orientation="Vertical">
+                                <RadioButton Name="rdbNewTemplate" IsChecked="True" GroupName="grpNewTemplate" Content="New Template"></RadioButton>
+                                <StackPanel Orientation="Horizontal">
+                                    <RadioButton Name="rdbCopyTemplate" GroupName="grpNewTemplate" Content="Copy "></RadioButton>
+                                    <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="135" Name="cmbNewTemplates">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Description}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <Button x:Name="btnNewTemplateOK" Content="OK" Click="btnNewTemplateOK_Click"></Button>
+                                    <Button x:Name="btnNewTemplateCancel" Content="Cancel" Click="btnNewTemplateCancel_Click"></Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </ScrollViewer>
+                </Popup>
+
             </Grid>
 
             <Grid x:Name="gridEdit" Visibility="Collapsed">
@@ -346,7 +374,7 @@
                                 </TransformGroup>
                             </TextBlock.RenderTransform>
                         </TextBlock>
-                        <RichTextBox Height="Auto" Width="170" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="3"  x:Name="txtAction" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <RichTextBox Height="Auto" Width="150" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="3"  x:Name="txtAction" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                             <RichTextBox.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem x:Name="mniImportnat"  Header="Important" Click="mniImportnat_Click_1" />
@@ -371,7 +399,7 @@
                         <TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Row="0" Text="Details" FontSize="20"/>
                         <Image Grid.Row="1" HorizontalAlignment="Right" x:Name="btnWarningActionDescription" Height="28" Width="32" Stretch="Fill" MouseDown="btnWarningActionDescription_MouseDown_1"/>
                     </Grid>
-                    <RichTextBox VerticalAlignment="Stretch" Height="Auto" Width="380" Grid.Column="3" Grid.Row="3" BorderThickness="3"  x:Name="txtActionDetails"   HorizontalAlignment="Left" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <RichTextBox VerticalAlignment="Stretch" Height="Auto" Width="355" Grid.Column="3" Grid.Row="3" BorderThickness="3"  x:Name="txtActionDetails"   HorizontalAlignment="Left" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                         <RichTextBox.ContextMenu>
                             <ContextMenu>
                                 <MenuItem x:Name="mniDetailImportnat"  Header="Important" Click="mniDetailImportnat_Click_1" />
@@ -382,7 +410,6 @@
                             </Paragraph>
                         </FlowDocument>
                     </RichTextBox>
-
 
                     <TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="5" Grid.Row="1" Text="Lifting Gears" FontSize="20"/>
                     <TextBox Grid.Column="5" Grid.Row="3" x:Name="txtActionLiftingGears"/>
@@ -541,8 +568,6 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-
-
 
                     <Grid Grid.Column="5" Grid.Row="1" Grid.RowSpan="3">
                         <Grid.ColumnDefinitions>

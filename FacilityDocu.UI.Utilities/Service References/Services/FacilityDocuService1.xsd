@@ -3,13 +3,17 @@
   <xs:import schemaLocation="http://localhost:51256/FacilityDocuService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:complexType name="ProjectDTO">
     <xs:sequence>
+      <xs:element minOccurs="0" name="Client" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Closed" type="xs:boolean" />
       <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="tns:UserDTO" />
       <xs:element minOccurs="0" name="CreationDate" type="xs:dateTime" />
       <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="LastUpdatedAt" type="xs:dateTime" />
       <xs:element minOccurs="0" name="LastUpdatedBy" nillable="true" type="tns:UserDTO" />
+      <xs:element minOccurs="0" name="Location" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Persons" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ProjectID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProjectNumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="RigTypes" nillable="true" type="tns:ArrayOfRigTypeDTO" />
       <xs:element minOccurs="0" name="Template" type="xs:boolean" />
     </xs:sequence>

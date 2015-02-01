@@ -19,6 +19,12 @@ namespace FacilityDocu.Services.EntityDTOConverter
             projectDTO.Template = project.Template;
             projectDTO.Closed = project.Close.Value;
             projectDTO.Description = project.Description;
+            projectDTO.Client = project.Client;
+            projectDTO.Persons = project.Persons;
+            projectDTO.Location = project.Location;
+            projectDTO.ProjectNumber = project.ProjectNumber;
+
+
             projectDTO.ProjectID = project.ProjectID.ToString();
             projectDTO.CreationDate = project.CreationDate.Value;
             projectDTO.LastUpdatedAt = project.LastUpdatedAt.Value;
@@ -103,8 +109,8 @@ namespace FacilityDocu.Services.EntityDTOConverter
                 actionDTO.Risks = projectDetail.Risks;
                 actionDTO.LiftingGears = projectDetail.LiftingGears;
                 actionDTO.Dimensions = projectDetail.Dimensions;
-                actionDTO.IsNameWarning = projectDetail.ActionNameWarning.Value;
-                actionDTO.IsDescriptionwarning = projectDetail.ActionDescriptionWarning.Value;
+                actionDTO.IsNameWarning = projectDetail.ActionNameWarning.HasValue ? projectDetail.ActionNameWarning.Value : false;
+                actionDTO.IsDescriptionwarning = projectDetail.ActionDescriptionWarning.HasValue ? projectDetail.ActionDescriptionWarning.Value : false;
                 actionDTO.ImportantName = projectDetail.ImportantActionname;
                 actionDTO.ImportantDescription = projectDetail.ImportantActionDescription;
                 actionDTO.IsAnalysis = projectDetail.IsAnalysis;
@@ -127,15 +133,19 @@ namespace FacilityDocu.Services.EntityDTOConverter
         {
             IList<AttachmentDTO> AttachmentDTOs = new List<AttachmentDTO>();
 
-            foreach (var projectAttachment in projectDetail.ProjectActionAttachments)
+            if (projectDetail.ProjectActionAttachments != null)
             {
-                AttachmentDTO attachmentDTO = new AttachmentDTO();
-                attachmentDTO.AttachmentID = projectAttachment.AttachmentID.GetValueOrDefault().ToString();
-                attachmentDTO.Name = projectAttachment.Attachment.Name;
-                attachmentDTO.Path = projectAttachment.Attachment.Path;
 
-                AttachmentDTOs.Add(attachmentDTO);
+                foreach (var projectAttachment in projectDetail.ProjectActionAttachments)
+                {
+                    AttachmentDTO attachmentDTO = new AttachmentDTO();
+                    attachmentDTO.AttachmentID = projectAttachment.AttachmentID.GetValueOrDefault().ToString();
+                    attachmentDTO.Name = projectAttachment.Attachment.Name;
+                    attachmentDTO.Path = projectAttachment.Attachment.Path;
 
+                    AttachmentDTOs.Add(attachmentDTO);
+
+                }
             }
             return AttachmentDTOs;
         }
@@ -144,23 +154,27 @@ namespace FacilityDocu.Services.EntityDTOConverter
         {
             IList<RiskAnalysisDTO> analysissDTO = new List<RiskAnalysisDTO>();
 
-            foreach (var analysis in projectDetail.RiskAnalysis)
+            if (projectDetail.RiskAnalysis != null)
             {
-                RiskAnalysisDTO analysisDTO = new RiskAnalysisDTO();
-                analysisDTO.Activity = analysis.Activity;
-                analysisDTO.B = Convert.ToDouble(analysis.B.Value);
-                analysisDTO.B_ = Convert.ToDouble(analysis.B_);
-                analysisDTO.Controls = analysis.Controls;
-                analysisDTO.Danger = analysis.Danger;
-                analysisDTO.E = Convert.ToDouble(analysis.E.Value);
-                analysisDTO.E_ = Convert.ToDouble(analysis.E_);
-                analysisDTO.K = Convert.ToDouble(analysis.K.Value);
-                analysisDTO.K_ = Convert.ToDouble(analysis.K_);
-                analysisDTO.Risk = Convert.ToDouble(analysis.Risk.Value);
-                analysisDTO.Risk_ = Convert.ToDouble(analysis.Risk_);
-                analysisDTO.RiskAnalysisID = Convert.ToString(analysis.RiskAnalysisID);
 
-                analysissDTO.Add(analysisDTO);
+                foreach (var analysis in projectDetail.RiskAnalysis)
+                {
+                    RiskAnalysisDTO analysisDTO = new RiskAnalysisDTO();
+                    analysisDTO.Activity = analysis.Activity;
+                    analysisDTO.B = Convert.ToDouble(analysis.B.Value);
+                    analysisDTO.B_ = Convert.ToDouble(analysis.B_);
+                    analysisDTO.Controls = analysis.Controls;
+                    analysisDTO.Danger = analysis.Danger;
+                    analysisDTO.E = Convert.ToDouble(analysis.E.Value);
+                    analysisDTO.E_ = Convert.ToDouble(analysis.E_);
+                    analysisDTO.K = Convert.ToDouble(analysis.K.Value);
+                    analysisDTO.K_ = Convert.ToDouble(analysis.K_);
+                    analysisDTO.Risk = Convert.ToDouble(analysis.Risk.Value);
+                    analysisDTO.Risk_ = Convert.ToDouble(analysis.Risk_);
+                    analysisDTO.RiskAnalysisID = Convert.ToString(analysis.RiskAnalysisID);
+
+                    analysissDTO.Add(analysisDTO);
+                }
             }
 
             return analysissDTO;
@@ -170,26 +184,30 @@ namespace FacilityDocu.Services.EntityDTOConverter
         {
             IList<ResourceDTO> resourcesDTO = new List<ResourceDTO>();
 
-            foreach (var resource in projectDetail.ProjectActionResources)
+            if (projectDetail.ProjectActionResources != null)
             {
-                ResourceDTO resourceDTO = new ResourceDTO();
-                resourceDTO.Name = resource.Resource.ResourceName;
-                resourceDTO.ResourceID = Convert.ToString(resource.ResourceID);
-                resourceDTO.ResourceCount = Convert.ToString(resource.ResourceCount);
-                resourceDTO.Type = Convert.ToString(resource.Resource.Type).ToLower();
 
-                resourcesDTO.Add(resourceDTO);
-            }
-
-            IList<string> existingIDs = resourcesDTO.Select(r => r.ResourceID).ToList();
-            AllResources.ForEach(r =>
+                foreach (var resource in projectDetail.ProjectActionResources)
                 {
-                    if (!existingIDs.Contains(r.ResourceID))
-                    {
-                        resourcesDTO.Add(r);
-                    }
+                    ResourceDTO resourceDTO = new ResourceDTO();
+                    resourceDTO.Name = resource.Resource.ResourceName;
+                    resourceDTO.ResourceID = Convert.ToString(resource.ResourceID);
+                    resourceDTO.ResourceCount = Convert.ToString(resource.ResourceCount);
+                    resourceDTO.Type = Convert.ToString(resource.Resource.Type).ToLower();
+
+                    resourcesDTO.Add(resourceDTO);
                 }
-                    );
+
+                IList<string> existingIDs = resourcesDTO.Select(r => r.ResourceID).ToList();
+                AllResources.ForEach(r =>
+                    {
+                        if (!existingIDs.Contains(r.ResourceID))
+                        {
+                            resourcesDTO.Add(r);
+                        }
+                    }
+                        );
+            }
 
             return resourcesDTO;
         }
@@ -198,13 +216,17 @@ namespace FacilityDocu.Services.EntityDTOConverter
         {
             IList<ToolDTO> toolsDTO = new List<ToolDTO>();
 
-            foreach (var tool in projectDetail.ProjectActionTools)
+            if (projectDetail.ProjectActionTools != null)
             {
-                ToolDTO toolDTO = new ToolDTO();
-                toolDTO.Name = tool.Tool.ToolName;
-                toolDTO.ToolID = Convert.ToString(tool.ToolID);
 
-                toolsDTO.Add(toolDTO);
+                foreach (var tool in projectDetail.ProjectActionTools)
+                {
+                    ToolDTO toolDTO = new ToolDTO();
+                    toolDTO.Name = tool.Tool.ToolName;
+                    toolDTO.ToolID = Convert.ToString(tool.ToolID);
+
+                    toolsDTO.Add(toolDTO);
+                }
             }
 
             return toolsDTO;
@@ -214,19 +236,22 @@ namespace FacilityDocu.Services.EntityDTOConverter
         {
             IList<ImageDTO> ImageDTOs = new List<ImageDTO>();
 
-            foreach (var projctImage in projectDetail.ProjectActionImages)
+            if (projectDetail.ProjectActionImages != null)
             {
-                ImageDTO imageDTO = new ImageDTO();
-                imageDTO.ImageID = projctImage.ImageID.GetValueOrDefault().ToString();
-                imageDTO.Description = projctImage.Image.Description;
-                imageDTO.Path = projctImage.Image.ImagePath;
-                imageDTO.CreationDate = projctImage.Image.CreationDate.GetValueOrDefault();
-                imageDTO.Tags = projctImage.Image.Tags.Split(';');
+                foreach (var projctImage in projectDetail.ProjectActionImages)
+                {
+                    ImageDTO imageDTO = new ImageDTO();
+                    imageDTO.ImageID = projctImage.ImageID.GetValueOrDefault().ToString();
+                    imageDTO.Description = projctImage.Image.Description;
+                    imageDTO.Path = projctImage.Image.ImagePath;
+                    imageDTO.CreationDate = projctImage.Image.CreationDate.GetValueOrDefault();
+                    imageDTO.Tags = projctImage.Image.Tags.Split(';');
 
-                imageDTO.Comments = TOCommentDTO(projctImage.Image.ImageComments);
+                    imageDTO.Comments = TOCommentDTO(projctImage.Image.ImageComments);
 
-                ImageDTOs.Add(imageDTO);
+                    ImageDTOs.Add(imageDTO);
 
+                }
             }
             return ImageDTOs;
         }

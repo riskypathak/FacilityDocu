@@ -52,6 +52,10 @@
           <Property Name="Close" Type="bit" />
           <Property Name="CreatedBy" Type="varchar" MaxLength="500" />
           <Property Name="UpdatedBy" Type="varchar" MaxLength="500" />
+          <Property Name="Client" Type="varchar" MaxLength="100" />
+          <Property Name="ProjectNumber" Type="varchar" MaxLength="100" />
+          <Property Name="Persons" Type="varchar" MaxLength="100" />
+          <Property Name="Location" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="ProjectActionAttachment">
           <Key>
@@ -576,6 +580,10 @@
           <NavigationProperty Name="User" Relationship="TabletApp_DatabaseModel.FK__Project__Created__5AEE82B9" FromRole="Project" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="TabletApp_DatabaseModel.FK__Project__Updated__5BE2A6F2" FromRole="Project" ToRole="User" />
           <NavigationProperty Name="ProjectDetails" Relationship="TabletApp_DatabaseModel.FK_PD_P" FromRole="Project" ToRole="ProjectDetail" />
+          <Property Name="Client" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ProjectNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Persons" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ProjectActionAttachment">
           <Key>
@@ -947,6 +955,10 @@
           <EntitySetMapping Name="Projects">
             <EntityTypeMapping TypeName="TabletApp_DatabaseModel.Project">
               <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Persons" ColumnName="Persons" />
+                <ScalarProperty Name="ProjectNumber" ColumnName="ProjectNumber" />
+                <ScalarProperty Name="Client" ColumnName="Client" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="Close" ColumnName="Close" />

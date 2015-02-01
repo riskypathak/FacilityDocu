@@ -110,9 +110,7 @@ namespace FacilityDocLaptop
 
         private void NewProject_btn_Click(object sender, RoutedEventArgs e)
         {
-            IList<ProjectDTO> projects = new List<ProjectDTO>();
-            IList<string> projectFiles = Directory.GetFiles(Data.PROJECT_XML_FOLDER, "*.xml");
-            projectFiles.ToList().ForEach(f => projects.Add(ProjectXmlReader.ReadProjectXml(f, true)));
+            IList<ProjectDTO> projects = GetProjectsFromLocal();
 
             cmbTemplates.ItemsSource = projects.Where(p => p.Template);
 
@@ -121,6 +119,14 @@ namespace FacilityDocLaptop
             homePage.Title = "RigDocu - New Project";
 
             gdvNew.Visibility = Visibility.Visible;
+        }
+
+        private static IList<ProjectDTO> GetProjectsFromLocal()
+        {
+            IList<ProjectDTO> projects = new List<ProjectDTO>();
+            IList<string> projectFiles = Directory.GetFiles(Data.PROJECT_XML_FOLDER, "*.xml");
+            projectFiles.ToList().ForEach(f => projects.Add(ProjectXmlReader.ReadProjectXml(f, true)));
+            return projects;
         }
 
         private void addPictures_btn_Click(object sender, RoutedEventArgs e)
@@ -391,8 +397,6 @@ namespace FacilityDocLaptop
                 bitmap.BeginInit();
                 bitmap.UriSource = new Uri(image.Path);
                 imagename.Source = bitmap;
-                //imagename.Width = 150;
-                //imagename.Height = 150;
                 bitmap.EndInit();
 
                 Images.Add(new ImageModel() { ImageID = image.ImageID, Image = imagename, Description = image.Description });
@@ -488,7 +492,7 @@ namespace FacilityDocLaptop
 
             Data.CURRENT_RIG.Modules.SelectMany(m => m.Steps).SelectMany(s => s.Actions).First().Resources.ToList().ForEach(r =>
 
-                masterResources.Add(new ResourceDTO() { ResourceID = r.ResourceID, Type=r.Type, Name = r.Name, ResourceCount = r.ResourceCount })
+                masterResources.Add(new ResourceDTO() { ResourceID = r.ResourceID, Type = r.Type, Name = r.Name, ResourceCount = r.ResourceCount })
             );
 
             ActionDTO action = new ActionDTO()
@@ -615,6 +619,25 @@ namespace FacilityDocLaptop
                 dpnMenu.Visibility = System.Windows.Visibility.Collapsed;
             }
 
+            if (grid.Name.Equals("gridHome"))
+            {
+                if (Helper.isInternetAvailable())
+                {
+                    imgSync.Source = new BitmapImage(new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "sync.jpg")));
+                    imgTemplate.Source = new BitmapImage(new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "template.png")));
+
+                    btnSync.IsEnabled = true;
+                    btnTemplate.IsEnabled = true;
+                }
+                else
+                {
+                    imgSync.Source = new BitmapImage(new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "syncdisable.png")));
+                    imgTemplate.Source = new BitmapImage(new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "templatedisable.png")));
+
+                    btnSync.IsEnabled = false;
+                    btnTemplate.IsEnabled = false;
+                }
+            }
         }
 
         private void btnCreate_Click_1(object sender, RoutedEventArgs e)
@@ -639,6 +662,11 @@ namespace FacilityDocLaptop
 
             Data.CURRENT_PROJECT.ProjectID = newProjectID;
             Data.CURRENT_PROJECT.Description = txtNewProjectName.Text;
+            Data.CURRENT_PROJECT.Client = txtNewProjectClient.Text;
+            Data.CURRENT_PROJECT.Location = txtNewProjectLocation.Text;
+            Data.CURRENT_PROJECT.Persons = txtNewProjectPersons.Text;
+            Data.CURRENT_PROJECT.ProjectNumber = txtNewProjectProjectNo.Text;
+
             Data.CURRENT_PROJECT.Template = false;
             Data.CURRENT_PROJECT.Closed = false;
             Data.CURRENT_PROJECT.CreatedBy = new UserDTO() { UserName = Data.CURRENT_USER };
@@ -655,12 +683,8 @@ namespace FacilityDocLaptop
         {
             SaveProject();
 
-            string projectPath = System.IO.Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", Data.CURRENT_PROJECT.ProjectID));
-
-            Data.CURRENT_PROJECT = ProjectXmlReader.ReadProjectXml(projectPath, false);
-            IList<string> outputs = Helper.GeneratePdf(Data.CURRENT_PROJECT, (sender as MenuItem).CommandParameter.ToString());
-
-            MessageBox.Show(string.Concat("Files Generated at\n", string.Join("\n", outputs.ToArray())));
+            ExportOptions exportOptions = new ExportOptions();
+            exportOptions.Show();
         }
 
         private void btnBack_Click_1(object sender, RoutedEventArgs e)
@@ -847,7 +871,7 @@ namespace FacilityDocLaptop
                 {
                     action.IsNameWarning = false;
                     logo.UriSource = new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "warningdisable.png"));
-                    color = new SolidColorBrush(Colors.Black);
+                    color = new SolidColorBrush(Colors.Transparent);
                 }
                 else
                 {
@@ -861,7 +885,7 @@ namespace FacilityDocLaptop
                 if (!action.IsNameWarning)
                 {
                     logo.UriSource = new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "warningdisable.png"));
-                    color = new SolidColorBrush(Colors.Black);
+                    color = new SolidColorBrush(Colors.Transparent);
                 }
                 else
                 {
@@ -907,7 +931,7 @@ namespace FacilityDocLaptop
                 {
                     action.IsDescriptionwarning = false;
                     logo.UriSource = new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "warningdisable.png"));
-                    color = new SolidColorBrush(Colors.Black);
+                    color = new SolidColorBrush(Colors.Transparent);
                 }
                 else
                 {
@@ -921,7 +945,7 @@ namespace FacilityDocLaptop
                 if (!action.IsDescriptionwarning)
                 {
                     logo.UriSource = new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "warningdisable.png"));
-                    color = new SolidColorBrush(Colors.Black);
+                    color = new SolidColorBrush(Colors.Transparent);
                 }
                 else
                 {
@@ -938,10 +962,15 @@ namespace FacilityDocLaptop
 
         private void btnSync_Click_1(object sender, RoutedEventArgs e)
         {
-            (new SyncManager()).Sync();
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("The sync process is pulling out latest projects/templates from server to local machine.\nDo you want to sync?", "RigDocu", System.Windows.MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
 
-            MessageBox.Show("Data Sync Done!!!");
-            CreateListViewGrid();
+                (new SyncManager()).Sync();
+
+                MessageBox.Show("Data Sync Done!!!");
+                CreateListViewGrid();
+            }
 
         }
 
@@ -976,8 +1005,6 @@ namespace FacilityDocLaptop
         {
             popChapters.IsOpen = true;
         }
-
-
 
         private void lstChapters_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
@@ -1034,8 +1061,44 @@ namespace FacilityDocLaptop
 
         private void btnTemplate_Click(object sender, RoutedEventArgs e)
         {
-            CustomTemplate customTemplate = new CustomTemplate();
+            popNewTemplate.IsOpen = true;
+            cmbNewTemplates.ItemsSource = GetProjectsFromLocal().Where(p => p.Template);
+        }
+
+        private void btnNewTemplateOK_Click(object sender, RoutedEventArgs e)
+        {
+            popNewTemplate.IsOpen = false;
+            CustomTemplate customTemplate = null;
+
+            if (rdbCopyTemplate.IsChecked.Value)
+            {
+                int templateID = Convert.ToInt32((cmbNewTemplates.SelectedItem as ProjectDTO).ProjectID);
+                customTemplate = new CustomTemplate(templateID);
+            }
+            else
+            {
+                customTemplate = new CustomTemplate();
+            }
+
             customTemplate.Show();
+
+        }
+
+        private void btnNewTemplateCancel_Click(object sender, RoutedEventArgs e)
+        {
+            popNewTemplate.IsOpen = false;
+        }
+
+        private void btnImportXml_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "XML Files (*.xml)|*.xml";
+            dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            dialog.Title = "Please select an image file to encrypt.";
+            if (dialog.ShowDialog() == true)
+            {
+                
+            }
         }
     }
 }

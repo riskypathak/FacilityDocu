@@ -42,6 +42,14 @@ public partial class Project
 
     public string UpdatedBy { get; set; }
 
+    public string Client { get; set; }
+
+    public string ProjectNumber { get; set; }
+
+    public string Persons { get; set; }
+
+    public string Location { get; set; }
+
 
 
     public virtual User User { get; set; }

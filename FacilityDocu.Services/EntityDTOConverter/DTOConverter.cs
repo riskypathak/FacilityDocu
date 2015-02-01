@@ -14,6 +14,10 @@ namespace FacilityDocu.Services.EntityDTOConverter
             Project project = new Project();
 
             project.Description = projectDTO.Description;
+            project.Client = projectDTO.Client;
+            project.Persons = projectDTO.Persons;
+            project.ProjectNumber = projectDTO.ProjectNumber;
+            project.Location = projectDTO.Location;
 
             if (!Helper.IsNew(projectDTO.ProjectID))
             {

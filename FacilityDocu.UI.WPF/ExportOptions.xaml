@@ -1,0 +1,57 @@
+﻿<Window x:Class="FacilityDocLaptop.ExportOptions"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Export Rig" Height="460" Width="600">
+    <Grid Background="#FF5C6368" Margin="0,0,2,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="350"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock FontSize="40" Foreground="#FFADDDFF" Text="Export Options" Grid.Row="1"></TextBlock>
+        
+        <StackPanel Orientation="Horizontal" Grid.Row="3">
+            <TextBlock VerticalAlignment="Center" Foreground="#FFD5DEF0" FontSize="20" FontWeight="Bold" Text="Layout: "></TextBlock>
+            <ComboBox FontSize="20" Width="200" Name="cmbTemplates"></ComboBox>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="5">
+            <TextBlock Foreground="#FFD5DEF0" FontSize="20" FontWeight="Bold" Text="Export"></TextBlock>
+            <CheckBox Name="chkRigUp" Foreground="#FFD5DEF0" FontSize="20">RigUp</CheckBox>
+            <CheckBox Name="chkRigDown" Foreground="#FFD5DEF0" FontSize="20">RigMove</CheckBox>
+            <CheckBox Name="chkRigMove" Foreground="#FFD5DEF0" FontSize="20">RigDown</CheckBox>
+            <CheckBox Name="chkRigUpRisk" Foreground="#FFD5DEF0" FontSize="20">RigUp - Risk Analysis</CheckBox>
+            <CheckBox Name="chkRigDownRisk" Foreground="#FFD5DEF0" FontSize="20">RigDown - Risk Analysis</CheckBox>
+            <CheckBox Name="chkRigMoveRisk" Foreground="#FFD5DEF0" FontSize="20">RigMove - RiskAnalysis</CheckBox>
+            
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" Grid.Row="7">
+            <TextBlock VerticalAlignment="Center" Foreground="#FFD5DEF0" FontSize="20" FontWeight="Bold" Text="Path: "></TextBlock>
+            <TextBox FontSize="30" Name="txtExportPath" Width="300"></TextBox>
+            <Button Click="btnBrowse_Click"  FontSize="20" Name="btnBrowse" Content="..."></Button>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="9">
+            <TextBlock VerticalAlignment="Center" Foreground="#FFD5DEF0" FontSize="20" FontWeight="Bold" Text="Content: "></TextBlock>
+            <ComboBox Width="200" Name="cmbContent"></ComboBox>
+        </StackPanel>
+        
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="1"  Grid.Row="3">
+            <Button Click="btnSave_Click" Content="Export "  Name="btnSave" FontSize="30"></Button>
+            <Button Click="btnCancel_Click" Content=" Cancel" Name="btnCancel" FontSize="30"></Button>
+        </StackPanel>
+        
+    </Grid>
+</Window>

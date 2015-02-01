@@ -21,6 +21,11 @@ namespace FacilityDocu.UI.Utilities
             project.CreatedBy = new UserDTO() { UserName = xProject.Element("createdby").Value };
             project.CreationDate = Convert.ToDateTime(xProject.Element("createdtime").Value);
             project.Description = xProject.Element("description").Value;
+            project.Client = (xProject.Element("client") != null) ? xProject.Element("client").Value : null;
+            project.Location = (xProject.Element("location") != null) ? xProject.Element("location").Value : null;
+            project.ProjectNumber = (xProject.Element("projectnumber") != null) ? xProject.Element("projectnumber").Value : null;
+            project.Persons = (xProject.Element("persons") != null) ? xProject.Element("persons").Value : null;
+
             project.LastUpdatedAt = Convert.ToDateTime(xProject.Element("updatedtime").Value);
             project.LastUpdatedBy = new UserDTO() { UserName = xProject.Element("updatedby").Value };
 

@@ -23,6 +23,9 @@ namespace FacilityDocu.UI.Utilities.Services {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ClientField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool ClosedField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -41,7 +44,16 @@ namespace FacilityDocu.UI.Utilities.Services {
         private FacilityDocu.UI.Utilities.Services.UserDTO LastUpdatedByField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string LocationField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string PersonsField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string ProjectIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ProjectNumberField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private FacilityDocu.UI.Utilities.Services.RigTypeDTO[] RigTypesField;
@@ -56,6 +68,19 @@ namespace FacilityDocu.UI.Utilities.Services {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Client {
+            get {
+                return this.ClientField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ClientField, value) != true)) {
+                    this.ClientField = value;
+                    this.RaisePropertyChanged("Client");
+                }
             }
         }
         
@@ -138,6 +163,32 @@ namespace FacilityDocu.UI.Utilities.Services {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Location {
+            get {
+                return this.LocationField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LocationField, value) != true)) {
+                    this.LocationField = value;
+                    this.RaisePropertyChanged("Location");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Persons {
+            get {
+                return this.PersonsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.PersonsField, value) != true)) {
+                    this.PersonsField = value;
+                    this.RaisePropertyChanged("Persons");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string ProjectID {
             get {
                 return this.ProjectIDField;
@@ -146,6 +197,19 @@ namespace FacilityDocu.UI.Utilities.Services {
                 if ((object.ReferenceEquals(this.ProjectIDField, value) != true)) {
                     this.ProjectIDField = value;
                     this.RaisePropertyChanged("ProjectID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ProjectNumber {
+            get {
+                return this.ProjectNumberField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ProjectNumberField, value) != true)) {
+                    this.ProjectNumberField = value;
+                    this.RaisePropertyChanged("ProjectNumber");
                 }
             }
         }

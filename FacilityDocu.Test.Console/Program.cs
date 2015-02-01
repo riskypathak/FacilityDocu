@@ -49,7 +49,7 @@ namespace FacilityDocu.Test.Console
         private static void TestGeneratePdf()
         {
             string xmlPath = Path.GetFullPath(string.Format("Data/ProjectXml/{0}.xml",1));
-            Helper.GeneratePdf(ProjectXmlReader.ReadProjectXml(xmlPath, false), "a4");
+            Helper.GeneratePdf(ProjectXmlReader.ReadProjectXml(xmlPath, false), "a4", null, string.Empty, "");
         }
     }
 }

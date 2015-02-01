@@ -4,6 +4,7 @@ using iTextSharp.text.pdf;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.ServiceModel;
 using System.Xml.Linq;
 
@@ -11,6 +12,23 @@ namespace FacilityDocu.UI.Utilities
 {
     public static class Helper
     {
+        public static bool isInternetAvailable()
+        {
+            bool isInternetAvailable = false;
+            try
+            {
+                WebClient webClient = new WebClient();
+                webClient.DownloadString("http://www.google.com");
+                isInternetAvailable = true;
+            }
+            catch(WebException exception)
+            {
+
+            }
+
+            return isInternetAvailable;
+        }
+
         public static bool Login(string userName, string password)
         {
             bool isLogin = false;
@@ -59,6 +77,13 @@ namespace FacilityDocu.UI.Utilities
             service.CreateTemplate(projectDTO);
         }
 
+        public static ProjectDTO GetTemplate(int templateID)
+        {
+            IFacilityDocuService service = new FacilityDocuServiceClient();
+
+            return service.GetProjectDetails(templateID);
+        }
+
         public static bool IsNew(string id)
         {
             bool returnValue;
@@ -72,21 +97,27 @@ namespace FacilityDocu.UI.Utilities
             return new Phrase(input.ToString(), FontFactory.GetFont(FontFactory.HELVETICA, 8));
         }
 
-        public static IList<string> GeneratePdf(ProjectDTO project, string layoutview)
+        public static IList<string> GeneratePdf(ProjectDTO project, string layoutview, IList<string> exportPage, string textPath, string type)
         {
             IList<string> outputs = new List<string>();
 
             foreach (RigTypeDTO rigType in project.RigTypes)
             {
-                string pdfPath = System.IO.Path.Combine(Data.PROJECT_OUTPUT_FOLDER, string.Format("{0}_{1}.pdf", project.Description, rigType.Name));
-                outputs.Add(pdfPath);
+                if (exportPage.Contains(string.Concat(rigType.Name,"_")))
+                {
+                    string pdfPath = System.IO.Path.Combine(textPath, string.Format("{0}_{1}.pdf", project.Description, rigType.Name));
+                    outputs.Add(pdfPath);
 
-                GenerateRigPDF(project, rigType, pdfPath, layoutview);
+                    GenerateRigPDF(project, rigType, pdfPath, layoutview);
+                }
 
-                pdfPath = System.IO.Path.Combine(Data.PROJECT_OUTPUT_FOLDER, string.Format("{0}_{1}_RiskAnalysis.pdf", project.Description, rigType.Name));
-                outputs.Add(pdfPath);
+                if (exportPage.Contains(string.Concat(rigType.Name, "RiskAnalysis")))
+                {
+                    string pdfPath = System.IO.Path.Combine(textPath, string.Format("{0}_{1}_RiskAnalysis.pdf", project.Description, rigType.Name));
+                    outputs.Add(pdfPath);
 
-                GenerateRigRiskAnalysisPDF(project, rigType, pdfPath, layoutview);
+                    GenerateRigRiskAnalysisPDF(project, rigType, pdfPath, layoutview);
+                }
             }
 
             return outputs;

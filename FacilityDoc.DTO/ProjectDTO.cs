@@ -18,6 +18,18 @@ namespace FacilityDocu.DTO
         public string Description { get; set; }
 
         [DataMember]
+        public string Client { get; set; }
+
+        [DataMember]
+        public string ProjectNumber { get; set; }
+
+        [DataMember]
+        public string Persons { get; set; }
+
+        [DataMember]
+        public string Location { get; set; }
+
+        [DataMember]
         public DateTime CreationDate { get; set; }
 
         [DataMember]
