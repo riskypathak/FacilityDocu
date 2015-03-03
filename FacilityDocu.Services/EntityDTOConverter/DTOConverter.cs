@@ -148,8 +148,7 @@ namespace FacilityDocu.Services.EntityDTOConverter
                 {
                     ProjectActionImage projectImage = new ProjectActionImage();
                     projectImage.ProjectDetailID = projectDetail.ProjectDetailID;
-
-
+                    
                     projectImage.Image = new Image()
                     {
                         Description = imageDTO.Description,
@@ -169,6 +168,7 @@ namespace FacilityDocu.Services.EntityDTOConverter
                     }
 
                     projectImage.ImageID = projectImage.Image.ImageID;
+                    projectImage.IsUsed = imageDTO.Used;
 
                     projectImages.Add(projectImage);
                 }

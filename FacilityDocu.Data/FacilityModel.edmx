@@ -52,10 +52,10 @@
           <Property Name="Close" Type="bit" />
           <Property Name="CreatedBy" Type="varchar" MaxLength="500" />
           <Property Name="UpdatedBy" Type="varchar" MaxLength="500" />
-          <Property Name="Client" Type="varchar" MaxLength="100" />
-          <Property Name="ProjectNumber" Type="varchar" MaxLength="100" />
-          <Property Name="Persons" Type="varchar" MaxLength="100" />
-          <Property Name="Location" Type="varchar" MaxLength="100" />
+          <Property Name="Client" Type="varchar" MaxLength="500" />
+          <Property Name="Location" Type="varchar" MaxLength="500" />
+          <Property Name="Persons" Type="varchar" MaxLength="500" />
+          <Property Name="ProjectNumber" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="ProjectActionAttachment">
           <Key>
@@ -72,6 +72,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProjectDetailID" Type="int" />
           <Property Name="ImageID" Type="int" />
+          <Property Name="IsUsed" Type="bit" />
         </EntityType>
         <EntityType Name="ProjectActionResource">
           <Key>
@@ -164,7 +165,7 @@
           <Property Name="Password" Type="varchar" MaxLength="500" />
           <Property Name="Name" Type="varchar" MaxLength="500" />
         </EntityType>
-        <Association Name="FK__ImageComm__Image__6FE99F9F">
+        <Association Name="FK__ImageComm__Image__300424B4">
           <End Role="Image" Type="Self.Image" Multiplicity="0..1" />
           <End Role="ImageComment" Type="Self.ImageComment" Multiplicity="*" />
           <ReferentialConstraint>
@@ -176,7 +177,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Module__RigTypeI__571DF1D5">
+        <Association Name="FK__Module__RigTypeI__30F848ED">
           <End Role="RigType" Type="Self.RigType" Multiplicity="0..1" />
           <End Role="Module" Type="Self.Module" Multiplicity="*" />
           <ReferentialConstraint>
@@ -188,7 +189,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Project__Created__5AEE82B9">
+        <Association Name="FK__Project__Created__31EC6D26">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="Project" Type="Self.Project" Multiplicity="*" />
           <ReferentialConstraint>
@@ -200,7 +201,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Project__Updated__5BE2A6F2">
+        <Association Name="FK__Project__Updated__32E0915F">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="Project" Type="Self.Project" Multiplicity="*" />
           <ReferentialConstraint>
@@ -212,7 +213,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProjectAc__Attac__17036CC0">
+        <Association Name="FK__ProjectAc__Attac__33D4B598">
           <End Role="Attachment" Type="Self.Attachment" Multiplicity="0..1" />
           <End Role="ProjectActionAttachment" Type="Self.ProjectActionAttachment" Multiplicity="*" />
           <ReferentialConstraint>
@@ -224,7 +225,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProjectAc__Image__3D5E1FD2">
+        <Association Name="FK__ProjectAc__Image__35BCFE0A">
           <End Role="Image" Type="Self.Image" Multiplicity="0..1" />
           <End Role="ProjectActionImage" Type="Self.ProjectActionImage" Multiplicity="*" />
           <ReferentialConstraint>
@@ -236,7 +237,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProjectAc__Proje__160F4887">
+        <Association Name="FK__ProjectAc__Proje__34C8D9D1">
           <End Role="ProjectDetail" Type="Self.ProjectDetail" Multiplicity="0..1" />
           <End Role="ProjectActionAttachment" Type="Self.ProjectActionAttachment" Multiplicity="*" />
           <ReferentialConstraint>
@@ -248,7 +249,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProjectAc__Proje__3E52440B">
+        <Association Name="FK__ProjectAc__Proje__36B12243">
           <End Role="ProjectDetail" Type="Self.ProjectDetail" Multiplicity="0..1" />
           <End Role="ProjectActionImage" Type="Self.ProjectActionImage" Multiplicity="*" />
           <ReferentialConstraint>
@@ -260,7 +261,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProjectAc__Proje__628FA481">
+        <Association Name="FK__ProjectAc__Proje__37A5467C">
           <End Role="ProjectDetail" Type="Self.ProjectDetail" Multiplicity="0..1" />
           <End Role="ProjectActionResource" Type="Self.ProjectActionResource" Multiplicity="*" />
           <ReferentialConstraint>
@@ -272,7 +273,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProjectAc__Proje__66603565">
+        <Association Name="FK__ProjectAc__Proje__398D8EEE">
           <End Role="ProjectDetail" Type="Self.ProjectDetail" Multiplicity="0..1" />
           <End Role="ProjectActionTool" Type="Self.ProjectActionTool" Multiplicity="*" />
           <ReferentialConstraint>
@@ -284,7 +285,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProjectAc__Resou__6383C8BA">
+        <Association Name="FK__ProjectAc__Resou__38996AB5">
           <End Role="Resource" Type="Self.Resource" Multiplicity="0..1" />
           <End Role="ProjectActionResource" Type="Self.ProjectActionResource" Multiplicity="*" />
           <ReferentialConstraint>
@@ -296,7 +297,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProjectAc__ToolI__6754599E">
+        <Association Name="FK__ProjectAc__ToolI__3A81B327">
           <End Role="Tool" Type="Self.Tool" Multiplicity="0..1" />
           <End Role="ProjectActionTool" Type="Self.ProjectActionTool" Multiplicity="*" />
           <ReferentialConstraint>
@@ -308,7 +309,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProjectDe__StepI__45F365D3">
+        <Association Name="FK__ProjectDe__StepI__3B75D760">
           <End Role="Step" Type="Self.Step" Multiplicity="0..1" />
           <End Role="ProjectDetail" Type="Self.ProjectDetail" Multiplicity="*" />
           <ReferentialConstraint>
@@ -320,7 +321,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__RiskAnaly__Proje__282DF8C2">
+        <Association Name="FK__RiskAnaly__Proje__3D5E1FD2">
           <End Role="ProjectDetail" Type="Self.ProjectDetail" Multiplicity="0..1" />
           <End Role="RiskAnalysis" Type="Self.RiskAnalysis" Multiplicity="*" />
           <ReferentialConstraint>
@@ -332,7 +333,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Step__ModuleID__2739D489">
+        <Association Name="FK__Step__ModuleID__3E52440B">
           <End Role="Module" Type="Self.Module" Multiplicity="0..1" />
           <End Role="Step" Type="Self.Step" Multiplicity="*" />
           <ReferentialConstraint>
@@ -373,63 +374,63 @@
           <EntitySet Name="Step" EntityType="Self.Step" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tool" EntityType="Self.Tool" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__ImageComm__Image__6FE99F9F" Association="Self.FK__ImageComm__Image__6FE99F9F">
+          <AssociationSet Name="FK__ImageComm__Image__300424B4" Association="Self.FK__ImageComm__Image__300424B4">
             <End Role="Image" EntitySet="Image" />
             <End Role="ImageComment" EntitySet="ImageComment" />
           </AssociationSet>
-          <AssociationSet Name="FK__Module__RigTypeI__571DF1D5" Association="Self.FK__Module__RigTypeI__571DF1D5">
+          <AssociationSet Name="FK__Module__RigTypeI__30F848ED" Association="Self.FK__Module__RigTypeI__30F848ED">
             <End Role="RigType" EntitySet="RigType" />
             <End Role="Module" EntitySet="Module" />
           </AssociationSet>
-          <AssociationSet Name="FK__Project__Created__5AEE82B9" Association="Self.FK__Project__Created__5AEE82B9">
+          <AssociationSet Name="FK__Project__Created__31EC6D26" Association="Self.FK__Project__Created__31EC6D26">
             <End Role="User" EntitySet="User" />
             <End Role="Project" EntitySet="Project" />
           </AssociationSet>
-          <AssociationSet Name="FK__Project__Updated__5BE2A6F2" Association="Self.FK__Project__Updated__5BE2A6F2">
+          <AssociationSet Name="FK__Project__Updated__32E0915F" Association="Self.FK__Project__Updated__32E0915F">
             <End Role="User" EntitySet="User" />
             <End Role="Project" EntitySet="Project" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProjectAc__Attac__17036CC0" Association="Self.FK__ProjectAc__Attac__17036CC0">
+          <AssociationSet Name="FK__ProjectAc__Attac__33D4B598" Association="Self.FK__ProjectAc__Attac__33D4B598">
             <End Role="Attachment" EntitySet="Attachment" />
             <End Role="ProjectActionAttachment" EntitySet="ProjectActionAttachment" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProjectAc__Image__3D5E1FD2" Association="Self.FK__ProjectAc__Image__3D5E1FD2">
+          <AssociationSet Name="FK__ProjectAc__Image__35BCFE0A" Association="Self.FK__ProjectAc__Image__35BCFE0A">
             <End Role="Image" EntitySet="Image" />
             <End Role="ProjectActionImage" EntitySet="ProjectActionImage" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProjectAc__Proje__160F4887" Association="Self.FK__ProjectAc__Proje__160F4887">
+          <AssociationSet Name="FK__ProjectAc__Proje__34C8D9D1" Association="Self.FK__ProjectAc__Proje__34C8D9D1">
             <End Role="ProjectDetail" EntitySet="ProjectDetail" />
             <End Role="ProjectActionAttachment" EntitySet="ProjectActionAttachment" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProjectAc__Proje__3E52440B" Association="Self.FK__ProjectAc__Proje__3E52440B">
+          <AssociationSet Name="FK__ProjectAc__Proje__36B12243" Association="Self.FK__ProjectAc__Proje__36B12243">
             <End Role="ProjectDetail" EntitySet="ProjectDetail" />
             <End Role="ProjectActionImage" EntitySet="ProjectActionImage" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProjectAc__Proje__628FA481" Association="Self.FK__ProjectAc__Proje__628FA481">
+          <AssociationSet Name="FK__ProjectAc__Proje__37A5467C" Association="Self.FK__ProjectAc__Proje__37A5467C">
             <End Role="ProjectDetail" EntitySet="ProjectDetail" />
             <End Role="ProjectActionResource" EntitySet="ProjectActionResource" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProjectAc__Proje__66603565" Association="Self.FK__ProjectAc__Proje__66603565">
+          <AssociationSet Name="FK__ProjectAc__Proje__398D8EEE" Association="Self.FK__ProjectAc__Proje__398D8EEE">
             <End Role="ProjectDetail" EntitySet="ProjectDetail" />
             <End Role="ProjectActionTool" EntitySet="ProjectActionTool" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProjectAc__Resou__6383C8BA" Association="Self.FK__ProjectAc__Resou__6383C8BA">
+          <AssociationSet Name="FK__ProjectAc__Resou__38996AB5" Association="Self.FK__ProjectAc__Resou__38996AB5">
             <End Role="Resource" EntitySet="Resource" />
             <End Role="ProjectActionResource" EntitySet="ProjectActionResource" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProjectAc__ToolI__6754599E" Association="Self.FK__ProjectAc__ToolI__6754599E">
+          <AssociationSet Name="FK__ProjectAc__ToolI__3A81B327" Association="Self.FK__ProjectAc__ToolI__3A81B327">
             <End Role="Tool" EntitySet="Tool" />
             <End Role="ProjectActionTool" EntitySet="ProjectActionTool" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProjectDe__StepI__45F365D3" Association="Self.FK__ProjectDe__StepI__45F365D3">
+          <AssociationSet Name="FK__ProjectDe__StepI__3B75D760" Association="Self.FK__ProjectDe__StepI__3B75D760">
             <End Role="Step" EntitySet="Step" />
             <End Role="ProjectDetail" EntitySet="ProjectDetail" />
           </AssociationSet>
-          <AssociationSet Name="FK__RiskAnaly__Proje__282DF8C2" Association="Self.FK__RiskAnaly__Proje__282DF8C2">
+          <AssociationSet Name="FK__RiskAnaly__Proje__3D5E1FD2" Association="Self.FK__RiskAnaly__Proje__3D5E1FD2">
             <End Role="ProjectDetail" EntitySet="ProjectDetail" />
             <End Role="RiskAnalysis" EntitySet="RiskAnalysis" />
           </AssociationSet>
-          <AssociationSet Name="FK__Step__ModuleID__2739D489" Association="Self.FK__Step__ModuleID__2739D489">
+          <AssociationSet Name="FK__Step__ModuleID__3E52440B" Association="Self.FK__Step__ModuleID__3E52440B">
             <End Role="Module" EntitySet="Module" />
             <End Role="Step" EntitySet="Step" />
           </AssociationSet>
@@ -580,10 +581,10 @@
           <NavigationProperty Name="User" Relationship="TabletApp_DatabaseModel.FK__Project__Created__5AEE82B9" FromRole="Project" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="TabletApp_DatabaseModel.FK__Project__Updated__5BE2A6F2" FromRole="Project" ToRole="User" />
           <NavigationProperty Name="ProjectDetails" Relationship="TabletApp_DatabaseModel.FK_PD_P" FromRole="Project" ToRole="ProjectDetail" />
-          <Property Name="Client" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="ProjectNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Persons" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Client" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ProjectNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Persons" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Location" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ProjectActionAttachment">
           <Key>
@@ -604,6 +605,7 @@
           <Property Name="ImageID" Type="Int32" />
           <NavigationProperty Name="Image" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Image__3D5E1FD2" FromRole="ProjectActionImage" ToRole="Image" />
           <NavigationProperty Name="ProjectDetail" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__3E52440B" FromRole="ProjectActionImage" ToRole="ProjectDetail" />
+          <Property Name="IsUsed" Type="Boolean" />
         </EntityType>
         <EntityType Name="ProjectActionResource">
           <Key>
@@ -982,6 +984,7 @@
           <EntitySetMapping Name="ProjectActionImages">
             <EntityTypeMapping TypeName="TabletApp_DatabaseModel.ProjectActionImage">
               <MappingFragment StoreEntitySet="ProjectActionImage">
+                <ScalarProperty Name="IsUsed" ColumnName="IsUsed" />
                 <ScalarProperty Name="ImageID" ColumnName="ImageID" />
                 <ScalarProperty Name="ProjectDetailID" ColumnName="ProjectDetailID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />

@@ -16,6 +16,8 @@ namespace FacilityDocu.UI.Utilities
         public static string CONFIG_PATH = System.IO.Path.GetFullPath("Assets/config.xml");
         public static string ASSETS_PATH = System.IO.Path.GetFullPath("Assets");
 
+        public static string EXPORT_PDF_PATH = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
         public static bool SYNC_DOWNLOAD = false;
         public static bool SYNC_DOWNLOAD_UPDATE = false;
 

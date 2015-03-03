@@ -175,15 +175,6 @@ namespace FacilityDocLaptop
             MouseLeave();
         }
 
-        private void btnLogout_Click(object sender, RoutedEventArgs e) //Logout Button
-        {
-            MessageBoxResult messageBoxResult = MessageBox.Show("Do you want to log out?", "Log out Confirmation", MessageBoxButton.YesNo);
-            if (messageBoxResult == MessageBoxResult.Yes)
-            {
-                //log out activity
-            }
-        }
-
         private void listboxTools_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
@@ -252,6 +243,7 @@ namespace FacilityDocLaptop
             }
 
             lstChapters.ItemsSource = Data.CURRENT_RIG.Modules.Where(m => m.Steps.Count() > 0); //Only those modules having step count > 0
+
             lstSteps.ItemsSource = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps;
 
             txtUser.Text = Data.CURRENT_USER;
@@ -267,7 +259,7 @@ namespace FacilityDocLaptop
             {
 
                 StepDTO step = module.Steps[currentStepIndex];
-                txtStepName.Text = string.Format("{0} {1}", step.Number, step.Name);
+                txtStepName.Text = string.Format("{2}.{0} {1}", step.Number, step.Name, module.Number);
 
                 if (step.Actions.Length > 0)
                 {
@@ -283,7 +275,8 @@ namespace FacilityDocLaptop
 
                     EnableActionDetailsWarning();
 
-                    txtActionNumber.Text = string.Format("{0}/{1}", action.Number.TrimStart('0'), step.Actions.Count());
+                    txtActionNumber.Text = string.Format("{0}/{1}", currentActionIndex + 1, step.Actions.Count());
+
                     txtActionDimensions.Text = action.Dimensions.Trim();
                     txtActionLiftingGears.Text = action.LiftingGears.Trim();
                     txtActionRisks.Text = action.Risks.Trim();
@@ -404,30 +397,6 @@ namespace FacilityDocLaptop
             lstPictures.ItemsSource = Images;
         }
 
-        private void btnStepRight_Click(object sender, RoutedEventArgs e)
-        {
-            if (currentStepIndex < (Data.CURRENT_RIG.Modules[currentModuleIndex].Steps.Count() - 1))
-            {
-                currentStepIndex++;
-                currentActionIndex = 0;
-
-                ChangeScreenControls();
-            }
-        }
-
-        private void btnStepLeft_Click(object sender, RoutedEventArgs e)
-        {
-            if (currentStepIndex > 0)// || currentRigIndex > (Data.CURRENT_PROJECT .RigTypes.Count() - 1) )
-            {
-                SaveActionDetail();
-
-                currentStepIndex--;
-                currentActionIndex = 0;
-
-                ChangeScreenControls();
-            }
-        }
-
         private void btnActionRight_Click(object sender, RoutedEventArgs e)
         {
             if (currentActionIndex < (Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Count() - 1))
@@ -441,16 +410,26 @@ namespace FacilityDocLaptop
 
         private void SaveActionDetail()
         {
-            ActionDTO action = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex];
+            if (Data.CURRENT_RIG != null)
+            {
 
-            action.Dimensions = txtActionDimensions.Text;
-            action.LiftingGears = txtActionLiftingGears.Text;
-            action.Name = new TextRange(txtAction.Document.ContentStart, txtAction.Document.ContentEnd).Text;
-            action.Description = new TextRange(txtActionDetails.Document.ContentStart, txtActionDetails.Document.ContentEnd).Text;
-            action.Risks = txtActionRisks.Text;
-            action.IsAnalysis = chkRiskAnalysis.IsChecked.Value;
+                if (currentModuleIndex < 0 || currentStepIndex < 0 || currentActionIndex < 0)
+                {
 
-            SaveAnalysisDetail();
+                }
+
+                ActionDTO action = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex];
+
+
+                action.Dimensions = txtActionDimensions.Text;
+                action.LiftingGears = txtActionLiftingGears.Text;
+                action.Name = new TextRange(txtAction.Document.ContentStart, txtAction.Document.ContentEnd).Text;
+                action.Description = new TextRange(txtActionDetails.Document.ContentStart, txtActionDetails.Document.ContentEnd).Text;
+                action.Risks = txtActionRisks.Text;
+                action.IsAnalysis = chkRiskAnalysis.IsChecked.Value;
+
+                SaveAnalysisDetail();
+            }
         }
 
         private void SaveAnalysisDetail()
@@ -462,16 +441,16 @@ namespace FacilityDocLaptop
 
                 analysis.Activity = txtAnalysisActivity.Text;
                 txtAnalysisActivity.Text = analysis.Activity;
-                analysis.B = Convert.ToDouble(txtAnalysisB.Text);
-                analysis.B = Convert.ToDouble(txtAnalysisB_.Text);
+                analysis.B = string.IsNullOrEmpty(txtAnalysisB.Text) ? 0.0 : Convert.ToDouble(txtAnalysisB.Text);
+                analysis.B_ = string.IsNullOrEmpty(txtAnalysisB_.Text) ? 0.0 : Convert.ToDouble(txtAnalysisB_.Text);
                 analysis.Controls = txtAnalysisControl.Text;
                 analysis.Activity = txtAnalysisDanger.Text;
-                analysis.E = Convert.ToDouble(txtAnalysisE.Text);
-                analysis.E_ = Convert.ToDouble(txtAnalysisE_.Text);
-                analysis.K = Convert.ToDouble(txtAnalysisK.Text);
-                analysis.K_ = Convert.ToDouble(txtAnalysisK_.Text);
-                analysis.Risk = Convert.ToDouble(txtAnalysisRisk.Text);
-                analysis.Risk_ = Convert.ToDouble(txtAnalysisRisk_.Text);
+                analysis.E = string.IsNullOrEmpty(txtAnalysisE.Text) ? 0.0 : Convert.ToDouble(txtAnalysisE.Text);
+                analysis.E_ = string.IsNullOrEmpty(txtAnalysisE_.Text) ? 0.0 : Convert.ToDouble(txtAnalysisE_.Text);
+                analysis.K = string.IsNullOrEmpty(txtAnalysisK.Text) ? 0.0 : Convert.ToDouble(txtAnalysisK.Text);
+                analysis.K_ = string.IsNullOrEmpty(txtAnalysisK_.Text) ? 0.0 : Convert.ToDouble(txtAnalysisK_.Text);
+                analysis.Risk = string.IsNullOrEmpty(txtAnalysisRisk.Text) ? 0.0 : Convert.ToDouble(txtAnalysisRisk.Text);
+                analysis.Risk_ = string.IsNullOrEmpty(txtAnalysisRisk_.Text) ? 0.0 : Convert.ToDouble(txtAnalysisRisk_.Text);
             }
         }
 
@@ -694,6 +673,8 @@ namespace FacilityDocLaptop
 
         private void btnToolAdd_Click_1(object sender, RoutedEventArgs e)
         {
+            SaveActionDetail();
+
             Helper.GetTools();
 
             var notToolIds = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools.Select(n => n.ToolID);
@@ -725,6 +706,8 @@ namespace FacilityDocLaptop
 
         private void btnRemove_Click_1(object sender, RoutedEventArgs e)
         {
+            SaveActionDetail();
+
             string toolToRemoveID = (sender as Button).CommandParameter.ToString();
 
             IList<ToolDTO> tools = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools.ToList();
@@ -740,6 +723,7 @@ namespace FacilityDocLaptop
 
         private void btnRemoveImage_Click_1(object sender, RoutedEventArgs e)
         {
+            SaveActionDetail();
             string imageToRemoveID = (sender as Button).CommandParameter.ToString();
 
             ImageDTO removeImage = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].
@@ -752,6 +736,8 @@ namespace FacilityDocLaptop
 
         private void btnAddImages_Click_1(object sender, RoutedEventArgs e)
         {
+            SaveActionDetail();
+
             IList<ImageModel> addImages = new List<ImageModel>();
 
             Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Images.Where(i => i.Used == false)
@@ -790,6 +776,13 @@ namespace FacilityDocLaptop
 
         private void btnActionDelete_Click_1(object sender, RoutedEventArgs e)
         {
+            MessageBoxResult messageBoxResult = MessageBox.Show("Do you want to really want to remove action?",
+    "Action Confirmation", MessageBoxButton.YesNo);
+            if (messageBoxResult != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
             if (currentActionIndex >= 0)
             {
                 IList<ActionDTO> actions = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.ToList();
@@ -800,7 +793,11 @@ namespace FacilityDocLaptop
 
                     Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions = actions.ToArray();
 
-                    currentActionIndex--;
+                    if (currentActionIndex > 0)
+                    {
+                        currentActionIndex--;
+                    }
+
                     currentAnalysisIndex = 0;
                     ChangeScreenControls();
                 }
@@ -813,6 +810,8 @@ namespace FacilityDocLaptop
 
         private void btnAnalysisAdd_Click_1(object sender, RoutedEventArgs e)
         {
+            SaveActionDetail();
+
             RiskAnalysisDTO RiskAnalysis = new RiskAnalysisDTO()
             {
                 RiskAnalysisID = DateTime.Now.ToString("yyyyMMddHHmmssfff"),
@@ -834,6 +833,15 @@ namespace FacilityDocLaptop
 
         private void btnAnalysisDelete_Click_1(object sender, RoutedEventArgs e)
         {
+            MessageBoxResult messageBoxResult = MessageBox.Show("Do you want to really want to remove risk analysis activity?",
+                "Risk Analysis Activity Confirmation", MessageBoxButton.YesNo);
+            if (messageBoxResult != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            SaveActionDetail();
+
             if (IsAnalysisIndexCorrect())
             {
                 IList<RiskAnalysisDTO> RiskAnalysiss = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex]
@@ -845,7 +853,11 @@ namespace FacilityDocLaptop
                 Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex]
                     .Actions[currentActionIndex].RiskAnalysis = RiskAnalysiss.ToArray();
 
-                currentAnalysisIndex--;
+                if (currentAnalysisIndex > 0)
+                {
+                    currentAnalysisIndex--;
+                }
+
                 ChangeScreenControls();
             }
         }
@@ -976,6 +988,8 @@ namespace FacilityDocLaptop
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
+            SaveActionDetail();
+
             string selectedRigTypeID = Convert.ToString((sender as MenuItem).CommandParameter);
 
             RigTypeDTO selectedRig = Data.CURRENT_PROJECT.RigTypes.SingleOrDefault(r => r.RigTypeID.Equals(selectedRigTypeID));
@@ -993,12 +1007,19 @@ namespace FacilityDocLaptop
 
         private void mniLogout_Click_1(object sender, RoutedEventArgs e)
         {
+            SaveActionDetail();
             MakeVisible(gridLogin);
         }
 
         private void mniExit_Click_1(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            SaveActionDetail();
+
+            MessageBoxResult messageBoxResult = MessageBox.Show("Do you want to really want to exit?", "Exit Confirmation", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                this.Close();
+            }
         }
 
         private void txtModule_MouseDown_1(object sender, MouseButtonEventArgs e)
@@ -1008,25 +1029,35 @@ namespace FacilityDocLaptop
 
         private void lstChapters_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
-            currentModuleIndex = (sender as ListBox).SelectedIndex;
-            currentStepIndex = 0;
-            currentActionIndex = 0;
-            currentAnalysisIndex = 0;
+            if (e.AddedItems.Count > 0)
+            {
+                SaveActionDetail();
 
-            popChapters.IsOpen = false;
+                currentModuleIndex = (sender as ListBox).SelectedIndex;
+                currentStepIndex = 0;
+                currentActionIndex = 0;
+                currentAnalysisIndex = 0;
 
-            ChangeScreenControls();
+                popChapters.IsOpen = false;
+
+                ChangeScreenControls();
+            }
         }
 
         private void lstSteps_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
-            currentStepIndex = (sender as ListBox).SelectedIndex;
-            currentActionIndex = 0;
-            currentAnalysisIndex = 0;
+            if (e.AddedItems.Count > 0)
+            {
+                SaveActionDetail();
 
-            popSteps.IsOpen = false;
+                currentStepIndex = (sender as ListBox).SelectedIndex;
+                currentActionIndex = 0;
+                currentAnalysisIndex = 0;
 
-            ChangeScreenControls();
+                popSteps.IsOpen = false;
+
+                ChangeScreenControls();
+            }
         }
 
         private void txtStepName_MouseDown_1(object sender, MouseButtonEventArgs e)
@@ -1097,7 +1128,39 @@ namespace FacilityDocLaptop
             dialog.Title = "Please select an image file to encrypt.";
             if (dialog.ShowDialog() == true)
             {
-                
+
+            }
+        }
+
+        private void txtAnalysisRisk_TextChanged(object sender, TextChangedEventArgs ee)
+        {
+            int k, b, e;
+
+            if (int.TryParse(txtAnalysisK.Text, out k))
+            {
+                if (int.TryParse(txtAnalysisB.Text, out b))
+                {
+                    if (int.TryParse(txtAnalysisE.Text, out e))
+                    {
+                        txtAnalysisRisk.Text = (k * b * e).ToString();
+                    }
+                }
+            }
+        }
+
+        private void txtAnalysisRiskU_TextChanged(object sender, TextChangedEventArgs ee)
+        {
+            int k, b, e;
+
+            if (int.TryParse(txtAnalysisK_.Text, out k))
+            {
+                if (int.TryParse(txtAnalysisB_.Text, out b))
+                {
+                    if (int.TryParse(txtAnalysisE_.Text, out e))
+                    {
+                        txtAnalysisRisk_.Text = (k * b * e).ToString();
+                    }
+                }
             }
         }
     }

@@ -589,7 +589,6 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <CheckBox Name="chk"/>
                                         <TextBox Name="txtCount" Margin="0,-2,0,0" Text="{Binding ResourceCount}"></TextBox>
                                         <TextBlock Text="{Binding Name}"/>
                                     </StackPanel>
@@ -600,7 +599,6 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <CheckBox Name="chk"/>
                                         <TextBox Name="txtCount" Margin="0,-2,0,0" Text="{Binding ResourceCount}"></TextBox>
                                         <TextBlock Text="{Binding Name}"/>
                                     </StackPanel>
@@ -666,31 +664,31 @@
                     <TextBox Grid.Row="5" Grid.Column="3" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" x:Name="txtAnalysisDanger"  TextWrapping="Wrap" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
 
                     <TextBlock Grid.Row="3" Grid.Column="5"  Text="K"  FontSize="20" HorizontalAlignment="Center" Foreground="White"/>
-                    <TextBox Grid.Row="5" Grid.Column="5" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisK"   SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" PreviewTextInput="txtK_PreviewTextInput" />
+                    <TextBox TextChanged="txtAnalysisRisk_TextChanged" Grid.Row="5" Grid.Column="5" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisK"   SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" PreviewTextInput="txtK_PreviewTextInput" />
 
                     <TextBlock Grid.Row="3" Grid.Column="7"  Text="B"  FontSize="20" HorizontalAlignment="Center" Foreground="White"/>
-                    <TextBox Grid.Row="5" Grid.Column="7" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisB"    SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox TextChanged="txtAnalysisRisk_TextChanged" Grid.Row="5" Grid.Column="7" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisB"    SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
 
                     <TextBlock Grid.Row="3" Grid.Column="9"  Text="E"  FontSize="20" HorizontalAlignment="Center" Foreground="White"/>
-                    <TextBox Grid.Row="5" Grid.Column="9" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisE"    SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox TextChanged="txtAnalysisRisk_TextChanged" Grid.Row="5" Grid.Column="9" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisE"    SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
 
                     <TextBlock Grid.Row="3" Grid.Column="11" TextWrapping="Wrap"  Text="Risk"  FontSize="20" Foreground="White"/>
-                    <TextBox Grid.Row="5" Grid.Column="11" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisRisk"    SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox Grid.Row="5" IsReadOnly="True" Grid.Column="11" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisRisk"    SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
 
                     <TextBlock Grid.Row="3" Grid.Column="13" TextWrapping="Wrap" Text="Control Measure"   FontSize="20" Foreground="White" />
                     <TextBox Grid.Row="5" Grid.Column="13" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisControl"   SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
 
                     <TextBlock Grid.Row="3" Grid.Column="15" HorizontalAlignment="Center" TextWrapping="Wrap" Text="K_"  FontSize="20" Foreground="White"/>
-                    <TextBox Grid.Row="5" Grid.Column="15" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisK_"   SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox TextChanged="txtAnalysisRiskU_TextChanged" Grid.Row="5" Grid.Column="15" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisK_"   SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
 
                     <TextBlock Grid.Row="3" Grid.Column="17" HorizontalAlignment="Center" TextWrapping="Wrap" Text="B_"  FontSize="20"  Foreground="White"/>
-                    <TextBox Grid.Row="5" Grid.Column="17" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisB_"    SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox TextChanged="txtAnalysisRiskU_TextChanged" Grid.Row="5" Grid.Column="17" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisB_"    SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
 
                     <TextBlock Grid.Row="3" Grid.Column="19"  HorizontalAlignment="Center" TextWrapping="Wrap" Text="E_"  FontSize="20"  Foreground="White"/>
-                    <TextBox Grid.Row="5" Grid.Column="19" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}"  Name="txtAnalysisE_"   SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox TextChanged="txtAnalysisRiskU_TextChanged" Grid.Row="5" Grid.Column="19" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}"  Name="txtAnalysisE_"   SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
 
                     <TextBlock Grid.Row="3" Grid.Column="21" TextWrapping="Wrap" Text="Risk_"  FontSize="20" Foreground="White"/>
-                    <TextBox Grid.Row="5" Grid.Column="21" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisRisk_"  SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox IsReadOnly="True" Grid.Row="5" Grid.Column="21" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisRisk_"  SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
 
                 </Grid>
 

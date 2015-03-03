@@ -28,12 +28,12 @@ namespace FacilityDocLaptop
         {
             InitializeComponent();
 
+            txtExportPath.Text = Data.EXPORT_PDF_PATH;
+
             cmbTemplates.Items.Add("Landscape Full Page");
             cmbTemplates.Items.Add("Landscape List Mode");
             cmbTemplates.Items.Add("A4");
             cmbTemplates.SelectedIndex = 0;
-
-            txtExportPath.Text =  Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
             cmbContent.Items.Add("Pdf");
             cmbContent.Items.Add("Doc");
@@ -110,7 +110,7 @@ namespace FacilityDocLaptop
             folder.RootFolder = Environment.SpecialFolder.Desktop;
             if(folder.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                txtExportPath.Text = folder.SelectedPath;
+                txtExportPath.Text = Data.EXPORT_PDF_PATH = folder.SelectedPath;
             }
 
         }

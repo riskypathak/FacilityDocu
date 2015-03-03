@@ -246,6 +246,7 @@ namespace FacilityDocu.Services.EntityDTOConverter
                     imageDTO.Path = projctImage.Image.ImagePath;
                     imageDTO.CreationDate = projctImage.Image.CreationDate.GetValueOrDefault();
                     imageDTO.Tags = projctImage.Image.Tags.Split(';');
+                    imageDTO.Used = projctImage.IsUsed.HasValue ? projctImage.IsUsed.Value : false;
 
                     imageDTO.Comments = TOCommentDTO(projctImage.Image.ImageComments);
 

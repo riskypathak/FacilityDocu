@@ -19,7 +19,7 @@ namespace FacilityDocu.Test.Console
             //TestProjectSync();
 
             //TestActionImageUpload();
-            //TestGeneratePdf();
+            TestGeneratePdf();
         }
 
         private static void TestProjectSync()
@@ -48,8 +48,12 @@ namespace FacilityDocu.Test.Console
 
         private static void TestGeneratePdf()
         {
-            string xmlPath = Path.GetFullPath(string.Format("Data/ProjectXml/{0}.xml",1));
-            Helper.GeneratePdf(ProjectXmlReader.ReadProjectXml(xmlPath, false), "a4", null, string.Empty, "");
+            string xmlPath = Path.GetFullPath(string.Format("Data/ProjectXml/{0}.xml", "20150227131059550"));
+
+            IList<string> exportPage = new List<string>();
+            exportPage.Add("UP_");
+
+            Helper.GeneratePdf(ProjectXmlReader.ReadProjectXml(xmlPath, false), "a4", exportPage, string.Empty, "");
         }
     }
 }

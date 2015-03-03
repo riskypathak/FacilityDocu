@@ -24,6 +24,8 @@ public partial class ProjectActionImage
 
     public Nullable<int> ImageID { get; set; }
 
+    public Nullable<bool> IsUsed { get; set; }
+
 
 
     public virtual Image Image { get; set; }

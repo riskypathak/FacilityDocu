@@ -1,6 +1,7 @@
 ﻿using FacilityDocu.UI.Utilities.Services;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace FacilityDocu.UI.Utilities
                 webClient.DownloadString("http://www.google.com");
                 isInternetAvailable = true;
             }
-            catch(WebException exception)
+            catch (WebException exception)
             {
 
             }
@@ -101,22 +102,45 @@ namespace FacilityDocu.UI.Utilities
         {
             IList<string> outputs = new List<string>();
 
-            foreach (RigTypeDTO rigType in project.RigTypes)
+            if (layoutview == "a4")
             {
-                if (exportPage.Contains(string.Concat(rigType.Name,"_")))
+                foreach (RigTypeDTO rigType in project.RigTypes)
                 {
-                    string pdfPath = System.IO.Path.Combine(textPath, string.Format("{0}_{1}.pdf", project.Description, rigType.Name));
-                    outputs.Add(pdfPath);
+                    if (exportPage.Contains(string.Concat(rigType.Name, "_")))
+                    {
+                        string pdfPath = System.IO.Path.Combine(textPath, string.Format("{0}_{1}.pdf", project.Description, rigType.Name));
+                        outputs.Add(pdfPath);
 
-                    GenerateRigPDF(project, rigType, pdfPath, layoutview);
+                        bool printRiskAnalysis = false;
+
+                        if (exportPage.Contains(string.Concat(rigType.Name, "RiskAnalysis")))
+                        {
+                            printRiskAnalysis = true;
+                        }
+                        GenerateA4Pdf(rigType, pdfPath, printRiskAnalysis);
+                    }
                 }
-
-                if (exportPage.Contains(string.Concat(rigType.Name, "RiskAnalysis")))
+            }
+            else
+            {
+                foreach (RigTypeDTO rigType in project.RigTypes)
                 {
-                    string pdfPath = System.IO.Path.Combine(textPath, string.Format("{0}_{1}_RiskAnalysis.pdf", project.Description, rigType.Name));
-                    outputs.Add(pdfPath);
+                    if (exportPage.Contains(string.Concat(rigType.Name, "_")))
+                    {
+                        string pdfPath = System.IO.Path.Combine(textPath, string.Format("{0}_{1}.pdf", project.Description, rigType.Name));
+                        outputs.Add(pdfPath);
 
-                    GenerateRigRiskAnalysisPDF(project, rigType, pdfPath, layoutview);
+
+                        GenerateRigNonA4PDF(project, rigType, pdfPath, layoutview);
+                    }
+
+                    if (exportPage.Contains(string.Concat(rigType.Name, "RiskAnalysis")))
+                    {
+                        string pdfPath = System.IO.Path.Combine(textPath, string.Format("{0}_{1}_RiskAnalysis.pdf", project.Description, rigType.Name));
+                        outputs.Add(pdfPath);
+
+                        GenerateRigRiskAnalysisPDF(project, rigType, pdfPath, layoutview);
+                    }
                 }
             }
 
@@ -136,10 +160,6 @@ namespace FacilityDocu.UI.Utilities
             else if (layoutview == "listview")
             {
                 doc = new Document(new RectangleReadOnly(842, 595), 88f, 88f, 10f, 10f);
-            }
-            else
-            {
-                doc = new Document(new RectangleReadOnly(595, 842), 10f, 10f, 10f, 10f);
             }
 
             PdfWriter writer = PdfWriter.GetInstance(doc, fs);
@@ -211,7 +231,7 @@ namespace FacilityDocu.UI.Utilities
             doc.Close();
         }
 
-        private static void GenerateRigPDF(ProjectDTO project, RigTypeDTO rigType, string pdfPath, string layoutview)
+        private static void GenerateRigNonA4PDF(ProjectDTO project, RigTypeDTO rigType, string pdfPath, string layoutview)
         {
             FileStream fs = new FileStream(pdfPath, FileMode.Create, FileAccess.Write);
 
@@ -225,10 +245,7 @@ namespace FacilityDocu.UI.Utilities
             {
                 doc = new Document(new RectangleReadOnly(842, 595), 88f, 88f, 10f, 10f);
             }
-            else
-            {
-                doc = new Document(new RectangleReadOnly(595, 842), 88f, 88f, 10f, 10f);
-            }
+
             PdfWriter writer = PdfWriter.GetInstance(doc, fs);
 
 
@@ -359,18 +376,182 @@ namespace FacilityDocu.UI.Utilities
             doc.Close();
         }
 
+        private static void GenerateA4Pdf(RigTypeDTO rigType, string pdfPath, bool printRiskAnalysis)
+        {
+            string finalHtml = "<html><head></head><body style=\"font-family:Verdana;font-size:small\">";
+
+            string htmlLayout = File.ReadAllText("Assets\\pdfa4.html");
+
+            int moduleNo = 1;
+
+            foreach (ModuleDTO module in rigType.Modules)
+            {
+                int stepNo = 1;
+                foreach (StepDTO step in module.Steps)
+                {
+                    int actionNo = 1;
+                    string newActionHtml = string.Empty;
+                    foreach (ActionDTO action in step.Actions)
+                    {
+                        newActionHtml = htmlLayout.Replace("<!--=%MODULESTEPNAME%-->", string.Format("{2}: {0}-{1}", module.Name, step.Name, string.Format("{0}.{1}", moduleNo.ToString("00"), stepNo.ToString("00"))));
+                        newActionHtml = newActionHtml.Replace("<!--=%ACTIONAME%-->", action.Name);
+                        newActionHtml = newActionHtml.Replace("<!--=%ACTIONDETAILS%-->", action.Description);
+
+                        string resourcesPeopleHtml = string.Empty;
+
+                        foreach (ResourceDTO res in action.Resources.Where(r => Convert.ToInt32(r.ResourceCount) > 0 && r.Type == "people"))
+                        {
+                            resourcesPeopleHtml += string.Format("<tr><td>{0}</td><td>{1}</td></tr>", res.Name, res.ResourceCount);
+                        }
+
+                        newActionHtml = newActionHtml.Replace("<!--=%RESOURCESPEOPLE%-->", resourcesPeopleHtml);
+
+                        string resourcesMachineHtml = string.Empty;
+
+                        foreach (ResourceDTO res in action.Resources.Where(r => Convert.ToInt32(r.ResourceCount) > 0 && r.Type == "machine"))
+                        {
+                            resourcesMachineHtml += string.Format("<tr><td>{0}</td><td>{1}</td></tr>", res.Name, res.ResourceCount);
+                        }
+                        newActionHtml = newActionHtml.Replace("<!--=%RESOURCESMACHINES%-->", resourcesMachineHtml);
+
+
+                        newActionHtml = newActionHtml.Replace("<!--=%ACTIONDIMENSIONS%-->", string.Join("<br/>", action.Dimensions.ToArray()));
+
+                        newActionHtml = newActionHtml.Replace("<!--=%LIFTINGGEARS%-->", string.Join("<br/>", string.Join("<br/>", action.LiftingGears.Split('\n'))));
+
+
+                        string toolHtml = string.Empty;
+
+                        foreach (ToolDTO tool in action.Tools)
+                        {
+                            toolHtml += string.Format("<li>{0}</li>", tool.Name);
+
+                        }
+                        newActionHtml = newActionHtml.Replace("<!--=%ACTIONTOOLS%-->", toolHtml);
+
+
+                        if (action.Images.Length > 0)
+                        {
+                            string imageHtml = "<table>";
+                            for (int i = 0; i < action.Images.Length; i++)
+                            {
+                                imageHtml += string.Format("<tr><td><img width=\"100\" height=\"100\" src=\"{0}\" /></td>", action.Images[i].Path);
+
+                                i = i + 1;
+
+                                if (i != action.Images.Length)
+                                {
+                                    imageHtml += string.Format("<td><img width=\"100\" height=\"100\" src=\"{0}\" /></td>", action.Images[i].Path);
+                                }
+
+                                imageHtml += "</tr>";
+                            }
+
+                            imageHtml += "</table>";
+
+                            newActionHtml = newActionHtml.Replace("<!--=%ACTIONIMAGES%-->", imageHtml);
+                        }
+
+                        if (printRiskAnalysis && action.IsAnalysis)
+                        {
+                            string analysisHtml = string.Empty;
+
+                            foreach (RiskAnalysisDTO an in action.RiskAnalysis)
+                            {
+                                analysisHtml += string.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td><td>{7}</td><td>{8}</td><td>{9}</td><td>{10}</td></tr>-->",
+                                    an.Activity, an.Danger, an.K, an.B, an.E, an.Risk, an.Controls, an.K_, an.B_, an.E_, an.Risk_);
+
+                            }
+
+                            newActionHtml = newActionHtml.Replace("<!--=%ACTIONRISKANALYSIS%-->", analysisHtml);
+                        }
+
+                        actionNo++;
+                    }
+
+                    finalHtml += newActionHtml;
+
+                    stepNo++;
+                }
+
+                moduleNo++;
+            }
+
+            finalHtml += "</body></html>";
+
+            File.WriteAllText("export.html", finalHtml);
+
+            SaveAsWord("export.html", pdfPath);
+
+            Byte[] bytes;
+
+            using (var ms = new MemoryStream())
+            {
+
+                //Create an iTextSharp Document which is an abstraction of a PDF but **NOT** a PDF
+                using (var doc = new Document(new RectangleReadOnly(842, 595), 8f, 8f, 1f, 1f))
+                {
+
+                    //Create a writer that's bound to our PDF abstraction and our stream
+                    using (var writer = PdfWriter.GetInstance(doc, ms))
+                    {
+
+                        //Open the document for writing
+                        doc.Open();
+
+                        using (var srHtml = new StringReader(finalHtml))
+                        {
+
+                            //Parse the HTML
+                            iTextSharp.tool.xml.XMLWorkerHelper.GetInstance().ParseXHtml(writer, doc, srHtml);
+                        }
+
+                        doc.Close();
+                    }
+
+                    bytes = ms.ToArray();
+                }
+            }
+
+            System.IO.File.WriteAllBytes(pdfPath, bytes);
+        }
+
+        private static void SaveAsWord(string htmlFile, string pdfFile)
+        {
+            Microsoft.Office.Interop.Word.Application word = new Microsoft.Office.Interop.Word.Application();
+            Microsoft.Office.Interop.Word.Document wordDoc = new Microsoft.Office.Interop.Word.Document();
+            Object oMissing = System.Reflection.Missing.Value;
+            wordDoc = word.Documents.Add(ref oMissing, ref oMissing, ref oMissing, ref oMissing);
+            word.Visible = false;
+            Object filepath = Path.GetFullPath(htmlFile);
+            Object confirmconversion = System.Reflection.Missing.Value;
+            Object readOnly = false;
+            Object saveto = Path.Combine(Path.GetDirectoryName(pdfFile), Path.GetFileNameWithoutExtension(pdfFile) + ".docx");
+            Object oallowsubstitution = System.Reflection.Missing.Value;
+
+            wordDoc = word.Documents.Open(ref filepath, ref confirmconversion, ref readOnly, ref oMissing,
+                                          ref oMissing, ref oMissing, ref oMissing, ref oMissing,
+                                          ref oMissing, ref oMissing, ref oMissing, ref oMissing,
+                                          ref oMissing, ref oMissing, ref oMissing, ref oMissing);
+            object fileFormat = Microsoft.Office.Interop.Word.WdSaveFormat.wdFormatXMLDocument;
+            wordDoc.SaveAs(ref saveto, ref fileFormat, ref oMissing, ref oMissing, ref oMissing,
+                           ref oMissing, ref oMissing, ref oMissing, ref oMissing, ref oMissing,
+                           ref oMissing, ref oMissing, ref oMissing, ref oallowsubstitution, ref oMissing,
+                           ref oMissing);
+        }
+
         public partial class Footer : PdfPageEventHelper
         {
             PdfContentByte cb;
             PdfTemplate template;
 
-            public override void OnOpenDocument(PdfWriter writer, Document document)
+            public override void OnOpenDocument(PdfWriter writer, iTextSharp.text.Document document)
             {
                 cb = writer.DirectContent;
                 template = cb.CreateTemplate(50, 50);
             }
 
-            public override void OnEndPage(PdfWriter writer, Document doc)
+            public override void OnEndPage(PdfWriter writer, iTextSharp.text.Document doc)
             {
                 BaseColor grey = new BaseColor(128, 128, 128);
                 iTextSharp.text.Font font = FontFactory.GetFont("Arial", 9, iTextSharp.text.Font.NORMAL, grey);
@@ -387,7 +568,7 @@ namespace FacilityDocu.UI.Utilities
                 footerTbl.WriteSelectedRows(0, -1, 0, (doc.BottomMargin + 80), writer.DirectContent);
             }
 
-            public override void OnCloseDocument(PdfWriter writer, Document document)
+            public override void OnCloseDocument(PdfWriter writer, iTextSharp.text.Document document)
             {
                 base.OnCloseDocument(writer, document);
             }
