@@ -306,9 +306,12 @@ namespace FacilityDocu.Services
             }
         }
 
-        public void UpdateActionImages(ActionDTO action)
+        public Dictionary<string, int> UpdateActionImages(ActionDTO action)
         {
             int actionID = Convert.ToInt32(action.ActionID);
+
+            Dictionary<string, int> dic = new Dictionary<string, int>();
+            
 
             int tempId = 0;
             using (TabletApp_DatabaseEntities context = new TabletApp_DatabaseEntities())
@@ -349,6 +352,9 @@ namespace FacilityDocu.Services
                         context.SaveChanges();
                         projectImage.Image.ImagePath = SaveImageToFile(projectImage.Image.ImageID, imageDTO);
                         context.SaveChanges();
+
+                        dic.Add(imageDTO.ImageID, projectImage.Image.ImageID);
+
                     }
                     else
                     {
@@ -379,9 +385,12 @@ namespace FacilityDocu.Services
                         img.ImagePath = SaveImageToFile(img.ImageID, imageDTO);
 
                         context.SaveChanges();
+
+                        dic.Add(imageDTO.ImageID, imageID);
                     }
                 }
             }
+            return dic;
         }
 
         private string GetImageActualPath(string imagePath)

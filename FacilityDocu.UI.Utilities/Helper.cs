@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.ServiceModel;
 using System.Xml.Linq;
 
@@ -108,7 +109,18 @@ namespace FacilityDocu.UI.Utilities
                 {
                     if (exportPage.Contains(string.Concat(rigType.Name, "_")))
                     {
-                        string pdfPath = System.IO.Path.Combine(textPath, string.Format("{0}_{1}.pdf", project.Description, rigType.Name));
+                        string pdfPath = string.Empty;
+
+                        if (type == "Pdf")
+                        {
+                            pdfPath = System.IO.Path.Combine(textPath, string.Format("{0}_{1}.pdf", project.Description, rigType.Name));
+                        }
+                        else if (type == "Doc")
+                        {
+                            pdfPath = System.IO.Path.Combine(textPath, string.Format("{0}_{1}.docx", project.Description, rigType.Name));
+                        }
+
+                        
                         outputs.Add(pdfPath);
 
                         bool printRiskAnalysis = false;
@@ -117,7 +129,7 @@ namespace FacilityDocu.UI.Utilities
                         {
                             printRiskAnalysis = true;
                         }
-                        GenerateA4Pdf(rigType, pdfPath, printRiskAnalysis);
+                        GenerateA4Pdf(rigType, pdfPath, printRiskAnalysis, type);
                     }
                 }
             }
@@ -376,7 +388,7 @@ namespace FacilityDocu.UI.Utilities
             doc.Close();
         }
 
-        private static void GenerateA4Pdf(RigTypeDTO rigType, string pdfPath, bool printRiskAnalysis)
+        private static void GenerateA4Pdf(RigTypeDTO rigType, string outputFilePath, bool printRiskAnalysis, string type)
         {
             string finalHtml = "<html><head></head><body style=\"font-family:Verdana;font-size:small\">";
 
@@ -458,7 +470,7 @@ namespace FacilityDocu.UI.Utilities
 
                             foreach (RiskAnalysisDTO an in action.RiskAnalysis)
                             {
-                                analysisHtml += string.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td><td>{7}</td><td>{8}</td><td>{9}</td><td>{10}</td></tr>-->",
+                                analysisHtml += string.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td><td>{7}</td><td>{8}</td><td>{9}</td><td>{10}</td></tr>",
                                     an.Activity, an.Danger, an.K, an.B, an.E, an.Risk, an.Controls, an.K_, an.B_, an.E_, an.Risk_);
 
                             }
@@ -467,9 +479,11 @@ namespace FacilityDocu.UI.Utilities
                         }
 
                         actionNo++;
+
+                        finalHtml += newActionHtml;
                     }
 
-                    finalHtml += newActionHtml;
+                    
 
                     stepNo++;
                 }
@@ -481,63 +495,86 @@ namespace FacilityDocu.UI.Utilities
 
             File.WriteAllText("export.html", finalHtml);
 
-            SaveAsWord("export.html", pdfPath);
+            SaveAsWordOrPdf("export.html", outputFilePath, type);
 
-            Byte[] bytes;
+            //Byte[] bytes;
 
-            using (var ms = new MemoryStream())
-            {
+            //using (var ms = new MemoryStream())
+            //{
 
-                //Create an iTextSharp Document which is an abstraction of a PDF but **NOT** a PDF
-                using (var doc = new Document(new RectangleReadOnly(842, 595), 8f, 8f, 1f, 1f))
-                {
+            //    //Create an iTextSharp Document which is an abstraction of a PDF but **NOT** a PDF
+            //    using (var doc = new Document(new RectangleReadOnly(842, 595), 8f, 8f, 1f, 1f))
+            //    {
 
-                    //Create a writer that's bound to our PDF abstraction and our stream
-                    using (var writer = PdfWriter.GetInstance(doc, ms))
-                    {
+            //        //Create a writer that's bound to our PDF abstraction and our stream
+            //        using (var writer = PdfWriter.GetInstance(doc, ms))
+            //        {
 
-                        //Open the document for writing
-                        doc.Open();
+            //            //Open the document for writing
+            //            doc.Open();
 
-                        using (var srHtml = new StringReader(finalHtml))
-                        {
+            //            using (var srHtml = new StringReader(finalHtml))
+            //            {
 
-                            //Parse the HTML
-                            iTextSharp.tool.xml.XMLWorkerHelper.GetInstance().ParseXHtml(writer, doc, srHtml);
-                        }
+            //                //Parse the HTML
+            //                iTextSharp.tool.xml.XMLWorkerHelper.GetInstance().ParseXHtml(writer, doc, srHtml);
+            //            }
 
-                        doc.Close();
-                    }
+            //            doc.Close();
+            //        }
 
-                    bytes = ms.ToArray();
-                }
-            }
+            //        bytes = ms.ToArray();
+            //    }
+            //}
 
-            System.IO.File.WriteAllBytes(pdfPath, bytes);
+            //System.IO.File.WriteAllBytes(pdfPath, bytes);
         }
 
-        private static void SaveAsWord(string htmlFile, string pdfFile)
+        private static void SaveAsWordOrPdf(string htmlFile, string outputFilePath, string type)
         {
             Microsoft.Office.Interop.Word.Application word = new Microsoft.Office.Interop.Word.Application();
             Microsoft.Office.Interop.Word.Document wordDoc = new Microsoft.Office.Interop.Word.Document();
-            Object oMissing = System.Reflection.Missing.Value;
-            wordDoc = word.Documents.Add(ref oMissing, ref oMissing, ref oMissing, ref oMissing);
-            word.Visible = false;
-            Object filepath = Path.GetFullPath(htmlFile);
-            Object confirmconversion = System.Reflection.Missing.Value;
-            Object readOnly = false;
-            Object saveto = Path.Combine(Path.GetDirectoryName(pdfFile), Path.GetFileNameWithoutExtension(pdfFile) + ".docx");
-            Object oallowsubstitution = System.Reflection.Missing.Value;
 
-            wordDoc = word.Documents.Open(ref filepath, ref confirmconversion, ref readOnly, ref oMissing,
-                                          ref oMissing, ref oMissing, ref oMissing, ref oMissing,
-                                          ref oMissing, ref oMissing, ref oMissing, ref oMissing,
-                                          ref oMissing, ref oMissing, ref oMissing, ref oMissing);
-            object fileFormat = Microsoft.Office.Interop.Word.WdSaveFormat.wdFormatXMLDocument;
-            wordDoc.SaveAs(ref saveto, ref fileFormat, ref oMissing, ref oMissing, ref oMissing,
-                           ref oMissing, ref oMissing, ref oMissing, ref oMissing, ref oMissing,
-                           ref oMissing, ref oMissing, ref oMissing, ref oallowsubstitution, ref oMissing,
-                           ref oMissing);
+            try
+            {
+                Object oMissing = System.Reflection.Missing.Value;
+                wordDoc = word.Documents.Add(ref oMissing, ref oMissing, ref oMissing, ref oMissing);
+                word.Visible = false;
+                Object filepath = Path.GetFullPath(htmlFile);
+                Object confirmconversion = System.Reflection.Missing.Value;
+                Object readOnly = false;
+                Object saveto = Path.Combine(Path.GetDirectoryName(outputFilePath), outputFilePath);
+                Object oallowsubstitution = System.Reflection.Missing.Value;
+
+                wordDoc = word.Documents.Open(ref filepath, ref confirmconversion, ref readOnly, ref oMissing,
+                                              ref oMissing, ref oMissing, ref oMissing, ref oMissing,
+                                              ref oMissing, ref oMissing, ref oMissing, ref oMissing,
+                                              ref oMissing, ref oMissing, ref oMissing, ref oMissing);
+                object fileFormat = type == "Pdf" ? Microsoft.Office.Interop.Word.WdSaveFormat.wdFormatPDF : Microsoft.Office.Interop.Word.WdSaveFormat.wdFormatXMLDocument;
+                wordDoc.SaveAs(ref saveto, ref fileFormat, ref oMissing, ref oMissing, ref oMissing,
+                               ref oMissing, ref oMissing, ref oMissing, ref oMissing, ref oMissing,
+                               ref oMissing, ref oMissing, ref oMissing, ref oallowsubstitution, ref oMissing,
+                               ref oMissing);
+            }
+
+            finally
+            {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+
+                wordDoc.Close(Type.Missing, Type.Missing, Type.Missing);
+                Marshal.FinalReleaseComObject(wordDoc);
+
+
+                word.Quit();
+                Marshal.FinalReleaseComObject(word);
+
+                if(File.Exists(Path.GetFullPath("Export.html")))
+                {
+                    File.Delete(Path.GetFullPath("Export.html"));
+                }
+            }
+
         }
 
         public partial class Footer : PdfPageEventHelper

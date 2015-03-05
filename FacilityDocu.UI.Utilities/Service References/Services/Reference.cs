@@ -1670,10 +1670,10 @@ namespace FacilityDocu.UI.Utilities.Services {
         System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ProjectDTO> UpdateProjectAsync(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateActionImages", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateActionImagesResponse")]
-        void UpdateActionImages(FacilityDocu.UI.Utilities.Services.ActionDTO action);
+        System.Collections.Generic.Dictionary<string, int> UpdateActionImages(FacilityDocu.UI.Utilities.Services.ActionDTO action);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateActionImages", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateActionImagesResponse")]
-        System.Threading.Tasks.Task UpdateActionImagesAsync(FacilityDocu.UI.Utilities.Services.ActionDTO action);
+        System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<string, int>> UpdateActionImagesAsync(FacilityDocu.UI.Utilities.Services.ActionDTO action);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateActionAttachments", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateActionAttachmentsResponse")]
         void UpdateActionAttachments(FacilityDocu.UI.Utilities.Services.ActionDTO action);
@@ -1753,11 +1753,11 @@ namespace FacilityDocu.UI.Utilities.Services {
             return base.Channel.UpdateProjectAsync(projectDTO);
         }
         
-        public void UpdateActionImages(FacilityDocu.UI.Utilities.Services.ActionDTO action) {
-            base.Channel.UpdateActionImages(action);
+        public System.Collections.Generic.Dictionary<string, int> UpdateActionImages(FacilityDocu.UI.Utilities.Services.ActionDTO action) {
+            return base.Channel.UpdateActionImages(action);
         }
         
-        public System.Threading.Tasks.Task UpdateActionImagesAsync(FacilityDocu.UI.Utilities.Services.ActionDTO action) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<string, int>> UpdateActionImagesAsync(FacilityDocu.UI.Utilities.Services.ActionDTO action) {
             return base.Channel.UpdateActionImagesAsync(action);
         }
         

@@ -386,13 +386,21 @@ namespace FacilityDocLaptop
             foreach (ImageDTO image in images.Where(i => i.Used == true))
             {
                 BitmapImage bitmap = new BitmapImage();
-                System.Windows.Controls.Image imagename = new System.Windows.Controls.Image();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(image.Path);
-                imagename.Source = bitmap;
-                bitmap.EndInit();
 
-                Images.Add(new ImageModel() { ImageID = image.ImageID, Image = imagename, Description = image.Description });
+                try
+                {
+                    System.Windows.Controls.Image imagename = new System.Windows.Controls.Image();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(image.Path);
+                    imagename.Source = bitmap;
+                    bitmap.EndInit();
+
+                    Images.Add(new ImageModel() { ImageID = image.ImageID, Image = imagename, Description = image.Description });
+                }
+                catch(Exception ex)
+                {
+
+                }
             }
             lstPictures.ItemsSource = Images;
         }

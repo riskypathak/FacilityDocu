@@ -26,7 +26,7 @@ namespace FacilityDocu.Services
         ProjectDTO UpdateProject(ProjectDTO projectDTO);
 
         [OperationContract]
-        void UpdateActionImages(ActionDTO action);
+        Dictionary<string, int> UpdateActionImages(ActionDTO action);
 
         [OperationContract]
         void UpdateActionAttachments(ActionDTO action);
