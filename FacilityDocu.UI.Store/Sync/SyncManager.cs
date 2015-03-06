@@ -139,7 +139,21 @@ namespace Tablet_App
                     }
                     try
                     {
-                        await service.UpdateActionImagesAsync(action);
+                        Dictionary<string,int>  dic = await service.UpdateActionImagesAsync(action);
+
+                        foreach(KeyValuePair<string, int> kv in dic)
+                        {
+                            ImageDTO img = action.Images.SingleOrDefault(i => i.ImageID == kv.Key);
+
+                            if(img!= null)
+                            {
+                                StorageFile file = await StorageFile.GetFileFromPathAsync(img.Path);
+
+                                img.ImageID = kv.Value.ToString();
+                                await file.RenameAsync(img.ImageID + ".jpg");
+                                
+                            }
+                        }
                     }
                     catch (FaultException exception)
                     {

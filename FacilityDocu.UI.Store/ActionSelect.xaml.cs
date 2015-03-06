@@ -52,7 +52,7 @@ namespace Tablet_App
         private async void cmbProjects_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Data.selectedIndexProject = (sender as ComboBox).SelectedIndex;
-            Data.CURRENT_PROJECT = ProjectXmlReader.ReadProjectXml(Path.Combine(Data.ProjectXmlPath, string.Format("{0}.xml", (e.AddedItems[0] as ProjectDTO).ProjectID)), false);
+            Data.CURRENT_PROJECT = ProjectXmlReader.ReadProjectXml(Path.Combine(Data.ProjectXmlPath, string.Format("{0}.xml", (cmbProjects.SelectedItem as ProjectDTO).ProjectID)), false);
             cmbRigTypes.ItemsSource = Data.CURRENT_PROJECT.RigTypes;
 
             if (cmbRigTypes.Items.Count > Data.selectedIndexRigType)
@@ -64,8 +64,8 @@ namespace Tablet_App
         private void Rigtypetext_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Data.selectedIndexRigType = (sender as ComboBox).SelectedIndex;
-            cmbModules.ItemsSource = (e.AddedItems[0] as RigTypeDTO).Modules;
-            Data.CURRENT_RIG = (e.AddedItems[0] as RigTypeDTO);
+            cmbModules.ItemsSource = (cmbRigTypes.SelectedItem as RigTypeDTO).Modules;
+            Data.CURRENT_RIG = (cmbRigTypes.SelectedItem as RigTypeDTO);
 
             if (Data.menuClick != null && Data.menuClick.GetType() == typeof(Camera_Page))
             {
@@ -79,8 +79,8 @@ namespace Tablet_App
         private void cmbModules_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Data.selectedIndexModule = (sender as ComboBox).SelectedIndex;
-            cmbSteps.ItemsSource = (e.AddedItems[0] as ModuleDTO).Steps;
-            Data.CURRENT_MODULE = (e.AddedItems[0] as ModuleDTO);
+            cmbSteps.ItemsSource = (cmbModules.SelectedItem as ModuleDTO).Steps;
+            Data.CURRENT_MODULE = (cmbModules.SelectedItem as ModuleDTO);
 
             if (Data.menuClick != null && Data.menuClick.GetType() == typeof(Camera_Page))
             {
@@ -94,8 +94,8 @@ namespace Tablet_App
         private void cmbSteps_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Data.selectedIndexStep = (sender as ComboBox).SelectedIndex;
-            cmbActions.ItemsSource = (e.AddedItems[0] as StepDTO).Actions;
-            Data.CURRENT_STEP = (e.AddedItems[0] as StepDTO);
+            cmbActions.ItemsSource = (cmbSteps.SelectedItem as StepDTO).Actions;
+            Data.CURRENT_STEP = (cmbSteps.SelectedItem as StepDTO);
 
             if (Data.menuClick != null && Data.menuClick.GetType() == typeof(Camera_Page))
             {
@@ -109,7 +109,7 @@ namespace Tablet_App
         private void cmbActions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Data.selectedIndexAction = (sender as ComboBox).SelectedIndex;
-            Data.CURRENT_ACTION = (e.AddedItems[0] as ActionDTO);
+            Data.CURRENT_ACTION = (cmbActions.SelectedItem as ActionDTO);
         }
 
         private void Button_Click(object sender, TappedRoutedEventArgs e)

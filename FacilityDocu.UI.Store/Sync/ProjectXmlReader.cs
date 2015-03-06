@@ -12,9 +12,9 @@ namespace Tablet_App
     {
         public static ProjectDTO ReadProjectXml(string xmlPath, bool onlyProjectAttributes)
         {
-            XDocument xdoc = XDocument.Load(xmlPath);
-
             ProjectDTO project = new ProjectDTO();
+
+            XDocument xdoc = XDocument.Load(xmlPath);
 
             XElement xProject = xdoc.Elements("project").Single();
 
@@ -98,7 +98,7 @@ namespace Tablet_App
             foreach (XElement xStep in xModule.Element("steps").Elements("step"))
             {
                 StepDTO step = new StepDTO();
-                step.StepID = Convert.ToInt32(xStep.Element("id").Value);
+                step.StepID = Convert.ToString(xStep.Element("id").Value);
                 step.Name = Convert.ToString(xStep.Element("name").Value);
                 step.Number = Convert.ToString(xStep.Element("number").Value);
 

@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://tlof.no-ip.biz:9876/FacilityDocu/FacilityDocuService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://localhost:51256/FacilityDocuService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:complexType name="ProjectDTO">
     <xs:sequence>
+      <xs:element minOccurs="0" name="Client" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Closed" type="xs:boolean" />
       <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="tns:UserDTO" />
       <xs:element minOccurs="0" name="CreationDate" type="xs:dateTime" />
       <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="LastUpdatedAt" type="xs:dateTime" />
       <xs:element minOccurs="0" name="LastUpdatedBy" nillable="true" type="tns:UserDTO" />
+      <xs:element minOccurs="0" name="Location" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Persons" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ProjectID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProjectNumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="RigTypes" nillable="true" type="tns:ArrayOfRigTypeDTO" />
       <xs:element minOccurs="0" name="Template" type="xs:boolean" />
     </xs:sequence>
@@ -64,7 +68,7 @@
       <xs:element minOccurs="0" name="Actions" nillable="true" type="tns:ArrayOfActionDTO" />
       <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Number" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="StepID" type="xs:int" />
+      <xs:element minOccurs="0" name="StepID" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="StepDTO" nillable="true" type="tns:StepDTO" />
@@ -83,6 +87,7 @@
       <xs:element minOccurs="0" name="Images" nillable="true" type="tns:ArrayOfImageDTO" />
       <xs:element minOccurs="0" name="ImportantDescription" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ImportantName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IsAnalysis" type="xs:boolean" />
       <xs:element minOccurs="0" name="IsDescriptionwarning" type="xs:boolean" />
       <xs:element minOccurs="0" name="IsNameWarning" type="xs:boolean" />
       <xs:element minOccurs="0" name="LiftingGears" nillable="true" type="xs:string" />

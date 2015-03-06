@@ -128,9 +128,10 @@ namespace Tablet_App
                     xImage.Add(new XElement("tags", string.Join(";", image.Tags.ToArray())));
 
                     string savedPath = Path.Combine(Data.ImagesPath, string.Format("{0}.jpg", image.ImageID.ToString()));
+
                     if(Data.PUBLISH_PROCESS)
                     {
-                        savedPath = string.Empty;
+                        //savedPath = string.Empty;
                     }
                     
                     xImage.Add(new XElement("path", savedPath));

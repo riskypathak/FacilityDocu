@@ -80,7 +80,7 @@
         	AutomationProperties.AutomationId="BackButton"
         	AutomationProperties.ItemType="Navigation Button" Tapped="backButton_Tapped" Foreground="#FF0E0B0B" Background="#FF62627C" BorderBrush="#FF0B0B0C" Grid.Row="1"/>
 
-        <ComboBox Width="500" Height="50" FontSize="25" x:Name="cmbRigTypes" HorizontalAlignment="Left" Margin="359,239,0,0" VerticalAlignment="Top" SelectionChanged="Rigtypetext_SelectionChanged" Grid.Column="1" Grid.Row="1" PlaceholderText="Choose an item">
+        <ComboBox  Width="500" Height="50" FontSize="25" x:Name="cmbRigTypes" HorizontalAlignment="Left" Margin="359,239,0,0" VerticalAlignment="Top" SelectionChanged="Rigtypetext_SelectionChanged" Grid.Column="1" Grid.Row="1" PlaceholderText="Choose an item">
             <ComboBox.Transitions>
                 <TransitionCollection>
                     <EntranceThemeTransition FromHorizontalOffset="600"/>

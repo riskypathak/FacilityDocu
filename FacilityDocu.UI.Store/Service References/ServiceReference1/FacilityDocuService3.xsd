@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://tlof.no-ip.biz:9876/FacilityDocu/FacilityDocuService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-  <xs:import schemaLocation="http://tlof.no-ip.biz:9876/FacilityDocu/FacilityDocuService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" />
+  <xs:import schemaLocation="http://localhost:51256/FacilityDocuService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://localhost:51256/FacilityDocuService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" />
   <xs:element name="Login">
     <xs:complexType>
       <xs:sequence>
@@ -69,13 +69,15 @@
   </xs:element>
   <xs:element name="UpdateActionImagesResponse">
     <xs:complexType>
-      <xs:sequence />
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="UpdateActionImagesResult" nillable="true" type="q7:ArrayOfKeyValueOfstringint" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="UpdateActionAttachments">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="action" nillable="true" type="q7:ActionDTO" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="action" nillable="true" type="q8:ActionDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -92,8 +94,20 @@
   <xs:element name="GetToolsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="GetToolsResult" nillable="true" type="q8:ArrayOfToolDTO" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="GetToolsResult" nillable="true" type="q9:ArrayOfToolDTO" />
       </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateTemplate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="projectDTO" nillable="true" type="q10:ProjectDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateTemplateResponse">
+    <xs:complexType>
+      <xs:sequence />
     </xs:complexType>
   </xs:element>
 </xs:schema>
