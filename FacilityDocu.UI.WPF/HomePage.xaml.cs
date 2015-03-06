@@ -486,7 +486,7 @@ namespace FacilityDocLaptop
                 {
                     Name = "New Action",
                     Description = "New Action's Description",
-                    Dimensions = "New Action's Dimesnions",
+                    Dimensions = "New Action's Dimensions",
                     LiftingGears = "New Action's Lifting Gears",
                     Risks = "New Action's Risks",
                     Number = (Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Length + 1).ToString("00"),
@@ -499,11 +499,14 @@ namespace FacilityDocLaptop
 
 
             IList<ActionDTO> actions = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.ToList();
-            actions.Add(action);
+            //actions.Add(action);
+
+            actions.Insert(currentActionIndex+1, action);
 
             Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions = actions.ToArray();
 
-            currentActionIndex = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Count() - 1;
+            currentActionIndex = currentActionIndex + 1;
+            //currentActionIndex = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Count() - 1;
 
             currentAnalysisIndex = 0;
             ChangeScreenControls();

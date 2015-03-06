@@ -120,7 +120,7 @@ namespace FacilityDocu.UI.Utilities
                             pdfPath = System.IO.Path.Combine(textPath, string.Format("{0}_{1}.docx", project.Description, rigType.Name));
                         }
 
-                        
+
                         outputs.Add(pdfPath);
 
                         bool printRiskAnalysis = false;
@@ -483,7 +483,7 @@ namespace FacilityDocu.UI.Utilities
                         finalHtml += newActionHtml;
                     }
 
-                    
+
 
                     stepNo++;
                 }
@@ -495,39 +495,45 @@ namespace FacilityDocu.UI.Utilities
 
             File.WriteAllText("export.html", finalHtml);
 
-            SaveAsWordOrPdf("export.html", outputFilePath, type);
+            if (type != "Pdf")
+            {
+                SaveAsWordOrPdf("export.html", outputFilePath, type);
+            }
+            else
+            {
 
-            //Byte[] bytes;
+                Byte[] bytes;
 
-            //using (var ms = new MemoryStream())
-            //{
+                using (var ms = new MemoryStream())
+                {
 
-            //    //Create an iTextSharp Document which is an abstraction of a PDF but **NOT** a PDF
-            //    using (var doc = new Document(new RectangleReadOnly(842, 595), 8f, 8f, 1f, 1f))
-            //    {
+                    //Create an iTextSharp Document which is an abstraction of a PDF but **NOT** a PDF
+                    using (var doc = new Document(new RectangleReadOnly(842, 595), 8f, 8f, 1f, 1f))
+                    {
 
-            //        //Create a writer that's bound to our PDF abstraction and our stream
-            //        using (var writer = PdfWriter.GetInstance(doc, ms))
-            //        {
+                        //Create a writer that's bound to our PDF abstraction and our stream
+                        using (var writer = PdfWriter.GetInstance(doc, ms))
+                        {
 
-            //            //Open the document for writing
-            //            doc.Open();
+                            //Open the document for writing
+                            doc.Open();
 
-            //            using (var srHtml = new StringReader(finalHtml))
-            //            {
+                            using (var srHtml = new StringReader(finalHtml))
+                            {
 
-            //                //Parse the HTML
-            //                iTextSharp.tool.xml.XMLWorkerHelper.GetInstance().ParseXHtml(writer, doc, srHtml);
-            //            }
+                                //Parse the HTML
+                                iTextSharp.tool.xml.XMLWorkerHelper.GetInstance().ParseXHtml(writer, doc, srHtml);
+                            }
 
-            //            doc.Close();
-            //        }
+                            doc.Close();
+                        }
 
-            //        bytes = ms.ToArray();
-            //    }
-            //}
+                        bytes = ms.ToArray();
+                    }
+                }
 
-            //System.IO.File.WriteAllBytes(pdfPath, bytes);
+                System.IO.File.WriteAllBytes(outputFilePath, bytes);
+            }
         }
 
         private static void SaveAsWordOrPdf(string htmlFile, string outputFilePath, string type)
@@ -569,7 +575,7 @@ namespace FacilityDocu.UI.Utilities
                 word.Quit();
                 Marshal.FinalReleaseComObject(word);
 
-                if(File.Exists(Path.GetFullPath("Export.html")))
+                if (File.Exists(Path.GetFullPath("Export.html")))
                 {
                     File.Delete(Path.GetFullPath("Export.html"));
                 }
