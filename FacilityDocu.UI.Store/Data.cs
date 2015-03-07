@@ -19,11 +19,12 @@ namespace Tablet_App
         public static bool SYNC_PROCESS;
         public static bool PUBLISH_PROCESS;
 
-        public static int selectedIndexProject = -1;
-        public static int selectedIndexRigType = -1;
-        public static int selectedIndexModule = -1;
-        public static int selectedIndexStep = -1;
-        public static int selectedIndexAction = -1;
+        public static string ACTION_SELECT_PROJECT_ID;
+        public static string ACTION_SELECT_RIGTYPE_ID;
+        public static string ACTION_SELECT_MODULE_ID;
+        public static string ACTION_SELECT_STEP_ID;
+        public static string ACTION_SELECT_ACTION_ID;
+ 
 
         public async static Task<string> GetUserName()
         {

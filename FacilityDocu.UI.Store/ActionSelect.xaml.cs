@@ -7,6 +7,7 @@ using Windows.Storage.Search;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using System.Linq;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 namespace Tablet_App
 {
@@ -20,6 +21,13 @@ namespace Tablet_App
             Data.CURRENT_PROJECT = null;
             Data.CURRENT_RIG = null;
             Data.CURRENT_STEP = null;
+
+            cmbProjects.Items.Clear();
+            cmbRigTypes.Items.Clear();
+            cmbModules.Items.Clear();
+            cmbSteps.Items.Clear();
+            cmbActions.Items.Clear();
+
         }
 
         public async void LoadAllProjects()
@@ -38,10 +46,20 @@ namespace Tablet_App
             }
             cmbProjects.ItemsSource = projects;
 
-            if (cmbProjects.Items.Count > Data.selectedIndexProject)
+            if(!string.IsNullOrEmpty(Data.ACTION_SELECT_PROJECT_ID))
             {
-                cmbProjects.SelectedIndex = Data.selectedIndexProject;
+                cmbProjects.SelectedItem = projects.SingleOrDefault(P => P.ProjectID == Data.ACTION_SELECT_PROJECT_ID);
             }
+            else
+            {
+                cmbProjects.SelectedIndex = -1;
+            }
+
+            //if (Data.CURRENT_PROJECT != null && cmbProjects.Items.Contains(Data.CURRENT_PROJECT))
+            //{
+            //    cmbProjects.SelectedItem = Data.CURRENT_PROJECT;
+            //}
+       
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
@@ -51,65 +69,113 @@ namespace Tablet_App
 
         private async void cmbProjects_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Data.selectedIndexProject = (sender as ComboBox).SelectedIndex;
-            Data.CURRENT_PROJECT = ProjectXmlReader.ReadProjectXml(Path.Combine(Data.ProjectXmlPath, string.Format("{0}.xml", (cmbProjects.SelectedItem as ProjectDTO).ProjectID)), false);
-            cmbRigTypes.ItemsSource = Data.CURRENT_PROJECT.RigTypes;
-
-            if (cmbRigTypes.Items.Count > Data.selectedIndexRigType)
+            if (cmbProjects.SelectedIndex != -1)
             {
-                cmbRigTypes.SelectedIndex = Data.selectedIndexRigType;
+                Data.ACTION_SELECT_PROJECT_ID = (cmbProjects.SelectedItem as ProjectDTO).ProjectID;
+                Data.CURRENT_PROJECT = ProjectXmlReader.ReadProjectXml(Path.Combine(Data.ProjectXmlPath, string.Format("{0}.xml", (cmbProjects.SelectedItem as ProjectDTO).ProjectID)), false);
+                cmbRigTypes.ItemsSource = Data.CURRENT_PROJECT.RigTypes;
+
+                if (!string.IsNullOrEmpty(Data.ACTION_SELECT_RIGTYPE_ID))
+                {
+                    cmbRigTypes.SelectedItem = Data.CURRENT_PROJECT.RigTypes.SingleOrDefault(r=>r.Name == Data.ACTION_SELECT_RIGTYPE_ID);
+                }
+                else
+                {
+                    cmbRigTypes.SelectedIndex = -1;
+                }
+            }
+            else
+            {
+                cmbRigTypes.SelectedIndex = -1;
             }
         }
 
         private void Rigtypetext_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Data.selectedIndexRigType = (sender as ComboBox).SelectedIndex;
-            cmbModules.ItemsSource = (cmbRigTypes.SelectedItem as RigTypeDTO).Modules;
-            Data.CURRENT_RIG = (cmbRigTypes.SelectedItem as RigTypeDTO);
-
-            if (Data.menuClick != null && Data.menuClick.GetType() == typeof(Camera_Page))
+            if (cmbRigTypes.SelectedIndex != -1)
             {
-                if (cmbModules.Items.Count > Data.selectedIndexModule)
+                Data.ACTION_SELECT_RIGTYPE_ID = (cmbRigTypes.SelectedItem as RigTypeDTO).Name;
+                cmbModules.ItemsSource = (cmbRigTypes.SelectedItem as RigTypeDTO).Modules;
+
+                Data.CURRENT_RIG = (cmbRigTypes.SelectedItem as RigTypeDTO);
+
+                if (Data.menuClick != null && Data.menuClick.GetType() == typeof(Camera_Page))
                 {
-                    cmbModules.SelectedIndex = Data.selectedIndexModule;
+                    if (!string.IsNullOrEmpty(Data.ACTION_SELECT_MODULE_ID))
+                    {
+                        cmbModules.SelectedItem = Data.CURRENT_RIG.Modules.SingleOrDefault(r => r.ModuleID == Data.ACTION_SELECT_MODULE_ID);
+                    }
+                    else
+                    {
+                        cmbModules.SelectedIndex = -1;
+                    }
                 }
+            }
+            else
+            {
+                cmbModules.SelectedIndex = -1;
             }
         }
 
         private void cmbModules_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Data.selectedIndexModule = (sender as ComboBox).SelectedIndex;
-            cmbSteps.ItemsSource = (cmbModules.SelectedItem as ModuleDTO).Steps;
-            Data.CURRENT_MODULE = (cmbModules.SelectedItem as ModuleDTO);
-
-            if (Data.menuClick != null && Data.menuClick.GetType() == typeof(Camera_Page))
+            if (cmbModules.SelectedIndex != -1)
             {
-                if (cmbSteps.Items.Count > Data.selectedIndexStep)
+                Data.ACTION_SELECT_MODULE_ID = (cmbModules.SelectedItem as ModuleDTO).ModuleID;
+                cmbSteps.ItemsSource = (cmbModules.SelectedItem as ModuleDTO).Steps;
+                Data.CURRENT_MODULE = (cmbModules.SelectedItem as ModuleDTO);
+
+                if (Data.menuClick != null && Data.menuClick.GetType() == typeof(Camera_Page))
                 {
-                    cmbSteps.SelectedIndex = Data.selectedIndexStep;
+                    if (!string.IsNullOrEmpty(Data.ACTION_SELECT_STEP_ID))
+                    {
+                        cmbSteps.SelectedItem = Data.CURRENT_MODULE.Steps.SingleOrDefault(r => r.StepID == Data.ACTION_SELECT_STEP_ID);
+                    }
+                    else
+                    {
+                        cmbSteps.SelectedIndex = -1;
+                    }
                 }
+            }
+            else
+            {
+                cmbSteps.SelectedIndex = -1;
             }
         }
 
         private void cmbSteps_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Data.selectedIndexStep = (sender as ComboBox).SelectedIndex;
-            cmbActions.ItemsSource = (cmbSteps.SelectedItem as StepDTO).Actions;
-            Data.CURRENT_STEP = (cmbSteps.SelectedItem as StepDTO);
-
-            if (Data.menuClick != null && Data.menuClick.GetType() == typeof(Camera_Page))
+            if (cmbSteps.SelectedIndex != -1)
             {
-                if (cmbActions.Items.Count > Data.selectedIndexAction)
+                Data.ACTION_SELECT_STEP_ID = (cmbSteps.SelectedItem as StepDTO).StepID;
+                cmbActions.ItemsSource = (cmbSteps.SelectedItem as StepDTO).Actions;
+                Data.CURRENT_STEP = (cmbSteps.SelectedItem as StepDTO);
+
+                if (Data.menuClick != null && Data.menuClick.GetType() == typeof(Camera_Page))
                 {
-                    cmbActions.SelectedIndex = Data.selectedIndexAction;
+                    if (!string.IsNullOrEmpty(Data.ACTION_SELECT_ACTION_ID))
+                    {
+                        cmbActions.SelectedItem = Data.CURRENT_STEP.Actions.SingleOrDefault(r => r.ActionID == Data.ACTION_SELECT_ACTION_ID);
+                    }
+                    else
+                    {
+                        cmbActions.SelectedIndex = -1;
+                    }
                 }
+            }
+            else
+            {
+                cmbActions.SelectedIndex = -1;
             }
         }
 
         private void cmbActions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Data.selectedIndexAction = (sender as ComboBox).SelectedIndex;
-            Data.CURRENT_ACTION = (cmbActions.SelectedItem as ActionDTO);
+            if (cmbActions.SelectedIndex != -1)
+            {
+                Data.ACTION_SELECT_ACTION_ID = (cmbActions.SelectedItem as ActionDTO).ActionID;
+                Data.CURRENT_ACTION = (cmbActions.SelectedItem as ActionDTO);
+            }
         }
 
         private void Button_Click(object sender, TappedRoutedEventArgs e)
