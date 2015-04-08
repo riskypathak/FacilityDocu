@@ -412,7 +412,7 @@
                     </RichTextBox>
 
                     <TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="5" Grid.Row="1" Text="Lifting Gears" FontSize="20"/>
-                    <TextBox Grid.Column="5" Grid.Row="3" x:Name="txtActionLiftingGears"/>
+                    <TextBox AcceptsReturn="True" Grid.Column="5" Grid.Row="3" x:Name="txtActionLiftingGears"/>
 
                     <Grid Grid.Column="7" Grid.Row="1">
                         <Grid.ColumnDefinitions>
@@ -462,10 +462,10 @@
                     </ListBox>
 
                     <TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="9" Grid.Row="1" Text="Dimensions" FontSize="20"/>
-                    <TextBox Grid.Column="9" Grid.Row="3"  x:Name="txtActionDimensions"/>
+                    <TextBox AcceptsReturn="True" Grid.Column="9" Grid.Row="3"  x:Name="txtActionDimensions"/>
 
                     <TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="11" Grid.Row="1" HorizontalAlignment="Left" Text="Risks" FontSize="20"/>
-                    <TextBox Grid.Column="11" Grid.Row="3"  x:Name="txtActionRisks" />
+                    <TextBox AcceptsReturn="True" Grid.Column="11" Grid.Row="3"  x:Name="txtActionRisks" />
 
                     <TextBlock Margin="23,19,179,-10" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Width="184" Background="#FF1D2040" Grid.Column="9" Grid.Row="5"  Text="Resources" FontSize="20" Foreground="White" Grid.RowSpan="2"/>
 

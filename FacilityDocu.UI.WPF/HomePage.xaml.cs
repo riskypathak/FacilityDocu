@@ -227,6 +227,9 @@ namespace FacilityDocLaptop
                 string projectPath = System.IO.Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", (e.AddedItems[0] as ProjectDTO).ProjectID));
                 Data.CURRENT_PROJECT = ProjectXmlReader.ReadProjectXml(projectPath, false);
 
+                //Fixed as part of bug where its loading data from other project
+                Data.CURRENT_RIG = null;
+
                 ChangeScreenControls();
 
                 MakeVisible(gridEdit);
