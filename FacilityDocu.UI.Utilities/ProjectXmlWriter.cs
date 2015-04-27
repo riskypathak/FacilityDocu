@@ -26,8 +26,6 @@ namespace FacilityDocu.UI.Utilities
             xProject.Add(new XElement("location", project.Location));
             xProject.Add(new XElement("projectnumber", project.ProjectNumber));
             xProject.Add(new XElement("persons", project.Persons));
-            xProject.Add(new XElement("updatedtime", project.LastUpdatedAt));
-            xProject.Add(new XElement("updatedby", project.LastUpdatedBy.UserName));
 
             WriteRig(project.RigTypes.ToList(), xProject);
 

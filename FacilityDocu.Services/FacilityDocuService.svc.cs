@@ -10,7 +10,7 @@ namespace FacilityDocu.Services
 {
     public class FacilityDocuService : IFacilityDocuService
     {
-        public Dictionary<int, string> IsSync(Dictionary<int, DateTime> inputProjects, bool fromTablet)
+        public Dictionary<int, string> IsSync(List<int> inputProjects, bool fromTablet)
         {
             Dictionary<int, string> projectStatusData = new Dictionary<int, string>();
 
@@ -23,7 +23,7 @@ namespace FacilityDocu.Services
                         continue;
                     }
 
-                    var inputProject = inputProjects.Where(i => i.Key == project.ProjectID);
+                    var inputProject = inputProjects.Where(i => i == project.ProjectID);
 
                     if (inputProject.Count() <= 0)
                     {
@@ -35,15 +35,7 @@ namespace FacilityDocu.Services
                     }
                     else
                     {
-                        DateTime inputDate = inputProject.First().Value;
-                        if (inputProject != null && DateTime.Compare(project.LastUpdatedAt.GetValueOrDefault(), inputDate) > 0)
-                        {
-                            projectStatusData.Add(project.ProjectID, "updated");
-                        }
-                        else
-                        {
-                            projectStatusData.Add(project.ProjectID, "notupdated");
-                        }
+                        projectStatusData.Add(project.ProjectID, "updated");
                     }
                 }
             }
@@ -92,7 +84,6 @@ namespace FacilityDocu.Services
                 {
                     Project project = DTOConverter.ToProject(projectDTO);
                     project.User = context.Users.Single(u => u.UserName.Equals(projectDTO.CreatedBy.UserName));
-                    project.User1 = context.Users.Single(u => u.UserName.Equals(projectDTO.LastUpdatedBy.UserName));
 
                     context.Projects.Add(project);
                     context.SaveChanges();
@@ -109,7 +100,6 @@ namespace FacilityDocu.Services
                     Project existingProject = context.Projects.SingleOrDefault(p => p.ProjectID.Equals(projectID));
 
                     existingProject.Close = project.Close;
-                    existingProject.LastUpdatedAt = project.LastUpdatedAt;
 
                     UpdateProjectDetail(project, existingProject);
 
@@ -311,7 +301,7 @@ namespace FacilityDocu.Services
             int actionID = Convert.ToInt32(action.ActionID);
 
             Dictionary<string, int> dic = new Dictionary<string, int>();
-            
+
 
             int tempId = 0;
             using (TabletApp_DatabaseEntities context = new TabletApp_DatabaseEntities())
@@ -499,7 +489,6 @@ namespace FacilityDocu.Services
             {
                 Project project = DTOConverter.ToProject(projectDTO, false);
                 project.User = context.Users.Single(u => u.UserName.Equals(projectDTO.CreatedBy.UserName));
-                project.User1 = context.Users.Single(u => u.UserName.Equals(projectDTO.LastUpdatedBy.UserName));
 
                 context.Projects.Add(project);
 
@@ -541,5 +530,75 @@ namespace FacilityDocu.Services
                 context.SaveChanges();
             }
         }
+
+        public Dictionary<int, Dictionary<int, string>> SyncRequiredForUpdatedProjects(Dictionary<int, List<ActionDTO>> projectActionDTOs)
+        {
+            Dictionary<int, Dictionary<int, string>> listActions = new Dictionary<int, Dictionary<int, string>>();
+
+            using (var context = new TabletApp_DatabaseEntities())
+            {
+                foreach (int projectId in projectActionDTOs.Keys)
+                {
+                    List<string> serverActionIds = context.ProjectDetails.Where(p => p.ProjectID == projectId).Select(p => p.ProjectDetailID.ToString()).ToList();
+                    List<string> clientActionIds = projectActionDTOs[projectId].Select(p => p.ActionID).ToList();
+
+                    Dictionary<int, string> actionDictionary = new Dictionary<int, string>();
+
+                    //It means action is on server but not on client so we need to add it on client
+                    serverActionIds.Except<string>(clientActionIds).ToList().ForEach(a => actionDictionary.Add(int.Parse(a), "new"));
+
+                    //It means action is on client but not on server so we need to delete it from client
+                    clientActionIds.Except<string>(serverActionIds).ToList().ForEach(a => actionDictionary.Add(int.Parse(a), "delete"));
+
+                    List<int> commonActionIds = serverActionIds.Intersect<string>(clientActionIds).Select(a => int.Parse(a)).ToList();
+
+                    foreach (int actionId in commonActionIds)
+                    {
+                        ProjectDetail serverAction = context.ProjectDetails.Single(p => p.ProjectID == projectId && p.ProjectDetailID == actionId);
+                        ActionDTO clientAction = projectActionDTOs[projectId].Single(a => a.ActionID == actionId.ToString());
+
+                        if (serverAction.PublishedDate == clientAction.PublishedAt) //thern no change
+                        {
+                            actionDictionary.Add(serverAction.ProjectDetailID, "nochange");
+                        }
+                        else if (serverAction.PublishedDate > clientAction.PublishedAt) //change
+                        {
+                            if (clientAction.LastUpdatedAt == clientAction.PublishedAt)// noc hange at client
+                            {
+                                actionDictionary.Add(serverAction.ProjectDetailID, "update");
+                            }
+                            else
+                            {
+                                actionDictionary.Add(serverAction.ProjectDetailID, "conflict");
+                            }
+                        }
+                        else
+                        {
+
+                        }
+
+                    }
+
+                    listActions.Add(projectId, actionDictionary);
+                }
+            }
+
+            return listActions;
+        }
+
+        public List<ActionDTO> GetProjectActions(int projectID, List<int> actionIds)
+        {
+            using (var _db = new TabletApp_DatabaseEntities())
+            {
+                EntityConverter.AllResources = EntityConverter.ToResourceDTO(_db.Resources);
+
+                IList<ActionDTO> actionDTOs = EntityConverter.ToActionDTO(_db.ProjectDetails.Where(d => d.ProjectID == projectID));
+
+                return actionDTOs.ToList();
+            }
+
+            return null;
+        }
+
     }
 }

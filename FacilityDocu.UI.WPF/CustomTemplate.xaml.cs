@@ -75,8 +75,6 @@ namespace FacilityDocLaptop
             template.CreatedBy = new UserDTO() { UserName = Data.CURRENT_USER };
             template.CreationDate = DateTime.Now.ToUniversalTime();
             template.Description = txtName.Text;
-            template.LastUpdatedAt = DateTime.Now.ToUniversalTime();
-            template.LastUpdatedBy = new UserDTO() { UserName = Data.CURRENT_USER };
             template.Template = true;
 
             for (int i = 0; i < template.RigTypes.Length; i++)

@@ -32,29 +32,23 @@ public partial class Project
 
     public Nullable<System.DateTime> CreationDate { get; set; }
 
-    public Nullable<System.DateTime> LastUpdatedAt { get; set; }
-
     public bool Template { get; set; }
 
     public Nullable<bool> Close { get; set; }
 
     public string CreatedBy { get; set; }
 
-    public string UpdatedBy { get; set; }
-
     public string Client { get; set; }
 
-    public string ProjectNumber { get; set; }
+    public string Location { get; set; }
 
     public string Persons { get; set; }
 
-    public string Location { get; set; }
+    public string ProjectNumber { get; set; }
 
 
 
     public virtual User User { get; set; }
-
-    public virtual User User1 { get; set; }
 
     public virtual ICollection<ProjectDetail> ProjectDetails { get; set; }
 

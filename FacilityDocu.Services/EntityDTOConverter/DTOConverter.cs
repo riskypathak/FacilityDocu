@@ -25,7 +25,6 @@ namespace FacilityDocu.Services.EntityDTOConverter
             }
 
             project.CreationDate = projectDTO.CreationDate;
-            project.LastUpdatedAt = projectDTO.LastUpdatedAt;
 
             project.Template = projectDTO.Template;
             project.Close = projectDTO.Closed;

@@ -60,5 +60,17 @@ namespace FacilityDocu.DTO
 
         [DataMember]
         public IList<RiskAnalysisDTO> RiskAnalysis { get; set; }
+
+        [DataMember]
+        public DateTime LastUpdatedAt { get; set; }
+
+        [DataMember]
+        public UserDTO LastUpdatedBy { get; set; }
+
+        [DataMember]
+        public DateTime PublishedAt { get; set; }
+
+        [DataMember]
+        public UserDTO PublishedBy { get; set; }
     }
 }

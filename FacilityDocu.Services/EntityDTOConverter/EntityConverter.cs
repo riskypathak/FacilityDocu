@@ -27,18 +27,8 @@ namespace FacilityDocu.Services.EntityDTOConverter
 
             projectDTO.ProjectID = project.ProjectID.ToString();
             projectDTO.CreationDate = project.CreationDate.Value;
-            projectDTO.LastUpdatedAt = project.LastUpdatedAt.Value;
 
             projectDTO.CreatedBy = ToUserDTO(project.User);
-
-            if (project.User1 == null)
-            {
-                projectDTO.LastUpdatedBy = new UserDTO() { UserName = project.UpdatedBy };
-            }
-            else
-            {
-                projectDTO.LastUpdatedBy = ToUserDTO(project.User1);
-            }
 
             projectDTO.RigTypes = ToRigTypesDTO(project.ProjectDetails);
             return projectDTO;
@@ -96,7 +86,7 @@ namespace FacilityDocu.Services.EntityDTOConverter
             return stepsDTO;
         }
 
-        private static IList<ActionDTO> ToActionDTO(IEnumerable<ProjectDetail> projectDetails)
+        public static IList<ActionDTO> ToActionDTO(IEnumerable<ProjectDetail> projectDetails)
         {
             IList<ActionDTO> actionsDTO = new List<ActionDTO>();
 

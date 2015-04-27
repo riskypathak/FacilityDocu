@@ -23,7 +23,7 @@ public partial class User
 
         this.Projects = new HashSet<Project>();
 
-        this.Projects1 = new HashSet<Project>();
+        this.ProjectDetails = new HashSet<ProjectDetail>();
 
     }
 
@@ -38,7 +38,7 @@ public partial class User
 
     public virtual ICollection<Project> Projects { get; set; }
 
-    public virtual ICollection<Project> Projects1 { get; set; }
+    public virtual ICollection<ProjectDetail> ProjectDetails { get; set; }
 
 }
 

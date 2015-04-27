@@ -60,6 +60,10 @@ public partial class ProjectDetail
 
     public bool IsAnalysis { get; set; }
 
+    public string PublishedBy { get; set; }
+
+    public Nullable<System.DateTime> PublishedDate { get; set; }
+
 
 
     public virtual Project Project { get; set; }
@@ -71,6 +75,8 @@ public partial class ProjectDetail
     public virtual ICollection<ProjectActionResource> ProjectActionResources { get; set; }
 
     public virtual ICollection<ProjectActionTool> ProjectActionTools { get; set; }
+
+    public virtual User User { get; set; }
 
     public virtual Step Step { get; set; }
 

@@ -6,38 +6,38 @@
     <edmx:Diagrams>
       <Diagram DiagramId="f855a997ab7849b8a4d6cf31cf3d11cb" Name="Diagram1" ZoomLevel="88">
         <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectMo__Resou__72C60C4A" />
-        <EntityTypeShape EntityType="TabletApp_DatabaseModel.Attachment" Width="1.5" PointX="5.25" PointY="13.125" />
-        <EntityTypeShape EntityType="TabletApp_DatabaseModel.Image" Width="1.5" PointX="8.25" PointY="13.75" />
-        <EntityTypeShape EntityType="TabletApp_DatabaseModel.ImageComment" Width="1.5" PointX="10.5" PointY="14" />
+        <EntityTypeShape EntityType="TabletApp_DatabaseModel.Attachment" Width="1.5" PointX="5.25" PointY="3.125" />
+        <EntityTypeShape EntityType="TabletApp_DatabaseModel.Image" Width="1.5" PointX="5.25" PointY="12.75" />
+        <EntityTypeShape EntityType="TabletApp_DatabaseModel.ImageComment" Width="1.5" PointX="7.5" PointY="14" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.Module" Width="1.5" PointX="0.75" PointY="4" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.Project" Width="1.5" PointX="3" PointY="7.375" />
-        <EntityTypeShape EntityType="TabletApp_DatabaseModel.ProjectActionAttachment" Width="1.5" PointX="7.5" PointY="8" />
-        <EntityTypeShape EntityType="TabletApp_DatabaseModel.ProjectActionImage" Width="1.5" PointX="10.5" PointY="8" />
-        <EntityTypeShape EntityType="TabletApp_DatabaseModel.ProjectActionResource" Width="1.5" PointX="7.5" PointY="4.875" />
+        <EntityTypeShape EntityType="TabletApp_DatabaseModel.ProjectActionAttachment" Width="1.5" PointX="7.5" PointY="5" />
+        <EntityTypeShape EntityType="TabletApp_DatabaseModel.ProjectActionImage" Width="1.5" PointX="7.5" PointY="8" />
+        <EntityTypeShape EntityType="TabletApp_DatabaseModel.ProjectActionResource" Width="1.5" PointX="10.5" PointY="7.875" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.ProjectActionTool" Width="1.5" PointX="7.5" PointY="11" />
-        <EntityTypeShape EntityType="TabletApp_DatabaseModel.ProjectDetail" Width="1.5" PointX="5.25" PointY="6.5" />
-        <EntityTypeShape EntityType="TabletApp_DatabaseModel.Resource" Width="1.5" PointX="5.25" PointY="3.125" />
+        <EntityTypeShape EntityType="TabletApp_DatabaseModel.ProjectDetail" Width="1.5" PointX="5.25" PointY="6.25" />
+        <EntityTypeShape EntityType="TabletApp_DatabaseModel.Resource" Width="1.5" PointX="8.25" PointY="2.125" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.RigType" Width="1.5" PointX="1.5" PointY="1.125" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.RiskAnalysi" Width="1.5" PointX="7.5" PointY="18.25" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.Step" Width="1.5" PointX="3" PointY="4" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.Tool" Width="1.5" PointX="5.25" PointY="16.125" />
         <EntityTypeShape EntityType="TabletApp_DatabaseModel.User" Width="1.5" PointX="0.75" PointY="8" />
-        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectAc__Attac__17036CC0" />
-        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ImageComm__Image__6FE99F9F" />
-        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectAc__Image__3D5E1FD2" />
-        <AssociationConnector Association="TabletApp_DatabaseModel.FK__Module__RigTypeI__571DF1D5" />
-        <AssociationConnector Association="TabletApp_DatabaseModel.FK__Step__ModuleID__2739D489" />
-        <AssociationConnector Association="TabletApp_DatabaseModel.FK__Project__Created__5AEE82B9" />
-        <AssociationConnector Association="TabletApp_DatabaseModel.FK__Project__Updated__5BE2A6F2" />
+        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectAc__Attac__33D4B598" />
+        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ImageComm__Image__300424B4" />
+        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectAc__Image__35BCFE0A" />
+        <AssociationConnector Association="TabletApp_DatabaseModel.FK__Module__RigTypeI__30F848ED" />
+        <AssociationConnector Association="TabletApp_DatabaseModel.FK__Step__ModuleID__3E52440B" />
+        <AssociationConnector Association="TabletApp_DatabaseModel.FK__Project__Created__31EC6D26" />
         <AssociationConnector Association="TabletApp_DatabaseModel.FK_PD_P" />
-        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectAc__Proje__160F4887" />
-        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectAc__Proje__3E52440B" />
-        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectAc__Proje__628FA481" />
-        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectAc__Resou__6383C8BA" />
-        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectAc__Proje__66603565" />
-        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectAc__ToolI__6754599E" />
-        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectDe__StepI__45F365D3" />
-        <AssociationConnector Association="TabletApp_DatabaseModel.FK__RiskAnaly__Proje__282DF8C2" />
+        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectAc__Proje__34C8D9D1" />
+        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectAc__Proje__36B12243" />
+        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectAc__Proje__37A5467C" />
+        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectAc__Resou__38996AB5" />
+        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectAc__Proje__398D8EEE" />
+        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectAc__ToolI__3A81B327" />
+        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectDe__Publi__403A8C7D" />
+        <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectDe__StepI__3B75D760" />
+        <AssociationConnector Association="TabletApp_DatabaseModel.FK__RiskAnaly__Proje__3D5E1FD2" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

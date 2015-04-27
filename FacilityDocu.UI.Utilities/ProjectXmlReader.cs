@@ -10,7 +10,7 @@ namespace FacilityDocu.UI.Utilities
 {
     public static class ProjectXmlReader
     {
-        public static ProjectDTO ReadProjectXml(string xmlPath, bool onlyProjectAttributes)
+        public static ProjectDTO ReadProjectXml(string xmlPath, bool onlyProjectAttributes, bool onlyActionMetadata = false)
         {
             XDocument xdoc = XDocument.Load(xmlPath);
 
@@ -25,9 +25,6 @@ namespace FacilityDocu.UI.Utilities
             project.Location = (xProject.Element("location") != null) ? xProject.Element("location").Value : null;
             project.ProjectNumber = (xProject.Element("projectnumber") != null) ? xProject.Element("projectnumber").Value : null;
             project.Persons = (xProject.Element("persons") != null) ? xProject.Element("persons").Value : null;
-
-            project.LastUpdatedAt = Convert.ToDateTime(xProject.Element("updatedtime").Value);
-            project.LastUpdatedBy = new UserDTO() { UserName = xProject.Element("updatedby").Value };
 
             project.ProjectID = Convert.ToString(xProject.Element("id").Value);
             project.Template = Convert.ToBoolean(xProject.Element("template").Value);

@@ -31,7 +31,7 @@ namespace FacilityDocu.Test.Console
         private static void TestUpdateProjectXml()
         {
             SyncManager manager = new SyncManager(new List<int> { 1});
-            manager.UpdateProjectXml();
+            manager.UpdateProjectXml(null);
         }
 
         private static void TestUpdateProjectDatabase(int projectID)

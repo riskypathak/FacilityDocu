@@ -589,9 +589,6 @@ namespace FacilityDocLaptop
         {
             SaveActionDetail();
 
-            Data.CURRENT_PROJECT.LastUpdatedBy = new UserDTO() { UserName = Data.CURRENT_USER };
-            Data.CURRENT_PROJECT.LastUpdatedAt = DateTime.Now.ToUniversalTime();
-
             ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
         }
 
@@ -663,8 +660,6 @@ namespace FacilityDocLaptop
             Data.CURRENT_PROJECT.Template = false;
             Data.CURRENT_PROJECT.Closed = false;
             Data.CURRENT_PROJECT.CreatedBy = new UserDTO() { UserName = Data.CURRENT_USER };
-            Data.CURRENT_PROJECT.LastUpdatedBy = new UserDTO() { UserName = Data.CURRENT_USER };
-            Data.CURRENT_PROJECT.LastUpdatedAt = DateTime.Now.ToUniversalTime();
             Data.CURRENT_PROJECT.CreationDate = DateTime.Now.ToUniversalTime();
 
             ProjectXmlWriter.Write(Data.CURRENT_PROJECT);

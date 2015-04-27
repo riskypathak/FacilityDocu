@@ -36,12 +36,6 @@ namespace FacilityDocu.DTO
         public UserDTO CreatedBy { get; set; }
 
         [DataMember]
-        public DateTime LastUpdatedAt { get; set; }
-
-        [DataMember]
-        public UserDTO LastUpdatedBy { get; set; }
-
-        [DataMember]
         public bool Template { get; set; }
 
         [DataMember]

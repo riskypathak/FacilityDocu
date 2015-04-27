@@ -13,7 +13,7 @@ namespace FacilityDocu.Test
         public void TestUpdateProjectXml()
         {
             SyncManager manager = new SyncManager(new List<int> { 1, 2 });
-            manager.UpdateProjectXml();
+            manager.UpdateProjectXml(null);
         }
     }
 }

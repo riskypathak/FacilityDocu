@@ -20,6 +20,12 @@
   <wsdl:message name="IFacilityDocuService_IsSync_OutputMessage">
     <wsdl:part name="parameters" element="tns:IsSyncResponse" />
   </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_SyncRequiredForUpdatedProjects_InputMessage">
+    <wsdl:part name="parameters" element="tns:SyncRequiredForUpdatedProjects" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_SyncRequiredForUpdatedProjects_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SyncRequiredForUpdatedProjectsResponse" />
+  </wsdl:message>
   <wsdl:message name="IFacilityDocuService_GetProjectDetails_InputMessage">
     <wsdl:part name="parameters" element="tns:GetProjectDetails" />
   </wsdl:message>
@@ -65,6 +71,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/IsSync" message="tns:IFacilityDocuService_IsSync_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/IsSyncResponse" message="tns:IFacilityDocuService_IsSync_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="SyncRequiredForUpdatedProjects">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/SyncRequiredForUpdatedProjects" message="tns:IFacilityDocuService_SyncRequiredForUpdatedProjects_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/SyncRequiredForUpdatedProjectsResponse" message="tns:IFacilityDocuService_SyncRequiredForUpdatedProjects_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="GetProjectDetails">
       <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/GetProjectDetails" message="tns:IFacilityDocuService_GetProjectDetails_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/GetProjectDetailsResponse" message="tns:IFacilityDocuService_GetProjectDetails_OutputMessage" />
@@ -103,6 +113,15 @@
     </wsdl:operation>
     <wsdl:operation name="IsSync">
       <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/IsSync" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SyncRequiredForUpdatedProjects">
+      <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/SyncRequiredForUpdatedProjects" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
