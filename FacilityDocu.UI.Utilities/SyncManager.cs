@@ -165,18 +165,25 @@ namespace FacilityDocu.UI.Utilities
 
             ProjectDTO updatedProject = service.UpdateProject(project, Data.CURRENT_USER);
 
-            Data.SYNC_DOWNLOAD_UPDATE = true;
-            ProjectXmlWriter.Write(updatedProject);
-            Data.SYNC_DOWNLOAD_UPDATE = false;
+            if (updatedProject != null)
+            {
+                Data.SYNC_DOWNLOAD_UPDATE = true;
+                ProjectXmlWriter.Write(updatedProject);
+                Data.SYNC_DOWNLOAD_UPDATE = false;
 
-            UploadImages(updatedProject.ProjectID);
-            UploadAttachments(updatedProject.ProjectID);
+                UploadImages(updatedProject.ProjectID);
+                UploadAttachments(updatedProject.ProjectID);
 
-            this.ProjectIDs = new List<int>() { Convert.ToInt32(updatedProject.ProjectID) };
+                this.ProjectIDs = new List<int>() { Convert.ToInt32(updatedProject.ProjectID) };
 
-            UpdateProjectXml(null);
+                UpdateProjectXml(null);
 
-            return ProjectXmlReader.ReadProjectXml(Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", updatedProject.ProjectID)), false);
+                return ProjectXmlReader.ReadProjectXml(Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", updatedProject.ProjectID)), false);
+            }
+            else
+            {
+                return null; //need to sync first
+            }
         }
 
         public Dictionary<int, Dictionary<int, string>> IsSyncRequired()
@@ -258,8 +265,6 @@ namespace FacilityDocu.UI.Utilities
             }
 
             Dictionary<int, Dictionary<int, string>> resultAction = service.SyncRequiredForUpdatedProjects(updateProjects);
-
-            //TODO: foreach()Delete Action
 
             return resultAction;
         }

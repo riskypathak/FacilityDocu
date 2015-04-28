@@ -202,15 +202,25 @@ namespace FacilityDocLaptop
             SaveProject();
 
             string oldProjectID = Data.CURRENT_PROJECT.ProjectID;
-            Data.CURRENT_PROJECT = (new SyncManager()).UpdateDatabase(Data.CURRENT_PROJECT.ProjectID, false);
-            ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
 
-            if (oldProjectID != Data.CURRENT_PROJECT.ProjectID)
+            ProjectDTO updatedProject = (new SyncManager()).UpdateDatabase(Data.CURRENT_PROJECT.ProjectID, false);
+
+            if (updatedProject == null)
             {
-                File.Delete(System.IO.Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", oldProjectID)));
+                MessageBox.Show("Unable to publish. One or more actions has already a new version on server");
             }
+            else
+            {
+                Data.CURRENT_PROJECT = updatedProject;
+                ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
 
-            MessageBox.Show("Published");
+                if (oldProjectID != Data.CURRENT_PROJECT.ProjectID)
+                {
+                    File.Delete(System.IO.Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", oldProjectID)));
+                }
+
+                MessageBox.Show("Published");
+            }
 
             MakeVisible(gridHome);
         }
@@ -400,7 +410,7 @@ namespace FacilityDocLaptop
 
                     Images.Add(new ImageModel() { ImageID = image.ImageID, Image = imagename, Description = image.Description });
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
 
                 }
@@ -505,7 +515,7 @@ namespace FacilityDocLaptop
             IList<ActionDTO> actions = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.ToList();
             //actions.Add(action);
 
-            actions.Insert(currentActionIndex+1, action);
+            actions.Insert(currentActionIndex + 1, action);
 
             Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions = actions.ToArray();
 

@@ -106,7 +106,12 @@ namespace FacilityDocu.Services
 
                     List<ActionDTO> clientActionsDTO = projectDTO.RigTypes.SelectMany(r => r.Modules.SelectMany(m => m.Steps.SelectMany(s => s.Actions.Select(a => a)))).ToList();
 
-                    UpdateProjectDetail(project, existingProject, clientActionsDTO);
+                    bool conflictResult = UpdateProjectDetail(project, existingProject, clientActionsDTO);
+
+                    if(!conflictResult)
+                    {
+                        return null;
+                    }
 
                     context.SaveChanges();
 
@@ -117,7 +122,7 @@ namespace FacilityDocu.Services
             return updatedProjectDTO;
         }
 
-        private void UpdateProjectDetail(Project clientProject, Project databaseProject, List<ActionDTO> clientActionsDTO)
+        private bool UpdateProjectDetail(Project clientProject, Project databaseProject, List<ActionDTO> clientActionsDTO)
         {
             foreach (ProjectDetail dbAction in databaseProject.ProjectDetails.ToList())
             {
@@ -165,6 +170,11 @@ namespace FacilityDocu.Services
                             //nothing
                         }
                     }
+                    else //Conflict
+                    {
+                        //it means that someone already published new version. So it will ask user to sync first.
+                        return false;
+                    }
                 }
                 else
                 {
@@ -174,6 +184,8 @@ namespace FacilityDocu.Services
 
             List<ProjectDetail> newProjectDetails = clientProject.ProjectDetails.Where(p => Helper.IsNew(p.ProjectDetailID.ToString())).ToList();
             newProjectDetails.ForEach(np => databaseProject.ProjectDetails.Add(np));
+
+            return true;
         }
 
         private void UpdateActionImages(ProjectDetail updateProject, ProjectDetail existingPD)
