@@ -29,6 +29,7 @@
       <xs:element minOccurs="0" name="Resources" nillable="true" type="tns:ArrayOfResourceDTO" />
       <xs:element minOccurs="0" name="RiskAnalysis" nillable="true" type="tns:ArrayOfRiskAnalysisDTO" />
       <xs:element minOccurs="0" name="Risks" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StepID" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Tools" nillable="true" type="tns:ArrayOfToolDTO" />
     </xs:sequence>
   </xs:complexType>

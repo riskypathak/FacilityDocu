@@ -32,6 +32,12 @@
   <wsdl:message name="IFacilityDocuService_GetProjectDetails_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetProjectDetailsResponse" />
   </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_GetProjectActions_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetProjectActions" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_GetProjectActions_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetProjectActionsResponse" />
+  </wsdl:message>
   <wsdl:message name="IFacilityDocuService_UpdateProject_InputMessage">
     <wsdl:part name="parameters" element="tns:UpdateProject" />
   </wsdl:message>
@@ -78,6 +84,10 @@
     <wsdl:operation name="GetProjectDetails">
       <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/GetProjectDetails" message="tns:IFacilityDocuService_GetProjectDetails_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/GetProjectDetailsResponse" message="tns:IFacilityDocuService_GetProjectDetails_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectActions">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/GetProjectActions" message="tns:IFacilityDocuService_GetProjectActions_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/GetProjectActionsResponse" message="tns:IFacilityDocuService_GetProjectActions_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="UpdateProject">
       <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/UpdateProject" message="tns:IFacilityDocuService_UpdateProject_InputMessage" />
@@ -131,6 +141,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetProjectDetails">
       <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/GetProjectDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectActions">
+      <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/GetProjectActions" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

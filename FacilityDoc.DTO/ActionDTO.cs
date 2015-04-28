@@ -14,6 +14,9 @@ namespace FacilityDocu.DTO
         public string ActionID { get; set; }
 
         [DataMember]
+        public string StepID { get; set; }
+
+        [DataMember]
         public string Number { get; set; }
 
         [DataMember]

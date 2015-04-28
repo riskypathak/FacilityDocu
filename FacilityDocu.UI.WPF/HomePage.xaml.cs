@@ -423,14 +423,12 @@ namespace FacilityDocLaptop
         {
             if (Data.CURRENT_RIG != null)
             {
-
                 if (currentModuleIndex < 0 || currentStepIndex < 0 || currentActionIndex < 0)
                 {
 
                 }
 
                 ActionDTO action = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex];
-
 
                 action.Dimensions = txtActionDimensions.Text;
                 action.LiftingGears = txtActionLiftingGears.Text;
@@ -440,6 +438,9 @@ namespace FacilityDocLaptop
                 action.IsAnalysis = chkRiskAnalysis.IsChecked.Value;
 
                 SaveAnalysisDetail();
+
+                action.LastUpdatedBy = new UserDTO() { UserName = Data.CURRENT_USER };
+                action.LastUpdatedAt = DateTime.Now.ToUniversalTime();
             }
         }
 

@@ -49,7 +49,7 @@ namespace FacilityDocu.UI.Utilities
             UpdateProjectXml(syncProjectActions);
         }
 
-        public void UpdateProjectXml(Dictionary<int, Dictionary<int, string>> syncProjectActions)
+        public string UpdateProjectXml(Dictionary<int, Dictionary<int, string>> syncProjectActions)
         {
             Data.SYNC_DOWNLOAD = true;
 
@@ -74,12 +74,88 @@ namespace FacilityDocu.UI.Utilities
                     }
                     else
                     {
-                        
+                        //As of now conflict will have server changes preference
+                        if (syncProjectActions[projectID].Any(d => d.Value == "conflict"))
+                        {
+                            //return "Conflict";
+                        }
+
+                        ProjectDTO projectDTO = ProjectXmlReader.ReadProjectXml(Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", projectID)), false);
+
+                        IList<int> deleteActionIds = syncProjectActions[projectID].Where(d => d.Value == "delete").Select(d => d.Key).ToList();
+
+                        IList<int> actionsIDsFromServer = syncProjectActions[projectID].Where(d => d.Value == "new" || d.Value == "update" || d.Value == "conflict").Select(d => d.Key).ToArray();
+
+                        IList<ActionDTO> actions = null;
+
+                        if (actionsIDsFromServer.Count > 0)
+                        {
+                            actions = service.GetProjectActions(projectID, actionsIDsFromServer.ToArray());
+                        }
+
+                        Process(actions, deleteActionIds, ref projectDTO);
+
+                        ProjectXmlWriter.Write(projectDTO);
                     }
                 }
             }
 
             Data.SYNC_DOWNLOAD = false;
+
+            return string.Empty;//success
+        }
+
+        public static void Process(IList<ActionDTO> actions, IList<int> deleteActionIDs, ref ProjectDTO project)
+        {
+            List<ActionDTO> newActions = new List<ActionDTO>();
+
+            foreach (RigTypeDTO rigType in project.RigTypes)
+            {
+                foreach (ModuleDTO module in rigType.Modules)
+                {
+                    foreach (StepDTO step in module.Steps)
+                    {
+                        foreach (ActionDTO action in step.Actions)
+                        {
+                            ActionDTO newAction = null;
+
+                            if (actions != null && actions.Count > 0)
+                            {
+                                ActionDTO serverAction = actions.SingleOrDefault(a => a.ActionID == action.ActionID);
+
+
+
+                                if (serverAction != null) //update action
+                                {
+                                    newAction = serverAction;
+                                }
+                            }
+                            else
+                            {
+                                if (deleteActionIDs.Where(d => d.ToString() == action.ActionID).Count() > 0)
+                                {
+                                    //delete so dont add
+                                }
+                                else
+                                {
+                                    //no changes
+                                    newAction = action;
+                                }
+                            }
+
+                            newActions.Add(newAction);
+                        }
+
+                        if (actions != null)
+                        {
+                            List<ActionDTO> newlyAddedActions = actions.Where(a => a.StepID == step.StepID && !newActions.Contains(a)).ToList();
+                            newActions.AddRange(newlyAddedActions);
+                        }
+
+                        step.Actions = newActions.ToArray();
+                    }
+                }
+            }
         }
 
         public ProjectDTO UpdateDatabase(string projectID, bool isInsert)
@@ -87,7 +163,7 @@ namespace FacilityDocu.UI.Utilities
             string projectPath = Path.Combine(this.ProjectXmlFolderPath, string.Format("{0}.xml", projectID));
             ProjectDTO project = ProjectXmlReader.ReadProjectXml(projectPath, false);
 
-            ProjectDTO updatedProject = service.UpdateProject(project);
+            ProjectDTO updatedProject = service.UpdateProject(project, Data.CURRENT_USER);
 
             Data.SYNC_DOWNLOAD_UPDATE = true;
             ProjectXmlWriter.Write(updatedProject);
@@ -130,7 +206,12 @@ namespace FacilityDocu.UI.Utilities
 
 
             List<int> updatedProjectIds = result.Where(r => r.Value.Equals("updated")).Select(r => r.Key).ToList();
-            Dictionary<int, Dictionary<int, string>> syncProjectActions = GetSyncRequiredForProjectActions(updatedProjectIds);
+
+            Dictionary<int, Dictionary<int, string>> syncProjectActions = new Dictionary<int, Dictionary<int, string>>();
+            if (updatedProjectIds.Count > 0)
+            {
+                syncProjectActions = GetSyncRequiredForProjectActions(updatedProjectIds);
+            }
 
             newProjects.ForEach(n => syncProjectActions.Add(n, null));//add new projects as null so we will get all actions for them...
 
@@ -147,7 +228,7 @@ namespace FacilityDocu.UI.Utilities
             foreach (int projectId in updatedProjectIds)
             {
                 string projectPath = Path.Combine(this.ProjectXmlFolderPath, string.Format("{0}.xml", projectId));
-                ProjectDTO project = ProjectXmlReader.ReadProjectXml(projectPath, true);
+                ProjectDTO project = ProjectXmlReader.ReadProjectXml(projectPath, false);
 
                 List<ActionDTO> actionDTOs = new List<ActionDTO>();
 

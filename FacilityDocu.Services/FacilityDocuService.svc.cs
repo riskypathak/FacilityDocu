@@ -33,9 +33,12 @@ namespace FacilityDocu.Services
                     {
                         projectStatusData.Add(project.ProjectID, "closed");
                     }
-                    else
+                    else 
                     {
-                        projectStatusData.Add(project.ProjectID, "updated");
+                        if (!project.Template)//only needs to be updated if not template....  else template will be only added at once
+                        {
+                            projectStatusData.Add(project.ProjectID, "updated");
+                        }
                     }
                 }
             }
@@ -74,7 +77,7 @@ namespace FacilityDocu.Services
             return isAuthenticated;
         }
 
-        public ProjectDTO UpdateProject(ProjectDTO projectDTO)
+        public ProjectDTO UpdateProject(ProjectDTO projectDTO, string userName)
         {
             ProjectDTO updatedProjectDTO = null;
 
@@ -82,7 +85,7 @@ namespace FacilityDocu.Services
             {
                 if (Helper.IsNew(projectDTO.ProjectID))
                 {
-                    Project project = DTOConverter.ToProject(projectDTO);
+                    Project project = DTOConverter.ToProject(projectDTO, userName);
                     project.User = context.Users.Single(u => u.UserName.Equals(projectDTO.CreatedBy.UserName));
 
                     context.Projects.Add(project);
@@ -93,7 +96,7 @@ namespace FacilityDocu.Services
                 }
                 else
                 {
-                    Project project = DTOConverter.ToProject(projectDTO);
+                    Project project = DTOConverter.ToProject(projectDTO, userName);
 
                     int projectID = Convert.ToInt32(projectDTO.ProjectID);
 
@@ -101,7 +104,9 @@ namespace FacilityDocu.Services
 
                     existingProject.Close = project.Close;
 
-                    UpdateProjectDetail(project, existingProject);
+                    List<ActionDTO> clientActionsDTO = projectDTO.RigTypes.SelectMany(r => r.Modules.SelectMany(m => m.Steps.SelectMany(s => s.Actions.Select(a => a)))).ToList();
+
+                    UpdateProjectDetail(project, existingProject, clientActionsDTO);
 
                     context.SaveChanges();
 
@@ -112,44 +117,63 @@ namespace FacilityDocu.Services
             return updatedProjectDTO;
         }
 
-        private void UpdateProjectDetail(Project project, Project existingProject)
+        private void UpdateProjectDetail(Project clientProject, Project databaseProject, List<ActionDTO> clientActionsDTO)
         {
-            foreach (ProjectDetail existingPD in existingProject.ProjectDetails.ToList())
+            foreach (ProjectDetail dbAction in databaseProject.ProjectDetails.ToList())
             {
-                ProjectDetail updateProject = project.ProjectDetails.FirstOrDefault(p => p.ProjectDetailID == existingPD.ProjectDetailID);
+                ProjectDetail clientAction = clientProject.ProjectDetails.FirstOrDefault(p => p.ProjectDetailID == dbAction.ProjectDetailID);
 
-                if (updateProject != null)
+                if (clientAction != null)
                 {
-                    ProjectDetail modifyAction = existingProject.ProjectDetails.Single(a => a.ProjectDetailID == updateProject.ProjectDetailID);
+                    ProjectDetail databaseAction = databaseProject.ProjectDetails.Single(a => a.ProjectDetailID == clientAction.ProjectDetailID); //took a new one as we cannot change forach action
 
-                    modifyAction.Dimensions = updateProject.Dimensions;
-                    modifyAction.LiftingGears = updateProject.LiftingGears;
-                    modifyAction.Risks = updateProject.Risks;
+                    ActionDTO clientActionDTO = clientActionsDTO.Single(c => c.ActionID == clientAction.ProjectDetailID.ToString());
 
-                    modifyAction.ActionName = updateProject.ActionName;
-                    modifyAction.Description = updateProject.Description;
+                    if (databaseAction.PublishedDate == clientActionDTO.PublishedAt) // no conflict
+                    {
+                        if(clientActionDTO.PublishedAt == clientActionDTO.LastUpdatedAt) //no change do nothing
+                        {
 
-                    modifyAction.ActionDescriptionWarning = updateProject.ActionDescriptionWarning;
-                    modifyAction.ActionNameWarning = updateProject.ActionNameWarning;
-                    modifyAction.ImportantActionDescription = updateProject.ImportantActionDescription;
-                    modifyAction.ImportantActionname = updateProject.ImportantActionname;
+                        }
+                        else if (clientActionDTO.PublishedAt < clientActionDTO.LastUpdatedAt) //update
+                        {
+                            databaseAction.PublishedDate = DateTime.Now.ToUniversalTime();
+                            databaseAction.PublishedBy = clientAction.PublishedBy;
 
-                    modifyAction.IsAnalysis = updateProject.IsAnalysis;
+                            databaseAction.Dimensions = clientAction.Dimensions;
+                            databaseAction.LiftingGears = clientAction.LiftingGears;
+                            databaseAction.Risks = clientAction.Risks;
 
-                    UpdateActionTool(updateProject, existingPD);
-                    UpdateActionResource(updateProject, existingPD);
-                    UpdateActionRiskAnalysis(updateProject, existingPD);
-                    UpdateActionImages(updateProject, existingPD);
-                    UpdateActionAttachments(updateProject, existingPD);
+                            databaseAction.ActionName = clientAction.ActionName;
+                            databaseAction.Description = clientAction.Description;
+
+                            databaseAction.ActionDescriptionWarning = clientAction.ActionDescriptionWarning;
+                            databaseAction.ActionNameWarning = clientAction.ActionNameWarning;
+                            databaseAction.ImportantActionDescription = clientAction.ImportantActionDescription;
+                            databaseAction.ImportantActionname = clientAction.ImportantActionname;
+
+                            databaseAction.IsAnalysis = clientAction.IsAnalysis;
+
+                            UpdateActionTool(clientAction, dbAction);
+                            UpdateActionResource(clientAction, dbAction);
+                            UpdateActionRiskAnalysis(clientAction, dbAction);
+                            UpdateActionImages(clientAction, dbAction);
+                            UpdateActionAttachments(clientAction, dbAction);
+                        }
+                        else
+                        {
+                            //nothing
+                        }
+                    }
                 }
                 else
                 {
-                    existingProject.ProjectDetails.Remove(existingProject.ProjectDetails.Single(p => p.ProjectDetailID == existingPD.ProjectDetailID));
+                    databaseProject.ProjectDetails.Remove(databaseProject.ProjectDetails.Single(p => p.ProjectDetailID == dbAction.ProjectDetailID));
                 }
             }
 
-            List<ProjectDetail> newProjectDetails = project.ProjectDetails.Where(p => Helper.IsNew(p.ProjectDetailID.ToString())).ToList();
-            newProjectDetails.ForEach(np => existingProject.ProjectDetails.Add(np));
+            List<ProjectDetail> newProjectDetails = clientProject.ProjectDetails.Where(p => Helper.IsNew(p.ProjectDetailID.ToString())).ToList();
+            newProjectDetails.ForEach(np => databaseProject.ProjectDetails.Add(np));
         }
 
         private void UpdateActionImages(ProjectDetail updateProject, ProjectDetail existingPD)
@@ -487,7 +511,7 @@ namespace FacilityDocu.Services
         {
             using (TabletApp_DatabaseEntities context = new TabletApp_DatabaseEntities())
             {
-                Project project = DTOConverter.ToProject(projectDTO, false);
+                Project project = DTOConverter.ToProject(projectDTO, string.Empty, false);
                 project.User = context.Users.Single(u => u.UserName.Equals(projectDTO.CreatedBy.UserName));
 
                 context.Projects.Add(project);
@@ -539,7 +563,7 @@ namespace FacilityDocu.Services
             {
                 foreach (int projectId in projectActionDTOs.Keys)
                 {
-                    List<string> serverActionIds = context.ProjectDetails.Where(p => p.ProjectID == projectId).Select(p => p.ProjectDetailID.ToString()).ToList();
+                    List<string> serverActionIds = context.ProjectDetails.Where(p => p.ProjectID == projectId).Select(p => p.ProjectDetailID).ToList().Select(i=>i.ToString()).ToList();
                     List<string> clientActionIds = projectActionDTOs[projectId].Select(p => p.ActionID).ToList();
 
                     Dictionary<int, string> actionDictionary = new Dictionary<int, string>();
@@ -563,7 +587,7 @@ namespace FacilityDocu.Services
                         }
                         else if (serverAction.PublishedDate > clientAction.PublishedAt) //change
                         {
-                            if (clientAction.LastUpdatedAt == clientAction.PublishedAt)// noc hange at client
+                            if (clientAction.LastUpdatedAt == clientAction.PublishedAt)// no change at client
                             {
                                 actionDictionary.Add(serverAction.ProjectDetailID, "update");
                             }

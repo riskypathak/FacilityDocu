@@ -76,6 +76,9 @@
     <None Include="Properties\DataSources\FacilityDoc.DTO.ModuleDTO.datasource" />
     <None Include="Properties\DataSources\FacilityDoc.DTO.ProjectDTO.datasource" />
     <None Include="Properties\DataSources\FacilityDoc.DTO.StepDTO.datasource" />
+    <None Include="Service References\Services\FacilityDocu.UI.Utilities.Services.ActionDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\Services\FacilityDocu.UI.Utilities.Services.ProjectDTO.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>

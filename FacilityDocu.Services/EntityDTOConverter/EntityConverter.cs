@@ -111,12 +111,18 @@ namespace FacilityDocu.Services.EntityDTOConverter
                 actionDTO.Tools = ToToolsDTO(projectDetail);
                 actionDTO.RiskAnalysis = ToRiskAnalysisDTO(projectDetail);
 
+                actionDTO.PublishedAt = projectDetail.PublishedDate.HasValue ?projectDetail.PublishedDate.Value: DateTime.MinValue; //If no publish date that means it is a template so min date for that
+                actionDTO.PublishedBy = ToUserDTO(projectDetail.User);
+
+                actionDTO.LastUpdatedAt = actionDTO.PublishedAt;
+                actionDTO.PublishedBy = actionDTO.PublishedBy;
+
+                actionDTO.StepID = projectDetail.StepID.Value.ToString();
+
                 actionsDTO.Add(actionDTO);
             }
 
             return actionsDTO;
-
-
         }
 
         private static IList<AttachmentDTO> ToAttachmentsDTO(ProjectDetail projectDetail)

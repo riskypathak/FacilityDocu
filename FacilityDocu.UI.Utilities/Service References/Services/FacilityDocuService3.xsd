@@ -60,38 +60,54 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="GetProjectActions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="projectID" type="xs:int" />
+        <xs:element xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="actionIds" nillable="true" type="q6:ArrayOfint" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetProjectActionsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="GetProjectActionsResult" nillable="true" type="q7:ArrayOfActionDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="UpdateProject">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="projectDTO" nillable="true" type="q6:ProjectDTO" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="projectDTO" nillable="true" type="q8:ProjectDTO" />
+        <xs:element minOccurs="0" name="userName" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="UpdateProjectResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="UpdateProjectResult" nillable="true" type="q7:ProjectDTO" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="UpdateProjectResult" nillable="true" type="q9:ProjectDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="UpdateActionImages">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="action" nillable="true" type="q8:ActionDTO" />
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="action" nillable="true" type="q10:ActionDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="UpdateActionImagesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q9="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="UpdateActionImagesResult" nillable="true" type="q9:ArrayOfKeyValueOfstringint" />
+        <xs:element xmlns:q11="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="UpdateActionImagesResult" nillable="true" type="q11:ArrayOfKeyValueOfstringint" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="UpdateActionAttachments">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="action" nillable="true" type="q10:ActionDTO" />
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="action" nillable="true" type="q12:ActionDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -108,14 +124,14 @@
   <xs:element name="GetToolsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="GetToolsResult" nillable="true" type="q11:ArrayOfToolDTO" />
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="GetToolsResult" nillable="true" type="q13:ArrayOfToolDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="CreateTemplate">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="projectDTO" nillable="true" type="q12:ProjectDTO" />
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" minOccurs="0" name="projectDTO" nillable="true" type="q14:ProjectDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

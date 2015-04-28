@@ -100,6 +100,11 @@ namespace FacilityDocu.UI.Utilities
                 XElement xStepAction = new XElement("action");
                 xStepActions.Add(xStepAction);
 
+                xStepAction.Add(new XElement("publishedat", stepAction.PublishedAt));
+                xStepAction.Add(new XElement("publishedby", stepAction.PublishedBy));
+                xStepAction.Add(new XElement("lastupdatedat", stepAction.LastUpdatedAt));
+                xStepAction.Add(new XElement("lastupdatedby", stepAction.LastUpdatedBy));
+
                 xStepAction.Add(new XElement("namewarning", stepAction.IsNameWarning));
                 xStepAction.Add(new XElement("descriptionwarning", stepAction.IsDescriptionwarning));
                 xStepAction.Add(new XElement("importantname", stepAction.ImportantName));

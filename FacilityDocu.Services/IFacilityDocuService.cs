@@ -29,7 +29,7 @@ namespace FacilityDocu.Services
         List<ActionDTO> GetProjectActions(int projectID, List<int> actionIds);
 
         [OperationContract]
-        ProjectDTO UpdateProject(ProjectDTO projectDTO);
+        ProjectDTO UpdateProject(ProjectDTO projectDTO, string userName);
 
         [OperationContract]
         Dictionary<string, int> UpdateActionImages(ActionDTO action);

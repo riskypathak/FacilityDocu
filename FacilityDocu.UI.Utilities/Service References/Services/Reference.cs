@@ -83,6 +83,9 @@ namespace FacilityDocu.UI.Utilities.Services {
         private string RisksField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string StepIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private FacilityDocu.UI.Utilities.Services.ToolDTO[] ToolsField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -351,6 +354,19 @@ namespace FacilityDocu.UI.Utilities.Services {
                 if ((object.ReferenceEquals(this.RisksField, value) != true)) {
                     this.RisksField = value;
                     this.RaisePropertyChanged("Risks");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string StepID {
+            get {
+                return this.StepIDField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.StepIDField, value) != true)) {
+                    this.StepIDField = value;
+                    this.RaisePropertyChanged("StepID");
                 }
             }
         }
@@ -1701,11 +1717,17 @@ namespace FacilityDocu.UI.Utilities.Services {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetProjectDetails", ReplyAction="http://tempuri.org/IFacilityDocuService/GetProjectDetailsResponse")]
         System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ProjectDTO> GetProjectDetailsAsync(int projectID);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateProject", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateProjectResponse")]
-        FacilityDocu.UI.Utilities.Services.ProjectDTO UpdateProject(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetProjectActions", ReplyAction="http://tempuri.org/IFacilityDocuService/GetProjectActionsResponse")]
+        FacilityDocu.UI.Utilities.Services.ActionDTO[] GetProjectActions(int projectID, int[] actionIds);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetProjectActions", ReplyAction="http://tempuri.org/IFacilityDocuService/GetProjectActionsResponse")]
+        System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ActionDTO[]> GetProjectActionsAsync(int projectID, int[] actionIds);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateProject", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateProjectResponse")]
-        System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ProjectDTO> UpdateProjectAsync(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO);
+        FacilityDocu.UI.Utilities.Services.ProjectDTO UpdateProject(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO, string userName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateProject", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateProjectResponse")]
+        System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ProjectDTO> UpdateProjectAsync(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO, string userName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateActionImages", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateActionImagesResponse")]
         System.Collections.Generic.Dictionary<string, int> UpdateActionImages(FacilityDocu.UI.Utilities.Services.ActionDTO action);
@@ -1791,12 +1813,20 @@ namespace FacilityDocu.UI.Utilities.Services {
             return base.Channel.GetProjectDetailsAsync(projectID);
         }
         
-        public FacilityDocu.UI.Utilities.Services.ProjectDTO UpdateProject(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO) {
-            return base.Channel.UpdateProject(projectDTO);
+        public FacilityDocu.UI.Utilities.Services.ActionDTO[] GetProjectActions(int projectID, int[] actionIds) {
+            return base.Channel.GetProjectActions(projectID, actionIds);
         }
         
-        public System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ProjectDTO> UpdateProjectAsync(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO) {
-            return base.Channel.UpdateProjectAsync(projectDTO);
+        public System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ActionDTO[]> GetProjectActionsAsync(int projectID, int[] actionIds) {
+            return base.Channel.GetProjectActionsAsync(projectID, actionIds);
+        }
+        
+        public FacilityDocu.UI.Utilities.Services.ProjectDTO UpdateProject(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO, string userName) {
+            return base.Channel.UpdateProject(projectDTO, userName);
+        }
+        
+        public System.Threading.Tasks.Task<FacilityDocu.UI.Utilities.Services.ProjectDTO> UpdateProjectAsync(FacilityDocu.UI.Utilities.Services.ProjectDTO projectDTO, string userName) {
+            return base.Channel.UpdateProjectAsync(projectDTO, userName);
         }
         
         public System.Collections.Generic.Dictionary<string, int> UpdateActionImages(FacilityDocu.UI.Utilities.Services.ActionDTO action) {

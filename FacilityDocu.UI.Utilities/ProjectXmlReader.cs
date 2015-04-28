@@ -10,7 +10,7 @@ namespace FacilityDocu.UI.Utilities
 {
     public static class ProjectXmlReader
     {
-        public static ProjectDTO ReadProjectXml(string xmlPath, bool onlyProjectAttributes, bool onlyActionMetadata = false)
+        public static ProjectDTO ReadProjectXml(string xmlPath, bool onlyProjectAttributes)
         {
             XDocument xdoc = XDocument.Load(xmlPath);
 
@@ -108,6 +108,12 @@ namespace FacilityDocu.UI.Utilities
                 action.Risks = Convert.ToString(xAction.Element("risks").Value);
                 action.LiftingGears = Convert.ToString(xAction.Element("liftinggears").Value);
                 action.Dimensions = Convert.ToString(xAction.Element("dimensions").Value);
+
+                action.PublishedAt = Convert.ToDateTime(xAction.Element("publishedat").Value);
+                //action.PublishedBy = Convert.ToString(xAction.Element("publishedby").Value);
+                action.LastUpdatedAt = Convert.ToDateTime(xAction.Element("lastupdatedat").Value);
+                //action.LastUpdatedBy
+
 
                 action.IsNameWarning = Convert.ToBoolean(xAction.Element("namewarning").Value);
                 action.IsDescriptionwarning = Convert.ToBoolean(xAction.Element("descriptionwarning").Value);

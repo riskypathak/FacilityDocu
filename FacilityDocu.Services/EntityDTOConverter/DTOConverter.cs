@@ -9,7 +9,7 @@ namespace FacilityDocu.Services.EntityDTOConverter
 {
     public static class DTOConverter
     {
-        public static Project ToProject(ProjectDTO projectDTO, bool fullConversion = true)
+        public static Project ToProject(ProjectDTO projectDTO, string userName, bool fullConversion = true)
         {
             Project project = new Project();
 
@@ -31,13 +31,13 @@ namespace FacilityDocu.Services.EntityDTOConverter
 
             if (fullConversion)
             {
-                project.ProjectDetails = ToProjectDetail(projectDTO);
+                project.ProjectDetails = ToProjectDetail(projectDTO, userName);
             }
 
             return project;
         }
 
-        private static ICollection<ProjectDetail> ToProjectDetail(ProjectDTO projectDTO)
+        private static ICollection<ProjectDetail> ToProjectDetail(ProjectDTO projectDTO, string userName)
         {
             IList<ProjectDetail> projectDetails = new List<ProjectDetail>();
 
@@ -86,6 +86,9 @@ namespace FacilityDocu.Services.EntityDTOConverter
                             projectDetail.ProjectActionAttachments = ToProjectActionAttachments(actionDTO.Attachments, projectDetail);
                             projectDetail.ProjectActionImages = ToProjectActionImages(actionDTO.Images, projectDetail);
                             projectDetail.RiskAnalysis = ToProjectActionRiskAnalysis(actionDTO.RiskAnalysis, projectDetail);
+
+                            projectDetail.PublishedDate = DateTime.Now.ToUniversalTime();
+                            projectDetail.PublishedBy = userName;
 
                             projectDetails.Add(projectDetail);
                         }
