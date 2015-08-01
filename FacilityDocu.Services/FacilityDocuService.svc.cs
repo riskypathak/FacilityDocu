@@ -628,7 +628,7 @@ namespace FacilityDocu.Services
             {
                 EntityConverter.AllResources = EntityConverter.ToResourceDTO(_db.Resources);
 
-                IList<ActionDTO> actionDTOs = EntityConverter.ToActionDTO(_db.ProjectDetails.Where(d => d.ProjectID == projectID));
+                IList<ActionDTO> actionDTOs = EntityConverter.ToActionDTO(_db.ProjectDetails.Where(d => d.ProjectID == projectID && actionIds.Contains(d.ProjectDetailID)));
 
                 return actionDTOs.ToList();
             }

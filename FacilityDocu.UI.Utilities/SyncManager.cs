@@ -107,14 +107,14 @@ namespace FacilityDocu.UI.Utilities
 
         public static void Process(IList<ActionDTO> actions, IList<int> deleteActionIDs, ref ProjectDTO project)
         {
-            List<ActionDTO> newActions = new List<ActionDTO>();
-
             foreach (RigTypeDTO rigType in project.RigTypes)
             {
                 foreach (ModuleDTO module in rigType.Modules)
                 {
                     foreach (StepDTO step in module.Steps)
                     {
+                        List<ActionDTO> newActions = new List<ActionDTO>();
+
                         foreach (ActionDTO action in step.Actions)
                         {
                             ActionDTO newAction = null;
@@ -123,11 +123,14 @@ namespace FacilityDocu.UI.Utilities
                             {
                                 ActionDTO serverAction = actions.SingleOrDefault(a => a.ActionID == action.ActionID);
 
-
-
                                 if (serverAction != null) //update action
                                 {
                                     newAction = serverAction;
+                                }
+                                else
+                                {
+                                    //no changes
+                                    newAction = action;
                                 }
                             }
                             else
@@ -146,7 +149,7 @@ namespace FacilityDocu.UI.Utilities
                             newActions.Add(newAction);
                         }
 
-                        if (actions != null)
+                        if (actions != null) //new action
                         {
                             List<ActionDTO> newlyAddedActions = actions.Where(a => a.StepID == step.StepID && !newActions.Contains(a)).ToList();
                             newActions.AddRange(newlyAddedActions);
