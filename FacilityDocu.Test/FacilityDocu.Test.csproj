@@ -53,6 +53,7 @@
     <Compile Include="HierarchyTest.cs" />
     <Compile Include="SyncManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FacilityDocu.UI.Utilities\FacilityDocu.UI.Utilities.csproj">

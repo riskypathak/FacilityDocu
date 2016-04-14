@@ -1,6 +1,7 @@
 ﻿using FacilityDocu.UI.Utilities.Services;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using Pechkin;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +10,7 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.ServiceModel;
 using System.Xml.Linq;
+using TheArtOfDev.HtmlRenderer.PdfSharp;
 
 namespace FacilityDocu.UI.Utilities
 {
@@ -113,11 +115,11 @@ namespace FacilityDocu.UI.Utilities
 
                         if (type == "Pdf")
                         {
-                            pdfPath = System.IO.Path.Combine(textPath, string.Format("{0}_{1}.pdf", project.Description, rigType.Name));
+                            pdfPath = System.IO.Path.Combine(textPath, string.Format("{0}_{1}_{2}.pdf", project.Description, rigType.Name, layoutview));
                         }
                         else if (type == "Doc")
                         {
-                            pdfPath = System.IO.Path.Combine(textPath, string.Format("{0}_{1}.docx", project.Description, rigType.Name));
+                            pdfPath = System.IO.Path.Combine(textPath, string.Format("{0}_{1}_{2}.docx", project.Description, rigType.Name, layoutview));
                         }
 
 
@@ -139,7 +141,7 @@ namespace FacilityDocu.UI.Utilities
                 {
                     if (exportPage.Contains(string.Concat(rigType.Name, "_")))
                     {
-                        string pdfPath = System.IO.Path.Combine(textPath, string.Format("{0}_{1}.pdf", project.Description, rigType.Name));
+                        string pdfPath = System.IO.Path.Combine(textPath, string.Format("{0}_{1}_{2}.pdf", project.Description, rigType.Name, layoutview));
                         outputs.Add(pdfPath);
 
 
@@ -148,7 +150,7 @@ namespace FacilityDocu.UI.Utilities
 
                     if (exportPage.Contains(string.Concat(rigType.Name, "RiskAnalysis")))
                     {
-                        string pdfPath = System.IO.Path.Combine(textPath, string.Format("{0}_{1}_RiskAnalysis.pdf", project.Description, rigType.Name));
+                        string pdfPath = System.IO.Path.Combine(textPath, string.Format("{0}_{1}_RiskAnalysis_{2}.pdf", project.Description, rigType.Name, layoutview));
                         outputs.Add(pdfPath);
 
                         GenerateRigRiskAnalysisPDF(project, rigType, pdfPath, layoutview);
@@ -384,7 +386,6 @@ namespace FacilityDocu.UI.Utilities
                     doc.NewPage();
                 }
             }
-
             doc.Close();
         }
 
@@ -482,9 +483,6 @@ namespace FacilityDocu.UI.Utilities
 
                         finalHtml += newActionHtml;
                     }
-
-
-
                     stepNo++;
                 }
 
@@ -495,46 +493,54 @@ namespace FacilityDocu.UI.Utilities
 
             File.WriteAllText("export.html", finalHtml);
 
-            if (type != "Pdf")
-            {
-                SaveAsWordOrPdf("export.html", outputFilePath, type);
-            }
-            else
-            {
+            byte[] pdfBuf = new SimplePechkin(new GlobalConfig()).Convert(finalHtml);
 
-                Byte[] bytes;
+            System.IO.File.WriteAllBytes(outputFilePath, pdfBuf);
 
-                using (var ms = new MemoryStream())
-                {
+            //PdfSharp.Pdf.PdfDocument pdf = PdfGenerator.GeneratePdf(finalHtml, new PdfGenerateConfig() { PageOrientation = PdfSharp.PageOrientation.Landscape, PageSize = PdfSharp.PageSize.A4 });
+            //pdf.Save(outputFilePath);
 
-                    //Create an iTextSharp Document which is an abstraction of a PDF but **NOT** a PDF
-                    using (var doc = new Document(new RectangleReadOnly(842, 595), 8f, 8f, 1f, 1f))
-                    {
+            //if (type != "Pdf")
+            //{
+            //    SaveAsWordOrPdf("export.html", outputFilePath, type);
+            //}
+            //else
+            //{
 
-                        //Create a writer that's bound to our PDF abstraction and our stream
-                        using (var writer = PdfWriter.GetInstance(doc, ms))
-                        {
+            //    Byte[] bytes;
 
-                            //Open the document for writing
-                            doc.Open();
+            //    using (var ms = new MemoryStream())
+            //    {
 
-                            using (var srHtml = new StringReader(finalHtml))
-                            {
+            //        //Create an iTextSharp Document which is an abstraction of a PDF but **NOT** a PDF
+            //        using (var doc = new Document(new RectangleReadOnly(842, 595), 8f, 8f, 1f, 1f))
+            //        {
 
-                                //Parse the HTML
-                                iTextSharp.tool.xml.XMLWorkerHelper.GetInstance().ParseXHtml(writer, doc, srHtml);
-                            }
+            //            //Create a writer that's bound to our PDF abstraction and our stream
+            //            using (var writer = PdfWriter.GetInstance(doc, ms))
+            //            {
 
-                            doc.Close();
-                        }
+            //                //Open the document for writing
+            //                doc.Open();
 
-                        bytes = ms.ToArray();
-                    }
-                }
+            //                using (var srHtml = new StringReader(finalHtml))
+            //                {
+            //                    //Parse the HTML
+            //                    iTextSharp.tool.xml.XMLWorkerHelper.GetInstance().ParseXHtml(writer, doc, srHtml);
+            //                }
 
-                System.IO.File.WriteAllBytes(outputFilePath, bytes);
-            }
+            //                doc.Close();
+            //            }
+
+            //            bytes = ms.ToArray();
+            //        }
+            //    }
+
+            //    System.IO.File.WriteAllBytes(outputFilePath, bytes);
+            //}
         }
+
+       
 
         private static void SaveAsWordOrPdf(string htmlFile, string outputFilePath, string type)
         {

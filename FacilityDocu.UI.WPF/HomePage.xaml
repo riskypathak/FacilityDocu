@@ -317,6 +317,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="10"/>
                         </Grid.ColumnDefinitions>
+                        <TextBlock Name="txbAutoSave" VerticalAlignment="Center" FontSize="11" Grid.Row="0" Grid.Column="5" Foreground="White" FontStyle="Italic"/>
                         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3">
                             <TextBlock VerticalAlignment="Center" Text="Logged in as: " FontSize="12"/>
                             <TextBlock VerticalAlignment="Center" x:Name="txtUser" Text="123" FontSize="15" Foreground="White"/>
@@ -646,7 +647,7 @@
                         <ColumnDefinition Width="5"/>
                     </Grid.ColumnDefinitions>
 
-                    <CheckBox Grid.Row="1" Grid.Column="1" Name="chkRiskAnalysis" Checked="chkRiskAnalysis_Checked_1"  Content="Visible in Risk Analysis" FontSize="18" VerticalAlignment="Bottom" Foreground="White" FontWeight="Bold"/>
+                    <CheckBox Grid.Row="1" Grid.Column="1" Name="chkRiskAnalysis" Click="chkRiskAnalysis_Click"  Content="Visible in Risk Analysis" FontSize="18" VerticalAlignment="Bottom" Foreground="White" FontWeight="Bold"/>
                     <TextBlock Text="123" VerticalAlignment="Bottom" x:Name="txtActivityNumbers" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" Foreground="White" />
 
                     <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1">

@@ -342,6 +342,9 @@ namespace FacilityDocu.Services
             int tempId = 0;
             using (TabletApp_DatabaseEntities context = new TabletApp_DatabaseEntities())
             {
+                //Update action publish detail
+                context.ProjectDetails.Single(p => p.ProjectDetailID == actionID).PublishedDate = DateTime.Now;
+
                 foreach (ImageDTO imageDTO in action.Images)
                 {
                     //insert
@@ -375,7 +378,10 @@ namespace FacilityDocu.Services
 
                         context.ProjectActionImages.Add(projectImage);
 
+
                         context.SaveChanges();
+                        projectImage = context.ProjectActionImages.Single(i => i.ImageID == projectImage.Image.ImageID);
+
                         projectImage.Image.ImagePath = SaveImageToFile(projectImage.Image.ImageID, imageDTO);
                         context.SaveChanges();
 

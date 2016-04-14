@@ -8,7 +8,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <LastUsedBuildConfiguration>Release</LastUsedBuildConfiguration>
     <LastUsedPlatform>Any CPU</LastUsedPlatform>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>C:\Users\RiskyPathak\Desktop\FacilityDocu\ServicePublish</_PublishTargetUrl>
+    <_PublishTargetUrl>C:\Users\RiskyDev\Desktop\Publish</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/Data/Attachments/1.pdf">
@@ -21,31 +21,31 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/07/2014 23:32:09</publishTime>
     </File>
     <File Include="bin/Data/Attachments/sample.jpg">
-      <publishTime>11/19/2014 12:07:08</publishTime>
+      <publishTime>03/03/2015 17:58:17</publishTime>
     </File>
     <File Include="bin/Data/Images/sample.jpg">
-      <publishTime>11/18/2014 12:12:10</publishTime>
+      <publishTime>03/03/2015 17:58:17</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
-      <publishTime>11/18/2014 12:43:29</publishTime>
+      <publishTime>03/03/2015 17:58:17</publishTime>
     </File>
     <File Include="bin/EntityFramework.SqlServer.dll">
-      <publishTime>11/18/2014 12:43:29</publishTime>
+      <publishTime>03/03/2015 17:58:17</publishTime>
     </File>
     <File Include="bin/FacilityDocu.Data.dll">
-      <publishTime>05/19/2015 13:09:50</publishTime>
+      <publishTime>04/28/2015 17:07:48</publishTime>
     </File>
     <File Include="bin/FacilityDocu.DTO.dll">
-      <publishTime>05/19/2015 13:09:50</publishTime>
+      <publishTime>04/28/2015 17:07:49</publishTime>
     </File>
     <File Include="bin/FacilityDocu.Services.dll">
-      <publishTime>05/19/2015 13:09:50</publishTime>
+      <publishTime>04/13/2016 10:45:02</publishTime>
     </File>
     <File Include="bin/Tablet_ApplicationService.dll">
       <publishTime>10/27/2014 16:15:27</publishTime>
     </File>
     <File Include="Data/Attachments/sample.jpg">
-      <publishTime>11/19/2014 12:07:08</publishTime>
+      <publishTime>03/03/2015 17:58:17</publishTime>
     </File>
     <File Include="Data/Images/1.PNG">
       <publishTime>11/05/2014 13:52:29</publishTime>
@@ -57,19 +57,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/05/2014 13:52:29</publishTime>
     </File>
     <File Include="Data/Images/sample.jpg">
-      <publishTime>11/18/2014 12:12:10</publishTime>
+      <publishTime>03/03/2015 17:58:17</publishTime>
     </File>
     <File Include="FacilityDocuService.svc">
-      <publishTime>11/02/2014 22:43:43</publishTime>
+      <publishTime>03/03/2015 17:58:17</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>10/29/2014 15:14:18</publishTime>
+      <publishTime>03/03/2015 17:58:17</publishTime>
     </File>
     <File Include="Service1.svc">
       <publishTime>10/15/2014 15:33:24</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/19/2015 13:12:11</publishTime>
+      <publishTime>04/13/2016 10:45:55</publishTime>
     </File>
   </ItemGroup>
 </Project>

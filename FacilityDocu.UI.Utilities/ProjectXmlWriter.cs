@@ -236,15 +236,31 @@ namespace FacilityDocu.UI.Utilities
         {
             string savedPath = Path.Combine(Data.PROJECT_IMAGES_FOLDER, string.Format("{0}.jpg", image.ImageID));
 
-            if (Data.SYNC_DOWNLOAD_UPDATE)
+            if (Data.SYNC_DOWNLOAD_UPDATE && !image.Path.StartsWith("http")) 
             {
                 savedPath = image.Path;
             }
-            else if (Data.SYNC_DOWNLOAD)
+            else if (Data.SYNC_DOWNLOAD || image.Path.StartsWith("http"))
             {
                 using (WebClient webClient = new WebClient())
                 {
-                    webClient.DownloadFile(image.Path, savedPath);
+                    //if image path is not webpath then it means that this action has not been updated
+                    //and hence we dont require it to get it from server.
+                    try
+                    {
+                        if (image.Path.StartsWith("http"))
+                        {
+                            if (File.Exists(savedPath))
+                            {
+                                File.Delete(savedPath);
+                            }
+                            webClient.DownloadFile(image.Path, savedPath);
+                        }
+                    }
+                    catch(Exception)
+                    {
+                        //If not able to delete then just eat the exception
+                    }
                 }
             }
 

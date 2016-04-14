@@ -13,6 +13,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace FacilityDocLaptop
 {
@@ -25,6 +26,8 @@ namespace FacilityDocLaptop
 
     public partial class HomePage : Window
     {
+        private DispatcherTimer _dispatcherTimer = new DispatcherTimer();
+
         private int currentModuleIndex = 0;
         private int currentStepIndex = 0;
         private int currentActionIndex = 0;
@@ -40,6 +43,15 @@ namespace FacilityDocLaptop
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             this.DataContext = this;
+
+            _dispatcherTimer.Tick += new EventHandler(DispatcherTimer_Tick);
+            _dispatcherTimer.Interval = new TimeSpan(0, 0, 60);
+        }
+
+        private void DispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            SaveProject();
+            txbAutoSave.Text = string.Format("Autosaved at {0}", DateTime.Now.ToString("HH:mm tt"));
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -613,10 +625,21 @@ namespace FacilityDocLaptop
 
             if (grid.Name.Equals("gridEdit"))
             {
+                //Also start timer, if not already started
+                if (!this._dispatcherTimer.IsEnabled)
+                {
+                    this._dispatcherTimer.Start();
+                }
                 dpnMenu.Visibility = System.Windows.Visibility.Visible;
             }
             else
             {
+                //Also stop timer, if started
+                if (this._dispatcherTimer.IsEnabled)
+                {
+                    this._dispatcherTimer.Stop();
+                    txbAutoSave.Text = string.Empty;
+                }
                 dpnMenu.Visibility = System.Windows.Visibility.Collapsed;
             }
 
@@ -676,6 +699,8 @@ namespace FacilityDocLaptop
             ProjectXmlWriter.Write(Data.CURRENT_PROJECT);
 
             ChangeScreenControls();
+
+            CreateListViewGrid();
         }
 
         private void btnExport_Click_1(object sender, RoutedEventArgs e)
@@ -688,6 +713,7 @@ namespace FacilityDocLaptop
 
         private void btnBack_Click_1(object sender, RoutedEventArgs e)
         {
+            SaveProject();
             MakeVisible(gridHome);
         }
 
@@ -1027,13 +1053,13 @@ namespace FacilityDocLaptop
 
         private void mniLogout_Click_1(object sender, RoutedEventArgs e)
         {
-            SaveActionDetail();
+            SaveProject();
             MakeVisible(gridLogin);
         }
 
         private void mniExit_Click_1(object sender, RoutedEventArgs e)
         {
-            SaveActionDetail();
+            SaveProject();
 
             MessageBoxResult messageBoxResult = MessageBox.Show("Do you want to really want to exit?", "Exit Confirmation", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
@@ -1106,8 +1132,7 @@ namespace FacilityDocLaptop
 
         private void chkRiskAnalysis_Checked_1(object sender, RoutedEventArgs e)
         {
-            Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex]
-                    .Actions[currentActionIndex].IsAnalysis = (sender as CheckBox).IsChecked.Value;
+
         }
 
         private void btnTemplate_Click(object sender, RoutedEventArgs e)
@@ -1182,6 +1207,12 @@ namespace FacilityDocLaptop
                     }
                 }
             }
+        }
+
+        private void chkRiskAnalysis_Click(object sender, RoutedEventArgs e)
+        {
+            Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex]
+                   .Actions[currentActionIndex].IsAnalysis = (sender as CheckBox).IsChecked.Value;
         }
     }
 }

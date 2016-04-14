@@ -33,7 +33,7 @@ namespace FacilityDocLaptop
             cmbTemplates.Items.Add("Landscape Full Page");
             cmbTemplates.Items.Add("Landscape List Mode");
             cmbTemplates.Items.Add("A4");
-            cmbTemplates.SelectedIndex = 0;
+            cmbTemplates.SelectedIndex = 2;
 
             cmbContent.Items.Add("Pdf");
             cmbContent.Items.Add("Doc");
