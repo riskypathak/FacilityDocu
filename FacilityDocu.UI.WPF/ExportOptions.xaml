@@ -31,11 +31,11 @@
         <StackPanel Orientation="Vertical" Grid.Row="5">
             <TextBlock Foreground="#FFD5DEF0" FontSize="20" FontWeight="Bold" Text="Export"></TextBlock>
             <CheckBox Name="chkRigUp" Foreground="#FFD5DEF0" FontSize="20">RigUp</CheckBox>
-            <CheckBox Name="chkRigDown" Foreground="#FFD5DEF0" FontSize="20">RigMove</CheckBox>
-            <CheckBox Name="chkRigMove" Foreground="#FFD5DEF0" FontSize="20">RigDown</CheckBox>
+            <CheckBox Name="chkRigDown" Foreground="#FFD5DEF0" FontSize="20">RigDown</CheckBox>
+            <CheckBox Name="chkRigMove" Foreground="#FFD5DEF0" FontSize="20">RigMove</CheckBox>
             <CheckBox Name="chkRigUpRisk" Foreground="#FFD5DEF0" FontSize="20">RigUp - Risk Analysis</CheckBox>
             <CheckBox Name="chkRigDownRisk" Foreground="#FFD5DEF0" FontSize="20">RigDown - Risk Analysis</CheckBox>
-            <CheckBox Name="chkRigMoveRisk" Foreground="#FFD5DEF0" FontSize="20">RigMove - RiskAnalysis</CheckBox>
+            <CheckBox Name="chkRigMoveRisk" Foreground="#FFD5DEF0" FontSize="20">RigMove - Risk Analysis</CheckBox>
             
         </StackPanel>
 

@@ -83,13 +83,13 @@ namespace FacilityDocLaptop
                 exportPage.Add("UPRiskAnalysis");
             }
 
-            if (chkRigDownRisk.IsChecked.Value)
             {
                 exportPage.Add("DownRiskAnalysis");
             }
 
             if (chkRigMoveRisk.IsChecked.Value)
             {
+            if (chkRigDownRisk.IsChecked.Value)
                 exportPage.Add("MoveRiskAnalysis");
             }
 
