@@ -198,6 +198,7 @@ namespace FacilityDocu.Services
                 {
                     ProjectActionImage modifyPAI = existingPD.ProjectActionImages.Single(a => a.ImageID == updatePAI.ImageID);
 
+                    modifyPAI.IsUsed = updatePAI.IsUsed;
                     modifyPAI.Image.CreationDate = updatePAI.Image.CreationDate;
                     modifyPAI.Image.Description = updatePAI.Image.Description;
                     modifyPAI.Image.ImageComments = updatePAI.Image.ImageComments;
@@ -353,7 +354,7 @@ namespace FacilityDocu.Services
 
                         ProjectActionImage projectImage = new ProjectActionImage();
                         projectImage.ProjectDetailID = actionID;
-
+                        projectImage.IsUsed = imageDTO.Used;
                         projectImage.Image = new Image()
                         {
                             ImageID = Helper.GetUniqueID(),

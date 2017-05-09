@@ -139,19 +139,39 @@ namespace Tablet_App
                     }
                     try
                     {
-                        Dictionary<string,int>  dic = await service.UpdateActionImagesAsync(action);
+                        Dictionary<string, int> dic = await service.UpdateActionImagesAsync(action);
 
-                        foreach(KeyValuePair<string, int> kv in dic)
+                        foreach (KeyValuePair<string, int> kv in dic)
                         {
                             ImageDTO img = action.Images.SingleOrDefault(i => i.ImageID == kv.Key);
 
-                            if(img!= null)
+                            if (img != null)
                             {
                                 StorageFile file = await StorageFile.GetFileFromPathAsync(img.Path);
 
                                 img.ImageID = kv.Value.ToString();
-                                await file.RenameAsync(img.ImageID + ".jpg");
-                                
+
+                                //Task taskDelete;
+                                bool isExists = false;
+                                try
+                                {
+                                    var newFilePath = Path.Combine(Path.GetDirectoryName(img.Path), img.ImageID + ".jpg");
+                                    var item = await StorageFile.GetFileFromPathAsync(newFilePath);
+                                    if (item != null)
+                                    {
+                                        isExists = true;
+                                        //await item.RenameAsync(img.ImageID + "_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".jpg");
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    //Lets assume no file so no need to delete it and lets eat exception
+                                }
+
+                                if (!isExists)
+                                {
+                                    await file.RenameAsync(img.ImageID + ".jpg");
+                                }
                             }
                         }
                     }

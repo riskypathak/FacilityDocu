@@ -144,6 +144,7 @@
     <Compile Include="Sync\ProjectXmlReader.cs" />
     <Compile Include="Sync\ProjectXmlWriter.cs" />
     <Compile Include="Sync\SyncManager.cs" />
+    <Compile Include="VisibilityConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

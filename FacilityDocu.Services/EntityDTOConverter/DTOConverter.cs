@@ -79,7 +79,8 @@ namespace FacilityDocu.Services.EntityDTOConverter
                             projectDetail.ActionDescriptionWarning = actionDTO.IsDescriptionwarning;
                             projectDetail.ActionNameWarning = actionDTO.IsNameWarning;
                             projectDetail.ImportantActionDescription = actionDTO.ImportantDescription;
-                            actionDTO.ImportantName = actionDTO.ImportantName;
+                            projectDetail.ImportantActionname = actionDTO.ImportantName;
+                            projectDetail.IsAnalysis = actionDTO.IsAnalysis;
 
                             projectDetail.ProjectActionTools = ToProjectActionTool(actionDTO.Tools, projectDetail);
                             projectDetail.ProjectActionResources = ToProjectActionResources(actionDTO.Resources, projectDetail);
@@ -150,7 +151,8 @@ namespace FacilityDocu.Services.EntityDTOConverter
                 {
                     ProjectActionImage projectImage = new ProjectActionImage();
                     projectImage.ProjectDetailID = projectDetail.ProjectDetailID;
-                    
+                    projectImage.IsUsed = imageDTO.Used;
+
                     projectImage.Image = new Image()
                     {
                         Description = imageDTO.Description,

@@ -271,15 +271,29 @@ namespace FacilityDocu.UI.Utilities
         {
             string savedPath = Path.Combine(Data.PROJECT_ATTACHMENTS_FOLDER, string.Format("{0}.pdf", attachment.AttachmentID));
 
-            if (Data.SYNC_DOWNLOAD_UPDATE)
+            if (Data.SYNC_DOWNLOAD_UPDATE && !attachment.Path.StartsWith("http"))
             {
                 savedPath = attachment.Path;
             }
-            else if (Data.SYNC_DOWNLOAD)
+            else if (Data.SYNC_DOWNLOAD || attachment.Path.StartsWith("http"))
             {
                 using (WebClient webClient = new WebClient())
                 {
-                    webClient.DownloadFile(attachment.Path, savedPath);
+                    try
+                    {
+                        if (attachment.Path.StartsWith("http"))
+                        {
+                            if (File.Exists(savedPath))
+                            {
+                                File.Delete(savedPath);
+                            }
+                            webClient.DownloadFile(attachment.Path, savedPath);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        //If not able to delete then just eat the exception
+                    }
                 }
             }
 

@@ -120,7 +120,7 @@
                 </StackPanel>
 
                 <Button Grid.Row="2" Grid.Column="0" x:Name="NewProject_btn" HorizontalAlignment="Left" VerticalAlignment="Top" Click="NewProject_btn_Click">
-                    <Image Source="Assets\newproject.png"></Image>
+                    <Image Source="Assets\newproject.png" Height="75" Width="75"></Image>
                 </Button>
 
                 <Grid Grid.Row="2" Grid.Column="2" x:Name="gdvNew" Visibility="Collapsed">

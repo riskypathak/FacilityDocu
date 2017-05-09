@@ -213,6 +213,16 @@ namespace FacilityDocLaptop
         {
             SaveProject();
 
+            var unknwonImages = Data.CURRENT_PROJECT.RigTypes.SelectMany(r => r.Modules.SelectMany(m => m.Steps.SelectMany(s => s.Actions.SelectMany
+                (a => a.Images.Where(i => !File.Exists(i.Path)).Select(i => i.Path)))));
+
+            //if there are few images which are not known then don't go ahead will publish
+            if(unknwonImages.Count() > 0)
+            {
+                MessageBox.Show(string.Format("Cannot publish as below images are missing.\n{0}", string.Join("\n",unknwonImages.ToArray())));
+                return;
+            }
+
             string oldProjectID = Data.CURRENT_PROJECT.ProjectID;
 
             ProjectDTO updatedProject = (new SyncManager()).UpdateDatabase(Data.CURRENT_PROJECT.ProjectID, false);
@@ -231,7 +241,18 @@ namespace FacilityDocLaptop
                     File.Delete(System.IO.Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", oldProjectID)));
                 }
 
-                MessageBox.Show("Published");
+                unknwonImages = Data.CURRENT_PROJECT.RigTypes.SelectMany(r => r.Modules.SelectMany(m => m.Steps.SelectMany(s => s.Actions.SelectMany
+                (a => a.Images.Where(i => !File.Exists(i.Path)).Select(i => i.Path)))));
+
+                //if there are few images which are not known then don't go ahead will publish
+                if (unknwonImages.Count() > 0)
+                {
+                    MessageBox.Show(string.Format("Published but below images couldnot be synced.\n{0}", string.Join("\n", unknwonImages.ToArray())));
+                }
+                else
+                {
+                    MessageBox.Show("Published Successfully.");
+                }
             }
 
             MakeVisible(gridHome);
@@ -407,11 +428,20 @@ namespace FacilityDocLaptop
 
         private void ShowImages(IList<ImageDTO> images)
         {
+
+            IList<string> imagesNotFound = new List<string>();
             Images = new List<ImageModel>();
             foreach (ImageDTO image in images.Where(i => i.Used == true))
             {
                 BitmapImage bitmap = new BitmapImage();
 
+                
+
+                if(!File.Exists(image.Path))
+                {
+                    imagesNotFound.Add(image.Path);
+                    continue;
+                }
                 try
                 {
                     System.Windows.Controls.Image imagename = new System.Windows.Controls.Image();
@@ -428,6 +458,11 @@ namespace FacilityDocLaptop
                 }
             }
             lstPictures.ItemsSource = Images;
+
+            if (imagesNotFound.Count > 0)
+            {
+                MessageBox.Show(string.Format("Below Images are not present at specified path. This can be a serious issue. {0}", string.Join("\n", imagesNotFound.ToArray())));
+            }
         }
 
         private void btnActionRight_Click(object sender, RoutedEventArgs e)
