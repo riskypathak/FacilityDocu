@@ -117,6 +117,11 @@
                             <Image Name="imgImportXml" Source="Assets\importxml.png" />
                         </StackPanel>
                     </Button>
+                    <Button ToolTipService.ToolTip="Config Settings" x:Name="btnAdmin" Click="btnAdmin_Click"  Width="75" RenderTransformOrigin="7.3,-1.227">
+                        <StackPanel>
+                            <Image Source="Assets\admin.png" />
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
 
                 <Button Grid.Row="2" Grid.Column="0" x:Name="NewProject_btn" HorizontalAlignment="Left" VerticalAlignment="Top" Click="NewProject_btn_Click">
@@ -412,8 +417,70 @@
                         </FlowDocument>
                     </RichTextBox>
 
-                    <TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="5" Grid.Row="1" Text="Lifting Gears" FontSize="20"/>
-                    <TextBox AcceptsReturn="True" Grid.Column="5" Grid.Row="3" x:Name="txtActionLiftingGears"/>
+                    <Grid Grid.Column="5" Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="0" HorizontalAlignment="Left" Text="Lifting Gears" FontSize="20"/>
+                        <Button  VerticalAlignment="Bottom" Style="{StaticResource AddButtonStyle}" Grid.Column="1" Command="{Binding ShowPopUpLiftingGearCommand}" Content="Add" HorizontalAlignment="Right"/>
+                    </Grid>
+
+                    <ListBox Grid.Column="5" Grid.Row="3" Height="Auto" VerticalAlignment="Stretch" ItemsSource="{Binding AllLiftingGears}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Width="150" Text="{Binding Name}"></TextBlock>
+                                    <Button CommandParameter="{Binding}" Height="20" Width="20">
+                                        <StackPanel>
+                                            <Image Source="Assets\remove.jpg" />
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+
+                    <Popup StaysOpen="False" Placement="MousePoint" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" IsOpen="{Binding IsPopUpLiftingGearOpen, UpdateSourceTrigger=PropertyChanged}" Height="200" Width="200">
+                        <ScrollViewer VerticalScrollBarVisibility="Visible" MaxHeight="200">
+                            <Grid Background="White">
+                                <StackPanel  Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Content="OK" Command="{Binding OKPopUpLiftingGearCommand}"></Button>
+                                        <Button Content="Cancel" Command="{Binding CancelPopUpLiftingGearCommand}"></Button>
+                                    </StackPanel>
+                                    <ListBox SelectionMode="Multiple" ItemsSource="{Binding AllLiftingGears}" SelectedItem="{Binding SelectedLiftingGear}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <CheckBox Tag="{Binding Id}" IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsSelected}"></CheckBox>
+                                                    <TextBlock Width="250" Text="{Binding Name}"></TextBlock>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="{x:Type ListBoxItem}">
+                                                <Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}"/>
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
+                                    </ListBox>
+                                </StackPanel>
+                            </Grid>
+                        </ScrollViewer>
+                    </Popup>
+                    
+                    <!--<TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="5" Grid.Row="1" Text="Lifting Gears" FontSize="20"/>
+                    <TextBox IsReadOnly="True" AcceptsReturn="True" Grid.Column="5" Grid.Row="3" x:Name="txtActionLiftingGears"/>-->
 
                     <Grid Grid.Column="7" Grid.Row="1">
                         <Grid.ColumnDefinitions>
@@ -465,8 +532,70 @@
                     <TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="9" Grid.Row="1" Text="Dimensions" FontSize="20"/>
                     <TextBox AcceptsReturn="True" Grid.Column="9" Grid.Row="3"  x:Name="txtActionDimensions"/>
 
-                    <TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="11" Grid.Row="1" HorizontalAlignment="Left" Text="Risks" FontSize="20"/>
-                    <TextBox AcceptsReturn="True" Grid.Column="11" Grid.Row="3"  x:Name="txtActionRisks" />
+                    <Grid Grid.Column="11" Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="0" HorizontalAlignment="Left" Text="Risks" FontSize="20"/>
+                        <Button  VerticalAlignment="Bottom" Style="{StaticResource AddButtonStyle}" Grid.Column="1" Command="{Binding ShowPopUpRiskCommand}" Content="Add" HorizontalAlignment="Right"/>
+                    </Grid>
+
+                    <ListBox Grid.Column="11" Grid.Row="3" Height="Auto" VerticalAlignment="Stretch" ItemsSource="{Binding AllRisks}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Width="150" Text="{Binding Name}"></TextBlock>
+                                    <Button CommandParameter="{Binding}" Height="20" Width="20">
+                                        <StackPanel>
+                                            <Image Source="Assets\remove.jpg" />
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+
+                    <Popup StaysOpen="False" Placement="MousePoint" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" IsOpen="{Binding IsPopUpRiskOpen, UpdateSourceTrigger=PropertyChanged}" Height="200" Width="200">
+                        <ScrollViewer VerticalScrollBarVisibility="Visible" MaxHeight="200">
+                            <Grid Background="White">
+                                <StackPanel  Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Content="OK" Command="{Binding OKPopUpRiskCommand}"></Button>
+                                        <Button Content="Cancel" Command="{Binding CancelPopUpRiskCommand}"></Button>
+                                    </StackPanel>
+                                    <ListBox SelectionMode="Multiple" ItemsSource="{Binding AllRisks}" SelectedItem="{Binding SelectedRisk}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <CheckBox Tag="{Binding Id}" IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsSelected}"></CheckBox>
+                                                    <TextBlock Width="250" Text="{Binding Name}"></TextBlock>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="{x:Type ListBoxItem}">
+                                                <Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}"/>
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
+                                    </ListBox>
+                                </StackPanel>
+                            </Grid>
+                        </ScrollViewer>
+                    </Popup>
+
+                    <!--<TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="11" Grid.Row="1" HorizontalAlignment="Left" Text="Risks" FontSize="20"/>
+                    <TextBox AcceptsReturn="True" Grid.Column="11" Grid.Row="3"  x:Name="txtActionRisks" />-->
 
                     <TextBlock Margin="23,19,179,-10" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Width="184" Background="#FF1D2040" Grid.Column="9" Grid.Row="5"  Text="Resources" FontSize="20" Foreground="White" Grid.RowSpan="2"/>
 

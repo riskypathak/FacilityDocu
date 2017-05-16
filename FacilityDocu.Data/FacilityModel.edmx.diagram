@@ -38,6 +38,8 @@
         <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectDe__Publi__403A8C7D" />
         <AssociationConnector Association="TabletApp_DatabaseModel.FK__ProjectDe__StepI__3B75D760" />
         <AssociationConnector Association="TabletApp_DatabaseModel.FK__RiskAnaly__Proje__3D5E1FD2" />
+        <EntityTypeShape EntityType="TabletApp_DatabaseModel.LiftingGear" Width="1.5" PointX="4.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TabletApp_DatabaseModel.Risk" Width="1.5" PointX="10.375" PointY="0.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

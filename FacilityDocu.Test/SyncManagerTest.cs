@@ -15,5 +15,12 @@ namespace FacilityDocu.Test
             SyncManager manager = new SyncManager(new List<int> { 1, 2 });
             manager.UpdateProjectXml(null);
         }
+
+        [TestMethod]
+        public void GetMasterDataTest()
+        {
+            SyncManager manager = new SyncManager();
+            manager.DownloadMasterData();
+        }
     }
 }

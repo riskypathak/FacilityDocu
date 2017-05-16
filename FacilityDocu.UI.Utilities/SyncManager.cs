@@ -1,4 +1,5 @@
 ﻿using FacilityDocu.UI.Utilities.Services;
+using FacilityDocu.DTO.Models;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,6 +8,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RestSharp;
+using Newtonsoft.Json;
 
 namespace FacilityDocu.UI.Utilities
 {
@@ -42,6 +45,30 @@ namespace FacilityDocu.UI.Utilities
             service = new FacilityDocuServiceClient();
             this.ProjectXmlFolderPath = Path.GetFullPath("Data\\ProjectXml");
         }
+        public void DownloadMasterData()
+        {
+            string masterDataPath = Path.Combine(this.ProjectXmlFolderPath, string.Format("master.json"));
+
+            if (Helper.isInternetAvailable())
+            {
+                var client = new RestClient(Data.SYNC_URL_HOST);
+                var request = new RestRequest("/Master/All", Method.GET);
+
+                IRestResponse response = client.Execute(request);
+
+                File.WriteAllText(masterDataPath, response.Content);
+
+                Data.MASTER_DATA = JsonConvert.DeserializeObject<IList<MasterDTO>>(response.Content);
+            }
+            else
+            {
+                if(File.Exists(masterDataPath))
+                {
+                    Data.MASTER_DATA = JsonConvert.DeserializeObject<IList<MasterDTO>>(File.ReadAllText(masterDataPath));
+                }
+            }
+        }
+
 
         public void Sync()
         {

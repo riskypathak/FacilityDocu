@@ -1,0 +1,67 @@
+﻿<Window x:Class="FacilityDocLaptop.Admin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FacilityDocLaptop"
+        mc:Ignorable="d"
+        Title="Admin" Height="600" Width="600">
+    <Window.Resources>
+        <Style x:Key="RemoveButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Height" Value="20" />
+            <Setter Property="Width" Value="20" />
+            <Setter Property="Margin" Value="1,1,1,1" />
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Image Source="Assets/Remove.jpg" />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="#FF5C6368">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+            <TextBlock TextWrapping="Wrap" Text="Type: " Foreground="White" FontSize="20" FontWeight="Bold" />
+            <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" ItemsSource="{Binding AllTypes}" SelectedItem="{Binding SelectedType}">
+            </ComboBox>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Right">
+            <Button Content="Save" Command="{Binding SaveCommand}" Height="50" Width="100" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="15"></Button>
+
+            <Button Content="Cancel" Command="{Binding CancelCommand}" Height="50" Width="100" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="15"></Button>
+        </StackPanel>
+
+        <DataGrid ItemsSource="{Binding MasterData}" AutoGenerateColumns="False" Grid.Row="3" Grid.Column="1">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Name}" Header="Name"></DataGridTextColumn>
+                <DataGridTemplateColumn Header="Delete">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Style="{StaticResource RemoveButtonStyle}" Content="Delete" CommandParameter="{Binding}" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+AncestorType={x:Type DataGrid}}, Path=DataContext.DeleteCommand}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

@@ -16,6 +16,7 @@ namespace FacilityDocu.UI.Utilities
 {
     public static class Helper
     {
+
         public static bool isInternetAvailable()
         {
             bool isInternetAvailable = false;
@@ -539,8 +540,6 @@ namespace FacilityDocu.UI.Utilities
             //    System.IO.File.WriteAllBytes(outputFilePath, bytes);
             //}
         }
-
-       
 
         private static void SaveAsWordOrPdf(string htmlFile, string outputFilePath, string type)
         {

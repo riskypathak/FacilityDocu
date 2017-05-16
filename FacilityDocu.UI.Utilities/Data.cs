@@ -1,4 +1,5 @@
-﻿using FacilityDocu.UI.Utilities.Services;
+﻿using FacilityDocu.DTO.Models;
+using FacilityDocu.UI.Utilities.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace FacilityDocu.UI.Utilities
 
         public static string EXPORT_PDF_PATH = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
+        public static string SYNC_URL_HOST = "http://localhost:9876";
+
         public static bool SYNC_DOWNLOAD = false;
         public static bool SYNC_DOWNLOAD_UPDATE = false;
 
@@ -27,5 +30,6 @@ namespace FacilityDocu.UI.Utilities
         public static string CURRENT_USER;
 
         public static IList<ToolDTO> AVAILABLE_TOOLS = null;
+        public static IList<MasterDTO> MASTER_DATA = null;
     }
 }

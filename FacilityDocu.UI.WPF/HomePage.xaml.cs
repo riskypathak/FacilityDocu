@@ -46,7 +46,11 @@ namespace FacilityDocLaptop
 
             _dispatcherTimer.Tick += new EventHandler(DispatcherTimer_Tick);
             _dispatcherTimer.Interval = new TimeSpan(0, 0, 60);
+
+            PartialInit();
         }
+
+        partial void PartialInit();
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
@@ -217,9 +221,9 @@ namespace FacilityDocLaptop
                 (a => a.Images.Where(i => !File.Exists(i.Path)).Select(i => i.Path)))));
 
             //if there are few images which are not known then don't go ahead will publish
-            if(unknwonImages.Count() > 0)
+            if (unknwonImages.Count() > 0)
             {
-                MessageBox.Show(string.Format("Cannot publish as below images are missing.\n{0}", string.Join("\n",unknwonImages.ToArray())));
+                MessageBox.Show(string.Format("Cannot publish as below images are missing.\n{0}", string.Join("\n", unknwonImages.ToArray())));
                 return;
             }
 
@@ -324,8 +328,18 @@ namespace FacilityDocLaptop
                     txtActionNumber.Text = string.Format("{0}/{1}", currentActionIndex + 1, step.Actions.Count());
 
                     txtActionDimensions.Text = action.Dimensions.Trim();
-                    txtActionLiftingGears.Text = action.LiftingGears.Trim();
-                    txtActionRisks.Text = action.Risks.Trim();
+                    action.LiftingGears.Split('|').ToList().ForEach(l =>
+                    {
+                        var lg = AllLiftingGears.SingleOrDefault(g => g.Name == l);
+
+                        if (lg != null) lg.IsSelected = true;
+                    });
+                    action.Risks.Split('|').ToList().ForEach(l =>
+                    {
+                        var lg = AllRisks.SingleOrDefault(g => g.Name == l);
+
+                        if (lg != null) lg.IsSelected = true;
+                    });
 
                     lstActionTools.ItemsSource = action.Tools;
 
@@ -435,9 +449,9 @@ namespace FacilityDocLaptop
             {
                 BitmapImage bitmap = new BitmapImage();
 
-                
 
-                if(!File.Exists(image.Path))
+
+                if (!File.Exists(image.Path))
                 {
                     imagesNotFound.Add(image.Path);
                     continue;
@@ -488,10 +502,10 @@ namespace FacilityDocLaptop
                 ActionDTO action = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex];
 
                 action.Dimensions = txtActionDimensions.Text;
-                action.LiftingGears = txtActionLiftingGears.Text;
+                action.LiftingGears = string.Join("|", AllLiftingGears.Where(s => s.IsSelected).Select(a=>a.Name));
                 action.Name = new TextRange(txtAction.Document.ContentStart, txtAction.Document.ContentEnd).Text;
                 action.Description = new TextRange(txtActionDetails.Document.ContentStart, txtActionDetails.Document.ContentEnd).Text;
-                action.Risks = txtActionRisks.Text;
+                action.Risks = string.Join("|", AllRisks.Where(s => s.IsSelected).Select(a => a.Name));
                 action.IsAnalysis = chkRiskAnalysis.IsChecked.Value;
 
                 SaveAnalysisDetail();
@@ -544,19 +558,19 @@ namespace FacilityDocLaptop
             );
 
             ActionDTO action = new ActionDTO()
-                {
-                    Name = "New Action",
-                    Description = "New Action's Description",
-                    Dimensions = "New Action's Dimensions",
-                    LiftingGears = "New Action's Lifting Gears",
-                    Risks = "New Action's Risks",
-                    Number = (Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Length + 1).ToString("00"),
-                    Resources = masterResources.ToArray(),
-                    RiskAnalysis = (new List<RiskAnalysisDTO>() { new RiskAnalysisDTO() }).ToArray(),
-                    Tools = (new List<ToolDTO>()).ToArray(),
-                    Images = (new List<ImageDTO>()).ToArray(),
-                    ActionID = "0"
-                };
+            {
+                Name = "New Action",
+                Description = "New Action's Description",
+                Dimensions = "New Action's Dimensions",
+                LiftingGears = "New Action's Lifting Gears",
+                Risks = "New Action's Risks",
+                Number = (Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Length + 1).ToString("00"),
+                Resources = masterResources.ToArray(),
+                RiskAnalysis = (new List<RiskAnalysisDTO>() { new RiskAnalysisDTO() }).ToArray(),
+                Tools = (new List<ToolDTO>()).ToArray(),
+                Images = (new List<ImageDTO>()).ToArray(),
+                ActionID = "0"
+            };
 
 
             IList<ActionDTO> actions = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.ToList();
@@ -1248,6 +1262,12 @@ namespace FacilityDocLaptop
         {
             Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex]
                    .Actions[currentActionIndex].IsAnalysis = (sender as CheckBox).IsChecked.Value;
+        }
+
+        private void btnAdmin_Click(object sender, RoutedEventArgs e)
+        {
+            Admin admin = new Admin();
+            admin.ShowDialog();
         }
     }
 }

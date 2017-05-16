@@ -74,6 +74,9 @@
     <Compile Include="ImageComment.cs">
       <DependentUpon>FacilityModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="LiftingGear.cs">
+      <DependentUpon>FacilityModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Module.cs">
       <DependentUpon>FacilityModel.tt</DependentUpon>
     </Compile>
@@ -100,6 +103,9 @@
       <DependentUpon>FacilityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RigType.cs">
+      <DependentUpon>FacilityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Risk.cs">
       <DependentUpon>FacilityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RiskAnalysi.cs">
