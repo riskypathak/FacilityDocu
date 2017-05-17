@@ -27,8 +27,6 @@ namespace FacilityDocLaptop
         public ICommand OKPopUpLiftingGearCommand { get; set; }
         public ICommand CancelPopUpLiftingGearCommand { get; set; }
 
-
-
         private bool _isPopUpRiskOpen;
         public bool IsPopUpRiskOpen { get { return _isPopUpRiskOpen; } set { _isPopUpRiskOpen = value; RaisePropertyChanged("IsPopUpRiskOpen"); } }
 
@@ -42,6 +40,41 @@ namespace FacilityDocLaptop
         public ICommand OKPopUpRiskCommand { get; set; }
         public ICommand CancelPopUpRiskCommand { get; set; }
 
+
+        private bool _isPopUpDimensionOpen;
+        public bool IsPopUpDimensionOpen { get { return _isPopUpRiskOpen; } set { _isPopUpRiskOpen = value; RaisePropertyChanged("IsPopUpDimensionOpen"); } }
+
+        public ICommand ShowPopUpDimensionCommand { get; set; }
+        public ICommand OKPopUpDimensionCommand { get; set; }
+        public ICommand CancelPopUpDimensionCommand { get; set; }
+
+        private int _dimensionLength;
+        public int DimensionLength { get { return _dimensionLength; } set { _dimensionLength = value; RaisePropertyChanged("DimensionLength"); RaisePropertyChanged("Dimension"); } }
+
+        private int _dimensionWidth;
+        public int DimensionWidth { get { return _dimensionWidth; } set { _dimensionWidth = value; RaisePropertyChanged("DimensionWidth"); RaisePropertyChanged("Dimension"); } }
+
+        private int _dimensionHeight;
+        public int DimensionHeight { get { return _dimensionHeight; } set { _dimensionHeight = value; RaisePropertyChanged("DimensionHeight"); RaisePropertyChanged("Dimension"); } }
+
+        private int _dimensionWeight;
+        public int DimensionWeight { get { return _dimensionWeight; } set { _dimensionWeight = value; RaisePropertyChanged("DimensionWeight"); RaisePropertyChanged("Dimension"); } }
+
+        public string Dimension
+        {
+            get
+            {
+                if (_dimensionLength == 0 || _dimensionWidth == 0 || _dimensionHeight == 0 || _dimensionWeight == 0)
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    return $"{_dimensionLength}X{_dimensionWidth}X{_dimensionHeight} Wg: {_dimensionWeight}";
+                }
+            }
+        }
+
         partial void PartialInit()
         {
             SyncManager manager = new SyncManager();
@@ -54,12 +87,21 @@ namespace FacilityDocLaptop
                 .ForEach(m => AllRisks.Add(new MasterDataModel() { Id = m.Id, Name = m.Description }));
 
             this.ShowPopUpLiftingGearCommand = new RelayCommand(o => { IsPopUpLiftingGearOpen = true; }, o => true);
-            this.OKPopUpLiftingGearCommand = new RelayCommand(o => OKPopUpLiftingGearCommandExecute() , o => true);
+            this.OKPopUpLiftingGearCommand = new RelayCommand(o => OKPopUpLiftingGearCommandExecute(), o => true);
             this.CancelPopUpLiftingGearCommand = new RelayCommand(o => { IsPopUpLiftingGearOpen = false; }, o => true);
 
             this.ShowPopUpRiskCommand = new RelayCommand(o => { IsPopUpRiskOpen = true; }, o => true);
             this.OKPopUpRiskCommand = new RelayCommand(o => OKPopUpRiskCommandExecute(), o => true);
             this.CancelPopUpRiskCommand = new RelayCommand(o => { IsPopUpRiskOpen = false; }, o => true);
+
+            this.ShowPopUpDimensionCommand = new RelayCommand(o => { IsPopUpDimensionOpen = true; }, o => true);
+            this.OKPopUpDimensionCommand = new RelayCommand(o => OKPopUpDimensionCommandExecute(), o => true);
+            this.CancelPopUpDimensionCommand = new RelayCommand(o => { IsPopUpDimensionOpen = false; }, o => true);
+        }
+
+        private void OKPopUpDimensionCommandExecute()
+        {
+            IsPopUpDimensionOpen = false;
         }
 
         private void OKPopUpLiftingGearCommandExecute()

@@ -529,8 +529,57 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
 
-                    <TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="9" Grid.Row="1" Text="Dimensions" FontSize="20"/>
-                    <TextBox AcceptsReturn="True" Grid.Column="9" Grid.Row="3"  x:Name="txtActionDimensions"/>
+                    <Grid Grid.Column="9" Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="0" HorizontalAlignment="Left" Text="Dimensions" FontSize="20"/>
+                        <Button  VerticalAlignment="Bottom" Style="{StaticResource AddButtonStyle}" Grid.Column="1" Command="{Binding ShowPopUpDimensionCommand}" Content="Add" HorizontalAlignment="Right"/>
+                    </Grid>
+
+                    <TextBox IsReadOnly="True" Grid.Column="9" Grid.Row="3" Text="{Binding Dimension, Mode=OneWay}"/>
+
+                    <Popup StaysOpen="False" Placement="MousePoint" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" IsOpen="{Binding IsPopUpDimensionOpen, UpdateSourceTrigger=PropertyChanged}" Height="200" Width="200">
+                        <ScrollViewer VerticalScrollBarVisibility="Visible" MaxHeight="200">
+                            <Grid Background="White">
+                                <StackPanel  Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Content="OK" Command="{Binding OKPopUpDimensionCommand}"></Button>
+                                        <Button Content="Cancel" Command="{Binding CancelPopUpDimensionCommand}"></Button>
+                                    </StackPanel>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"></RowDefinition>
+                                            <RowDefinition Height="*"></RowDefinition>
+                                            <RowDefinition Height="*"></RowDefinition>
+                                            <RowDefinition Height="*"></RowDefinition>
+                                        </Grid.RowDefinitions>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label Content="Length: " Grid.Row="0" Grid.Column="0"></Label>
+                                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding DimensionLength}"/>
+
+                                        <Label Content="Width: " Grid.Row="1" Grid.Column="0"></Label>
+                                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding DimensionWidth}"/>
+
+                                        <Label Content="Height: " Grid.Row="2" Grid.Column="0"></Label>
+                                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding DimensionHeight}"/>
+
+                                        <Label Content="Weight: " Grid.Row="3" Grid.Column="0"></Label>
+                                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding DimensionWeight}"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Grid>
+                        </ScrollViewer>
+                    </Popup>
+                    
+                    <!--<TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="9" Grid.Row="1" Text="Dimensions" FontSize="20"/>
+                    <TextBox AcceptsReturn="True" Grid.Column="9" Grid.Row="3"  x:Name="txtActionDimensions"/>-->
 
                     <Grid Grid.Column="11" Grid.Row="1">
                         <Grid.ColumnDefinitions>

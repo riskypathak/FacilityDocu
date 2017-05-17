@@ -327,7 +327,7 @@ namespace FacilityDocLaptop
 
                     txtActionNumber.Text = string.Format("{0}/{1}", currentActionIndex + 1, step.Actions.Count());
 
-                    txtActionDimensions.Text = action.Dimensions.Trim();
+                    //txtActionDimensions.Text = action.Dimensions.Trim();
                     action.LiftingGears.Split('|').ToList().ForEach(l =>
                     {
                         var lg = AllLiftingGears.SingleOrDefault(g => g.Name == l);
@@ -501,7 +501,7 @@ namespace FacilityDocLaptop
 
                 ActionDTO action = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex];
 
-                action.Dimensions = txtActionDimensions.Text;
+                //action.Dimensions = txtActionDimensions.Text;
                 action.LiftingGears = string.Join("|", AllLiftingGears.Where(s => s.IsSelected).Select(a=>a.Name));
                 action.Name = new TextRange(txtAction.Document.ContentStart, txtAction.Document.ContentEnd).Text;
                 action.Description = new TextRange(txtActionDetails.Document.ContentStart, txtActionDetails.Document.ContentEnd).Text;
