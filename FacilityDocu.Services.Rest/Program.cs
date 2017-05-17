@@ -10,10 +10,10 @@ namespace FacilityDocu.Services.Rest
     {
         static void Main(string[] args)
         {
-            using (var host = new Nancy.Hosting.Self.NancyHost(new Uri("http://localhost:9876")))
+            using (var host = new Nancy.Hosting.Self.NancyHost(new Uri("http://localhost:8765")))
             {
                 host.Start();
-                Console.WriteLine("Running on http://*:9876");
+                Console.WriteLine("Running on http://*:8765");
                 Console.ReadLine();
             }
         }

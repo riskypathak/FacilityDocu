@@ -78,9 +78,6 @@
     <Reference Include="itextsharp">
       <HintPath>..\packages\iTextSharp.5.5.3\lib\itextsharp.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.dll</HintPath>
@@ -262,7 +259,9 @@
     <None Include="Data\Attachments\sample.atc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\DataSources\FacilityDocu.UI.Utilities.Services.ActionDTO.datasource" />
     <None Include="Properties\DataSources\FacilityDocu.UI.Utilities.Services.ModuleDTO.datasource" />
     <None Include="Properties\DataSources\FacilityDocu.UI.Utilities.Services.ProjectDTO.datasource" />
