@@ -63,7 +63,7 @@ namespace FacilityDocLaptop
 
             IList<string> exportPage = new List<string>();
 
-            if(chkRigUp.IsChecked.Value)
+            if (chkRigUp.IsChecked.Value)
             {
                 exportPage.Add("UP_");
             }
@@ -83,13 +83,13 @@ namespace FacilityDocLaptop
                 exportPage.Add("UPRiskAnalysis");
             }
 
+            if (chkRigDownRisk.IsChecked.Value)
             {
                 exportPage.Add("DownRiskAnalysis");
             }
 
             if (chkRigMoveRisk.IsChecked.Value)
             {
-            if (chkRigDownRisk.IsChecked.Value)
                 exportPage.Add("MoveRiskAnalysis");
             }
 
@@ -108,7 +108,7 @@ namespace FacilityDocLaptop
         {
             FolderBrowserDialog folder = new FolderBrowserDialog();
             folder.RootFolder = Environment.SpecialFolder.Desktop;
-            if(folder.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (folder.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 txtExportPath.Text = Data.EXPORT_PDF_PATH = folder.SelectedPath;
             }

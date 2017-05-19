@@ -89,12 +89,6 @@
     <Compile Include="ProjectActionImage.cs">
       <DependentUpon>FacilityModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="ProjectActionResource.cs">
-      <DependentUpon>FacilityModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ProjectActionTool.cs">
-      <DependentUpon>FacilityModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="ProjectDetail.cs">
       <DependentUpon>FacilityModel.tt</DependentUpon>
     </Compile>

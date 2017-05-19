@@ -17,16 +17,11 @@ namespace FacilityDocu.Data
         public int RiskAnalysisID { get; set; }
         public string Activity { get; set; }
         public string Danger { get; set; }
-        public Nullable<decimal> K { get; set; }
-        public Nullable<decimal> B { get; set; }
-        public Nullable<decimal> E { get; set; }
-        public Nullable<decimal> Risk { get; set; }
         public string Controls { get; set; }
-        public string K_ { get; set; }
-        public string B_ { get; set; }
-        public string E_ { get; set; }
-        public string Risk_ { get; set; }
         public Nullable<int> ProjectDetailID { get; set; }
+        public string L { get; set; }
+        public Nullable<int> S { get; set; }
+        public string Responsible { get; set; }
     
         public virtual ProjectDetail ProjectDetail { get; set; }
     }

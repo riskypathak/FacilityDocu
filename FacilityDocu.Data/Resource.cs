@@ -14,15 +14,8 @@ namespace FacilityDocu.Data
     
     public partial class Resource
     {
-        public Resource()
-        {
-            this.ProjectActionResources = new HashSet<ProjectActionResource>();
-        }
-    
         public int ResourceID { get; set; }
         public string ResourceName { get; set; }
         public string Type { get; set; }
-    
-        public virtual ICollection<ProjectActionResource> ProjectActionResources { get; set; }
     }
 }

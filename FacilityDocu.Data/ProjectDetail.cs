@@ -18,8 +18,6 @@ namespace FacilityDocu.Data
         {
             this.ProjectActionAttachments = new HashSet<ProjectActionAttachment>();
             this.ProjectActionImages = new HashSet<ProjectActionImage>();
-            this.ProjectActionResources = new HashSet<ProjectActionResource>();
-            this.ProjectActionTools = new HashSet<ProjectActionTool>();
             this.RiskAnalysis = new HashSet<RiskAnalysi>();
         }
     
@@ -38,12 +36,13 @@ namespace FacilityDocu.Data
         public bool IsAnalysis { get; set; }
         public string PublishedBy { get; set; }
         public Nullable<System.DateTime> PublishedDate { get; set; }
+        public string Tools { get; set; }
+        public string People { get; set; }
+        public string Machines { get; set; }
     
         public virtual Project Project { get; set; }
         public virtual ICollection<ProjectActionAttachment> ProjectActionAttachments { get; set; }
         public virtual ICollection<ProjectActionImage> ProjectActionImages { get; set; }
-        public virtual ICollection<ProjectActionResource> ProjectActionResources { get; set; }
-        public virtual ICollection<ProjectActionTool> ProjectActionTools { get; set; }
         public virtual User User { get; set; }
         public virtual Step Step { get; set; }
         public virtual ICollection<RiskAnalysi> RiskAnalysis { get; set; }

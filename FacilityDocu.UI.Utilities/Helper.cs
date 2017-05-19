@@ -2,6 +2,7 @@
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Pechkin;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,20 +35,31 @@ namespace FacilityDocu.UI.Utilities
             return isInternetAvailable;
         }
 
-        public static bool Login(string userName, string password)
+        public static bool Login(string userName, string password, out string role)
         {
             bool isLogin = false;
-
+            role = "";
             XDocument xdoc = XDocument.Load(Data.CONFIG_PATH);
 
             try
             {
-                IFacilityDocuService service = new FacilityDocuServiceClient();
-                isLogin = service.Login(userName, password);
+                //IFacilityDocuService service = new FacilityDocuServiceClient();
+                //isLogin = service.Login(userName, password);
 
-                if (isLogin)
+                var client = new RestClient(Data.SYNC_URL_HOST);
+                var request = new RestRequest("/User/Login", Method.POST)
+                { RequestFormat = DataFormat.Json };
+
+                request.AddBody(new UserDTO() { UserName = userName, Password = password });
+
+                IRestResponse response = client.Execute(request);
+
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
+                    isLogin = true;
+                    role = response.Content;
                     xdoc.Element("config").Element("lastlogin").Value = userName;
+                    xdoc.Element("config").Element("lastrole").Value = role;
                 }
             }
             catch (EndpointNotFoundException)
@@ -497,48 +509,6 @@ namespace FacilityDocu.UI.Utilities
             byte[] pdfBuf = new SimplePechkin(new GlobalConfig()).Convert(finalHtml);
 
             System.IO.File.WriteAllBytes(outputFilePath, pdfBuf);
-
-            //PdfSharp.Pdf.PdfDocument pdf = PdfGenerator.GeneratePdf(finalHtml, new PdfGenerateConfig() { PageOrientation = PdfSharp.PageOrientation.Landscape, PageSize = PdfSharp.PageSize.A4 });
-            //pdf.Save(outputFilePath);
-
-            //if (type != "Pdf")
-            //{
-            //    SaveAsWordOrPdf("export.html", outputFilePath, type);
-            //}
-            //else
-            //{
-
-            //    Byte[] bytes;
-
-            //    using (var ms = new MemoryStream())
-            //    {
-
-            //        //Create an iTextSharp Document which is an abstraction of a PDF but **NOT** a PDF
-            //        using (var doc = new Document(new RectangleReadOnly(842, 595), 8f, 8f, 1f, 1f))
-            //        {
-
-            //            //Create a writer that's bound to our PDF abstraction and our stream
-            //            using (var writer = PdfWriter.GetInstance(doc, ms))
-            //            {
-
-            //                //Open the document for writing
-            //                doc.Open();
-
-            //                using (var srHtml = new StringReader(finalHtml))
-            //                {
-            //                    //Parse the HTML
-            //                    iTextSharp.tool.xml.XMLWorkerHelper.GetInstance().ParseXHtml(writer, doc, srHtml);
-            //                }
-
-            //                doc.Close();
-            //            }
-
-            //            bytes = ms.ToArray();
-            //        }
-            //    }
-
-            //    System.IO.File.WriteAllBytes(outputFilePath, bytes);
-            //}
         }
 
         private static void SaveAsWordOrPdf(string htmlFile, string outputFilePath, string type)
@@ -585,7 +555,6 @@ namespace FacilityDocu.UI.Utilities
                     File.Delete(Path.GetFullPath("Export.html"));
                 }
             }
-
         }
 
         public partial class Footer : PdfPageEventHelper

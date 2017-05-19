@@ -82,8 +82,9 @@ namespace FacilityDocu.Services.EntityDTOConverter
                             projectDetail.ImportantActionname = actionDTO.ImportantName;
                             projectDetail.IsAnalysis = actionDTO.IsAnalysis;
 
-                            projectDetail.ProjectActionTools = ToProjectActionTool(actionDTO.Tools, projectDetail);
-                            projectDetail.ProjectActionResources = ToProjectActionResources(actionDTO.Resources, projectDetail);
+                            projectDetail.Tools = actionDTO.Tools;
+                            projectDetail.People = actionDTO.People;
+                            projectDetail.Machines = actionDTO.Machines;
                             projectDetail.ProjectActionAttachments = ToProjectActionAttachments(actionDTO.Attachments, projectDetail);
                             projectDetail.ProjectActionImages = ToProjectActionImages(actionDTO.Images, projectDetail);
                             projectDetail.RiskAnalysis = ToProjectActionRiskAnalysis(actionDTO.RiskAnalysis, projectDetail);
@@ -122,16 +123,11 @@ namespace FacilityDocu.Services.EntityDTOConverter
 
                     analysis.ProjectDetailID = projectDetail.ProjectDetailID;
                     analysis.Activity = analysisDTO.Activity;
-                    analysis.B = Convert.ToDecimal(analysisDTO.B);
-                    analysis.B_ = Convert.ToString(analysisDTO.B_);
                     analysis.Controls = analysisDTO.Controls;
                     analysis.Danger = analysisDTO.Danger;
-                    analysis.E = Convert.ToDecimal(analysisDTO.E);
-                    analysis.E_ = Convert.ToString(analysisDTO.E_);
-                    analysis.K = Convert.ToDecimal(analysisDTO.K);
-                    analysis.K_ = Convert.ToString(analysisDTO.K_);
-                    analysis.Risk = Convert.ToDecimal(analysisDTO.Risk);
-                    analysis.Risk_ = Convert.ToString(analysisDTO.Risk_);
+                    analysis.L = analysisDTO.L;
+                    analysis.S = analysisDTO.S;
+                    analysis.Responsible = analysisDTO.Responsible;
 
                     analysiss.Add(analysis);
                 }
@@ -240,47 +236,6 @@ namespace FacilityDocu.Services.EntityDTOConverter
             }
 
             return projectAttachments;
-        }
-
-        private static ICollection<ProjectActionResource> ToProjectActionResources(IList<ResourceDTO> resources, ProjectDetail projectDetail)
-        {
-            IList<ProjectActionResource> projectResources = new List<ProjectActionResource>();
-
-            if (resources != null)
-            {
-                foreach (ResourceDTO resourceDTO in resources)
-                {
-                    if (Convert.ToInt32(resourceDTO.ResourceCount) > 0)
-                    {
-                        ProjectActionResource projectResource = new ProjectActionResource();
-                        projectResource.ResourceID = Convert.ToInt32(resourceDTO.ResourceID);
-                        projectResource.ResourceCount = Convert.ToInt32(resourceDTO.ResourceCount);
-                        projectResource.ProjectDetailID = projectDetail.ProjectDetailID;
-
-                        projectResources.Add(projectResource);
-                    }
-                }
-            }
-
-            return projectResources;
-        }
-
-        private static ICollection<ProjectActionTool> ToProjectActionTool(IList<ToolDTO> tools, ProjectDetail projectDetail)
-        {
-            IList<ProjectActionTool> projectTools = new List<ProjectActionTool>();
-
-            if (tools != null)
-            {
-                foreach (ToolDTO toolDTO in tools)
-                {
-                    ProjectActionTool projectTool = new ProjectActionTool();
-                    projectTool.ToolID = Convert.ToInt32(toolDTO.ToolID);
-                    projectTool.ProjectDetailID = projectDetail.ProjectDetailID;
-
-                    projectTools.Add(projectTool);
-                }
-            }
-            return projectTools;
         }
     }
 }

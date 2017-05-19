@@ -96,10 +96,12 @@ namespace FacilityDocLaptop
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
-            bool isLogin = Helper.Login(userName.Text, password.Password);
+            string role = "";
+            bool isLogin = Helper.Login(userName.Text, password.Password, out role);
 
             if (isLogin)
             {
+                this.Role = role;
                 MakeVisible(gridHome);
                 Data.CURRENT_USER = userName.Text;
             }
@@ -327,7 +329,26 @@ namespace FacilityDocLaptop
 
                     txtActionNumber.Text = string.Format("{0}/{1}", currentActionIndex + 1, step.Actions.Count());
 
-                    //txtActionDimensions.Text = action.Dimensions.Trim();
+                    if (!string.IsNullOrEmpty(action.Dimensions))
+                    {
+                        string[] splits = action.Description.Trim().Split(new string[] { "Wg" }, StringSplitOptions.RemoveEmptyEntries);
+
+                        if (splits.Length == 2)
+                        {
+                            double value;
+                            if (double.TryParse(splits[1], out value)) this.DimensionWeight = value;
+
+                            string[] splits2 = splits[0].Trim().Split(new string[] { "X" }, StringSplitOptions.RemoveEmptyEntries);
+
+                            if (splits2.Length == 3)
+                            {
+                                if (double.TryParse(splits2[0], out value)) this.DimensionLength = value;
+                                if (double.TryParse(splits2[1], out value)) this.DimensionWidth = value;
+                                if (double.TryParse(splits2[2], out value)) this.DimensionHeight = value;
+                            }
+                        }
+                    }
+
                     action.LiftingGears.Split('|').ToList().ForEach(l =>
                     {
                         var lg = AllLiftingGears.SingleOrDefault(g => g.Name == l);
@@ -356,16 +377,12 @@ namespace FacilityDocLaptop
                     {
                         RiskAnalysisDTO analysis = action.RiskAnalysis[currentAnalysisIndex];
                         txtAnalysisActivity.Text = analysis.Activity;
-                        txtAnalysisB.Text = analysis.B.ToString();
-                        txtAnalysisB_.Text = analysis.B_.ToString();
+                        cmbAnalysisL.Text = analysis.K.ToString();
+                        cmbAnalysisS.Text = analysis.B.ToString();
                         txtAnalysisControl.Text = analysis.Controls;
                         txtAnalysisDanger.Text = analysis.Activity;
-                        txtAnalysisE.Text = analysis.E.ToString();
-                        txtAnalysisE_.Text = analysis.E_.ToString();
-                        txtAnalysisK.Text = analysis.K.ToString();
-                        txtAnalysisK_.Text = analysis.K_.ToString();
-                        txtAnalysisRisk.Text = analysis.Risk.ToString();
-                        txtAnalysisRisk_.Text = analysis.Risk_.ToString();
+                        ComboBox_SelectionChanged(null, null); //Calculate Risk
+                        txtAnalysisResponsible.Text = analysis.Risk_.ToString();
 
                         txtActivityNumbers.Text = string.Format("{0}/{1}", currentAnalysisIndex + 1, action.RiskAnalysis.Count());
                     }
@@ -377,16 +394,12 @@ namespace FacilityDocLaptop
                     if (Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].RiskAnalysis.Count() == 0)
                     {
                         txtAnalysisActivity.Text = string.Empty;
-                        txtAnalysisB.Text = string.Empty;
-                        txtAnalysisB_.Text = string.Empty;
+                        cmbAnalysisS.Text = string.Empty;
                         txtAnalysisControl.Text = string.Empty;
                         txtAnalysisDanger.Text = string.Empty;
-                        txtAnalysisE.Text = string.Empty;
-                        txtAnalysisE_.Text = string.Empty;
-                        txtAnalysisK.Text = string.Empty;
-                        txtAnalysisK_.Text = string.Empty;
+                        cmbAnalysisL.Text = string.Empty;
                         txtAnalysisRisk.Text = string.Empty;
-                        txtAnalysisRisk_.Text = string.Empty;
+                        txtAnalysisResponsible.Text = string.Empty;
                         txtActivityNumbers.Visibility = System.Windows.Visibility.Collapsed;
                     }
                 }
@@ -501,8 +514,8 @@ namespace FacilityDocLaptop
 
                 ActionDTO action = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex];
 
-                //action.Dimensions = txtActionDimensions.Text;
-                action.LiftingGears = string.Join("|", AllLiftingGears.Where(s => s.IsSelected).Select(a=>a.Name));
+                action.Dimensions = this.Dimension;
+                action.LiftingGears = string.Join("|", AllLiftingGears.Where(s => s.IsSelected).Select(a => a.Name));
                 action.Name = new TextRange(txtAction.Document.ContentStart, txtAction.Document.ContentEnd).Text;
                 action.Description = new TextRange(txtActionDetails.Document.ContentStart, txtActionDetails.Document.ContentEnd).Text;
                 action.Risks = string.Join("|", AllRisks.Where(s => s.IsSelected).Select(a => a.Name));
@@ -523,17 +536,13 @@ namespace FacilityDocLaptop
                     RiskAnalysis[currentAnalysisIndex];
 
                 analysis.Activity = txtAnalysisActivity.Text;
-                txtAnalysisActivity.Text = analysis.Activity;
-                analysis.B = string.IsNullOrEmpty(txtAnalysisB.Text) ? 0.0 : Convert.ToDouble(txtAnalysisB.Text);
-                analysis.B_ = string.IsNullOrEmpty(txtAnalysisB_.Text) ? 0.0 : Convert.ToDouble(txtAnalysisB_.Text);
+                analysis.Danger = txtAnalysisDanger.Text;
+                analysis.K = string.IsNullOrEmpty(cmbAnalysisL.Text) ? 0.0 : Convert.ToDouble(cmbAnalysisL.Text);
+                analysis.B = string.IsNullOrEmpty(cmbAnalysisS.Text) ? 0.0 : Convert.ToDouble(cmbAnalysisS.Text);
+                //analysis.Risk = txtAnalysisRisk.Text; I am not sure that whether we save risk or not
                 analysis.Controls = txtAnalysisControl.Text;
-                analysis.Activity = txtAnalysisDanger.Text;
-                analysis.E = string.IsNullOrEmpty(txtAnalysisE.Text) ? 0.0 : Convert.ToDouble(txtAnalysisE.Text);
-                analysis.E_ = string.IsNullOrEmpty(txtAnalysisE_.Text) ? 0.0 : Convert.ToDouble(txtAnalysisE_.Text);
-                analysis.K = string.IsNullOrEmpty(txtAnalysisK.Text) ? 0.0 : Convert.ToDouble(txtAnalysisK.Text);
-                analysis.K_ = string.IsNullOrEmpty(txtAnalysisK_.Text) ? 0.0 : Convert.ToDouble(txtAnalysisK_.Text);
-                analysis.Risk = string.IsNullOrEmpty(txtAnalysisRisk.Text) ? 0.0 : Convert.ToDouble(txtAnalysisRisk.Text);
-                analysis.Risk_ = string.IsNullOrEmpty(txtAnalysisRisk_.Text) ? 0.0 : Convert.ToDouble(txtAnalysisRisk_.Text);
+                //Change below to role
+                //analysis.Risk_ = string.IsNullOrEmpty(txtAnalysisResponsible.Text) ? 0.0 : Convert.ToDouble(txtAnalysisResponsible.Text);
             }
         }
 
@@ -1226,38 +1235,6 @@ namespace FacilityDocLaptop
             }
         }
 
-        private void txtAnalysisRisk_TextChanged(object sender, TextChangedEventArgs ee)
-        {
-            int k, b, e;
-
-            if (int.TryParse(txtAnalysisK.Text, out k))
-            {
-                if (int.TryParse(txtAnalysisB.Text, out b))
-                {
-                    if (int.TryParse(txtAnalysisE.Text, out e))
-                    {
-                        txtAnalysisRisk.Text = (k * b * e).ToString();
-                    }
-                }
-            }
-        }
-
-        private void txtAnalysisRiskU_TextChanged(object sender, TextChangedEventArgs ee)
-        {
-            int k, b, e;
-
-            if (int.TryParse(txtAnalysisK_.Text, out k))
-            {
-                if (int.TryParse(txtAnalysisB_.Text, out b))
-                {
-                    if (int.TryParse(txtAnalysisE_.Text, out e))
-                    {
-                        txtAnalysisRisk_.Text = (k * b * e).ToString();
-                    }
-                }
-            }
-        }
-
         private void chkRiskAnalysis_Click(object sender, RoutedEventArgs e)
         {
             Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex]
@@ -1268,6 +1245,42 @@ namespace FacilityDocLaptop
         {
             Admin admin = new Admin();
             admin.ShowDialog();
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Dictionary<string, int> mapping = new Dictionary<string, int>()
+            { { "A", 1}, { "B", 2},{ "C", 3},{ "D", 4},{ "E", 5}};
+
+            if (!string.IsNullOrEmpty(cmbAnalysisL.Text) && !string.IsNullOrEmpty(cmbAnalysisS.Text))
+            {
+                string lString = cmbAnalysisL.Text.ToString();
+                int l = mapping[lString];
+                int s = Convert.ToInt32(cmbAnalysisS.Text.ToString());
+
+                int result = l * s;
+
+                if (result < 5)
+                {
+                    txtAnalysisRisk.Text = $"Low {lString}{s}";
+                    txtAnalysisRisk.Background = Brushes.Green;
+                }
+                else if (result >= 10)
+                {
+                    txtAnalysisRisk.Text = $"High {lString}{s}";
+                    txtAnalysisRisk.Background = Brushes.Red;
+                }
+                else
+                {
+                    txtAnalysisRisk.Text = $"MED {lString}{s}";
+                    txtAnalysisRisk.Background = Brushes.Yellow;
+                }
+            }
+            else
+            {
+                txtAnalysisRisk.Text = "";
+                txtAnalysisRisk.Background = Brushes.White;
+            }
         }
     }
 }

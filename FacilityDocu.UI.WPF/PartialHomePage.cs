@@ -48,17 +48,17 @@ namespace FacilityDocLaptop
         public ICommand OKPopUpDimensionCommand { get; set; }
         public ICommand CancelPopUpDimensionCommand { get; set; }
 
-        private int _dimensionLength;
-        public int DimensionLength { get { return _dimensionLength; } set { _dimensionLength = value; RaisePropertyChanged("DimensionLength"); RaisePropertyChanged("Dimension"); } }
+        private double _dimensionLength;
+        public double DimensionLength { get { return _dimensionLength; } set { _dimensionLength = value; RaisePropertyChanged("DimensionLength"); RaisePropertyChanged("Dimension"); } }
 
-        private int _dimensionWidth;
-        public int DimensionWidth { get { return _dimensionWidth; } set { _dimensionWidth = value; RaisePropertyChanged("DimensionWidth"); RaisePropertyChanged("Dimension"); } }
+        private double _dimensionWidth;
+        public double DimensionWidth { get { return _dimensionWidth; } set { _dimensionWidth = value; RaisePropertyChanged("DimensionWidth"); RaisePropertyChanged("Dimension"); } }
 
-        private int _dimensionHeight;
-        public int DimensionHeight { get { return _dimensionHeight; } set { _dimensionHeight = value; RaisePropertyChanged("DimensionHeight"); RaisePropertyChanged("Dimension"); } }
+        private double _dimensionHeight;
+        public double DimensionHeight { get { return _dimensionHeight; } set { _dimensionHeight = value; RaisePropertyChanged("DimensionHeight"); RaisePropertyChanged("Dimension"); } }
 
-        private int _dimensionWeight;
-        public int DimensionWeight { get { return _dimensionWeight; } set { _dimensionWeight = value; RaisePropertyChanged("DimensionWeight"); RaisePropertyChanged("Dimension"); } }
+        private double _dimensionWeight;
+        public double DimensionWeight { get { return _dimensionWeight; } set { _dimensionWeight = value; RaisePropertyChanged("DimensionWeight"); RaisePropertyChanged("Dimension"); } }
 
         public string Dimension
         {
@@ -70,10 +70,13 @@ namespace FacilityDocLaptop
                 }
                 else
                 {
-                    return $"{_dimensionLength}X{_dimensionWidth}X{_dimensionHeight} Wg: {_dimensionWeight}";
+                    return $"{_dimensionLength.ToString("0.00")}X{_dimensionWidth.ToString("0.00")}X{_dimensionHeight.ToString("0.00")} Wg: {_dimensionWeight.ToString("0.00")}";
                 }
             }
         }
+
+        public string _role;
+        public string Role { get { return _role; } set { _role = value; RaisePropertyChanged("Role"); } }
 
         partial void PartialInit()
         {

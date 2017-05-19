@@ -21,30 +21,18 @@ namespace FacilityDocu.DTO
         public string Danger { get; set; }
 
         [DataMember]
-        public double K { get; set; }
-
-        [DataMember]
-        public double B { get; set; }
-
-        [DataMember]
-        public double E { get; set; }
-
-        [DataMember]
         public double Risk { get; set; }
 
         [DataMember]
         public string Controls { get; set; }
 
         [DataMember]
-        public double K_ { get; set; }
+        public string L { get; set; }
 
         [DataMember]
-        public double B_ { get; set; }
+        public int S { get; set; }
 
         [DataMember]
-        public double E_ { get; set; }
-
-        [DataMember]
-        public double Risk_ { get; set; }
+        public string Responsible { get; set; }
     }
 }

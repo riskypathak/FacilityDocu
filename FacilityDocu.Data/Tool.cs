@@ -14,14 +14,7 @@ namespace FacilityDocu.Data
     
     public partial class Tool
     {
-        public Tool()
-        {
-            this.ProjectActionTools = new HashSet<ProjectActionTool>();
-        }
-    
         public int ToolID { get; set; }
         public string ToolName { get; set; }
-    
-        public virtual ICollection<ProjectActionTool> ProjectActionTools { get; set; }
     }
 }

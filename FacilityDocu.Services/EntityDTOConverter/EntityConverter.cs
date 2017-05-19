@@ -107,11 +107,12 @@ namespace FacilityDocu.Services.EntityDTOConverter
 
                 actionDTO.Images = TOImagesDTO(projectDetail);
                 actionDTO.Attachments = ToAttachmentsDTO(projectDetail);
-                actionDTO.Resources = ToResourcesDTO(projectDetail);
-                actionDTO.Tools = ToToolsDTO(projectDetail);
+                actionDTO.People = projectDetail.People;
+                actionDTO.Machines = projectDetail.Machines;
+                actionDTO.Tools = projectDetail.Tools;
                 actionDTO.RiskAnalysis = ToRiskAnalysisDTO(projectDetail);
 
-                actionDTO.PublishedAt = projectDetail.PublishedDate.HasValue ?projectDetail.PublishedDate.Value: DateTime.MinValue; //If no publish date that means it is a template so min date for that
+                actionDTO.PublishedAt = projectDetail.PublishedDate.HasValue ? projectDetail.PublishedDate.Value : DateTime.MinValue; //If no publish date that means it is a template so min date for that
                 actionDTO.PublishedBy = ToUserDTO(projectDetail.User);
 
                 actionDTO.LastUpdatedAt = actionDTO.PublishedAt;
@@ -157,16 +158,11 @@ namespace FacilityDocu.Services.EntityDTOConverter
                 {
                     RiskAnalysisDTO analysisDTO = new RiskAnalysisDTO();
                     analysisDTO.Activity = analysis.Activity;
-                    analysisDTO.B = Convert.ToDouble(analysis.B.Value);
-                    analysisDTO.B_ = Convert.ToDouble(analysis.B_);
                     analysisDTO.Controls = analysis.Controls;
                     analysisDTO.Danger = analysis.Danger;
-                    analysisDTO.E = Convert.ToDouble(analysis.E.Value);
-                    analysisDTO.E_ = Convert.ToDouble(analysis.E_);
-                    analysisDTO.K = Convert.ToDouble(analysis.K.Value);
-                    analysisDTO.K_ = Convert.ToDouble(analysis.K_);
-                    analysisDTO.Risk = Convert.ToDouble(analysis.Risk.Value);
-                    analysisDTO.Risk_ = Convert.ToDouble(analysis.Risk_);
+                    analysisDTO.L = analysis.L;
+                    analysisDTO.S = analysis.S.Value;
+                    analysisDTO.Responsible = analysis.Responsible;
                     analysisDTO.RiskAnalysisID = Convert.ToString(analysis.RiskAnalysisID);
 
                     analysissDTO.Add(analysisDTO);
@@ -174,58 +170,6 @@ namespace FacilityDocu.Services.EntityDTOConverter
             }
 
             return analysissDTO;
-        }
-
-        private static IList<ResourceDTO> ToResourcesDTO(ProjectDetail projectDetail)
-        {
-            IList<ResourceDTO> resourcesDTO = new List<ResourceDTO>();
-
-            if (projectDetail.ProjectActionResources != null)
-            {
-
-                foreach (var resource in projectDetail.ProjectActionResources)
-                {
-                    ResourceDTO resourceDTO = new ResourceDTO();
-                    resourceDTO.Name = resource.Resource.ResourceName;
-                    resourceDTO.ResourceID = Convert.ToString(resource.ResourceID);
-                    resourceDTO.ResourceCount = Convert.ToString(resource.ResourceCount);
-                    resourceDTO.Type = Convert.ToString(resource.Resource.Type).ToLower();
-
-                    resourcesDTO.Add(resourceDTO);
-                }
-
-                IList<string> existingIDs = resourcesDTO.Select(r => r.ResourceID).ToList();
-                AllResources.ForEach(r =>
-                    {
-                        if (!existingIDs.Contains(r.ResourceID))
-                        {
-                            resourcesDTO.Add(r);
-                        }
-                    }
-                        );
-            }
-
-            return resourcesDTO;
-        }
-
-        private static IList<ToolDTO> ToToolsDTO(ProjectDetail projectDetail)
-        {
-            IList<ToolDTO> toolsDTO = new List<ToolDTO>();
-
-            if (projectDetail.ProjectActionTools != null)
-            {
-
-                foreach (var tool in projectDetail.ProjectActionTools)
-                {
-                    ToolDTO toolDTO = new ToolDTO();
-                    toolDTO.Name = tool.Tool.ToolName;
-                    toolDTO.ToolID = Convert.ToString(tool.ToolID);
-
-                    toolsDTO.Add(toolDTO);
-                }
-            }
-
-            return toolsDTO;
         }
 
         private static IList<ImageDTO> TOImagesDTO(ProjectDetail projectDetail)

@@ -79,23 +79,6 @@
           <Property Name="ImageID" Type="int" />
           <Property Name="IsUsed" Type="bit" />
         </EntityType>
-        <EntityType Name="ProjectActionResource">
-          <Key>
-            <PropertyRef Name="ProjectActionResourceID" />
-          </Key>
-          <Property Name="ProjectActionResourceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ProjectDetailID" Type="int" />
-          <Property Name="ResourceID" Type="int" />
-          <Property Name="ResourceCount" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ProjectActionTool">
-          <Key>
-            <PropertyRef Name="ProjectActionToolID" />
-          </Key>
-          <Property Name="ProjectActionToolID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ProjectDetailID" Type="int" />
-          <Property Name="ToolID" Type="int" />
-        </EntityType>
         <EntityType Name="ProjectDetail">
           <Key>
             <PropertyRef Name="ProjectDetailID" />
@@ -115,6 +98,9 @@
           <Property Name="IsAnalysis" Type="bit" Nullable="false" />
           <Property Name="PublishedBy" Type="varchar" MaxLength="500" />
           <Property Name="PublishedDate" Type="datetime" />
+          <Property Name="Tools" Type="varchar" MaxLength="1000" />
+          <Property Name="People" Type="varchar" MaxLength="1000" />
+          <Property Name="Machines" Type="varchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="Resource">
           <Key>
@@ -138,16 +124,11 @@
           <Property Name="RiskAnalysisID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Activity" Type="varchar(max)" />
           <Property Name="Danger" Type="varchar(max)" />
-          <Property Name="K" Type="decimal" Precision="18" Scale="0" />
-          <Property Name="B" Type="decimal" Precision="18" Scale="0" />
-          <Property Name="E" Type="decimal" Precision="18" Scale="0" />
-          <Property Name="Risk" Type="decimal" Precision="18" Scale="0" />
           <Property Name="Controls" Type="varchar(max)" />
-          <Property Name="K_" Type="varchar(max)" />
-          <Property Name="B_" Type="varchar(max)" />
-          <Property Name="E_" Type="varchar(max)" />
-          <Property Name="Risk_" Type="varchar(max)" />
           <Property Name="ProjectDetailID" Type="int" />
+          <Property Name="L" Type="char" MaxLength="1" />
+          <Property Name="S" Type="int" />
+          <Property Name="Responsible" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Risks">
           <Key>
@@ -178,6 +159,7 @@
           <Property Name="UserName" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="500" />
           <Property Name="Name" Type="varchar" MaxLength="500" />
+          <Property Name="Role" Type="varchar" MaxLength="10" />
         </EntityType>
         <Association Name="FK__ImageComm__Image__4316F928">
           <End Role="Image" Type="Self.Image" Multiplicity="0..1" />
@@ -263,55 +245,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProjectAc__Proje__49C3F6B7">
-          <End Role="ProjectDetail" Type="Self.ProjectDetail" Multiplicity="0..1" />
-          <End Role="ProjectActionResource" Type="Self.ProjectActionResource" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ProjectDetail">
-              <PropertyRef Name="ProjectDetailID" />
-            </Principal>
-            <Dependent Role="ProjectActionResource">
-              <PropertyRef Name="ProjectDetailID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ProjectAc__Proje__4BAC3F29">
-          <End Role="ProjectDetail" Type="Self.ProjectDetail" Multiplicity="0..1" />
-          <End Role="ProjectActionTool" Type="Self.ProjectActionTool" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ProjectDetail">
-              <PropertyRef Name="ProjectDetailID" />
-            </Principal>
-            <Dependent Role="ProjectActionTool">
-              <PropertyRef Name="ProjectDetailID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ProjectAc__Resou__4AB81AF0">
-          <End Role="Resource" Type="Self.Resource" Multiplicity="0..1" />
-          <End Role="ProjectActionResource" Type="Self.ProjectActionResource" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Resource">
-              <PropertyRef Name="ResourceID" />
-            </Principal>
-            <Dependent Role="ProjectActionResource">
-              <PropertyRef Name="ResourceID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ProjectAc__ToolI__4CA06362">
-          <End Role="Tool" Type="Self.Tool" Multiplicity="0..1" />
-          <End Role="ProjectActionTool" Type="Self.ProjectActionTool" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tool">
-              <PropertyRef Name="ToolID" />
-            </Principal>
-            <Dependent Role="ProjectActionTool">
-              <PropertyRef Name="ToolID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ProjectDe__Publi__4D94879B">
+        <Association Name="FK__ProjectDe__Publi__49C3F6B7">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="ProjectDetail" Type="Self.ProjectDetail" Multiplicity="*" />
           <ReferentialConstraint>
@@ -323,7 +257,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProjectDe__StepI__4E88ABD4">
+        <Association Name="FK__ProjectDe__StepI__4AB81AF0">
           <End Role="Step" Type="Self.Step" Multiplicity="0..1" />
           <End Role="ProjectDetail" Type="Self.ProjectDetail" Multiplicity="*" />
           <ReferentialConstraint>
@@ -335,7 +269,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__RiskAnaly__Proje__5070F446">
+        <Association Name="FK__RiskAnaly__Proje__4CA06362">
           <End Role="ProjectDetail" Type="Self.ProjectDetail" Multiplicity="0..1" />
           <End Role="RiskAnalysis" Type="Self.RiskAnalysis" Multiplicity="*" />
           <ReferentialConstraint>
@@ -347,7 +281,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Step__ModuleID__5165187F">
+        <Association Name="FK__Step__ModuleID__4D94879B">
           <End Role="Module" Type="Self.Module" Multiplicity="0..1" />
           <End Role="Step" Type="Self.Step" Multiplicity="*" />
           <ReferentialConstraint>
@@ -380,8 +314,6 @@
           <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProjectActionAttachment" EntityType="Self.ProjectActionAttachment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProjectActionImage" EntityType="Self.ProjectActionImage" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ProjectActionResource" EntityType="Self.ProjectActionResource" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ProjectActionTool" EntityType="Self.ProjectActionTool" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProjectDetail" EntityType="Self.ProjectDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Resource" EntityType="Self.Resource" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RigType" EntityType="Self.RigType" Schema="dbo" store:Type="Tables" />
@@ -418,35 +350,19 @@
             <End Role="ProjectDetail" EntitySet="ProjectDetail" />
             <End Role="ProjectActionImage" EntitySet="ProjectActionImage" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProjectAc__Proje__49C3F6B7" Association="Self.FK__ProjectAc__Proje__49C3F6B7">
-            <End Role="ProjectDetail" EntitySet="ProjectDetail" />
-            <End Role="ProjectActionResource" EntitySet="ProjectActionResource" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ProjectAc__Proje__4BAC3F29" Association="Self.FK__ProjectAc__Proje__4BAC3F29">
-            <End Role="ProjectDetail" EntitySet="ProjectDetail" />
-            <End Role="ProjectActionTool" EntitySet="ProjectActionTool" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ProjectAc__Resou__4AB81AF0" Association="Self.FK__ProjectAc__Resou__4AB81AF0">
-            <End Role="Resource" EntitySet="Resource" />
-            <End Role="ProjectActionResource" EntitySet="ProjectActionResource" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ProjectAc__ToolI__4CA06362" Association="Self.FK__ProjectAc__ToolI__4CA06362">
-            <End Role="Tool" EntitySet="Tool" />
-            <End Role="ProjectActionTool" EntitySet="ProjectActionTool" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ProjectDe__Publi__4D94879B" Association="Self.FK__ProjectDe__Publi__4D94879B">
+          <AssociationSet Name="FK__ProjectDe__Publi__49C3F6B7" Association="Self.FK__ProjectDe__Publi__49C3F6B7">
             <End Role="User" EntitySet="User" />
             <End Role="ProjectDetail" EntitySet="ProjectDetail" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProjectDe__StepI__4E88ABD4" Association="Self.FK__ProjectDe__StepI__4E88ABD4">
+          <AssociationSet Name="FK__ProjectDe__StepI__4AB81AF0" Association="Self.FK__ProjectDe__StepI__4AB81AF0">
             <End Role="Step" EntitySet="Step" />
             <End Role="ProjectDetail" EntitySet="ProjectDetail" />
           </AssociationSet>
-          <AssociationSet Name="FK__RiskAnaly__Proje__5070F446" Association="Self.FK__RiskAnaly__Proje__5070F446">
+          <AssociationSet Name="FK__RiskAnaly__Proje__4CA06362" Association="Self.FK__RiskAnaly__Proje__4CA06362">
             <End Role="ProjectDetail" EntitySet="ProjectDetail" />
             <End Role="RiskAnalysis" EntitySet="RiskAnalysis" />
           </AssociationSet>
-          <AssociationSet Name="FK__Step__ModuleID__5165187F" Association="Self.FK__Step__ModuleID__5165187F">
+          <AssociationSet Name="FK__Step__ModuleID__4D94879B" Association="Self.FK__Step__ModuleID__4D94879B">
             <End Role="Module" EntitySet="Module" />
             <End Role="Step" EntitySet="Step" />
           </AssociationSet>
@@ -463,40 +379,40 @@
           <EntitySet Name="Attachments" EntityType="TabletApp_DatabaseModel.Attachment" />
           <EntitySet Name="Images" EntityType="TabletApp_DatabaseModel.Image" />
           <EntitySet Name="ImageComments" EntityType="TabletApp_DatabaseModel.ImageComment" />
+          <EntitySet Name="LiftingGears" EntityType="TabletApp_DatabaseModel.LiftingGear" />
           <EntitySet Name="Modules" EntityType="TabletApp_DatabaseModel.Module" />
           <EntitySet Name="Projects" EntityType="TabletApp_DatabaseModel.Project" />
           <EntitySet Name="ProjectActionAttachments" EntityType="TabletApp_DatabaseModel.ProjectActionAttachment" />
           <EntitySet Name="ProjectActionImages" EntityType="TabletApp_DatabaseModel.ProjectActionImage" />
-          <EntitySet Name="ProjectActionResources" EntityType="TabletApp_DatabaseModel.ProjectActionResource" />
-          <EntitySet Name="ProjectActionTools" EntityType="TabletApp_DatabaseModel.ProjectActionTool" />
           <EntitySet Name="ProjectDetails" EntityType="TabletApp_DatabaseModel.ProjectDetail" />
           <EntitySet Name="Resources" EntityType="TabletApp_DatabaseModel.Resource" />
           <EntitySet Name="RigTypes" EntityType="TabletApp_DatabaseModel.RigType" />
           <EntitySet Name="RiskAnalysis" EntityType="TabletApp_DatabaseModel.RiskAnalysi" />
+          <EntitySet Name="Risks" EntityType="TabletApp_DatabaseModel.Risk" />
           <EntitySet Name="Steps" EntityType="TabletApp_DatabaseModel.Step" />
           <EntitySet Name="Tools" EntityType="TabletApp_DatabaseModel.Tool" />
           <EntitySet Name="Users" EntityType="TabletApp_DatabaseModel.User" />
-          <AssociationSet Name="FK__ProjectAc__Attac__33D4B598" Association="TabletApp_DatabaseModel.FK__ProjectAc__Attac__33D4B598">
+          <AssociationSet Name="FK__ProjectAc__Attac__45F365D3" Association="TabletApp_DatabaseModel.FK__ProjectAc__Attac__45F365D3">
             <End Role="Attachment" EntitySet="Attachments" />
             <End Role="ProjectActionAttachment" EntitySet="ProjectActionAttachments" />
           </AssociationSet>
-          <AssociationSet Name="FK__ImageComm__Image__300424B4" Association="TabletApp_DatabaseModel.FK__ImageComm__Image__300424B4">
+          <AssociationSet Name="FK__ImageComm__Image__4316F928" Association="TabletApp_DatabaseModel.FK__ImageComm__Image__4316F928">
             <End Role="Image" EntitySet="Images" />
             <End Role="ImageComment" EntitySet="ImageComments" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProjectAc__Image__35BCFE0A" Association="TabletApp_DatabaseModel.FK__ProjectAc__Image__35BCFE0A">
+          <AssociationSet Name="FK__ProjectAc__Image__47DBAE45" Association="TabletApp_DatabaseModel.FK__ProjectAc__Image__47DBAE45">
             <End Role="Image" EntitySet="Images" />
             <End Role="ProjectActionImage" EntitySet="ProjectActionImages" />
           </AssociationSet>
-          <AssociationSet Name="FK__Module__RigTypeI__30F848ED" Association="TabletApp_DatabaseModel.FK__Module__RigTypeI__30F848ED">
+          <AssociationSet Name="FK__Module__RigTypeI__440B1D61" Association="TabletApp_DatabaseModel.FK__Module__RigTypeI__440B1D61">
             <End Role="RigType" EntitySet="RigTypes" />
             <End Role="Module" EntitySet="Modules" />
           </AssociationSet>
-          <AssociationSet Name="FK__Step__ModuleID__3E52440B" Association="TabletApp_DatabaseModel.FK__Step__ModuleID__3E52440B">
+          <AssociationSet Name="FK__Step__ModuleID__4D94879B" Association="TabletApp_DatabaseModel.FK__Step__ModuleID__4D94879B">
             <End Role="Module" EntitySet="Modules" />
             <End Role="Step" EntitySet="Steps" />
           </AssociationSet>
-          <AssociationSet Name="FK__Project__Created__31EC6D26" Association="TabletApp_DatabaseModel.FK__Project__Created__31EC6D26">
+          <AssociationSet Name="FK__Project__Created__44FF419A" Association="TabletApp_DatabaseModel.FK__Project__Created__44FF419A">
             <End Role="User" EntitySet="Users" />
             <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
@@ -504,44 +420,26 @@
             <End Role="Project" EntitySet="Projects" />
             <End Role="ProjectDetail" EntitySet="ProjectDetails" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProjectAc__Proje__34C8D9D1" Association="TabletApp_DatabaseModel.FK__ProjectAc__Proje__34C8D9D1">
+          <AssociationSet Name="FK__ProjectAc__Proje__46E78A0C" Association="TabletApp_DatabaseModel.FK__ProjectAc__Proje__46E78A0C">
             <End Role="ProjectDetail" EntitySet="ProjectDetails" />
             <End Role="ProjectActionAttachment" EntitySet="ProjectActionAttachments" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProjectAc__Proje__36B12243" Association="TabletApp_DatabaseModel.FK__ProjectAc__Proje__36B12243">
+          <AssociationSet Name="FK__ProjectAc__Proje__48CFD27E" Association="TabletApp_DatabaseModel.FK__ProjectAc__Proje__48CFD27E">
             <End Role="ProjectDetail" EntitySet="ProjectDetails" />
             <End Role="ProjectActionImage" EntitySet="ProjectActionImages" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProjectAc__Proje__37A5467C" Association="TabletApp_DatabaseModel.FK__ProjectAc__Proje__37A5467C">
-            <End Role="ProjectDetail" EntitySet="ProjectDetails" />
-            <End Role="ProjectActionResource" EntitySet="ProjectActionResources" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ProjectAc__Resou__38996AB5" Association="TabletApp_DatabaseModel.FK__ProjectAc__Resou__38996AB5">
-            <End Role="Resource" EntitySet="Resources" />
-            <End Role="ProjectActionResource" EntitySet="ProjectActionResources" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ProjectAc__Proje__398D8EEE" Association="TabletApp_DatabaseModel.FK__ProjectAc__Proje__398D8EEE">
-            <End Role="ProjectDetail" EntitySet="ProjectDetails" />
-            <End Role="ProjectActionTool" EntitySet="ProjectActionTools" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ProjectAc__ToolI__3A81B327" Association="TabletApp_DatabaseModel.FK__ProjectAc__ToolI__3A81B327">
-            <End Role="Tool" EntitySet="Tools" />
-            <End Role="ProjectActionTool" EntitySet="ProjectActionTools" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ProjectDe__Publi__403A8C7D" Association="TabletApp_DatabaseModel.FK__ProjectDe__Publi__403A8C7D">
+          <AssociationSet Name="FK__ProjectDe__Publi__49C3F6B7" Association="TabletApp_DatabaseModel.FK__ProjectDe__Publi__49C3F6B7">
             <End Role="User" EntitySet="Users" />
             <End Role="ProjectDetail" EntitySet="ProjectDetails" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProjectDe__StepI__3B75D760" Association="TabletApp_DatabaseModel.FK__ProjectDe__StepI__3B75D760">
+          <AssociationSet Name="FK__ProjectDe__StepI__4AB81AF0" Association="TabletApp_DatabaseModel.FK__ProjectDe__StepI__4AB81AF0">
             <End Role="Step" EntitySet="Steps" />
             <End Role="ProjectDetail" EntitySet="ProjectDetails" />
           </AssociationSet>
-          <AssociationSet Name="FK__RiskAnaly__Proje__3D5E1FD2" Association="TabletApp_DatabaseModel.FK__RiskAnaly__Proje__3D5E1FD2">
+          <AssociationSet Name="FK__RiskAnaly__Proje__4CA06362" Association="TabletApp_DatabaseModel.FK__RiskAnaly__Proje__4CA06362">
             <End Role="ProjectDetail" EntitySet="ProjectDetails" />
             <End Role="RiskAnalysi" EntitySet="RiskAnalysis" />
           </AssociationSet>
-          <EntitySet Name="LiftingGears" EntityType="TabletApp_DatabaseModel.LiftingGear" />
-          <EntitySet Name="Risks" EntityType="TabletApp_DatabaseModel.Risk" />
         </EntityContainer>
         <EntityType Name="Attachment">
           <Key>
@@ -550,7 +448,7 @@
           <Property Name="AttachmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Path" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ProjectActionAttachments" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Attac__33D4B598" FromRole="Attachment" ToRole="ProjectActionAttachment" />
+          <NavigationProperty Name="ProjectActionAttachments" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Attac__45F365D3" FromRole="Attachment" ToRole="ProjectActionAttachment" />
         </EntityType>
         <EntityType Name="Image">
           <Key>
@@ -561,8 +459,8 @@
           <Property Name="ImagePath" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Tags" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="CreationDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="ImageComments" Relationship="TabletApp_DatabaseModel.FK__ImageComm__Image__300424B4" FromRole="Image" ToRole="ImageComment" />
-          <NavigationProperty Name="ProjectActionImages" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Image__35BCFE0A" FromRole="Image" ToRole="ProjectActionImage" />
+          <NavigationProperty Name="ImageComments" Relationship="TabletApp_DatabaseModel.FK__ImageComm__Image__4316F928" FromRole="Image" ToRole="ImageComment" />
+          <NavigationProperty Name="ProjectActionImages" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Image__47DBAE45" FromRole="Image" ToRole="ProjectActionImage" />
         </EntityType>
         <EntityType Name="ImageComment">
           <Key>
@@ -572,7 +470,14 @@
           <Property Name="ImageID" Type="Int32" />
           <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="CreationDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Image" Relationship="TabletApp_DatabaseModel.FK__ImageComm__Image__300424B4" FromRole="ImageComment" ToRole="Image" />
+          <NavigationProperty Name="Image" Relationship="TabletApp_DatabaseModel.FK__ImageComm__Image__4316F928" FromRole="ImageComment" ToRole="Image" />
+        </EntityType>
+        <EntityType Name="LiftingGear">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Module">
           <Key>
@@ -581,8 +486,8 @@
           <Property Name="ModuleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ModuleName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="RigTypeID" Type="Int32" />
-          <NavigationProperty Name="RigType" Relationship="TabletApp_DatabaseModel.FK__Module__RigTypeI__30F848ED" FromRole="Module" ToRole="RigType" />
-          <NavigationProperty Name="Steps" Relationship="TabletApp_DatabaseModel.FK__Step__ModuleID__3E52440B" FromRole="Module" ToRole="Step" />
+          <NavigationProperty Name="RigType" Relationship="TabletApp_DatabaseModel.FK__Module__RigTypeI__440B1D61" FromRole="Module" ToRole="RigType" />
+          <NavigationProperty Name="Steps" Relationship="TabletApp_DatabaseModel.FK__Step__ModuleID__4D94879B" FromRole="Module" ToRole="Step" />
         </EntityType>
         <EntityType Name="Project">
           <Key>
@@ -598,7 +503,7 @@
           <Property Name="Location" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Persons" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="ProjectNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="User" Relationship="TabletApp_DatabaseModel.FK__Project__Created__31EC6D26" FromRole="Project" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="TabletApp_DatabaseModel.FK__Project__Created__44FF419A" FromRole="Project" ToRole="User" />
           <NavigationProperty Name="ProjectDetails" Relationship="TabletApp_DatabaseModel.FK_PD_P" FromRole="Project" ToRole="ProjectDetail" />
         </EntityType>
         <EntityType Name="ProjectActionAttachment">
@@ -608,8 +513,8 @@
           <Property Name="ActionAttachmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProjectDetailID" Type="Int32" />
           <Property Name="AttachmentID" Type="Int32" />
-          <NavigationProperty Name="Attachment" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Attac__33D4B598" FromRole="ProjectActionAttachment" ToRole="Attachment" />
-          <NavigationProperty Name="ProjectDetail" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__34C8D9D1" FromRole="ProjectActionAttachment" ToRole="ProjectDetail" />
+          <NavigationProperty Name="Attachment" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Attac__45F365D3" FromRole="ProjectActionAttachment" ToRole="Attachment" />
+          <NavigationProperty Name="ProjectDetail" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__46E78A0C" FromRole="ProjectActionAttachment" ToRole="ProjectDetail" />
         </EntityType>
         <EntityType Name="ProjectActionImage">
           <Key>
@@ -618,30 +523,9 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProjectDetailID" Type="Int32" />
           <Property Name="ImageID" Type="Int32" />
-          <NavigationProperty Name="Image" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Image__35BCFE0A" FromRole="ProjectActionImage" ToRole="Image" />
-          <NavigationProperty Name="ProjectDetail" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__36B12243" FromRole="ProjectActionImage" ToRole="ProjectDetail" />
           <Property Name="IsUsed" Type="Boolean" />
-        </EntityType>
-        <EntityType Name="ProjectActionResource">
-          <Key>
-            <PropertyRef Name="ProjectActionResourceID" />
-          </Key>
-          <Property Name="ProjectActionResourceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProjectDetailID" Type="Int32" />
-          <Property Name="ResourceID" Type="Int32" />
-          <Property Name="ResourceCount" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ProjectDetail" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__37A5467C" FromRole="ProjectActionResource" ToRole="ProjectDetail" />
-          <NavigationProperty Name="Resource" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Resou__38996AB5" FromRole="ProjectActionResource" ToRole="Resource" />
-        </EntityType>
-        <EntityType Name="ProjectActionTool">
-          <Key>
-            <PropertyRef Name="ProjectActionToolID" />
-          </Key>
-          <Property Name="ProjectActionToolID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProjectDetailID" Type="Int32" />
-          <Property Name="ToolID" Type="Int32" />
-          <NavigationProperty Name="ProjectDetail" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__398D8EEE" FromRole="ProjectActionTool" ToRole="ProjectDetail" />
-          <NavigationProperty Name="Tool" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__ToolI__3A81B327" FromRole="ProjectActionTool" ToRole="Tool" />
+          <NavigationProperty Name="Image" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Image__47DBAE45" FromRole="ProjectActionImage" ToRole="Image" />
+          <NavigationProperty Name="ProjectDetail" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__48CFD27E" FromRole="ProjectActionImage" ToRole="ProjectDetail" />
         </EntityType>
         <EntityType Name="ProjectDetail">
           <Key>
@@ -662,14 +546,15 @@
           <Property Name="IsAnalysis" Type="Boolean" Nullable="false" />
           <Property Name="PublishedBy" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="PublishedDate" Type="DateTime" Precision="3" />
+          <Property Name="Tools" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="People" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Machines" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Project" Relationship="TabletApp_DatabaseModel.FK_PD_P" FromRole="ProjectDetail" ToRole="Project" />
-          <NavigationProperty Name="ProjectActionAttachments" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__34C8D9D1" FromRole="ProjectDetail" ToRole="ProjectActionAttachment" />
-          <NavigationProperty Name="ProjectActionImages" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__36B12243" FromRole="ProjectDetail" ToRole="ProjectActionImage" />
-          <NavigationProperty Name="ProjectActionResources" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__37A5467C" FromRole="ProjectDetail" ToRole="ProjectActionResource" />
-          <NavigationProperty Name="ProjectActionTools" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__398D8EEE" FromRole="ProjectDetail" ToRole="ProjectActionTool" />
-          <NavigationProperty Name="User" Relationship="TabletApp_DatabaseModel.FK__ProjectDe__Publi__403A8C7D" FromRole="ProjectDetail" ToRole="User" />
-          <NavigationProperty Name="Step" Relationship="TabletApp_DatabaseModel.FK__ProjectDe__StepI__3B75D760" FromRole="ProjectDetail" ToRole="Step" />
-          <NavigationProperty Name="RiskAnalysis" Relationship="TabletApp_DatabaseModel.FK__RiskAnaly__Proje__3D5E1FD2" FromRole="ProjectDetail" ToRole="RiskAnalysi" />
+          <NavigationProperty Name="ProjectActionAttachments" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__46E78A0C" FromRole="ProjectDetail" ToRole="ProjectActionAttachment" />
+          <NavigationProperty Name="ProjectActionImages" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__48CFD27E" FromRole="ProjectDetail" ToRole="ProjectActionImage" />
+          <NavigationProperty Name="User" Relationship="TabletApp_DatabaseModel.FK__ProjectDe__Publi__49C3F6B7" FromRole="ProjectDetail" ToRole="User" />
+          <NavigationProperty Name="Step" Relationship="TabletApp_DatabaseModel.FK__ProjectDe__StepI__4AB81AF0" FromRole="ProjectDetail" ToRole="Step" />
+          <NavigationProperty Name="RiskAnalysis" Relationship="TabletApp_DatabaseModel.FK__RiskAnaly__Proje__4CA06362" FromRole="ProjectDetail" ToRole="RiskAnalysi" />
         </EntityType>
         <EntityType Name="Resource">
           <Key>
@@ -678,7 +563,6 @@
           <Property Name="ResourceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ResourceName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ProjectActionResources" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Resou__38996AB5" FromRole="Resource" ToRole="ProjectActionResource" />
         </EntityType>
         <EntityType Name="RigType">
           <Key>
@@ -686,7 +570,7 @@
           </Key>
           <Property Name="RigTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Modules" Relationship="TabletApp_DatabaseModel.FK__Module__RigTypeI__30F848ED" FromRole="RigType" ToRole="Module" />
+          <NavigationProperty Name="Modules" Relationship="TabletApp_DatabaseModel.FK__Module__RigTypeI__440B1D61" FromRole="RigType" ToRole="Module" />
         </EntityType>
         <EntityType Name="RiskAnalysi">
           <Key>
@@ -695,17 +579,19 @@
           <Property Name="RiskAnalysisID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Activity" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Danger" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="K" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="B" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="E" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="Risk" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="Controls" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="K_" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="B_" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="E_" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Risk_" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="ProjectDetailID" Type="Int32" />
-          <NavigationProperty Name="ProjectDetail" Relationship="TabletApp_DatabaseModel.FK__RiskAnaly__Proje__3D5E1FD2" FromRole="RiskAnalysi" ToRole="ProjectDetail" />
+          <Property Name="L" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="S" Type="Int32" />
+          <Property Name="Responsible" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ProjectDetail" Relationship="TabletApp_DatabaseModel.FK__RiskAnaly__Proje__4CA06362" FromRole="RiskAnalysi" ToRole="ProjectDetail" />
+        </EntityType>
+        <EntityType Name="Risk">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Step">
           <Key>
@@ -714,8 +600,8 @@
           <Property Name="StepID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StepName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="ModuleID" Type="Int32" />
-          <NavigationProperty Name="Module" Relationship="TabletApp_DatabaseModel.FK__Step__ModuleID__3E52440B" FromRole="Step" ToRole="Module" />
-          <NavigationProperty Name="ProjectDetails" Relationship="TabletApp_DatabaseModel.FK__ProjectDe__StepI__3B75D760" FromRole="Step" ToRole="ProjectDetail" />
+          <NavigationProperty Name="Module" Relationship="TabletApp_DatabaseModel.FK__Step__ModuleID__4D94879B" FromRole="Step" ToRole="Module" />
+          <NavigationProperty Name="ProjectDetails" Relationship="TabletApp_DatabaseModel.FK__ProjectDe__StepI__4AB81AF0" FromRole="Step" ToRole="ProjectDetail" />
         </EntityType>
         <EntityType Name="Tool">
           <Key>
@@ -723,7 +609,6 @@
           </Key>
           <Property Name="ToolID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ToolName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ProjectActionTools" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__ToolI__3A81B327" FromRole="Tool" ToRole="ProjectActionTool" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -732,10 +617,11 @@
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Projects" Relationship="TabletApp_DatabaseModel.FK__Project__Created__31EC6D26" FromRole="User" ToRole="Project" />
-          <NavigationProperty Name="ProjectDetails" Relationship="TabletApp_DatabaseModel.FK__ProjectDe__Publi__403A8C7D" FromRole="User" ToRole="ProjectDetail" />
+          <Property Name="Role" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Projects" Relationship="TabletApp_DatabaseModel.FK__Project__Created__44FF419A" FromRole="User" ToRole="Project" />
+          <NavigationProperty Name="ProjectDetails" Relationship="TabletApp_DatabaseModel.FK__ProjectDe__Publi__49C3F6B7" FromRole="User" ToRole="ProjectDetail" />
         </EntityType>
-        <Association Name="FK__ProjectAc__Attac__33D4B598">
+        <Association Name="FK__ProjectAc__Attac__45F365D3">
           <End Type="TabletApp_DatabaseModel.Attachment" Role="Attachment" Multiplicity="0..1" />
           <End Type="TabletApp_DatabaseModel.ProjectActionAttachment" Role="ProjectActionAttachment" Multiplicity="*" />
           <ReferentialConstraint>
@@ -747,7 +633,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ImageComm__Image__300424B4">
+        <Association Name="FK__ImageComm__Image__4316F928">
           <End Type="TabletApp_DatabaseModel.Image" Role="Image" Multiplicity="0..1" />
           <End Type="TabletApp_DatabaseModel.ImageComment" Role="ImageComment" Multiplicity="*" />
           <ReferentialConstraint>
@@ -759,7 +645,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProjectAc__Image__35BCFE0A">
+        <Association Name="FK__ProjectAc__Image__47DBAE45">
           <End Type="TabletApp_DatabaseModel.Image" Role="Image" Multiplicity="0..1" />
           <End Type="TabletApp_DatabaseModel.ProjectActionImage" Role="ProjectActionImage" Multiplicity="*" />
           <ReferentialConstraint>
@@ -771,7 +657,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Module__RigTypeI__30F848ED">
+        <Association Name="FK__Module__RigTypeI__440B1D61">
           <End Type="TabletApp_DatabaseModel.RigType" Role="RigType" Multiplicity="0..1" />
           <End Type="TabletApp_DatabaseModel.Module" Role="Module" Multiplicity="*" />
           <ReferentialConstraint>
@@ -783,7 +669,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Step__ModuleID__3E52440B">
+        <Association Name="FK__Step__ModuleID__4D94879B">
           <End Type="TabletApp_DatabaseModel.Module" Role="Module" Multiplicity="0..1" />
           <End Type="TabletApp_DatabaseModel.Step" Role="Step" Multiplicity="*" />
           <ReferentialConstraint>
@@ -795,7 +681,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Project__Created__31EC6D26">
+        <Association Name="FK__Project__Created__44FF419A">
           <End Type="TabletApp_DatabaseModel.User" Role="User" Multiplicity="0..1" />
           <End Type="TabletApp_DatabaseModel.Project" Role="Project" Multiplicity="*" />
           <ReferentialConstraint>
@@ -819,7 +705,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProjectAc__Proje__34C8D9D1">
+        <Association Name="FK__ProjectAc__Proje__46E78A0C">
           <End Type="TabletApp_DatabaseModel.ProjectDetail" Role="ProjectDetail" Multiplicity="0..1" />
           <End Type="TabletApp_DatabaseModel.ProjectActionAttachment" Role="ProjectActionAttachment" Multiplicity="*" />
           <ReferentialConstraint>
@@ -831,7 +717,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProjectAc__Proje__36B12243">
+        <Association Name="FK__ProjectAc__Proje__48CFD27E">
           <End Type="TabletApp_DatabaseModel.ProjectDetail" Role="ProjectDetail" Multiplicity="0..1" />
           <End Type="TabletApp_DatabaseModel.ProjectActionImage" Role="ProjectActionImage" Multiplicity="*" />
           <ReferentialConstraint>
@@ -843,55 +729,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProjectAc__Proje__37A5467C">
-          <End Type="TabletApp_DatabaseModel.ProjectDetail" Role="ProjectDetail" Multiplicity="0..1" />
-          <End Type="TabletApp_DatabaseModel.ProjectActionResource" Role="ProjectActionResource" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ProjectDetail">
-              <PropertyRef Name="ProjectDetailID" />
-            </Principal>
-            <Dependent Role="ProjectActionResource">
-              <PropertyRef Name="ProjectDetailID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ProjectAc__Resou__38996AB5">
-          <End Type="TabletApp_DatabaseModel.Resource" Role="Resource" Multiplicity="0..1" />
-          <End Type="TabletApp_DatabaseModel.ProjectActionResource" Role="ProjectActionResource" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Resource">
-              <PropertyRef Name="ResourceID" />
-            </Principal>
-            <Dependent Role="ProjectActionResource">
-              <PropertyRef Name="ResourceID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ProjectAc__Proje__398D8EEE">
-          <End Type="TabletApp_DatabaseModel.ProjectDetail" Role="ProjectDetail" Multiplicity="0..1" />
-          <End Type="TabletApp_DatabaseModel.ProjectActionTool" Role="ProjectActionTool" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ProjectDetail">
-              <PropertyRef Name="ProjectDetailID" />
-            </Principal>
-            <Dependent Role="ProjectActionTool">
-              <PropertyRef Name="ProjectDetailID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ProjectAc__ToolI__3A81B327">
-          <End Type="TabletApp_DatabaseModel.Tool" Role="Tool" Multiplicity="0..1" />
-          <End Type="TabletApp_DatabaseModel.ProjectActionTool" Role="ProjectActionTool" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tool">
-              <PropertyRef Name="ToolID" />
-            </Principal>
-            <Dependent Role="ProjectActionTool">
-              <PropertyRef Name="ToolID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ProjectDe__Publi__403A8C7D">
+        <Association Name="FK__ProjectDe__Publi__49C3F6B7">
           <End Type="TabletApp_DatabaseModel.User" Role="User" Multiplicity="0..1" />
           <End Type="TabletApp_DatabaseModel.ProjectDetail" Role="ProjectDetail" Multiplicity="*" />
           <ReferentialConstraint>
@@ -903,7 +741,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProjectDe__StepI__3B75D760">
+        <Association Name="FK__ProjectDe__StepI__4AB81AF0">
           <End Type="TabletApp_DatabaseModel.Step" Role="Step" Multiplicity="0..1" />
           <End Type="TabletApp_DatabaseModel.ProjectDetail" Role="ProjectDetail" Multiplicity="*" />
           <ReferentialConstraint>
@@ -915,7 +753,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__RiskAnaly__Proje__3D5E1FD2">
+        <Association Name="FK__RiskAnaly__Proje__4CA06362">
           <End Type="TabletApp_DatabaseModel.ProjectDetail" Role="ProjectDetail" Multiplicity="0..1" />
           <End Type="TabletApp_DatabaseModel.RiskAnalysi" Role="RiskAnalysi" Multiplicity="*" />
           <ReferentialConstraint>
@@ -927,20 +765,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="LiftingGear">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="Risk">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -974,6 +798,14 @@
                 <ScalarProperty Name="Text" ColumnName="Text" />
                 <ScalarProperty Name="ImageID" ColumnName="ImageID" />
                 <ScalarProperty Name="ImageCommentID" ColumnName="ImageCommentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LiftingGears">
+            <EntityTypeMapping TypeName="TabletApp_DatabaseModel.LiftingGear">
+              <MappingFragment StoreEntitySet="LiftingGears">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1021,28 +853,12 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ProjectActionResources">
-            <EntityTypeMapping TypeName="TabletApp_DatabaseModel.ProjectActionResource">
-              <MappingFragment StoreEntitySet="ProjectActionResource">
-                <ScalarProperty Name="ResourceCount" ColumnName="ResourceCount" />
-                <ScalarProperty Name="ResourceID" ColumnName="ResourceID" />
-                <ScalarProperty Name="ProjectDetailID" ColumnName="ProjectDetailID" />
-                <ScalarProperty Name="ProjectActionResourceID" ColumnName="ProjectActionResourceID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ProjectActionTools">
-            <EntityTypeMapping TypeName="TabletApp_DatabaseModel.ProjectActionTool">
-              <MappingFragment StoreEntitySet="ProjectActionTool">
-                <ScalarProperty Name="ToolID" ColumnName="ToolID" />
-                <ScalarProperty Name="ProjectDetailID" ColumnName="ProjectDetailID" />
-                <ScalarProperty Name="ProjectActionToolID" ColumnName="ProjectActionToolID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ProjectDetails">
             <EntityTypeMapping TypeName="TabletApp_DatabaseModel.ProjectDetail">
               <MappingFragment StoreEntitySet="ProjectDetail">
+                <ScalarProperty Name="Machines" ColumnName="Machines" />
+                <ScalarProperty Name="People" ColumnName="People" />
+                <ScalarProperty Name="Tools" ColumnName="Tools" />
                 <ScalarProperty Name="PublishedDate" ColumnName="PublishedDate" />
                 <ScalarProperty Name="PublishedBy" ColumnName="PublishedBy" />
                 <ScalarProperty Name="IsAnalysis" ColumnName="IsAnalysis" />
@@ -1081,19 +897,22 @@
           <EntitySetMapping Name="RiskAnalysis">
             <EntityTypeMapping TypeName="TabletApp_DatabaseModel.RiskAnalysi">
               <MappingFragment StoreEntitySet="RiskAnalysis">
+                <ScalarProperty Name="Responsible" ColumnName="Responsible" />
+                <ScalarProperty Name="S" ColumnName="S" />
+                <ScalarProperty Name="L" ColumnName="L" />
                 <ScalarProperty Name="ProjectDetailID" ColumnName="ProjectDetailID" />
-                <ScalarProperty Name="Risk_" ColumnName="Risk_" />
-                <ScalarProperty Name="E_" ColumnName="E_" />
-                <ScalarProperty Name="B_" ColumnName="B_" />
-                <ScalarProperty Name="K_" ColumnName="K_" />
                 <ScalarProperty Name="Controls" ColumnName="Controls" />
-                <ScalarProperty Name="Risk" ColumnName="Risk" />
-                <ScalarProperty Name="E" ColumnName="E" />
-                <ScalarProperty Name="B" ColumnName="B" />
-                <ScalarProperty Name="K" ColumnName="K" />
                 <ScalarProperty Name="Danger" ColumnName="Danger" />
                 <ScalarProperty Name="Activity" ColumnName="Activity" />
                 <ScalarProperty Name="RiskAnalysisID" ColumnName="RiskAnalysisID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Risks">
+            <EntityTypeMapping TypeName="TabletApp_DatabaseModel.Risk">
+              <MappingFragment StoreEntitySet="Risks">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1117,25 +936,10 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="TabletApp_DatabaseModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Role" ColumnName="Role" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="LiftingGears">
-            <EntityTypeMapping TypeName="TabletApp_DatabaseModel.LiftingGear">
-              <MappingFragment StoreEntitySet="LiftingGears">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Risks">
-            <EntityTypeMapping TypeName="TabletApp_DatabaseModel.Risk">
-              <MappingFragment StoreEntitySet="Risks">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

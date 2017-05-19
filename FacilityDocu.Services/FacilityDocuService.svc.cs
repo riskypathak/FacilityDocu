@@ -159,8 +159,10 @@ namespace FacilityDocu.Services
 
                             databaseAction.IsAnalysis = clientAction.IsAnalysis;
 
-                            UpdateActionTool(clientAction, dbAction);
-                            UpdateActionResource(clientAction, dbAction);
+                            databaseAction.Tools = clientAction.Tools;
+                            databaseAction.People = clientAction.People;
+                            databaseAction.Machines = clientAction.Machines;
+
                             UpdateActionRiskAnalysis(clientAction, dbAction);
                             UpdateActionImages(clientAction, dbAction);
                             UpdateActionAttachments(clientAction, dbAction);
@@ -249,16 +251,11 @@ namespace FacilityDocu.Services
                     RiskAnalysi modifyRA = existingPD.RiskAnalysis.Single(a => a.RiskAnalysisID == updateRA.RiskAnalysisID);
 
                     modifyRA.Activity = updateRA.Activity;
-                    modifyRA.B = updateRA.B;
-                    modifyRA.B_ = updateRA.B_;
                     modifyRA.Controls = updateRA.Controls;
                     modifyRA.Danger = updateRA.Danger;
-                    modifyRA.E = updateRA.E;
-                    modifyRA.E_ = updateRA.E_;
-                    modifyRA.K = updateRA.K;
-                    modifyRA.K_ = updateRA.K_;
-                    modifyRA.Risk = updateRA.Risk;
-                    modifyRA.Risk_ = updateRA.Risk_;
+                    modifyRA.L = updateRA.L;
+                    modifyRA.S = updateRA.S;
+                    modifyRA.Responsible = updateRA.Responsible;
 
                 }
                 else
@@ -269,68 +266,6 @@ namespace FacilityDocu.Services
 
             List<RiskAnalysi> newRA = updateProject.RiskAnalysis.Where(p => Helper.IsNew(p.RiskAnalysisID.ToString())).ToList();
             newRA.ForEach(np => existingPD.RiskAnalysis.Add(np));
-        }
-
-        private void UpdateActionTool(ProjectDetail updateProject, ProjectDetail existingPD)
-        {
-            foreach (ProjectActionTool existingActionTool in existingPD.ProjectActionTools.ToList())
-            {
-                ProjectActionTool updateActionTool = updateProject.ProjectActionTools.FirstOrDefault(t => t.ToolID == existingActionTool.ToolID);
-
-                if (updateActionTool != null)
-                {
-                }
-                else
-                {
-                    existingPD.ProjectActionTools.Remove(existingPD.ProjectActionTools.Single(p => p.ProjectActionToolID == existingActionTool.ProjectActionToolID));
-                }
-            }
-
-            foreach (ProjectActionTool updateActionTool in updateProject.ProjectActionTools.ToList())
-            {
-                ProjectActionTool newActionTool = existingPD.ProjectActionTools.FirstOrDefault(t => t != null && t.ToolID == updateActionTool.ToolID);
-
-                if (newActionTool != null)
-                {
-                }
-                else
-                {
-                    existingPD.ProjectActionTools.Add(updateActionTool);
-                }
-            }
-        }
-
-        private void UpdateActionResource(ProjectDetail updateProject, ProjectDetail existingPD)
-        {
-            foreach (ProjectActionResource existingActionResource in existingPD.ProjectActionResources.ToList())
-            {
-                ProjectActionResource updateActionResource = updateProject.ProjectActionResources.FirstOrDefault(t => t.ResourceID == existingActionResource.ResourceID);
-
-                if (updateActionResource != null)
-                {
-                    ProjectActionResource modifyActionResource = existingPD.ProjectActionResources.Single(r => r.ResourceID == updateActionResource.ResourceID);
-
-                    modifyActionResource.ResourceCount = updateActionResource.ResourceCount;
-
-                }
-                else
-                {
-                    existingPD.ProjectActionResources.Remove(existingPD.ProjectActionResources.Single(p => p.ProjectActionResourceID == existingActionResource.ProjectActionResourceID));
-                }
-            }
-
-            foreach (ProjectActionResource updateActionResource in updateProject.ProjectActionResources.ToList())
-            {
-                ProjectActionResource newActionResource = existingPD.ProjectActionResources.FirstOrDefault(t => t != null && t.ResourceID == updateActionResource.ResourceID);
-
-                if (newActionResource != null)
-                {
-                }
-                else
-                {
-                    existingPD.ProjectActionResources.Add(updateActionResource);
-                }
-            }
         }
 
         public Dictionary<string, int> UpdateActionImages(ActionDTO action)

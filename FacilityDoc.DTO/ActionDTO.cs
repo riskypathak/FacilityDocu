@@ -56,10 +56,13 @@ namespace FacilityDocu.DTO
         public IList<AttachmentDTO> Attachments { get; set; }
 
         [DataMember]
-        public IList<ResourceDTO> Resources { get; set; }
+        public string People { get; set; }
 
         [DataMember]
-        public IList<ToolDTO> Tools { get; set; }
+        public string Machines { get; set; }
+
+        [DataMember]
+        public string Tools { get; set; }
 
         [DataMember]
         public IList<RiskAnalysisDTO> RiskAnalysis { get; set; }
