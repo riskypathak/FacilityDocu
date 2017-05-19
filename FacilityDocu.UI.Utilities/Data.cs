@@ -1,5 +1,6 @@
-﻿using FacilityDocu.DTO.Models;
-using FacilityDocu.UI.Utilities.Services;
+﻿using FacilityDocu.DTO;
+using FacilityDocu.DTO.Models;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,9 @@ namespace FacilityDocu.UI.Utilities
         public static string CURRENT_USER;
 
         public static IList<ToolDTO> AVAILABLE_TOOLS = null;
-        public static IList<MasterDTO> MASTER_DATA = null;
+        public static IList<MasterDTO> MASTER_DATA = new List<MasterDTO>();
+
+        public const char SEPERATOR = '|';
+        public const char SUBSEPERATOR = '^';
     }
 }

@@ -1,4 +1,5 @@
-﻿using FacilityDocu.UI.Utilities.Services;
+﻿using FacilityDocu.DTO;
+using FacilityDocu.UI.Utilities.Services;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Pechkin;
@@ -79,11 +80,11 @@ namespace FacilityDocu.UI.Utilities
 
             try
             {
-                Data.AVAILABLE_TOOLS = service.GetTools();
+                Data.AVAILABLE_TOOLS = service.GetTools().ToList();
             }
             catch (EndpointNotFoundException)
             {
-                Data.AVAILABLE_TOOLS = new List<ToolDTO>();
+                Data.AVAILABLE_TOOLS = new List<ToolDTO>().ToList();
             }
         }
 
@@ -117,7 +118,6 @@ namespace FacilityDocu.UI.Utilities
         public static IList<string> GeneratePdf(ProjectDTO project, string layoutview, IList<string> exportPage, string textPath, string type)
         {
             IList<string> outputs = new List<string>();
-
             if (layoutview == "a4")
             {
                 foreach (RigTypeDTO rigType in project.RigTypes)
@@ -217,15 +217,11 @@ namespace FacilityDocu.UI.Utilities
 
                 tblAction.AddCell("Activity");
                 tblAction.AddCell("Danger/Consequence");
-                tblAction.AddCell("K");
-                tblAction.AddCell("B");
-                tblAction.AddCell("E");
+                tblAction.AddCell("L");
+                tblAction.AddCell("S");
                 tblAction.AddCell("Risk");
                 tblAction.AddCell("Control Measure");
-                tblAction.AddCell("K'");
-                tblAction.AddCell("B'");
-                tblAction.AddCell("E'");
-                tblAction.AddCell("Risk'");
+                tblAction.AddCell("Responsible");
 
                 foreach (StepDTO step in module.Steps)
                 {
@@ -237,15 +233,11 @@ namespace FacilityDocu.UI.Utilities
                             {
                                 tblAction.AddCell(Format(analysis.Activity));
                                 tblAction.AddCell(Format(analysis.Danger));
-                                tblAction.AddCell(Format(analysis.K));
-                                tblAction.AddCell(Format(analysis.B));
-                                tblAction.AddCell(Format(analysis.E));
+                                tblAction.AddCell(Format(analysis.L));
+                                tblAction.AddCell(Format(analysis.S));
                                 tblAction.AddCell(Format(analysis.Risk));
                                 tblAction.AddCell(Format(analysis.Controls));
-                                tblAction.AddCell(Format(analysis.K_));
-                                tblAction.AddCell(Format(analysis.B_));
-                                tblAction.AddCell(Format(analysis.E_));
-                                tblAction.AddCell(Format(analysis.Risk_));
+                                tblAction.AddCell(Format(analysis.Responsible));
                             }
                         }
                     }
@@ -357,13 +349,17 @@ namespace FacilityDocu.UI.Utilities
                     {
                         tblAction.AddCell(Format(action.Name));
                         tblAction.AddCell(Format(action.Description));
-                        tblAction.AddCell(Format(string.Join("\n", action.Resources.Where(r => System.Convert.ToInt32(r.ResourceCount) > 0).Select(r => r.ResourceCount + " " + r.Name).ToArray())));
-                        IList<string> tools = action.Tools.Select(r => r.Name).ToList();
-                        tools.Add("\n"); tools.Add("Lifting Gears"); tools.Add(action.LiftingGears);
-                        tblAction.AddCell(Format(string.Join("\n", tools)));
+                        string people = action.People.Replace(Data.SEPERATOR, '\n').Replace(Data.SUBSEPERATOR, ' ');
+                        string machines = action.Machines.Replace(Data.SEPERATOR, '\n').Replace(Data.SUBSEPERATOR, ' ');
+                        tblAction.AddCell(Format($"{people} \n {machines}"));
+
+                        string tools = action.Tools.Replace(Data.SEPERATOR, '\n');
+                        string liftingGears = action.LiftingGears.Replace(Data.SEPERATOR, '\n');
+
+                        tblAction.AddCell(Format($"{tools}\nLifting Gears\n{liftingGears}"));
                         tblAction.AddCell(Format(action.Dimensions));
                         tblAction.AddCell(Format(string.Join("\n", action.Images.Select(i => string.Format("{0}.{1}", action.ActionID, i.Number)))));
-                        tblAction.AddCell(Format(action.Risks));
+                        tblAction.AddCell(Format(action.Risks.Replace(Data.SEPERATOR, '\n')));
                     }
 
                     doc.Add(tblAction);
@@ -425,18 +421,20 @@ namespace FacilityDocu.UI.Utilities
 
                         string resourcesPeopleHtml = string.Empty;
 
-                        foreach (ResourceDTO res in action.Resources.Where(r => Convert.ToInt32(r.ResourceCount) > 0 && r.Type == "people"))
+                        foreach (var res in action.People.Split(Data.SEPERATOR))
                         {
-                            resourcesPeopleHtml += string.Format("<tr><td>{0}</td><td>{1}</td></tr>", res.Name, res.ResourceCount);
+                            var value = res.Split(Data.SUBSEPERATOR);
+                            resourcesPeopleHtml += string.Format("<tr><td>{0}</td><td>{1}</td></tr>", value[0], value[1]);
                         }
 
                         newActionHtml = newActionHtml.Replace("<!--=%RESOURCESPEOPLE%-->", resourcesPeopleHtml);
 
                         string resourcesMachineHtml = string.Empty;
 
-                        foreach (ResourceDTO res in action.Resources.Where(r => Convert.ToInt32(r.ResourceCount) > 0 && r.Type == "machine"))
+                        foreach (var res in action.Machines.Split(Data.SEPERATOR))
                         {
-                            resourcesMachineHtml += string.Format("<tr><td>{0}</td><td>{1}</td></tr>", res.Name, res.ResourceCount);
+                            var value = res.Split(Data.SUBSEPERATOR);
+                            resourcesMachineHtml += string.Format("<tr><td>{0}</td><td>{1}</td></tr>", value[0], value[1]);
                         }
                         newActionHtml = newActionHtml.Replace("<!--=%RESOURCESMACHINES%-->", resourcesMachineHtml);
 
@@ -448,24 +446,24 @@ namespace FacilityDocu.UI.Utilities
 
                         string toolHtml = string.Empty;
 
-                        foreach (ToolDTO tool in action.Tools)
+                        foreach (var tool in action.Tools.Split(Data.SEPERATOR))
                         {
-                            toolHtml += string.Format("<li>{0}</li>", tool.Name);
+                            toolHtml += string.Format("<li>{0}</li>", tool);
 
                         }
                         newActionHtml = newActionHtml.Replace("<!--=%ACTIONTOOLS%-->", toolHtml);
 
 
-                        if (action.Images.Length > 0)
+                        if (action.Images.Count > 0)
                         {
                             string imageHtml = "<table>";
-                            for (int i = 0; i < action.Images.Length; i++)
+                            for (int i = 0; i < action.Images.Count; i++)
                             {
                                 imageHtml += string.Format("<tr><td><img width=\"100\" height=\"100\" src=\"{0}\" /></td>", action.Images[i].Path);
 
                                 i = i + 1;
 
-                                if (i != action.Images.Length)
+                                if (i != action.Images.Count)
                                 {
                                     imageHtml += string.Format("<td><img width=\"100\" height=\"100\" src=\"{0}\" /></td>", action.Images[i].Path);
                                 }
@@ -485,8 +483,7 @@ namespace FacilityDocu.UI.Utilities
                             foreach (RiskAnalysisDTO an in action.RiskAnalysis)
                             {
                                 analysisHtml += string.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td><td>{7}</td><td>{8}</td><td>{9}</td><td>{10}</td></tr>",
-                                    an.Activity, an.Danger, an.K, an.B, an.E, an.Risk, an.Controls, an.K_, an.B_, an.E_, an.Risk_);
-
+                                    an.Activity, an.Danger, an.L, an.S, an.Risk, an.Controls, an.Responsible);
                             }
 
                             newActionHtml = newActionHtml.Replace("<!--=%ACTIONRISKANALYSIS%-->", analysisHtml);

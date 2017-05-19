@@ -1,4 +1,4 @@
-﻿using FacilityDocu.UI.Utilities.Services;
+﻿
 using FacilityDocu.DTO.Models;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using RestSharp;
 using Newtonsoft.Json;
+using FacilityDocu.DTO;
+using FacilityDocu.UI.Utilities.Services;
 
 namespace FacilityDocu.UI.Utilities
 {
@@ -317,7 +319,7 @@ namespace FacilityDocu.UI.Utilities
             string projectPath = Path.Combine(this.ProjectXmlFolderPath, string.Format("{0}.xml", projectID));
             ProjectDTO project = ProjectXmlReader.ReadProjectXml(projectPath, false);
 
-            List<Services.ActionDTO> actions = project.RigTypes.SelectMany(r => r.Modules).SelectMany(m => m.Steps).SelectMany(s => s.Actions).ToList();
+            List<ActionDTO> actions = project.RigTypes.SelectMany(r => r.Modules).SelectMany(m => m.Steps).SelectMany(s => s.Actions).ToList();
 
             actions.ForEach(a =>
                 {
@@ -339,7 +341,7 @@ namespace FacilityDocu.UI.Utilities
             string projectPath = Path.Combine(this.ProjectXmlFolderPath, string.Format("{0}.xml", projectID));
             ProjectDTO project = ProjectXmlReader.ReadProjectXml(projectPath, false);
 
-            List<Services.ActionDTO> actions = project.RigTypes.SelectMany(r => r.Modules).SelectMany(m => m.Steps).SelectMany(s => s.Actions).ToList();
+            List<ActionDTO> actions = project.RigTypes.SelectMany(r => r.Modules).SelectMany(m => m.Steps).SelectMany(s => s.Actions).ToList();
 
             actions.ForEach(a =>
             {

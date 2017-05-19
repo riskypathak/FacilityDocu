@@ -1,8 +1,10 @@
-﻿using FacilityDocu.UI.Utilities;
-using FacilityDocu.UI.Utilities.Services;
+﻿using FacilityDocu.DTO;
+using FacilityDocu.UI.Utilities;
+
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -313,7 +315,7 @@ namespace FacilityDocLaptop
                 StepDTO step = module.Steps[currentStepIndex];
                 txtStepName.Text = string.Format("{2}.{0} {1}", step.Number, step.Name, module.Number);
 
-                if (step.Actions.Length > 0)
+                if (step.Actions.Count > 0)
                 {
                     ActionDTO action = step.Actions[currentActionIndex];
 
@@ -349,23 +351,23 @@ namespace FacilityDocLaptop
                         }
                     }
 
-                    action.LiftingGears.Split('|').ToList().ForEach(l =>
-                    {
-                        var lg = AllLiftingGears.SingleOrDefault(g => g.Name == l);
+                    SelectedActionItems = new ObservableCollection<string>(action.Tools.Split(new char[1] { Data.SEPERATOR }, StringSplitOptions.RemoveEmptyEntries));
+                    SelectedLiftingGears = new ObservableCollection<string>(action.LiftingGears.Split(new char[1] { Data.SEPERATOR }, StringSplitOptions.RemoveEmptyEntries));
+                    SelectedRisks = new ObservableCollection<string>(action.Risks.Split(new char[1] { Data.SEPERATOR }, StringSplitOptions.RemoveEmptyEntries));
 
-                        if (lg != null) lg.IsSelected = true;
-                    });
-                    action.Risks.Split('|').ToList().ForEach(l =>
+                    SelectedPeople.Clear();
+                    action.People.Split(new char[1] { Data.SEPERATOR }, StringSplitOptions.RemoveEmptyEntries).ToList().ForEach(p =>
                     {
-                        var lg = AllRisks.SingleOrDefault(g => g.Name == l);
-
-                        if (lg != null) lg.IsSelected = true;
+                        string[] vals = p.Split(Data.SUBSEPERATOR);
+                        SelectedPeople.Add(new ResourceDTO() { Name = vals[0], ResourceCount = vals[1] });
                     });
 
-                    lstActionTools.ItemsSource = action.Tools;
-
-                    lstActionResourcesP.ItemsSource = action.Resources.Where(r => r.Type.Equals("people")).ToList();
-                    lstActionResourcesM.ItemsSource = action.Resources.Where(r => r.Type.Equals("machine")).ToList();
+                    SelectedMachines.Clear();
+                    action.Machines.Split(new char[1] { Data.SEPERATOR }, StringSplitOptions.RemoveEmptyEntries).ToList().ForEach(p =>
+                    {
+                        string[] vals = p.Split(Data.SUBSEPERATOR);
+                        SelectedMachines.Add(new ResourceDTO() { Name = vals[0], ResourceCount = vals[1] });
+                    });
 
                     ShowImages(action.Images);
 
@@ -377,12 +379,12 @@ namespace FacilityDocLaptop
                     {
                         RiskAnalysisDTO analysis = action.RiskAnalysis[currentAnalysisIndex];
                         txtAnalysisActivity.Text = analysis.Activity;
-                        cmbAnalysisL.Text = analysis.K.ToString();
-                        cmbAnalysisS.Text = analysis.B.ToString();
+                        cmbAnalysisL.Text = analysis.L.ToString();
+                        cmbAnalysisS.Text = analysis.S.ToString();
                         txtAnalysisControl.Text = analysis.Controls;
                         txtAnalysisDanger.Text = analysis.Activity;
                         ComboBox_SelectionChanged(null, null); //Calculate Risk
-                        txtAnalysisResponsible.Text = analysis.Risk_.ToString();
+                        txtAnalysisResponsible.Text = analysis.Responsible.ToString();
 
                         txtActivityNumbers.Text = string.Format("{0}/{1}", currentAnalysisIndex + 1, action.RiskAnalysis.Count());
                     }
@@ -515,10 +517,16 @@ namespace FacilityDocLaptop
                 ActionDTO action = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex];
 
                 action.Dimensions = this.Dimension;
-                action.LiftingGears = string.Join("|", AllLiftingGears.Where(s => s.IsSelected).Select(a => a.Name));
+                action.Tools = string.Join(Data.SEPERATOR.ToString(), SelectedActionItems);
+                action.LiftingGears = string.Join(Data.SEPERATOR.ToString(), SelectedLiftingGears);
+                action.Risks = string.Join(Data.SEPERATOR.ToString(), SelectedRisks);
+
+                action.People = string.Join(Data.SEPERATOR.ToString(), SelectedPeople.Select(p => $"{p.Name}{Data.SUBSEPERATOR}{p.ResourceCount}"));
+                action.Machines = string.Join(Data.SEPERATOR.ToString(), SelectedMachines.Select(p => $"{p.Name}{Data.SUBSEPERATOR}{p.ResourceCount}"));
+
                 action.Name = new TextRange(txtAction.Document.ContentStart, txtAction.Document.ContentEnd).Text;
                 action.Description = new TextRange(txtActionDetails.Document.ContentStart, txtActionDetails.Document.ContentEnd).Text;
-                action.Risks = string.Join("|", AllRisks.Where(s => s.IsSelected).Select(a => a.Name));
+                
                 action.IsAnalysis = chkRiskAnalysis.IsChecked.Value;
 
                 SaveAnalysisDetail();
@@ -537,12 +545,10 @@ namespace FacilityDocLaptop
 
                 analysis.Activity = txtAnalysisActivity.Text;
                 analysis.Danger = txtAnalysisDanger.Text;
-                analysis.K = string.IsNullOrEmpty(cmbAnalysisL.Text) ? 0.0 : Convert.ToDouble(cmbAnalysisL.Text);
-                analysis.B = string.IsNullOrEmpty(cmbAnalysisS.Text) ? 0.0 : Convert.ToDouble(cmbAnalysisS.Text);
-                //analysis.Risk = txtAnalysisRisk.Text; I am not sure that whether we save risk or not
+                analysis.L = cmbAnalysisL.Text;
+                analysis.S = string.IsNullOrEmpty(cmbAnalysisS.Text) ? 0 : Convert.ToInt16(cmbAnalysisS.Text);
                 analysis.Controls = txtAnalysisControl.Text;
-                //Change below to role
-                //analysis.Risk_ = string.IsNullOrEmpty(txtAnalysisResponsible.Text) ? 0.0 : Convert.ToDouble(txtAnalysisResponsible.Text);
+                analysis.Responsible = txtAnalysisResponsible.Text;
             }
         }
 
@@ -561,22 +567,19 @@ namespace FacilityDocLaptop
         {
             IList<ResourceDTO> masterResources = new List<ResourceDTO>();
 
-            Data.CURRENT_RIG.Modules.SelectMany(m => m.Steps).SelectMany(s => s.Actions).First().Resources.ToList().ForEach(r =>
+            //Data.CURRENT_RIG.Modules.SelectMany(m => m.Steps).SelectMany(s => s.Actions).First().Resources.ToList().ForEach(r =>
 
-                masterResources.Add(new ResourceDTO() { ResourceID = r.ResourceID, Type = r.Type, Name = r.Name, ResourceCount = r.ResourceCount })
-            );
+            //    masterResources.Add(new ResourceDTO() { ResourceID = r.ResourceID, Type = r.Type, Name = r.Name, ResourceCount = r.ResourceCount })
+            //);
 
             ActionDTO action = new ActionDTO()
             {
                 Name = "New Action",
                 Description = "New Action's Description",
-                Dimensions = "New Action's Dimensions",
-                LiftingGears = "New Action's Lifting Gears",
-                Risks = "New Action's Risks",
-                Number = (Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Length + 1).ToString("00"),
-                Resources = masterResources.ToArray(),
+                Number = (Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Count + 1).ToString("00"),
+                //Resources = masterResources.ToArray(),
                 RiskAnalysis = (new List<RiskAnalysisDTO>() { new RiskAnalysisDTO() }).ToArray(),
-                Tools = (new List<ToolDTO>()).ToArray(),
+                //Tools = (new List<ToolDTO>()).ToArray(),
                 Images = (new List<ImageDTO>()).ToArray(),
                 ActionID = "0"
             };
@@ -773,56 +776,6 @@ namespace FacilityDocLaptop
         {
             SaveProject();
             MakeVisible(gridHome);
-        }
-
-        private void btnToolAdd_Click_1(object sender, RoutedEventArgs e)
-        {
-            SaveActionDetail();
-
-            Helper.GetTools();
-
-            var notToolIds = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools.Select(n => n.ToolID);
-
-            lstAddTools.ItemsSource = Data.AVAILABLE_TOOLS.Where(t => !notToolIds.Contains(t.ToolID));
-
-            popTool.IsOpen = true;
-        }
-
-        private void btnToolA_Click_1(object sender, RoutedEventArgs e)
-        {
-            popTool.IsOpen = false;
-
-            foreach (ToolDTO selected in lstAddTools.SelectedItems)
-            {
-                IList<ToolDTO> tools = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools.ToList();
-                tools.Add(selected);
-
-
-                Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools = tools.ToArray();
-            }
-            ChangeScreenControls();
-        }
-
-        private void btnToolC_Click_1(object sender, RoutedEventArgs e)
-        {
-            popTool.IsOpen = false;
-        }
-
-        private void btnRemove_Click_1(object sender, RoutedEventArgs e)
-        {
-            SaveActionDetail();
-
-            string toolToRemoveID = (sender as Button).CommandParameter.ToString();
-
-            IList<ToolDTO> tools = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools.ToList();
-
-            ToolDTO toolToRemove = tools.Single(t => t.ToolID.Equals(toolToRemoveID));
-            tools.Remove(toolToRemove);
-
-
-            Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].Tools = tools.ToArray();
-
-            ChangeScreenControls();
         }
 
         private void btnRemoveImage_Click_1(object sender, RoutedEventArgs e)

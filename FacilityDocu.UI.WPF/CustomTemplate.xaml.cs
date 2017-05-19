@@ -1,5 +1,6 @@
-﻿using FacilityDocu.UI.Utilities;
-using FacilityDocu.UI.Utilities.Services;
+﻿using FacilityDocu.DTO;
+using FacilityDocu.UI.Utilities;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,11 +78,11 @@ namespace FacilityDocLaptop
             template.Description = txtName.Text;
             template.Template = true;
 
-            for (int i = 0; i < template.RigTypes.Length; i++)
+            for (int i = 0; i < template.RigTypes.Count; i++)
             {
-                for (int j = 0; j < template.RigTypes[i].Modules.Length; j++)
+                for (int j = 0; j < template.RigTypes[i].Modules.Count; j++)
                 {
-                    for (int k = 0; k < template.RigTypes[i].Modules[j].Steps.Length; k++)
+                    for (int k = 0; k < template.RigTypes[i].Modules[j].Steps.Count; k++)
                     {
                         ActionDTO action = new ActionDTO() { Description = "New Action", Name = "New Action" };
 

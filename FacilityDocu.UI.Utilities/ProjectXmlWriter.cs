@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using FacilityDocu.UI.Utilities.Services;
+
 using System.IO;
 using System.Net;
+using FacilityDocu.DTO;
 
 namespace FacilityDocu.UI.Utilities
 {
@@ -101,9 +102,9 @@ namespace FacilityDocu.UI.Utilities
                 xStepActions.Add(xStepAction);
 
                 xStepAction.Add(new XElement("publishedat", stepAction.PublishedAt));
-                xStepAction.Add(new XElement("publishedby", stepAction.PublishedBy));
+                xStepAction.Add(new XElement("publishedby", stepAction.PublishedBy != null ? stepAction.PublishedBy.UserName : string.Empty));
                 xStepAction.Add(new XElement("lastupdatedat", stepAction.LastUpdatedAt));
-                xStepAction.Add(new XElement("lastupdatedby", stepAction.LastUpdatedBy));
+                xStepAction.Add(new XElement("lastupdatedby", stepAction.LastUpdatedBy != null ?  stepAction.LastUpdatedBy.UserName : string.Empty));
 
                 xStepAction.Add(new XElement("namewarning", stepAction.IsNameWarning));
                 xStepAction.Add(new XElement("descriptionwarning", stepAction.IsDescriptionwarning));
@@ -118,18 +119,19 @@ namespace FacilityDocu.UI.Utilities
                 xStepAction.Add(new XElement("risks", stepAction.Risks));
                 xStepAction.Add(new XElement("liftinggears", stepAction.LiftingGears));
                 xStepAction.Add(new XElement("dimensions", stepAction.Dimensions));
+                xStepAction.Add(new XElement("tools", stepAction.Tools));
+                xStepAction.Add(new XElement("people", stepAction.People));
+                xStepAction.Add(new XElement("machines", stepAction.Machines));
 
                 WriteImage(stepAction.Images, xStepAction);
                 WriteAttachments(stepAction.Attachments, xStepAction);
-                WriteTools(stepAction.Tools, xStepAction);
-                WriteResources(stepAction.Resources, xStepAction);
                 WriteRiskAnalysis(stepAction.RiskAnalysis, xStepAction);
 
                 count++;
             }
         }
 
-        private static void WriteAttachments(AttachmentDTO[] attachments, XElement xAction)
+        private static void WriteAttachments(IList<AttachmentDTO> attachments, XElement xAction)
         {
             XElement xAttachments = new XElement("attachments");
             xAction.Add(xAttachments);
@@ -161,15 +163,10 @@ namespace FacilityDocu.UI.Utilities
                 xRiskAnalysis.Add(new XElement("id", riskAnalysis.RiskAnalysisID));
                 xRiskAnalysis.Add(new XElement("activity", riskAnalysis.Activity));
                 xRiskAnalysis.Add(new XElement("danger", riskAnalysis.Danger));
-                xRiskAnalysis.Add(new XElement("k", riskAnalysis.K));
-                xRiskAnalysis.Add(new XElement("b", riskAnalysis.B));
-                xRiskAnalysis.Add(new XElement("e", riskAnalysis.E));
-                xRiskAnalysis.Add(new XElement("risk", riskAnalysis.Risk));
+                xRiskAnalysis.Add(new XElement("l", riskAnalysis.L));
+                xRiskAnalysis.Add(new XElement("s", riskAnalysis.S));
                 xRiskAnalysis.Add(new XElement("controls", riskAnalysis.Controls));
-                xRiskAnalysis.Add(new XElement("k_", riskAnalysis.K_));
-                xRiskAnalysis.Add(new XElement("b_", riskAnalysis.B_));
-                xRiskAnalysis.Add(new XElement("e_", riskAnalysis.E_));
-                xRiskAnalysis.Add(new XElement("risk_", riskAnalysis.Risk_));
+                xRiskAnalysis.Add(new XElement("responsible", riskAnalysis.Responsible));
             }
         }
 
@@ -236,7 +233,7 @@ namespace FacilityDocu.UI.Utilities
         {
             string savedPath = Path.Combine(Data.PROJECT_IMAGES_FOLDER, string.Format("{0}.jpg", image.ImageID));
 
-            if (Data.SYNC_DOWNLOAD_UPDATE && !image.Path.StartsWith("http")) 
+            if (Data.SYNC_DOWNLOAD_UPDATE && !image.Path.StartsWith("http"))
             {
                 savedPath = image.Path;
             }
@@ -257,7 +254,7 @@ namespace FacilityDocu.UI.Utilities
                             webClient.DownloadFile(image.Path, savedPath);
                         }
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         //If not able to delete then just eat the exception
                     }

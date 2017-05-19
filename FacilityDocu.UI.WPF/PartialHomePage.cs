@@ -1,5 +1,6 @@
 ﻿using FacilityDocLaptop.Model;
 using FacilityDocLaptop.View.ViewModel;
+using FacilityDocu.DTO;
 using FacilityDocu.UI.Utilities;
 using System;
 using System.Collections.Generic;
@@ -14,35 +15,121 @@ namespace FacilityDocLaptop
 {
     public partial class HomePage : INotifyPropertyChanged
     {
-        private bool _isPopUpLiftingGearOpen;
-        public bool IsPopUpLiftingGearOpen { get { return _isPopUpLiftingGearOpen; } set { _isPopUpLiftingGearOpen = value; RaisePropertyChanged("IsPopUpLiftingGearOpen"); } }
+        private string _otherToolText;
+        public string OtherToolText { get { return _otherToolText; } set { _otherToolText = value; RaisePropertyChanged("OtherToolText"); } }
 
-        private ObservableCollection<MasterDataModel> _allLiftingGears = new ObservableCollection<MasterDataModel>();
-        public ObservableCollection<MasterDataModel> AllLiftingGears { get { return _allLiftingGears; } set { _allLiftingGears = value; RaisePropertyChanged("AllLiftingGears"); } }
+        private bool _isOtherTool;
+        public bool IsOtherTool { get { return _isOtherTool; } set { _isOtherTool = value; RaisePropertyChanged("IsOtherTool"); } }
 
-        private MasterDataModel _selectedLiftingGear;
-        public MasterDataModel SelectedLiftingGear { get { return _selectedLiftingGear; } set { _selectedLiftingGear = value; RaisePropertyChanged("SelectedLiftingGear"); } }
+        private string _selectedType;
+        public string SelectedType { get { return _selectedType; } set { _selectedType = value; RaisePropertyChanged("SelectedType"); } }
 
+        private ObservableCollection<string> _allTools = new ObservableCollection<string>();
+        public ObservableCollection<string> AllActionItems { get { return _allTools; } set { _allTools = value; RaisePropertyChanged("AllActionItems"); } }
+
+        private string selectedTool;
+        public string SelectedActionItem
+        {
+            get { return selectedTool; }
+            set
+            {
+                selectedTool = value;
+
+                if (!string.IsNullOrEmpty(selectedTool))
+                {
+
+                    if (SelectedType == "Tools") SelectedActionItems.Add(selectedTool);
+                    else if (SelectedType == "LiftingGears") SelectedLiftingGears.Add(selectedTool);
+                    else if (SelectedType == "Risks") SelectedRisks.Add(selectedTool);
+                    else if (SelectedType == "People") SelectedPeople.Add(new ResourceDTO() { Name = selectedTool, ResourceCount = "1" });
+                    else if (SelectedType == "Machines") SelectedMachines.Add(new ResourceDTO() { Name = selectedTool, ResourceCount = "1" });
+
+
+                    IsPopUpActionOpen = false;
+                }
+                RaisePropertyChanged("SelectedActionItem");
+            }
+        }
+
+        private ObservableCollection<string> _selectedTools = new ObservableCollection<string>();
+        public ObservableCollection<string> SelectedActionItems { get { return _selectedTools; } set { _selectedTools = value; RaisePropertyChanged("SelectedActionItems"); } }
+
+        private ObservableCollection<string> _selectedLiftingGears = new ObservableCollection<string>();
+        public ObservableCollection<string> SelectedLiftingGears { get { return _selectedLiftingGears; } set { _selectedLiftingGears = value; RaisePropertyChanged("SelectedLiftingGears"); } }
+
+        private ObservableCollection<string> _selectedRisks = new ObservableCollection<string>();
+        public ObservableCollection<string> SelectedRisks { get { return _selectedRisks; } set { _selectedRisks = value; RaisePropertyChanged("SelectedRisks"); } }
+
+        private ObservableCollection<ResourceDTO> _selectedPeople = new ObservableCollection<ResourceDTO>();
+        public ObservableCollection<ResourceDTO> SelectedPeople { get { return _selectedPeople; } set { _selectedPeople = value; RaisePropertyChanged("SelectedPeople"); } }
+
+        private ObservableCollection<ResourceDTO> _selectedMachines = new ObservableCollection<ResourceDTO>();
+        public ObservableCollection<ResourceDTO> SelectedMachines { get { return _selectedMachines; } set { _selectedMachines = value; RaisePropertyChanged("SelectedMachines"); } }
+
+        private bool _isPopUpToolOpen;
+        public bool IsPopUpActionOpen
+        {
+            get { return _isPopUpToolOpen; }
+            set
+            {
+                _isPopUpToolOpen = value;
+
+                if (value)
+                {
+                    SelectedActionItem = string.Empty;
+                    OtherToolText = string.Empty;
+                    //If true then populate
+                    if (SelectedType == "Tools")
+                    {
+                        AllActionItems = new ObservableCollection<string>(Data.MASTER_DATA.Where(m => m.Type == "Tools"
+                        && !SelectedActionItems.Contains(m.Description)).Select(t => t.Description).ToList());
+                    }
+                    else if (SelectedType == "LiftingGears")
+                    {
+                        AllActionItems = new ObservableCollection<string>(Data.MASTER_DATA.Where(m => m.Type == "LiftingGears"
+                        && !SelectedLiftingGears.Contains(m.Description)).Select(t => t.Description).ToList());
+                    }
+                    else if (SelectedType == "Risks")
+                    {
+                        AllActionItems = new ObservableCollection<string>(Data.MASTER_DATA.Where(m => m.Type == "Risks"
+                        && !SelectedRisks.Contains(m.Description)).Select(t => t.Description).ToList());
+                    }
+                    else if (SelectedType == "People")
+                    {
+                        AllActionItems = new ObservableCollection<string>(Data.MASTER_DATA.Where(m => m.Type == "People"
+                        && !SelectedPeople.Any(p => p.Name == m.Description)).Select(t => t.Description).ToList());
+                    }
+                    else if (SelectedType == "Machines")
+                    {
+                        AllActionItems = new ObservableCollection<string>(Data.MASTER_DATA.Where(m => m.Type == "Machine"
+                        && !SelectedMachines.Any(p => p.Name == m.Description)).Select(t => t.Description).ToList());
+                    }
+                }
+
+                RaisePropertyChanged("IsPopUpActionOpen");
+            }
+        }
+
+        public ICommand ShowPopUpToolCommand { get; set; }
         public ICommand ShowPopUpLiftingGearCommand { get; set; }
-        public ICommand OKPopUpLiftingGearCommand { get; set; }
-        public ICommand CancelPopUpLiftingGearCommand { get; set; }
-
-        private bool _isPopUpRiskOpen;
-        public bool IsPopUpRiskOpen { get { return _isPopUpRiskOpen; } set { _isPopUpRiskOpen = value; RaisePropertyChanged("IsPopUpRiskOpen"); } }
-
-        private ObservableCollection<MasterDataModel> _allRisks = new ObservableCollection<MasterDataModel>();
-        public ObservableCollection<MasterDataModel> AllRisks { get { return _allRisks; } set { _allRisks = value; RaisePropertyChanged("AllRisks"); } }
-
-        private MasterDataModel _selectedRisk;
-        public MasterDataModel SelectedRisk { get { return _selectedRisk; } set { _selectedRisk = value; RaisePropertyChanged("SelectedRisk"); } }
-
         public ICommand ShowPopUpRiskCommand { get; set; }
-        public ICommand OKPopUpRiskCommand { get; set; }
-        public ICommand CancelPopUpRiskCommand { get; set; }
+        public ICommand ShowPopUpPeopleCommand { get; set; }
+        public ICommand ShowPopUpMachineCommand { get; set; }
 
+        public ICommand ClosePopUpActionCommand { get; set; }
+
+        public ICommand RemoveToolCommand { get; set; }
+        public ICommand RemoveLiftingGearCommand { get; set; }
+        public ICommand RemoveRiskCommand { get; set; }
+        public ICommand RemovePeopleCommand { get; set; }
+        public ICommand RemoveMachineCommand { get; set; }
+
+        public ICommand ShowOtherPopUpActionCommand { get; set; }
+
+        public ICommand AddOtherPopUpToolCommand { get; set; }
 
         private bool _isPopUpDimensionOpen;
-        public bool IsPopUpDimensionOpen { get { return _isPopUpRiskOpen; } set { _isPopUpRiskOpen = value; RaisePropertyChanged("IsPopUpDimensionOpen"); } }
+        public bool IsPopUpDimensionOpen { get { return _isPopUpDimensionOpen; } set { _isPopUpDimensionOpen = value; RaisePropertyChanged("IsPopUpDimensionOpen"); } }
 
         public ICommand ShowPopUpDimensionCommand { get; set; }
         public ICommand OKPopUpDimensionCommand { get; set; }
@@ -83,23 +170,77 @@ namespace FacilityDocLaptop
             SyncManager manager = new SyncManager();
             manager.DownloadMasterData();
 
-            Data.MASTER_DATA.Where(m => m.Type == "LiftingGears").ToList()
-                .ForEach(m => AllLiftingGears.Add(new MasterDataModel() { Id = m.Id, Name = m.Description }));
-
-            Data.MASTER_DATA.Where(m => m.Type == "Risks").ToList()
-                .ForEach(m => AllRisks.Add(new MasterDataModel() { Id = m.Id, Name = m.Description }));
-
-            this.ShowPopUpLiftingGearCommand = new RelayCommand(o => { IsPopUpLiftingGearOpen = true; }, o => true);
-            this.OKPopUpLiftingGearCommand = new RelayCommand(o => OKPopUpLiftingGearCommandExecute(), o => true);
-            this.CancelPopUpLiftingGearCommand = new RelayCommand(o => { IsPopUpLiftingGearOpen = false; }, o => true);
-
-            this.ShowPopUpRiskCommand = new RelayCommand(o => { IsPopUpRiskOpen = true; }, o => true);
-            this.OKPopUpRiskCommand = new RelayCommand(o => OKPopUpRiskCommandExecute(), o => true);
-            this.CancelPopUpRiskCommand = new RelayCommand(o => { IsPopUpRiskOpen = false; }, o => true);
-
             this.ShowPopUpDimensionCommand = new RelayCommand(o => { IsPopUpDimensionOpen = true; }, o => true);
             this.OKPopUpDimensionCommand = new RelayCommand(o => OKPopUpDimensionCommandExecute(), o => true);
             this.CancelPopUpDimensionCommand = new RelayCommand(o => { IsPopUpDimensionOpen = false; }, o => true);
+
+            this.RemoveToolCommand = new RelayCommand(o =>
+            {
+                SelectedActionItems.Remove(o.ToString());
+            }, o => true);
+            this.RemoveLiftingGearCommand = new RelayCommand(o =>
+            {
+                SelectedLiftingGears.Remove(o.ToString());
+            }, o => true);
+            this.RemoveRiskCommand = new RelayCommand(o =>
+            {
+                SelectedRisks.Remove(o.ToString());
+            }, o => true);
+            this.RemovePeopleCommand = new RelayCommand(o =>
+            {
+                SelectedPeople.Remove(o as ResourceDTO);
+
+            }, o => true);
+            this.RemoveMachineCommand = new RelayCommand(o =>
+            {
+                SelectedMachines.Remove(o as ResourceDTO);
+
+            }, o => true);
+
+            this.ShowPopUpToolCommand = new RelayCommand(o => { SelectedType = "Tools"; IsPopUpActionOpen = true; IsOtherTool = false; }, o => true);
+            this.ShowPopUpLiftingGearCommand = new RelayCommand(o => { SelectedType = "LiftingGears"; IsPopUpActionOpen = true; IsOtherTool = false; }, o => true);
+            this.ShowPopUpRiskCommand = new RelayCommand(o => { SelectedType = "Risks"; IsPopUpActionOpen = true; IsOtherTool = false; }, o => true);
+            this.ShowPopUpPeopleCommand = new RelayCommand(o =>
+            {
+                SelectedType = "People";
+                IsPopUpActionOpen = true;
+                IsOtherTool = false;
+            }, o => true);
+            this.ShowPopUpMachineCommand = new RelayCommand(o =>
+            {
+                SelectedType = "Machines";
+                IsPopUpActionOpen = true;
+                IsOtherTool = false;
+            }, o => true);
+
+            this.ClosePopUpActionCommand = new RelayCommand(o => IsPopUpActionOpen = false, o => true);
+            this.ShowOtherPopUpActionCommand = new RelayCommand(o => { IsOtherTool = !IsOtherTool; }, o => true);
+
+            this.AddOtherPopUpToolCommand = new RelayCommand(o =>
+            {
+                if (SelectedType == "Tools")
+                {
+                    SelectedActionItems.Add(OtherToolText);
+                }
+                else if (SelectedType == "LiftingGears")
+                {
+                    SelectedLiftingGears.Add(OtherToolText);
+                }
+                else if (SelectedType == "Risks")
+                {
+                    SelectedRisks.Add(OtherToolText);
+                }
+                else if (SelectedType == "People")
+                {
+                    SelectedPeople.Add(new ResourceDTO() { Name = OtherToolText, ResourceCount = "1" });
+                }
+                else if (SelectedType == "Machines")
+                {
+                    SelectedMachines.Add(new ResourceDTO() { Name = OtherToolText, ResourceCount = "1" });
+                }
+                IsPopUpActionOpen = false;
+
+            }, o => !string.IsNullOrEmpty(OtherToolText));
         }
 
         private void OKPopUpDimensionCommandExecute()
@@ -107,16 +248,7 @@ namespace FacilityDocLaptop
             IsPopUpDimensionOpen = false;
         }
 
-        private void OKPopUpLiftingGearCommandExecute()
-        {
-            IsPopUpLiftingGearOpen = false;
-        }
-
-        private void OKPopUpRiskCommandExecute()
-        {
-            IsPopUpRiskOpen = false;
-        }
-
+        
         #region Property Changed
         public event PropertyChangedEventHandler PropertyChanged;
 
