@@ -440,12 +440,9 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Width="150" Text="{Binding}"></TextBlock>
-                                    <Button CommandParameter="{Binding}" Height="20" Width="20" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=RemoveLiftingGearCommand}">
-                                        <StackPanel>
-                                            <Image Source="Assets\remove.jpg" />
-                                        </StackPanel>
+                                    <Button Style="{StaticResource DeleteButtonStyle}" CommandParameter="{Binding}" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=RemoveLiftingGearCommand}">
                                     </Button>
+                                    <TextBlock Text="{Binding}"></TextBlock>
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -502,12 +499,9 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Width="100" Text="{Binding}"></TextBlock>
-                                    <Button CommandParameter="{Binding}" Height="20" Width="20" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=RemoveToolCommand}">
-                                        <StackPanel>
-                                            <Image Source="Assets\remove.jpg" />
-                                        </StackPanel>
+                                    <Button Style="{StaticResource DeleteButtonStyle}" CommandParameter="{Binding}" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=RemoveToolCommand}">
                                     </Button>
+                                    <TextBlock Text="{Binding}"></TextBlock>
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -576,12 +570,9 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Width="150" Text="{Binding}"></TextBlock>
-                                    <Button CommandParameter="{Binding}" Height="20" Width="20" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=RemoveRiskCommand}">
-                                        <StackPanel>
-                                            <Image Source="Assets\remove.jpg" />
-                                        </StackPanel>
+                                    <Button Style="{StaticResource DeleteButtonStyle}" CommandParameter="{Binding}" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=RemoveRiskCommand}">
                                     </Button>
+                                    <TextBlock Text="{Binding}"></TextBlock>
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -724,13 +715,11 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
+
+                                        <Button Style="{StaticResource DeleteButtonStyle}" CommandParameter="{Binding}" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=RemovePeopleCommand}">
+                                        </Button>
                                         <TextBox Name="txtCount" Margin="0,-2,0,0" Text="{Binding ResourceCount}"></TextBox>
                                         <TextBlock Text="{Binding Name}"/>
-                                        <Button CommandParameter="{Binding}" Height="20" Width="20" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=RemovePeopleCommand}">
-                                            <StackPanel>
-                                                <Image Source="Assets\remove.jpg" />
-                                            </StackPanel>
-                                        </Button>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
@@ -739,13 +728,10 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
+                                        <Button Style="{StaticResource DeleteButtonStyle}" CommandParameter="{Binding}" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=RemoveMachineCommand}">
+                                        </Button>
                                         <TextBox Name="txtCount" Margin="0,-2,0,0" Text="{Binding ResourceCount}"></TextBox>
                                         <TextBlock Text="{Binding Name}"/>
-                                        <Button CommandParameter="{Binding}" Height="20" Width="20" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=RemoveMachineCommand}">
-                                            <StackPanel>
-                                                <Image Source="Assets\remove.jpg" />
-                                            </StackPanel>
-                                        </Button>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
@@ -801,7 +787,7 @@
                     <TextBox Grid.Row="5" Grid.Column="3" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" x:Name="txtAnalysisDanger"  TextWrapping="Wrap" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
 
                     <TextBlock Grid.Row="3" Grid.Column="5"  Text="L (Likelihood)"  FontSize="20" HorizontalAlignment="Center" Foreground="White"/>
-                    <ComboBox Name="cmbAnalysisL" SelectionChanged="ComboBox_SelectionChanged"  FontSize="32" Grid.Row="5" Grid.Column="5" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}">
+                    <ComboBox Name="cmbAnalysisL" SelectionChanged="cmbAnalysisL_SelectionChanged"  FontSize="32" Grid.Row="5" Grid.Column="5" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}">
                         <ComboBoxItem Content="A"></ComboBoxItem >
                         <ComboBoxItem Content="B"></ComboBoxItem >
                         <ComboBoxItem Content="C"></ComboBoxItem >
@@ -811,7 +797,7 @@
 
 
                     <TextBlock Grid.Row="3" Grid.Column="7"  Text="S (Severity)"  FontSize="20" HorizontalAlignment="Center" Foreground="White"/>
-                    <ComboBox Name="cmbAnalysisS" SelectionChanged="ComboBox_SelectionChanged"  FontSize="32" Grid.Row="5" Grid.Column="7" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}">
+                    <ComboBox Name="cmbAnalysisS" SelectionChanged="cmbAnalysisS_SelectionChanged"  FontSize="32" Grid.Row="5" Grid.Column="7" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}">
                         <ComboBoxItem Content="1"></ComboBoxItem >
                         <ComboBoxItem Content="2"></ComboBoxItem >
                         <ComboBoxItem Content="3"></ComboBoxItem >

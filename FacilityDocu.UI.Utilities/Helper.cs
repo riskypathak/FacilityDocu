@@ -18,6 +18,43 @@ namespace FacilityDocu.UI.Utilities
 {
     public static class Helper
     {
+        public static string GetRisk(string l, string s, out string bgColor)
+        {
+            string risk = "";
+
+            Dictionary<string, int> mapping = new Dictionary<string, int>()
+            { { "A", 1}, { "B", 2},{ "C", 3},{ "D", 4},{ "E", 5}};
+
+            if (!string.IsNullOrEmpty(l) && !string.IsNullOrEmpty(s))
+            {
+                int lNumeric = mapping[l];
+
+                int result = lNumeric * Convert.ToInt16(s);
+
+                if (result < 5)
+                {
+                    risk = $"Low {l}{s.ToString()}";
+                    bgColor = "Green";
+                }
+                else if (result >= 10)
+                {
+                    risk = $"High {l}{s.ToString()}";
+                    bgColor = "Red";
+                }
+                else
+                {
+                    risk = $"MED {l}{s.ToString()}";
+                    bgColor = "Yellow";
+                }
+            }
+            else
+            {
+                risk = "";
+                bgColor = "White";
+            }
+
+            return risk;
+        }
 
         public static bool isInternetAvailable()
         {
@@ -72,20 +109,6 @@ namespace FacilityDocu.UI.Utilities
             }
 
             return isLogin;
-        }
-
-        public static void GetTools()
-        {
-            IFacilityDocuService service = new FacilityDocuServiceClient();
-
-            try
-            {
-                Data.AVAILABLE_TOOLS = service.GetTools().ToList();
-            }
-            catch (EndpointNotFoundException)
-            {
-                Data.AVAILABLE_TOOLS = new List<ToolDTO>().ToList();
-            }
         }
 
         public static void AddTemplate(ProjectDTO projectDTO)

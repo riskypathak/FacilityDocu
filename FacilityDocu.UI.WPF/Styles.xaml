@@ -26,6 +26,14 @@
         </Setter>
     </Style>
 
+    <Style x:Key="DeleteButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Margin" Value="0,0,5,0" />
+        <Setter Property="Content" Value="X" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="Red" />
+        <Setter Property="Background" Value="White" />
+    </Style>
+    
     <Style TargetType="{x:Type Control}">
         <Setter Property="FontFamily" Value="Segoe UI" />
     </Style>

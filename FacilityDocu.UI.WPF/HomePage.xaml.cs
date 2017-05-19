@@ -1,6 +1,5 @@
 ﻿using FacilityDocu.DTO;
 using FacilityDocu.UI.Utilities;
-
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -195,11 +194,6 @@ namespace FacilityDocLaptop
             MouseLeave();
         }
 
-        private void listboxTools_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
         private void txtK_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             //char c = Convert.ToChar(e.Text);
@@ -383,7 +377,10 @@ namespace FacilityDocLaptop
                         cmbAnalysisS.Text = analysis.S.ToString();
                         txtAnalysisControl.Text = analysis.Controls;
                         txtAnalysisDanger.Text = analysis.Activity;
-                        ComboBox_SelectionChanged(null, null); //Calculate Risk
+                        string bgColor;
+                        txtAnalysisRisk.Text = Helper.GetRisk(cmbAnalysisL.Text, cmbAnalysisS.Text, out bgColor);
+                        txtAnalysisRisk.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(bgColor);
+
                         txtAnalysisResponsible.Text = analysis.Responsible.ToString();
 
                         txtActivityNumbers.Text = string.Format("{0}/{1}", currentAnalysisIndex + 1, action.RiskAnalysis.Count());
@@ -526,7 +523,7 @@ namespace FacilityDocLaptop
 
                 action.Name = new TextRange(txtAction.Document.ContentStart, txtAction.Document.ContentEnd).Text;
                 action.Description = new TextRange(txtActionDetails.Document.ContentStart, txtActionDetails.Document.ContentEnd).Text;
-                
+
                 action.IsAnalysis = chkRiskAnalysis.IsChecked.Value;
 
                 SaveAnalysisDetail();
@@ -565,35 +562,24 @@ namespace FacilityDocLaptop
 
         private void btnActionAdd_Click_1(object sender, RoutedEventArgs e)
         {
-            IList<ResourceDTO> masterResources = new List<ResourceDTO>();
-
-            //Data.CURRENT_RIG.Modules.SelectMany(m => m.Steps).SelectMany(s => s.Actions).First().Resources.ToList().ForEach(r =>
-
-            //    masterResources.Add(new ResourceDTO() { ResourceID = r.ResourceID, Type = r.Type, Name = r.Name, ResourceCount = r.ResourceCount })
-            //);
-
             ActionDTO action = new ActionDTO()
             {
                 Name = "New Action",
                 Description = "New Action's Description",
                 Number = (Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Count + 1).ToString("00"),
-                //Resources = masterResources.ToArray(),
                 RiskAnalysis = (new List<RiskAnalysisDTO>() { new RiskAnalysisDTO() }).ToArray(),
-                //Tools = (new List<ToolDTO>()).ToArray(),
                 Images = (new List<ImageDTO>()).ToArray(),
                 ActionID = "0"
             };
 
 
             IList<ActionDTO> actions = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.ToList();
-            //actions.Add(action);
 
             actions.Insert(currentActionIndex + 1, action);
 
             Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions = actions.ToArray();
 
             currentActionIndex = currentActionIndex + 1;
-            //currentActionIndex = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions.Count() - 1;
 
             currentAnalysisIndex = 0;
             ChangeScreenControls();
@@ -635,6 +621,13 @@ namespace FacilityDocLaptop
             openFileDialogue.FileNames.ToList().ForEach(i =>
             {
                 int counter = 1;
+
+                if((new FileInfo(i)).Length > 5242880)
+                {
+                    MessageBox.Show("File(s) should be less than 5MB in size.");
+                    return;
+                }
+
                 AttachmentDTO attachment = new AttachmentDTO()
                 {
                     AttachmentID = string.Concat(DateTime.Now.ToString("yyyyMMddHHmmssfff"), counter),
@@ -1200,39 +1193,23 @@ namespace FacilityDocLaptop
             admin.ShowDialog();
         }
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cmbAnalysisL_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Dictionary<string, int> mapping = new Dictionary<string, int>()
-            { { "A", 1}, { "B", 2},{ "C", 3},{ "D", 4},{ "E", 5}};
-
-            if (!string.IsNullOrEmpty(cmbAnalysisL.Text) && !string.IsNullOrEmpty(cmbAnalysisS.Text))
+            if (e.AddedItems.Count > 0)
             {
-                string lString = cmbAnalysisL.Text.ToString();
-                int l = mapping[lString];
-                int s = Convert.ToInt32(cmbAnalysisS.Text.ToString());
-
-                int result = l * s;
-
-                if (result < 5)
-                {
-                    txtAnalysisRisk.Text = $"Low {lString}{s}";
-                    txtAnalysisRisk.Background = Brushes.Green;
-                }
-                else if (result >= 10)
-                {
-                    txtAnalysisRisk.Text = $"High {lString}{s}";
-                    txtAnalysisRisk.Background = Brushes.Red;
-                }
-                else
-                {
-                    txtAnalysisRisk.Text = $"MED {lString}{s}";
-                    txtAnalysisRisk.Background = Brushes.Yellow;
-                }
+                string bgColor;
+                txtAnalysisRisk.Text = Helper.GetRisk((e.AddedItems[0] as ContentControl).Content.ToString(), cmbAnalysisS.Text, out bgColor);
+                txtAnalysisRisk.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(bgColor);
             }
-            else
+        }
+
+        private void cmbAnalysisS_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
             {
-                txtAnalysisRisk.Text = "";
-                txtAnalysisRisk.Background = Brushes.White;
+                string bgColor;
+                txtAnalysisRisk.Text = Helper.GetRisk(cmbAnalysisL.Text, (e.AddedItems[0] as ContentControl).Content.ToString(), out bgColor);
+                txtAnalysisRisk.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(bgColor);
             }
         }
     }
