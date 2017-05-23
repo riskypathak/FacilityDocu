@@ -327,20 +327,20 @@ namespace FacilityDocLaptop
 
                     if (!string.IsNullOrEmpty(action.Dimensions))
                     {
-                        string[] splits = action.Description.Trim().Split(new string[] { "Wg" }, StringSplitOptions.RemoveEmptyEntries);
+                        string[] splits = action.Dimensions.Trim().Split(new string[] { "Wg:" }, StringSplitOptions.RemoveEmptyEntries);
 
                         if (splits.Length == 2)
                         {
                             double value;
-                            if (double.TryParse(splits[1], out value)) this.DimensionWeight = value;
+                            if (double.TryParse(splits[1].Trim(), out value)) this.DimensionWeight = value;
 
                             string[] splits2 = splits[0].Trim().Split(new string[] { "X" }, StringSplitOptions.RemoveEmptyEntries);
 
                             if (splits2.Length == 3)
                             {
-                                if (double.TryParse(splits2[0], out value)) this.DimensionLength = value;
-                                if (double.TryParse(splits2[1], out value)) this.DimensionWidth = value;
-                                if (double.TryParse(splits2[2], out value)) this.DimensionHeight = value;
+                                if (double.TryParse(splits2[0].Trim(), out value)) this.DimensionLength = value;
+                                if (double.TryParse(splits2[1].Trim(), out value)) this.DimensionWidth = value;
+                                if (double.TryParse(splits2[2].Trim(), out value)) this.DimensionHeight = value;
                             }
                         }
                     }

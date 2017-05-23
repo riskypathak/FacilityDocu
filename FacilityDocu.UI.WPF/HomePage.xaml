@@ -35,7 +35,7 @@
             </MenuItem>
         </Menu>
         <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="grid" Background="#FF5C6368">
-            <Grid x:Name="gridLogin" Visibility="Collapsed">
+            <Grid x:Name="gridLogin" Visibility="Visible">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="20"/>
@@ -82,7 +82,7 @@
                 <Image Margin="10,10,10,10" Grid.Row="4" Grid.Column="2" Source="Assets\footer.jpg" />
             </Grid>
 
-            <Grid x:Name="gridHome" Visibility="Visible">
+            <Grid x:Name="gridHome" Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="20"/>
@@ -539,16 +539,16 @@
                                             <ColumnDefinition Width="*"></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
 
-                                        <Label Content="Length: " Grid.Row="0" Grid.Column="0"></Label>
+                                        <Label Content="Length(m): " Grid.Row="0" Grid.Column="0"></Label>
                                         <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding DimensionLength}"/>
 
-                                        <Label Content="Width: " Grid.Row="1" Grid.Column="0"></Label>
+                                        <Label Content="Width(m): " Grid.Row="1" Grid.Column="0"></Label>
                                         <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding DimensionWidth}"/>
 
-                                        <Label Content="Height: " Grid.Row="2" Grid.Column="0"></Label>
+                                        <Label Content="Height(m): " Grid.Row="2" Grid.Column="0"></Label>
                                         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding DimensionHeight}"/>
 
-                                        <Label Content="Weight: " Grid.Row="3" Grid.Column="0"></Label>
+                                        <Label Content="Weight(mT): " Grid.Row="3" Grid.Column="0"></Label>
                                         <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding DimensionWeight}"/>
                                     </Grid>
                                 </StackPanel>

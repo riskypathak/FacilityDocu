@@ -3,21 +3,12 @@ using FacilityDocLaptop.View.ViewModel;
 using FacilityDocu.DTO.Models;
 using FacilityDocu.UI.Utilities;
 using RestSharp;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace FacilityDocLaptop
 {
@@ -27,7 +18,7 @@ namespace FacilityDocLaptop
     public partial class Admin : Window, INotifyPropertyChanged
     {
         private ObservableCollection<string> _allTypes = new ObservableCollection<string>();
-        public ObservableCollection<string> AllTypes { get { return new ObservableCollection<string>(new List<string>() { "", "LiftingGears", "Tools", "Risks", "People", "Machine" }); } }
+        public ObservableCollection<string> AllTypes { get { return new ObservableCollection<string>(new List<string>() { "LiftingGears", "Tools", "Risks", "People", "Machine" }); } }
 
         private string _selectedType;
         public string SelectedType
@@ -56,6 +47,7 @@ namespace FacilityDocLaptop
         {
             InitializeComponent();
             this.DataContext = this;
+
             SyncManager manager = new SyncManager();
             manager.DownloadMasterData();
 
@@ -73,6 +65,7 @@ namespace FacilityDocLaptop
 
 
             this.CancelCommand = new RelayCommand(o => { this.Close(); }, o => true);
+            this.SelectedType = "LiftingGears";
         }
 
         private void SaveCommandExecute()
@@ -98,14 +91,19 @@ namespace FacilityDocLaptop
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
+                //Sync with Static Master Data
+                Task.Run(() =>
+                {
+                    SyncManager manager = new SyncManager();
+                    manager.DownloadMasterData();
+                });
+
                 MessageBox.Show("Data Saved Successfully.");
             }
             else
             {
                 MessageBox.Show("Error while saving data.");
             }
-
-            this.SelectedType = "";
         }
 
         #region Property Changed

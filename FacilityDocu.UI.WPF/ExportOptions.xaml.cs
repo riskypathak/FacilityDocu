@@ -94,7 +94,7 @@ namespace FacilityDocLaptop
                 exportPage.Add("MoveRiskAnalysis");
             }
 
-            IList<string> outputs = Helper.GeneratePdf(Data.CURRENT_PROJECT, layoutType, exportPage, txtExportPath.Text, cmbContent.SelectedValue.ToString());
+            IList<string> outputs = Exporter.GeneratePdf(Data.CURRENT_PROJECT, layoutType, exportPage, txtExportPath.Text, cmbContent.SelectedValue.ToString());
 
             System.Windows.MessageBox.Show(string.Concat("Files Generated at\n", string.Join("\n", outputs.ToArray())));
             this.Close();

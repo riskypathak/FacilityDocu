@@ -5,20 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FacilityDocLaptop"
         mc:Ignorable="d"
-        Title="Admin" Height="600" Width="600">
+        Title="RigDocu - Admin" Height="600" Width="600">
     <Window.Resources>
-        <Style x:Key="RemoveButtonStyle" TargetType="{x:Type Button}">
-            <Setter Property="Height" Value="20" />
-            <Setter Property="Width" Value="20" />
-            <Setter Property="Margin" Value="1,1,1,1" />
-            <Setter Property="ContentTemplate">
-                <Setter.Value>
-                    <DataTemplate>
-                        <Image Source="Assets/Remove.jpg" />
-                    </DataTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
 
     <Grid Background="#FF5C6368">
@@ -53,11 +46,12 @@
         <DataGrid ItemsSource="{Binding MasterData}" AutoGenerateColumns="False" Grid.Row="3" Grid.Column="1">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name"></DataGridTextColumn>
-                <DataGridTemplateColumn Header="Delete">
+                <DataGridTemplateColumn Header="">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Style="{StaticResource RemoveButtonStyle}" Content="Delete" CommandParameter="{Binding}" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-AncestorType={x:Type DataGrid}}, Path=DataContext.DeleteCommand}"/>
+                            <Button Style="{StaticResource DeleteButtonStyle}" Content="X" CommandParameter="{Binding}" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+AncestorType={x:Type DataGrid}}, Path=DataContext.DeleteCommand}">
+                            </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
