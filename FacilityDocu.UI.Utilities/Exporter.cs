@@ -518,5 +518,12 @@ namespace FacilityDocu.UI.Utilities
                 Marshal.FinalReleaseComObject(word);
             }
         }
+
+        public static void ConvertHtmlToPdf(string htmlFilePath)
+        {
+            string html = File.ReadAllText(htmlFilePath);
+            PdfSharp.Pdf.PdfDocument pdf = TheArtOfDev.HtmlRenderer.PdfSharp.PdfGenerator.GeneratePdf(html, PdfSharp.PageSize.A4);
+            pdf.Save("document.pdf");
+        }
     }
 }

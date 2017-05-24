@@ -14,9 +14,6 @@ namespace FacilityDocu.Services
     public interface IFacilityDocuService
     {
         [OperationContract]
-        bool Login(string userName, string password);
-
-        [OperationContract]
         Dictionary<int, string> IsSync(List<int> inputProjects, bool fromTablet);
         
         [OperationContract]
@@ -36,9 +33,6 @@ namespace FacilityDocu.Services
 
         [OperationContract]
         void UpdateActionAttachments(ActionDTO action);
-
-        [OperationContract]
-        IList<ToolDTO> GetTools();
 
         [OperationContract]
         void CreateTemplate(ProjectDTO projectDTO);

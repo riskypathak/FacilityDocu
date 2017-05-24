@@ -18,7 +18,7 @@ namespace FacilityDocu.Services
             {
                 foreach (var project in context.Projects)
                 {
-                    if (fromTablet && project.Template)
+                    if (fromTablet && project.Template) //tablet dont require template project so skip them
                     {
                         continue;
                     }
@@ -33,7 +33,7 @@ namespace FacilityDocu.Services
                     {
                         projectStatusData.Add(project.ProjectID, "closed");
                     }
-                    else 
+                    else
                     {
                         if (!project.Template)//only needs to be updated if not template....  else template will be only added at once
                         {
@@ -63,18 +63,6 @@ namespace FacilityDocu.Services
             }
 
             return projectDTO;
-        }
-
-        public bool Login(string userName, string password)
-        {
-            bool isAuthenticated = false;
-
-            using (TabletApp_DatabaseEntities context = new TabletApp_DatabaseEntities())
-            {
-                isAuthenticated = context.Users.Where(u => u.UserName.Equals(userName) && u.Password.Equals(password)).Count() > 0 ? true : false;
-            }
-
-            return isAuthenticated;
         }
 
         public ProjectDTO UpdateProject(ProjectDTO projectDTO, string userName)
@@ -108,7 +96,7 @@ namespace FacilityDocu.Services
 
                     bool conflictResult = UpdateProjectDetail(project, existingProject, clientActionsDTO);
 
-                    if(!conflictResult)
+                    if (!conflictResult)
                     {
                         return null;
                     }
@@ -120,6 +108,258 @@ namespace FacilityDocu.Services
             }
 
             return updatedProjectDTO;
+        }
+
+        public Dictionary<string, int> UpdateActionImages(ActionDTO action)
+        {
+            int actionID = Convert.ToInt32(action.ActionID);
+
+            Dictionary<string, int> dic = new Dictionary<string, int>();
+
+
+            int tempId = 0;
+            using (TabletApp_DatabaseEntities context = new TabletApp_DatabaseEntities())
+            {
+                //Update action publish detail
+                context.ProjectDetails.Single(p => p.ProjectDetailID == actionID).PublishedDate = DateTime.Now;
+
+                foreach (ImageDTO imageDTO in action.Images)
+                {
+                    //insert
+                    if (Helper.IsNew(imageDTO.ImageID))
+                    {
+
+                        ProjectActionImage projectImage = new ProjectActionImage();
+                        projectImage.ProjectDetailID = actionID;
+                        projectImage.IsUsed = imageDTO.Used;
+                        projectImage.Image = new Image()
+                        {
+                            ImageID = Helper.GetUniqueID(),
+                            Description = imageDTO.Description,
+                            ImagePath = imageDTO.Path,
+                            CreationDate = imageDTO.CreationDate,
+                            Tags = string.Join(";", imageDTO.Tags.ToArray()),
+                        };
+
+                        foreach (CommentDTO commentDTO in imageDTO.Comments)
+                        {
+                            ImageComment imgComment = new ImageComment()
+                            {
+                                ImageCommentID = Helper.GetUniqueID(),
+                                CreationDate = commentDTO.CommentedAt,
+                                ImageID = projectImage.Image.ImageID,
+                                Text = commentDTO.Text,
+                            };
+
+                            projectImage.Image.ImageComments.Add(imgComment);
+                        }
+
+                        context.ProjectActionImages.Add(projectImage);
+
+
+                        context.SaveChanges();
+                        projectImage = context.ProjectActionImages.Single(i => i.ImageID == projectImage.Image.ImageID);
+
+                        projectImage.Image.ImagePath = SaveImageToFile(projectImage.Image.ImageID, imageDTO);
+                        context.SaveChanges();
+
+                        dic.Add(imageDTO.ImageID, projectImage.Image.ImageID);
+
+                    }
+                    else
+                    {
+                        int imageID = Convert.ToInt32(imageDTO.ImageID);
+
+                        //update
+                        Image img = context.Images.First(x => x.ImageID == imageID);
+
+
+
+                        img.Description = imageDTO.Description;
+                        img.Tags = String.Join(",", imageDTO.Tags);
+
+                        context.ImageComments.RemoveRange(context.ImageComments.Where(x => x.ImageID.Value == imageID));
+
+                        foreach (CommentDTO commnet in imageDTO.Comments)
+                        {
+                            ImageComment imgComment = new ImageComment()
+                            {
+                                CreationDate = commnet.CommentedAt,
+                                ImageID = img.ImageID,
+                                Text = commnet.Text,
+                                ImageCommentID = tempId--
+                            };
+                            img.ImageComments.Add(imgComment);
+                        }
+
+                        img.ImagePath = SaveImageToFile(img.ImageID, imageDTO);
+
+                        context.SaveChanges();
+
+                        dic.Add(imageDTO.ImageID, imageID);
+                    }
+                }
+            }
+            return dic;
+        }
+
+        public void UpdateActionAttachments(ActionDTO action)
+        {
+            int actionID = Convert.ToInt32(action.ActionID);
+
+            int tempId = 0;
+            using (TabletApp_DatabaseEntities context = new TabletApp_DatabaseEntities())
+            {
+                foreach (AttachmentDTO attachmentDTO in action.Attachments)
+                {
+                    //insert
+                    if (Helper.IsNew(attachmentDTO.AttachmentID))
+                    {
+                        ProjectActionAttachment projectAttachment = new ProjectActionAttachment();
+                        projectAttachment.ProjectDetailID = actionID;
+
+                        projectAttachment.Attachment = new Attachment()
+                        {
+                            AttachmentID = Helper.GetUniqueID(),
+                            Name = attachmentDTO.Name,
+                        };
+
+                        context.ProjectActionAttachments.Add(projectAttachment);
+
+                        context.SaveChanges();
+                        projectAttachment.Attachment.Path = SaveAttachmentToFile(projectAttachment.Attachment.AttachmentID, attachmentDTO);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        int AttachmentID = Convert.ToInt32(attachmentDTO.AttachmentID);
+
+                        //update
+                        Attachment attachment = context.Attachments.First(x => x.AttachmentID == AttachmentID);
+
+                        attachment.Name = attachmentDTO.Name;
+
+                        attachment.Path = SaveAttachmentToFile(attachment.AttachmentID, attachmentDTO);
+
+                        context.SaveChanges();
+                    }
+                }
+            }
+        }
+
+        public void CreateTemplate(ProjectDTO projectDTO)
+        {
+            using (TabletApp_DatabaseEntities context = new TabletApp_DatabaseEntities())
+            {
+                Project project = DTOConverter.ToProject(projectDTO, string.Empty, false);
+                project.User = context.Users.Single(u => u.UserName.Equals(projectDTO.CreatedBy.UserName));
+
+                context.Projects.Add(project);
+
+                foreach (RigTypeDTO rigDTO in projectDTO.RigTypes)
+                {
+                    foreach (ModuleDTO moduleDTO in rigDTO.Modules)
+                    {
+                        Module module = new Module();
+                        module.ModuleID = Helper.GetUniqueID();
+                        module.ModuleName = moduleDTO.Name;
+                        module.RigTypeID = Convert.ToInt32(rigDTO.RigTypeID);
+                        //context.Modules.Add(module);
+
+                        foreach (StepDTO stepDTO in moduleDTO.Steps)
+                        {
+                            Step step = new Step();
+                            step.StepID = Helper.GetUniqueID();
+                            step.StepName = stepDTO.Name;
+                            //step.ModuleID = module.ModuleID;
+                            step.Module = module;
+
+                            //context.Steps.Add(step);
+
+                            foreach (ActionDTO actionDTO in stepDTO.Actions)
+                            {
+                                ProjectDetail projectDetail = new ProjectDetail();
+                                projectDetail.ActionName = actionDTO.Name;
+                                projectDetail.Description = actionDTO.Description;
+                                projectDetail.ProjectID = project.ProjectID;
+                                //projectDetail.StepID = step.StepID;
+                                projectDetail.Step = step;
+
+                                context.ProjectDetails.Add(projectDetail);
+                            }
+                        }
+                    }
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+        public Dictionary<int, Dictionary<int, string>> SyncRequiredForUpdatedProjects(Dictionary<int, List<ActionDTO>> projectActionDTOs)
+        {
+            Dictionary<int, Dictionary<int, string>> listActions = new Dictionary<int, Dictionary<int, string>>();
+
+            using (var context = new TabletApp_DatabaseEntities())
+            {
+                foreach (int projectId in projectActionDTOs.Keys)
+                {
+                    List<string> serverActionIds = context.ProjectDetails.Where(p => p.ProjectID == projectId).Select(p => p.ProjectDetailID).ToList().Select(i => i.ToString()).ToList();
+                    List<string> clientActionIds = projectActionDTOs[projectId].Select(p => p.ActionID).ToList();
+
+                    Dictionary<int, string> actionDictionary = new Dictionary<int, string>();
+
+                    //It means action is on server but not on client so we need to add it on client
+                    serverActionIds.Except<string>(clientActionIds).ToList().ForEach(a => actionDictionary.Add(int.Parse(a), "new"));
+
+                    //It means action is on client but not on server so we need to delete it from client
+                    clientActionIds.Except<string>(serverActionIds).ToList().ForEach(a => actionDictionary.Add(int.Parse(a), "delete"));
+
+                    List<int> commonActionIds = serverActionIds.Intersect<string>(clientActionIds).Select(a => int.Parse(a)).ToList();
+
+                    foreach (int actionId in commonActionIds)
+                    {
+                        ProjectDetail serverAction = context.ProjectDetails.Single(p => p.ProjectID == projectId && p.ProjectDetailID == actionId);
+                        ActionDTO clientAction = projectActionDTOs[projectId].Single(a => a.ActionID == actionId.ToString());
+
+                        if (serverAction.PublishedDate == clientAction.PublishedAt) //thern no change
+                        {
+                            actionDictionary.Add(serverAction.ProjectDetailID, "nochange");
+                        }
+                        else if (serverAction.PublishedDate > clientAction.PublishedAt) //change
+                        {
+                            if (clientAction.LastUpdatedAt == clientAction.PublishedAt)// no change at client
+                            {
+                                actionDictionary.Add(serverAction.ProjectDetailID, "update");
+                            }
+                            else
+                            {
+                                actionDictionary.Add(serverAction.ProjectDetailID, "conflict");
+                            }
+                        }
+                        else
+                        {
+
+                        }
+
+                    }
+
+                    listActions.Add(projectId, actionDictionary);
+                }
+            }
+
+            return listActions;
+        }
+
+        public List<ActionDTO> GetProjectActions(int projectID, List<int> actionIds)
+        {
+            using (var _db = new TabletApp_DatabaseEntities())
+            {
+                EntityConverter.AllResources = EntityConverter.ToResourceDTO(_db.Resources);
+
+                IList<ActionDTO> actionDTOs = EntityConverter.ToActionDTO(_db.ProjectDetails.Where(d => d.ProjectID == projectID && actionIds.Contains(d.ProjectDetailID)));
+
+                return actionDTOs.ToList();
+            }
         }
 
         private bool UpdateProjectDetail(Project clientProject, Project databaseProject, List<ActionDTO> clientActionsDTO)
@@ -136,7 +376,7 @@ namespace FacilityDocu.Services
 
                     if (databaseAction.PublishedDate == clientActionDTO.PublishedAt) // no conflict
                     {
-                        if(clientActionDTO.PublishedAt == clientActionDTO.LastUpdatedAt) //no change do nothing
+                        if (clientActionDTO.PublishedAt == clientActionDTO.LastUpdatedAt) //no change do nothing
                         {
 
                         }
@@ -268,99 +508,6 @@ namespace FacilityDocu.Services
             newRA.ForEach(np => existingPD.RiskAnalysis.Add(np));
         }
 
-        public Dictionary<string, int> UpdateActionImages(ActionDTO action)
-        {
-            int actionID = Convert.ToInt32(action.ActionID);
-
-            Dictionary<string, int> dic = new Dictionary<string, int>();
-
-
-            int tempId = 0;
-            using (TabletApp_DatabaseEntities context = new TabletApp_DatabaseEntities())
-            {
-                //Update action publish detail
-                context.ProjectDetails.Single(p => p.ProjectDetailID == actionID).PublishedDate = DateTime.Now;
-
-                foreach (ImageDTO imageDTO in action.Images)
-                {
-                    //insert
-                    if (Helper.IsNew(imageDTO.ImageID))
-                    {
-
-                        ProjectActionImage projectImage = new ProjectActionImage();
-                        projectImage.ProjectDetailID = actionID;
-                        projectImage.IsUsed = imageDTO.Used;
-                        projectImage.Image = new Image()
-                        {
-                            ImageID = Helper.GetUniqueID(),
-                            Description = imageDTO.Description,
-                            ImagePath = imageDTO.Path,
-                            CreationDate = imageDTO.CreationDate,
-                            Tags = string.Join(";", imageDTO.Tags.ToArray()),
-                        };
-
-                        foreach (CommentDTO commentDTO in imageDTO.Comments)
-                        {
-                            ImageComment imgComment = new ImageComment()
-                            {
-                                ImageCommentID = Helper.GetUniqueID(),
-                                CreationDate = commentDTO.CommentedAt,
-                                ImageID = projectImage.Image.ImageID,
-                                Text = commentDTO.Text,
-                            };
-
-                            projectImage.Image.ImageComments.Add(imgComment);
-                        }
-
-                        context.ProjectActionImages.Add(projectImage);
-
-
-                        context.SaveChanges();
-                        projectImage = context.ProjectActionImages.Single(i => i.ImageID == projectImage.Image.ImageID);
-
-                        projectImage.Image.ImagePath = SaveImageToFile(projectImage.Image.ImageID, imageDTO);
-                        context.SaveChanges();
-
-                        dic.Add(imageDTO.ImageID, projectImage.Image.ImageID);
-
-                    }
-                    else
-                    {
-                        int imageID = Convert.ToInt32(imageDTO.ImageID);
-
-                        //update
-                        Image img = context.Images.First(x => x.ImageID == imageID);
-
-
-
-                        img.Description = imageDTO.Description;
-                        img.Tags = String.Join(",", imageDTO.Tags);
-
-                        context.ImageComments.RemoveRange(context.ImageComments.Where(x => x.ImageID.Value == imageID));
-
-                        foreach (CommentDTO commnet in imageDTO.Comments)
-                        {
-                            ImageComment imgComment = new ImageComment()
-                            {
-                                CreationDate = commnet.CommentedAt,
-                                ImageID = img.ImageID,
-                                Text = commnet.Text,
-                                ImageCommentID = tempId--
-                            };
-                            img.ImageComments.Add(imgComment);
-                        }
-
-                        img.ImagePath = SaveImageToFile(img.ImageID, imageDTO);
-
-                        context.SaveChanges();
-
-                        dic.Add(imageDTO.ImageID, imageID);
-                    }
-                }
-            }
-            return dic;
-        }
-
         private string GetImageActualPath(string imagePath)
         {
             int lastIndex = System.ServiceModel.OperationContext.Current.RequestContext.RequestMessage.Headers.To.ToString().LastIndexOf('/');
@@ -381,50 +528,6 @@ namespace FacilityDocu.Services
             }
 
             return dbImagePath;
-        }
-
-        public void UpdateActionAttachments(ActionDTO action)
-        {
-            int actionID = Convert.ToInt32(action.ActionID);
-
-            int tempId = 0;
-            using (TabletApp_DatabaseEntities context = new TabletApp_DatabaseEntities())
-            {
-                foreach (AttachmentDTO attachmentDTO in action.Attachments)
-                {
-                    //insert
-                    if (Helper.IsNew(attachmentDTO.AttachmentID))
-                    {
-                        ProjectActionAttachment projectAttachment = new ProjectActionAttachment();
-                        projectAttachment.ProjectDetailID = actionID;
-
-                        projectAttachment.Attachment = new Attachment()
-                        {
-                            AttachmentID = Helper.GetUniqueID(),
-                            Name = attachmentDTO.Name,
-                        };
-
-                        context.ProjectActionAttachments.Add(projectAttachment);
-
-                        context.SaveChanges();
-                        projectAttachment.Attachment.Path = SaveAttachmentToFile(projectAttachment.Attachment.AttachmentID, attachmentDTO);
-                        context.SaveChanges();
-                    }
-                    else
-                    {
-                        int AttachmentID = Convert.ToInt32(attachmentDTO.AttachmentID);
-
-                        //update
-                        Attachment attachment = context.Attachments.First(x => x.AttachmentID == AttachmentID);
-
-                        attachment.Name = attachmentDTO.Name;
-
-                        attachment.Path = SaveAttachmentToFile(attachment.AttachmentID, attachmentDTO);
-
-                        context.SaveChanges();
-                    }
-                }
-            }
         }
 
         private string GetAttachmentActualPath(string AttachmentPath)
@@ -448,135 +551,5 @@ namespace FacilityDocu.Services
 
             return dbAttachmentPath;
         }
-
-        public IList<ToolDTO> GetTools()
-        {
-            IList<ToolDTO> tools = new List<ToolDTO>();
-
-            using (var context = new TabletApp_DatabaseEntities())
-            {
-                context.Tools.ToList().ForEach(t => tools.Add(new ToolDTO() { ToolID = t.ToolID.ToString(), Name = t.ToolName }));
-            }
-
-            return tools;
-        }
-
-        public void CreateTemplate(ProjectDTO projectDTO)
-        {
-            using (TabletApp_DatabaseEntities context = new TabletApp_DatabaseEntities())
-            {
-                Project project = DTOConverter.ToProject(projectDTO, string.Empty, false);
-                project.User = context.Users.Single(u => u.UserName.Equals(projectDTO.CreatedBy.UserName));
-
-                context.Projects.Add(project);
-
-                foreach (RigTypeDTO rigDTO in projectDTO.RigTypes)
-                {
-                    foreach (ModuleDTO moduleDTO in rigDTO.Modules)
-                    {
-                        Module module = new Module();
-                        module.ModuleID = Helper.GetUniqueID();
-                        module.ModuleName = moduleDTO.Name;
-                        module.RigTypeID = Convert.ToInt32(rigDTO.RigTypeID);
-                        //context.Modules.Add(module);
-
-                        foreach (StepDTO stepDTO in moduleDTO.Steps)
-                        {
-                            Step step = new Step();
-                            step.StepID = Helper.GetUniqueID();
-                            step.StepName = stepDTO.Name;
-                            //step.ModuleID = module.ModuleID;
-                            step.Module = module;
-
-                            //context.Steps.Add(step);
-
-                            foreach (ActionDTO actionDTO in stepDTO.Actions)
-                            {
-                                ProjectDetail projectDetail = new ProjectDetail();
-                                projectDetail.ActionName = actionDTO.Name;
-                                projectDetail.Description = actionDTO.Description;
-                                projectDetail.ProjectID = project.ProjectID;
-                                //projectDetail.StepID = step.StepID;
-                                projectDetail.Step = step;
-
-                                context.ProjectDetails.Add(projectDetail);
-                            }
-                        }
-                    }
-                }
-
-                context.SaveChanges();
-            }
-        }
-
-        public Dictionary<int, Dictionary<int, string>> SyncRequiredForUpdatedProjects(Dictionary<int, List<ActionDTO>> projectActionDTOs)
-        {
-            Dictionary<int, Dictionary<int, string>> listActions = new Dictionary<int, Dictionary<int, string>>();
-
-            using (var context = new TabletApp_DatabaseEntities())
-            {
-                foreach (int projectId in projectActionDTOs.Keys)
-                {
-                    List<string> serverActionIds = context.ProjectDetails.Where(p => p.ProjectID == projectId).Select(p => p.ProjectDetailID).ToList().Select(i=>i.ToString()).ToList();
-                    List<string> clientActionIds = projectActionDTOs[projectId].Select(p => p.ActionID).ToList();
-
-                    Dictionary<int, string> actionDictionary = new Dictionary<int, string>();
-
-                    //It means action is on server but not on client so we need to add it on client
-                    serverActionIds.Except<string>(clientActionIds).ToList().ForEach(a => actionDictionary.Add(int.Parse(a), "new"));
-
-                    //It means action is on client but not on server so we need to delete it from client
-                    clientActionIds.Except<string>(serverActionIds).ToList().ForEach(a => actionDictionary.Add(int.Parse(a), "delete"));
-
-                    List<int> commonActionIds = serverActionIds.Intersect<string>(clientActionIds).Select(a => int.Parse(a)).ToList();
-
-                    foreach (int actionId in commonActionIds)
-                    {
-                        ProjectDetail serverAction = context.ProjectDetails.Single(p => p.ProjectID == projectId && p.ProjectDetailID == actionId);
-                        ActionDTO clientAction = projectActionDTOs[projectId].Single(a => a.ActionID == actionId.ToString());
-
-                        if (serverAction.PublishedDate == clientAction.PublishedAt) //thern no change
-                        {
-                            actionDictionary.Add(serverAction.ProjectDetailID, "nochange");
-                        }
-                        else if (serverAction.PublishedDate > clientAction.PublishedAt) //change
-                        {
-                            if (clientAction.LastUpdatedAt == clientAction.PublishedAt)// no change at client
-                            {
-                                actionDictionary.Add(serverAction.ProjectDetailID, "update");
-                            }
-                            else
-                            {
-                                actionDictionary.Add(serverAction.ProjectDetailID, "conflict");
-                            }
-                        }
-                        else
-                        {
-
-                        }
-
-                    }
-
-                    listActions.Add(projectId, actionDictionary);
-                }
-            }
-
-            return listActions;
-        }
-
-        public List<ActionDTO> GetProjectActions(int projectID, List<int> actionIds)
-        {
-            using (var _db = new TabletApp_DatabaseEntities())
-            {
-                EntityConverter.AllResources = EntityConverter.ToResourceDTO(_db.Resources);
-
-                IList<ActionDTO> actionDTOs = EntityConverter.ToActionDTO(_db.ProjectDetails.Where(d => d.ProjectID == projectID && actionIds.Contains(d.ProjectDetailID)));
-
-                return actionDTOs.ToList();
-            }
-
-            return null;
-        }
-
     }
 }
