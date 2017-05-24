@@ -1,6 +1,4 @@
-﻿
-using FacilityDocu.DTO.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -12,6 +10,7 @@ using RestSharp;
 using Newtonsoft.Json;
 using FacilityDocu.DTO;
 using FacilityDocu.UI.Utilities.Services;
+using RestSharp.Serializers;
 
 namespace FacilityDocu.UI.Utilities
 {
@@ -49,29 +48,31 @@ namespace FacilityDocu.UI.Utilities
         }
         public void DownloadMasterData()
         {
-            string masterDataPath = Path.Combine(this.ProjectXmlFolderPath, string.Format("master.json"));
+            string masterDataPath = Path.Combine(this.ProjectXmlFolderPath, string.Format("master.data"));
 
             if (Helper.isInternetAvailable())
             {
-                var client = new RestClient(Data.SYNC_URL_HOST);
-                var request = new RestRequest("/Master/All", Method.GET);
-
-                IRestResponse response = client.Execute(request);
-
-                File.WriteAllText(masterDataPath, response.Content);
-
-                Data.MASTER_DATA = JsonConvert.DeserializeObject<IList<MasterDTO>>(response.Content);
+                AllMasterDTO allData = service.GetAllMasterData();
+                Data.MASTER_DATA = allData.MasterData;
+                XmlHelper.WriteToXmlFile<AllMasterDTO>(masterDataPath, allData);
             }
             else
             {
                 if(File.Exists(masterDataPath))
                 {
+                    AllMasterDTO allData = XmlHelper.ReadFromXmlFile<AllMasterDTO>(masterDataPath);
                     Data.MASTER_DATA = JsonConvert.DeserializeObject<IList<MasterDTO>>(File.ReadAllText(masterDataPath));
                 }
             }
         }
 
+        public void UpdateMasterData(List<MasterDTO> masterData)
+        {
+            AllMasterDTO data = new AllMasterDTO();
+            data.MasterData = masterData;
 
+            service.UpdateMasterData(data);
+        }
         public void Sync()
         {
             Dictionary<int, Dictionary<int, string>> syncProjectActions = IsSyncRequired();

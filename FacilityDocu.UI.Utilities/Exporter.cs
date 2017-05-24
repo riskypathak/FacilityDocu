@@ -154,6 +154,11 @@ namespace FacilityDocu.UI.Utilities
             doc.Close();
         }
 
+        public static void Export(string selectedExportFormat, string selectedPageLayout, string exportPath)
+        {
+            throw new NotImplementedException();
+        }
+
         private static void GenerateRigNonA4PDF(ProjectDTO project, RigTypeDTO rigType, string pdfPath, string layoutview)
         {
             FileStream fs = new FileStream(pdfPath, FileMode.Create, FileAccess.Write);

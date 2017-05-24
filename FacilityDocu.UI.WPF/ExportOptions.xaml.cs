@@ -1,119 +1,83 @@
-﻿using FacilityDocu.DTO;
+﻿using FacilityDocLaptop.View.ViewModel;
+using FacilityDocu.DTO;
 using FacilityDocu.UI.Utilities;
-
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace FacilityDocLaptop
 {
     /// <summary>
     /// Interaction logic for CustomTemplate.xaml
     /// </summary>
-    public partial class ExportOptions : Window
+    public partial class ExportOptions : Window, INotifyPropertyChanged
     {
         ProjectDTO template = new ProjectDTO();
+
+        private ObservableCollection<string>  _allExportFormats = new ObservableCollection<string>(new List<string>() { "PDF", "HTML" });
+        public ObservableCollection<string> AllExportFormats { get { return _allExportFormats; } set { _allExportFormats = value; RaisePropertyChanged("AllExportFormats"); } }
+
+        private string _selectedExportFormat;
+        public string SelectedExportFormat { get { return _selectedExportFormat; } set { _selectedExportFormat = value; RaisePropertyChanged("SelectedExportFormat"); } }
+
+        private ObservableCollection<string> _allPageLayouts = new ObservableCollection<string>(new List<string>() { "Landscape", "Portrait" });
+        public ObservableCollection<string> AllPageLayouts { get { return _allPageLayouts; } set { _allPageLayouts = value; RaisePropertyChanged("AllPageLayouts"); } }
+
+        private string _selectedPageLayout;
+        public string SelectedPageLayout { get { return _selectedPageLayout; } set { _selectedPageLayout = value; RaisePropertyChanged("SelectedPageLayout"); } }
+
+        private string _exportPath;
+        public string ExportPath { get { return _exportPath; } set { _exportPath = value; RaisePropertyChanged("ExportPath"); } }
+
+        public ICommand BrowseCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
+        public ICommand CancelCommand { get; set; }
+
+        #region Property Changed
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public virtual void RaisePropertyChanged(string propertyName)
+        {
+            OnPropertyChanged(propertyName);
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = this.PropertyChanged;
+            if (handler != null)
+            {
+                var e = new PropertyChangedEventArgs(propertyName);
+                handler(this, e);
+            }
+        }
+
+        #endregion
 
         public ExportOptions()
         {
             InitializeComponent();
+            this.DataContext = this;
+            //Provide Default Values to ComboBoxes
+            this.SelectedExportFormat = AllExportFormats.First();
+            this.SelectedPageLayout = AllPageLayouts.First();
 
-            txtExportPath.Text = Data.EXPORT_PDF_PATH;
-
-            cmbTemplates.Items.Add("Landscape Full Page");
-            cmbTemplates.Items.Add("Landscape List Mode");
-            cmbTemplates.Items.Add("A4");
-            cmbTemplates.SelectedIndex = 2;
-
-            cmbContent.Items.Add("Pdf");
-            cmbContent.Items.Add("Doc");
-            cmbContent.SelectedIndex = 0;
-        }
-
-        private void btnSave_Click(object sender, RoutedEventArgs e)
-        {
-            string projectPath = System.IO.Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", Data.CURRENT_PROJECT.ProjectID));
-
-            Data.CURRENT_PROJECT = ProjectXmlReader.ReadProjectXml(projectPath, false);
-
-            string layoutType = "landscape";
-
-            if (cmbTemplates.SelectedIndex == 1)
+            this.BrowseCommand = new RelayCommand(o =>
             {
-                layoutType = "listview";
-            }
-            else if (cmbTemplates.SelectedIndex == 2)
-            {
-                layoutType = "a4";
-            }
-            else
-            {
-                layoutType = "landscape";
-            }
+                FolderBrowserDialog folder = new FolderBrowserDialog();
+                folder.RootFolder = Environment.SpecialFolder.Desktop;
+                if (folder.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    this.ExportPath = folder.SelectedPath;
+                }
+            }, o => true);
 
-            IList<string> exportPage = new List<string>();
-
-            if (chkRigUp.IsChecked.Value)
-            {
-                exportPage.Add("UP_");
-            }
-
-            if (chkRigDown.IsChecked.Value)
-            {
-                exportPage.Add("Down_");
-            }
-
-            if (chkRigMove.IsChecked.Value)
-            {
-                exportPage.Add("Move_");
-            }
-
-            if (chkRigUpRisk.IsChecked.Value)
-            {
-                exportPage.Add("UPRiskAnalysis");
-            }
-
-            if (chkRigDownRisk.IsChecked.Value)
-            {
-                exportPage.Add("DownRiskAnalysis");
-            }
-
-            if (chkRigMoveRisk.IsChecked.Value)
-            {
-                exportPage.Add("MoveRiskAnalysis");
-            }
-
-            IList<string> outputs = Exporter.GeneratePdf(Data.CURRENT_PROJECT, layoutType, exportPage, txtExportPath.Text, cmbContent.SelectedValue.ToString());
-
-            System.Windows.MessageBox.Show(string.Concat("Files Generated at\n", string.Join("\n", outputs.ToArray())));
-            this.Close();
-        }
-
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
-        private void btnBrowse_Click(object sender, RoutedEventArgs e)
-        {
-            FolderBrowserDialog folder = new FolderBrowserDialog();
-            folder.RootFolder = Environment.SpecialFolder.Desktop;
-            if (folder.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                txtExportPath.Text = Data.EXPORT_PDF_PATH = folder.SelectedPath;
-            }
-
+            this.CancelCommand = new RelayCommand(o => { this.Close(); }, o => true);
+            this.SaveCommand = new RelayCommand(o => { Exporter.Export(this.SelectedExportFormat, this.SelectedPageLayout, this.ExportPath); }, o => true);
         }
     }
 }

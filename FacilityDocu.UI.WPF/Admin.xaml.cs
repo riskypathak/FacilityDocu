@@ -1,6 +1,6 @@
 ﻿using FacilityDocLaptop.Model;
 using FacilityDocLaptop.View.ViewModel;
-using FacilityDocu.DTO.Models;
+using FacilityDocu.DTO;
 using FacilityDocu.UI.Utilities;
 using RestSharp;
 using System.Collections.Generic;
@@ -70,7 +70,7 @@ namespace FacilityDocLaptop
 
         private void SaveCommandExecute()
         {
-            IList<MasterDTO> masterData = new List<MasterDTO>();
+            List<MasterDTO> masterData = new List<MasterDTO>();
 
             foreach (var p in MasterData) //Running Normal Sync
             {
@@ -82,28 +82,15 @@ namespace FacilityDocLaptop
                 });
             }
 
-            var client = new RestClient(Data.SYNC_URL_HOST);
-            var request = new RestRequest("/Master/All", Method.POST) { RequestFormat = RestSharp.DataFormat.Json };
+            SyncManager manager = new SyncManager();
+            manager.UpdateMasterData(masterData);
 
-            request.AddBody(masterData);
-
-            IRestResponse response = client.Execute(request);
-
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            Task.Run(() =>
             {
-                //Sync with Static Master Data
-                Task.Run(() =>
-                {
-                    SyncManager manager = new SyncManager();
-                    manager.DownloadMasterData();
-                });
+                manager.DownloadMasterData();
+            });
 
-                MessageBox.Show("Data Saved Successfully.");
-            }
-            else
-            {
-                MessageBox.Show("Error while saving data.");
-            }
+            MessageBox.Show("Data Saved Successfully.");
         }
 
         #region Property Changed

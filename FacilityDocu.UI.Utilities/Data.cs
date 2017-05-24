@@ -1,6 +1,4 @@
 ﻿using FacilityDocu.DTO;
-using FacilityDocu.DTO.Models;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +18,6 @@ namespace FacilityDocu.UI.Utilities
 
         public static string EXPORT_PDF_PATH = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
-        public static string SYNC_URL_HOST = "http://localhost:8765";
-
         public static bool SYNC_DOWNLOAD = false;
         public static bool SYNC_DOWNLOAD_UPDATE = false;
 
@@ -29,8 +25,6 @@ namespace FacilityDocu.UI.Utilities
         public static RigTypeDTO CURRENT_RIG;
 
         public static string CURRENT_USER;
-
-        public static IList<ToolDTO> AVAILABLE_TOOLS = null;
         public static IList<MasterDTO> MASTER_DATA = new List<MasterDTO>();
 
         public const char SEPERATOR = '|';
