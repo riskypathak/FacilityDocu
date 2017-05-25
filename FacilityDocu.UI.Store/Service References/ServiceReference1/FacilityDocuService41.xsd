@@ -1,77 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:51256/FacilityDocuService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-  <xs:complexType name="ProjectDTO">
+  <xs:import schemaLocation="http://tlof.no-ip.biz:9876/FacilityDocu/FacilityDocuService.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:complexType name="AllMasterDTO">
     <xs:sequence>
-      <xs:element minOccurs="0" name="Client" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Closed" type="xs:boolean" />
-      <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="tns:UserDTO" />
-      <xs:element minOccurs="0" name="CreationDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="MasterData" nillable="true" type="tns:ArrayOfMasterDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AllMasterDTO" nillable="true" type="tns:AllMasterDTO" />
+  <xs:complexType name="ArrayOfMasterDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="MasterDTO" nillable="true" type="tns:MasterDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfMasterDTO" nillable="true" type="tns:ArrayOfMasterDTO" />
+  <xs:complexType name="MasterDTO">
+    <xs:sequence>
       <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="LastUpdatedAt" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="LastUpdatedBy" nillable="true" type="tns:UserDTO" />
-      <xs:element minOccurs="0" name="Location" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Persons" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="ProjectID" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="ProjectNumber" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="RigTypes" nillable="true" type="tns:ArrayOfRigTypeDTO" />
-      <xs:element minOccurs="0" name="Template" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Type" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ProjectDTO" nillable="true" type="tns:ProjectDTO" />
-  <xs:complexType name="UserDTO">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="UserID" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="UserDTO" nillable="true" type="tns:UserDTO" />
-  <xs:complexType name="ArrayOfRigTypeDTO">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="RigTypeDTO" nillable="true" type="tns:RigTypeDTO" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfRigTypeDTO" nillable="true" type="tns:ArrayOfRigTypeDTO" />
-  <xs:complexType name="RigTypeDTO">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Modules" nillable="true" type="tns:ArrayOfModuleDTO" />
-      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="RigTypeID" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="RigTypeDTO" nillable="true" type="tns:RigTypeDTO" />
-  <xs:complexType name="ArrayOfModuleDTO">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="ModuleDTO" nillable="true" type="tns:ModuleDTO" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfModuleDTO" nillable="true" type="tns:ArrayOfModuleDTO" />
-  <xs:complexType name="ModuleDTO">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="ModuleID" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Number" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Steps" nillable="true" type="tns:ArrayOfStepDTO" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ModuleDTO" nillable="true" type="tns:ModuleDTO" />
-  <xs:complexType name="ArrayOfStepDTO">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="StepDTO" nillable="true" type="tns:StepDTO" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfStepDTO" nillable="true" type="tns:ArrayOfStepDTO" />
-  <xs:complexType name="StepDTO">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Actions" nillable="true" type="tns:ArrayOfActionDTO" />
-      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Number" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="StepID" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="StepDTO" nillable="true" type="tns:StepDTO" />
+  <xs:element name="MasterDTO" nillable="true" type="tns:MasterDTO" />
   <xs:complexType name="ArrayOfActionDTO">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="ActionDTO" nillable="true" type="tns:ActionDTO" />
@@ -90,13 +39,19 @@
       <xs:element minOccurs="0" name="IsAnalysis" type="xs:boolean" />
       <xs:element minOccurs="0" name="IsDescriptionwarning" type="xs:boolean" />
       <xs:element minOccurs="0" name="IsNameWarning" type="xs:boolean" />
+      <xs:element minOccurs="0" name="LastUpdatedAt" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="LastUpdatedBy" nillable="true" type="tns:UserDTO" />
       <xs:element minOccurs="0" name="LiftingGears" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Machines" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Number" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Resources" nillable="true" type="tns:ArrayOfResourceDTO" />
+      <xs:element minOccurs="0" name="People" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PublishedAt" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="PublishedBy" nillable="true" type="tns:UserDTO" />
       <xs:element minOccurs="0" name="RiskAnalysis" nillable="true" type="tns:ArrayOfRiskAnalysisDTO" />
       <xs:element minOccurs="0" name="Risks" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Tools" nillable="true" type="tns:ArrayOfToolDTO" />
+      <xs:element minOccurs="0" name="StepID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Tools" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ActionDTO" nillable="true" type="tns:ActionDTO" />
@@ -150,21 +105,15 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="CommentDTO" nillable="true" type="tns:CommentDTO" />
-  <xs:complexType name="ArrayOfResourceDTO">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="ResourceDTO" nillable="true" type="tns:ResourceDTO" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfResourceDTO" nillable="true" type="tns:ArrayOfResourceDTO" />
-  <xs:complexType name="ResourceDTO">
+  <xs:complexType name="UserDTO">
     <xs:sequence>
       <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="ResourceCount" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="ResourceID" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Type" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ResourceDTO" nillable="true" type="tns:ResourceDTO" />
+  <xs:element name="UserDTO" nillable="true" type="tns:UserDTO" />
   <xs:complexType name="ArrayOfRiskAnalysisDTO">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="RiskAnalysisDTO" nillable="true" type="tns:RiskAnalysisDTO" />
@@ -174,31 +123,74 @@
   <xs:complexType name="RiskAnalysisDTO">
     <xs:sequence>
       <xs:element minOccurs="0" name="Activity" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="B" type="xs:double" />
-      <xs:element minOccurs="0" name="B_" type="xs:double" />
       <xs:element minOccurs="0" name="Controls" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Danger" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="E" type="xs:double" />
-      <xs:element minOccurs="0" name="E_" type="xs:double" />
-      <xs:element minOccurs="0" name="K" type="xs:double" />
-      <xs:element minOccurs="0" name="K_" type="xs:double" />
+      <xs:element minOccurs="0" name="L" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Responsible" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Risk" type="xs:double" />
       <xs:element minOccurs="0" name="RiskAnalysisID" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Risk_" type="xs:double" />
+      <xs:element minOccurs="0" name="S" type="xs:int" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="RiskAnalysisDTO" nillable="true" type="tns:RiskAnalysisDTO" />
-  <xs:complexType name="ArrayOfToolDTO">
+  <xs:complexType name="ProjectDTO">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="ToolDTO" nillable="true" type="tns:ToolDTO" />
+      <xs:element minOccurs="0" name="Client" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Closed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="tns:UserDTO" />
+      <xs:element minOccurs="0" name="CreationDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Location" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Persons" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProjectID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProjectNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RigTypes" nillable="true" type="tns:ArrayOfRigTypeDTO" />
+      <xs:element minOccurs="0" name="Template" type="xs:boolean" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ArrayOfToolDTO" nillable="true" type="tns:ArrayOfToolDTO" />
-  <xs:complexType name="ToolDTO">
+  <xs:element name="ProjectDTO" nillable="true" type="tns:ProjectDTO" />
+  <xs:complexType name="ArrayOfRigTypeDTO">
     <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RigTypeDTO" nillable="true" type="tns:RigTypeDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRigTypeDTO" nillable="true" type="tns:ArrayOfRigTypeDTO" />
+  <xs:complexType name="RigTypeDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Modules" nillable="true" type="tns:ArrayOfModuleDTO" />
       <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="ToolID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RigTypeID" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ToolDTO" nillable="true" type="tns:ToolDTO" />
+  <xs:element name="RigTypeDTO" nillable="true" type="tns:RigTypeDTO" />
+  <xs:complexType name="ArrayOfModuleDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ModuleDTO" nillable="true" type="tns:ModuleDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfModuleDTO" nillable="true" type="tns:ArrayOfModuleDTO" />
+  <xs:complexType name="ModuleDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ModuleID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Number" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Steps" nillable="true" type="tns:ArrayOfStepDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ModuleDTO" nillable="true" type="tns:ModuleDTO" />
+  <xs:complexType name="ArrayOfStepDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="StepDTO" nillable="true" type="tns:StepDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfStepDTO" nillable="true" type="tns:ArrayOfStepDTO" />
+  <xs:complexType name="StepDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Actions" nillable="true" type="tns:ArrayOfActionDTO" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Number" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StepID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="StepDTO" nillable="true" type="tns:StepDTO" />
 </xs:schema>

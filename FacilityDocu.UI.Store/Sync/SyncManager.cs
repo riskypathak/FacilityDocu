@@ -44,12 +44,12 @@ namespace Tablet_App
         public async Task<IList<int>> IsSyncRequired()
         {
             await GetAllProjects();
-            Dictionary<int, DateTime> projectIDs = new Dictionary<int, DateTime>();
+            ObservableCollection<int> projectIDs = new ObservableCollection<int>();
             foreach (StorageFile file in xmlFiles)
             {
                 string projectPath = Path.Combine(Data.ProjectXmlPath, file.Name.ToString());
                 ProjectDTO project = ProjectXmlReader.ReadProjectXml(projectPath, true);
-                projectIDs.Add(Convert.ToInt32(project.ProjectID), project.LastUpdatedAt);
+                projectIDs.Add(Convert.ToInt32(project.ProjectID));
             }
             var result = await service.IsSyncAsync(projectIDs, true);
 

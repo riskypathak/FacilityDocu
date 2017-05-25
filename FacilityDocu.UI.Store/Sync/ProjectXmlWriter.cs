@@ -23,8 +23,6 @@ namespace Tablet_App
             xProject.Add(new XElement("createdby", project.CreatedBy.Name));
             xProject.Add(new XElement("createdtime", project.CreationDate));
             xProject.Add(new XElement("description", project.Description));
-            xProject.Add(new XElement("updatedtime", project.LastUpdatedAt));
-            xProject.Add(new XElement("updatedby", project.LastUpdatedBy));
 
             WriteRig(project.RigTypes.ToList(), xProject);
             StorageFolder xmlPath = await StorageFolder.GetFolderFromPathAsync(Data.ProjectXmlPath);
