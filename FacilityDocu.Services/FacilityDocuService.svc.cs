@@ -10,6 +10,150 @@ namespace FacilityDocu.Services
 {
     public class FacilityDocuService : IFacilityDocuService
     {
+        public string Login(string userName, string password)
+        {
+            try
+            {
+                using (TabletApp_DatabaseEntities context = new TabletApp_DatabaseEntities())
+                {
+                    var currentUser = context.Users.SingleOrDefault(u => u.UserName == userName && u.Password == password);
+
+                    if (currentUser != null)
+                    {
+                        return currentUser.Role;
+                    }
+                    else
+                    {
+                        return string.Empty;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return string.Empty;
+            }
+        }
+
+        public AllMasterDTO GetAllMasterData()
+        {
+            AllMasterDTO data = new AllMasterDTO()
+            {
+                MasterData = new List<MasterDTO>()
+            };
+
+            using (TabletApp_DatabaseEntities context = new TabletApp_DatabaseEntities())
+            {
+                foreach (var tool in context.Tools)
+                {
+                    data.MasterData.Add(new MasterDTO()
+                    {
+                        Type = "Tools",
+                        Id = tool.ToolID,
+                        Description = tool.ToolName
+                    });
+                }
+
+                foreach (var resource in context.Resources)
+                {
+                    data.MasterData.Add(new MasterDTO()
+                    {
+                        Type = resource.Type,
+                        Id = resource.ResourceID,
+                        Description = resource.ResourceName
+                    });
+                }
+
+                foreach (var lg in context.LiftingGears)
+                {
+                    data.MasterData.Add(new MasterDTO()
+                    {
+                        Type = "LiftingGears",
+                        Id = lg.Id,
+                        Description = lg.Description
+                    });
+                }
+
+                foreach (var risk in context.Risks)
+                {
+                    data.MasterData.Add(new MasterDTO()
+                    {
+                        Type = "Risks",
+                        Id = risk.Id,
+                        Description = risk.Description
+                    });
+                }
+            }
+
+            return data;
+        }
+
+
+        public void UpdateMasterData(AllMasterDTO data)
+        {
+            var masterData = data.MasterData;
+
+            using (TabletApp_DatabaseEntities context = new TabletApp_DatabaseEntities())
+            {
+                if (masterData.First().Type == "LiftingGears")
+                {
+                    IList<int> idsToDelete = masterData.Select(m => m.Id).ToList();
+                    //Get all those which are not present in input
+                    var liftingGearsToDelete = context.LiftingGears.Where(l => !idsToDelete.Contains(l.Id)).ToList();
+                    context.LiftingGears.RemoveRange(liftingGearsToDelete);
+
+                    //Add new
+                    masterData.Where(m => m.Id == 0).ToList().ForEach(m => context.LiftingGears.Add(new LiftingGear() { Description = m.Description }));
+
+                    //Update Rest
+                    masterData.Where(m => m.Id != 0).ToList().ForEach(m => context.LiftingGears.Single(l => l.Id == m.Id).Description = m.Description);
+                }
+                else if (masterData.First().Type == "Risks")
+                {
+                    IList<int> idsToDelete = masterData.Select(m => m.Id).ToList();
+                    //Get all those which are not present in input
+                    var liftingGearsToDelete = context.Risks.Where(l => !idsToDelete.Contains(l.Id)).ToList();
+                    context.Risks.RemoveRange(liftingGearsToDelete);
+
+                    //Add new
+                    masterData.Where(m => m.Id == 0).ToList().ForEach(m => context.Risks.Add(new Risk() { Description = m.Description }));
+
+                    //Update Rest
+                    masterData.Where(m => m.Id != 0).ToList().ForEach(m => context.Risks.Single(l => l.Id == m.Id).Description = m.Description);
+                }
+                else if (masterData.First().Type == "People")
+                {
+                    //See Delete later
+
+                    //Add new
+                    masterData.Where(m => m.Id == 0).ToList().ForEach(m => context.Resources.Add(new Resource() { ResourceName = m.Description, Type = "People" }));
+
+                    //Update Rest
+                    masterData.Where(m => m.Id != 0).ToList().ForEach(m => context.Resources.Single(l => l.ResourceID == m.Id).ResourceName = m.Description);
+                }
+                else if (masterData.First().Type == "Machine")
+                {
+                    //See Delete later
+
+                    //Add new
+                    masterData.Where(m => m.Id == 0).ToList().ForEach(m => context.Resources.Add(new Resource() { ResourceName = m.Description, Type = "Machine" }));
+
+                    //Update Rest
+                    masterData.Where(m => m.Id != 0).ToList().ForEach(m => context.Resources.Single(l => l.ResourceID == m.Id).ResourceName = m.Description);
+                }
+                else if (masterData.First().Type == "Tools")
+                {
+                    //Won't to deleting work as it will efect existing
+                    //Add new
+                    masterData.Where(m => m.Id == 0).ToList().ForEach(m => context.Tools.Add(new Tool() { ToolName = m.Description }));
+
+                    //Update Rest
+                    masterData.Where(m => m.Id != 0).ToList().ForEach(m => context.Tools.Single(l => l.ToolID == m.Id).ToolName = m.Description);
+                }
+
+                context.SaveChanges();
+            }
+        }
+
         public Dictionary<int, string> IsSync(List<int> inputProjects, bool fromTablet)
         {
             Dictionary<int, string> projectStatusData = new Dictionary<int, string>();

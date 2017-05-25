@@ -81,21 +81,12 @@ namespace FacilityDocu.UI.Utilities
 
             try
             {
-                //IFacilityDocuService service = new FacilityDocuServiceClient();
-                //isLogin = service.Login(userName, password);
+                IFacilityDocuService service = new FacilityDocuServiceClient();
+                role = service.Login(userName, password);
 
-                var client = new RestClient(Data.SYNC_URL_HOST);
-                var request = new RestRequest("/User/Login", Method.POST)
-                { RequestFormat = DataFormat.Json };
-
-                request.AddBody(new UserDTO() { UserName = userName, Password = password });
-
-                IRestResponse response = client.Execute(request);
-
-                if (response.StatusCode == HttpStatusCode.OK)
+                if (!string.IsNullOrEmpty(role))
                 {
                     isLogin = true;
-                    role = response.Content;
                     xdoc.Element("config").Element("lastlogin").Value = userName;
                     xdoc.Element("config").Element("lastrole").Value = role;
                 }
@@ -105,6 +96,7 @@ namespace FacilityDocu.UI.Utilities
                 if (xdoc.Element("config").Element("lastlogin").Value.Equals(userName))
                 {
                     isLogin = true;
+                    role = xdoc.Element("config").Element("lastrole").Value;
                 }
             }
 
@@ -132,8 +124,6 @@ namespace FacilityDocu.UI.Utilities
 
             return returnValue;
         }
-
-        
 
         public static void WriteLog(string message, System.Diagnostics.EventLogEntryType type = System.Diagnostics.EventLogEntryType.Information)
         {

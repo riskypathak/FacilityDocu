@@ -4,8 +4,8 @@
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import schemaLocation="http://localhost:51256/FacilityDocuService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:51256/FacilityDocuService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-      <xsd:import schemaLocation="http://localhost:51256/FacilityDocuService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-      <xsd:import schemaLocation="http://localhost:51256/FacilityDocuService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" />
+      <xsd:import schemaLocation="http://localhost:51256/FacilityDocuService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/FacilityDocu.DTO" />
+      <xsd:import schemaLocation="http://localhost:51256/FacilityDocuService.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IFacilityDocuService_Login_InputMessage">
@@ -13,6 +13,18 @@
   </wsdl:message>
   <wsdl:message name="IFacilityDocuService_Login_OutputMessage">
     <wsdl:part name="parameters" element="tns:LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_GetAllMasterData_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllMasterData" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_GetAllMasterData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllMasterDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_UpdateMasterData_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateMasterData" />
+  </wsdl:message>
+  <wsdl:message name="IFacilityDocuService_UpdateMasterData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateMasterDataResponse" />
   </wsdl:message>
   <wsdl:message name="IFacilityDocuService_IsSync_InputMessage">
     <wsdl:part name="parameters" element="tns:IsSync" />
@@ -56,12 +68,6 @@
   <wsdl:message name="IFacilityDocuService_UpdateActionAttachments_OutputMessage">
     <wsdl:part name="parameters" element="tns:UpdateActionAttachmentsResponse" />
   </wsdl:message>
-  <wsdl:message name="IFacilityDocuService_GetTools_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetTools" />
-  </wsdl:message>
-  <wsdl:message name="IFacilityDocuService_GetTools_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetToolsResponse" />
-  </wsdl:message>
   <wsdl:message name="IFacilityDocuService_CreateTemplate_InputMessage">
     <wsdl:part name="parameters" element="tns:CreateTemplate" />
   </wsdl:message>
@@ -72,6 +78,14 @@
     <wsdl:operation name="Login">
       <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/Login" message="tns:IFacilityDocuService_Login_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/LoginResponse" message="tns:IFacilityDocuService_Login_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllMasterData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/GetAllMasterData" message="tns:IFacilityDocuService_GetAllMasterData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/GetAllMasterDataResponse" message="tns:IFacilityDocuService_GetAllMasterData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMasterData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/UpdateMasterData" message="tns:IFacilityDocuService_UpdateMasterData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/UpdateMasterDataResponse" message="tns:IFacilityDocuService_UpdateMasterData_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="IsSync">
       <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/IsSync" message="tns:IFacilityDocuService_IsSync_InputMessage" />
@@ -101,10 +115,6 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/UpdateActionAttachments" message="tns:IFacilityDocuService_UpdateActionAttachments_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/UpdateActionAttachmentsResponse" message="tns:IFacilityDocuService_UpdateActionAttachments_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetTools">
-      <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/GetTools" message="tns:IFacilityDocuService_GetTools_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/GetToolsResponse" message="tns:IFacilityDocuService_GetTools_OutputMessage" />
-    </wsdl:operation>
     <wsdl:operation name="CreateTemplate">
       <wsdl:input wsaw:Action="http://tempuri.org/IFacilityDocuService/CreateTemplate" message="tns:IFacilityDocuService_CreateTemplate_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IFacilityDocuService/CreateTemplateResponse" message="tns:IFacilityDocuService_CreateTemplate_OutputMessage" />
@@ -114,6 +124,24 @@
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="Login">
       <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/Login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllMasterData">
+      <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/GetAllMasterData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMasterData">
+      <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/UpdateMasterData" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -177,15 +205,6 @@
     </wsdl:operation>
     <wsdl:operation name="UpdateActionAttachments">
       <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/UpdateActionAttachments" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetTools">
-      <soap:operation soapAction="http://tempuri.org/IFacilityDocuService/GetTools" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

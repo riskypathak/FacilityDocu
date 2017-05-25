@@ -16,10 +16,22 @@ namespace FacilityDocu.UI.Utilities.Services {
     public interface IFacilityDocuService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/Login", ReplyAction="http://tempuri.org/IFacilityDocuService/LoginResponse")]
-        bool Login(string userName, string password);
+        string Login(string userName, string password);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/Login", ReplyAction="http://tempuri.org/IFacilityDocuService/LoginResponse")]
-        System.Threading.Tasks.Task<bool> LoginAsync(string userName, string password);
+        System.Threading.Tasks.Task<string> LoginAsync(string userName, string password);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetAllMasterData", ReplyAction="http://tempuri.org/IFacilityDocuService/GetAllMasterDataResponse")]
+        FacilityDocu.DTO.AllMasterDTO GetAllMasterData();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetAllMasterData", ReplyAction="http://tempuri.org/IFacilityDocuService/GetAllMasterDataResponse")]
+        System.Threading.Tasks.Task<FacilityDocu.DTO.AllMasterDTO> GetAllMasterDataAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateMasterData", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateMasterDataResponse")]
+        void UpdateMasterData(FacilityDocu.DTO.AllMasterDTO masterData);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateMasterData", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateMasterDataResponse")]
+        System.Threading.Tasks.Task UpdateMasterDataAsync(FacilityDocu.DTO.AllMasterDTO masterData);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/IsSync", ReplyAction="http://tempuri.org/IFacilityDocuService/IsSyncResponse")]
         System.Collections.Generic.Dictionary<int, string> IsSync(int[] inputProjects, bool fromTablet);
@@ -63,12 +75,6 @@ namespace FacilityDocu.UI.Utilities.Services {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/UpdateActionAttachments", ReplyAction="http://tempuri.org/IFacilityDocuService/UpdateActionAttachmentsResponse")]
         System.Threading.Tasks.Task UpdateActionAttachmentsAsync(FacilityDocu.DTO.ActionDTO action);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetTools", ReplyAction="http://tempuri.org/IFacilityDocuService/GetToolsResponse")]
-        FacilityDocu.DTO.ToolDTO[] GetTools();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/GetTools", ReplyAction="http://tempuri.org/IFacilityDocuService/GetToolsResponse")]
-        System.Threading.Tasks.Task<FacilityDocu.DTO.ToolDTO[]> GetToolsAsync();
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFacilityDocuService/CreateTemplate", ReplyAction="http://tempuri.org/IFacilityDocuService/CreateTemplateResponse")]
         void CreateTemplate(FacilityDocu.DTO.ProjectDTO projectDTO);
         
@@ -103,12 +109,28 @@ namespace FacilityDocu.UI.Utilities.Services {
                 base(binding, remoteAddress) {
         }
         
-        public bool Login(string userName, string password) {
+        public string Login(string userName, string password) {
             return base.Channel.Login(userName, password);
         }
         
-        public System.Threading.Tasks.Task<bool> LoginAsync(string userName, string password) {
+        public System.Threading.Tasks.Task<string> LoginAsync(string userName, string password) {
             return base.Channel.LoginAsync(userName, password);
+        }
+        
+        public FacilityDocu.DTO.AllMasterDTO GetAllMasterData() {
+            return base.Channel.GetAllMasterData();
+        }
+        
+        public System.Threading.Tasks.Task<FacilityDocu.DTO.AllMasterDTO> GetAllMasterDataAsync() {
+            return base.Channel.GetAllMasterDataAsync();
+        }
+        
+        public void UpdateMasterData(FacilityDocu.DTO.AllMasterDTO masterData) {
+            base.Channel.UpdateMasterData(masterData);
+        }
+        
+        public System.Threading.Tasks.Task UpdateMasterDataAsync(FacilityDocu.DTO.AllMasterDTO masterData) {
+            return base.Channel.UpdateMasterDataAsync(masterData);
         }
         
         public System.Collections.Generic.Dictionary<int, string> IsSync(int[] inputProjects, bool fromTablet) {
@@ -165,14 +187,6 @@ namespace FacilityDocu.UI.Utilities.Services {
         
         public System.Threading.Tasks.Task UpdateActionAttachmentsAsync(FacilityDocu.DTO.ActionDTO action) {
             return base.Channel.UpdateActionAttachmentsAsync(action);
-        }
-        
-        public FacilityDocu.DTO.ToolDTO[] GetTools() {
-            return base.Channel.GetTools();
-        }
-        
-        public System.Threading.Tasks.Task<FacilityDocu.DTO.ToolDTO[]> GetToolsAsync() {
-            return base.Channel.GetToolsAsync();
         }
         
         public void CreateTemplate(FacilityDocu.DTO.ProjectDTO projectDTO) {

@@ -14,6 +14,15 @@ namespace FacilityDocu.Services
     public interface IFacilityDocuService
     {
         [OperationContract]
+        string Login(string userName, string password);
+
+        [OperationContract]
+        AllMasterDTO GetAllMasterData();
+
+        [OperationContract]
+        void UpdateMasterData(AllMasterDTO masterData);
+
+        [OperationContract]
         Dictionary<int, string> IsSync(List<int> inputProjects, bool fromTablet);
         
         [OperationContract]
