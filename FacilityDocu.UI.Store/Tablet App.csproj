@@ -153,23 +153,26 @@
     </AppxManifest>
     <None Include="packages.config" />
     <None Include="Properties\ServiceReferences.Designer.ClientConfig" />
-    <None Include="Service References\ServiceReference1\FacilityDocuService.wsdl" />
-    <None Include="Service References\ServiceReference1\FacilityDocuService.xsd">
+    <None Include="Service References\ServiceReference1\FacilityDocuService1.wsdl" />
+    <None Include="Service References\ServiceReference1\FacilityDocuService4.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServiceReference1\FacilityDocuService1.xsd">
+    <None Include="Service References\ServiceReference1\FacilityDocuService41.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServiceReference1\FacilityDocuService2.xsd">
+    <None Include="Service References\ServiceReference1\FacilityDocuService42.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServiceReference1\FacilityDocuService3.xsd">
+    <None Include="Service References\ServiceReference1\FacilityDocuService43.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServiceReference1\Tablet_App.ServiceReference1.ProjectDTO.datasource">
+    <None Include="Service References\ServiceReference1\Tablet_App.ServiceReference1.ActionDTO.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ServiceReference1\Tablet_App.ServiceReference1.ToolDTO.datasource">
+    <None Include="Service References\ServiceReference1\Tablet_App.ServiceReference1.AllMasterDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReference1\Tablet_App.ServiceReference1.ProjectDTO.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Tablet App_TemporaryKey.pfx" />

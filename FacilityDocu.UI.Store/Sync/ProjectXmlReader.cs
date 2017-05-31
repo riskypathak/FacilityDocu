@@ -21,8 +21,6 @@ namespace Tablet_App
             project.CreatedBy = new UserDTO() { UserName = xProject.Element("createdby").Value };
             project.CreationDate = Convert.ToDateTime(xProject.Element("createdtime").Value);
             project.Description = xProject.Element("description").Value;
-            project.LastUpdatedAt = Convert.ToDateTime(xProject.Element("updatedtime").Value);
-            project.LastUpdatedBy = new UserDTO() { UserName = xProject.Element("updatedby").Value };
             project.ProjectID = Convert.ToString(xProject.Element("id").Value);
             project.Template = Convert.ToBoolean(xProject.Element("template").Value);
 

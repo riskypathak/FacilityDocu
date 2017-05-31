@@ -114,9 +114,9 @@ namespace FacilityDocu.UI.Utilities
                 action.Machines = Convert.ToString(xAction.Element("machines").Value);
 
                 action.PublishedAt = Convert.ToDateTime(xAction.Element("publishedat").Value);
-                //action.PublishedBy = Convert.ToString(xAction.Element("publishedby").Value);
+                action.PublishedBy = new UserDTO() { UserName = Convert.ToString(xAction.Element("publishedby").Value) };
                 action.LastUpdatedAt = Convert.ToDateTime(xAction.Element("lastupdatedat").Value);
-                //action.LastUpdatedBy
+                action.LastUpdatedBy = new UserDTO() { UserName = Convert.ToString(xAction.Element("lastupdatedby").Value) };
 
 
                 action.IsNameWarning = Convert.ToBoolean(xAction.Element("namewarning").Value);
