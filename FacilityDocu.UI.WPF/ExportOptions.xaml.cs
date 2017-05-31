@@ -17,19 +17,11 @@ namespace FacilityDocLaptop
     /// </summary>
     public partial class ExportOptions : Window, INotifyPropertyChanged
     {
-        ProjectDTO template = new ProjectDTO();
-
-        private ObservableCollection<string>  _allExportFormats = new ObservableCollection<string>(new List<string>() { "PDF", "HTML" });
+        private ObservableCollection<string> _allExportFormats = new ObservableCollection<string>(new List<string>() { "PDF", "HTML" });
         public ObservableCollection<string> AllExportFormats { get { return _allExportFormats; } set { _allExportFormats = value; RaisePropertyChanged("AllExportFormats"); } }
 
         private string _selectedExportFormat;
         public string SelectedExportFormat { get { return _selectedExportFormat; } set { _selectedExportFormat = value; RaisePropertyChanged("SelectedExportFormat"); } }
-
-        private ObservableCollection<string> _allPageLayouts = new ObservableCollection<string>(new List<string>() { "Landscape", "Portrait" });
-        public ObservableCollection<string> AllPageLayouts { get { return _allPageLayouts; } set { _allPageLayouts = value; RaisePropertyChanged("AllPageLayouts"); } }
-
-        private string _selectedPageLayout;
-        public string SelectedPageLayout { get { return _selectedPageLayout; } set { _selectedPageLayout = value; RaisePropertyChanged("SelectedPageLayout"); } }
 
         private string _exportPath;
         public string ExportPath { get { return _exportPath; } set { _exportPath = value; RaisePropertyChanged("ExportPath"); } }
@@ -64,7 +56,6 @@ namespace FacilityDocLaptop
             this.DataContext = this;
             //Provide Default Values to ComboBoxes
             this.SelectedExportFormat = AllExportFormats.First();
-            this.SelectedPageLayout = AllPageLayouts.First();
 
             this.BrowseCommand = new RelayCommand(o =>
             {
@@ -77,7 +68,18 @@ namespace FacilityDocLaptop
             }, o => true);
 
             this.CancelCommand = new RelayCommand(o => { this.Close(); }, o => true);
-            this.SaveCommand = new RelayCommand(o => { Exporter.Export(this.SelectedExportFormat, this.SelectedPageLayout, this.ExportPath); }, o => true);
+            this.SaveCommand = new RelayCommand(o =>
+            {
+                string projectPath = System.IO.Path.Combine(Data.PROJECT_XML_FOLDER, string.Format("{0}.xml", Data.CURRENT_PROJECT.ProjectID));
+
+                Data.CURRENT_PROJECT = ProjectXmlReader.ReadProjectXml(projectPath, false);
+
+                string outputFile = Exporter.Export(Data.CURRENT_PROJECT, this.SelectedExportFormat, this.ExportPath);
+
+                System.Windows.MessageBox.Show($"{this.SelectedExportFormat} output generated at {outputFile}");
+
+
+            }, o => !string.IsNullOrEmpty(this.SelectedExportFormat) && !string.IsNullOrEmpty(this.ExportPath));
         }
     }
 }

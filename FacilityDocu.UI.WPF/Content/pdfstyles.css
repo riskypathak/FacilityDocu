@@ -1,0 +1,74 @@
+﻿body {
+	font-family: Verdana !important;
+    height: 595px;
+    width: 842px;
+	/* to centre page on screen*/
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    text-align: left;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+
+ul, li{
+	text-align:left;
+}
+table {
+	border: 1px #000000;
+}
+h1, h2, h3 {
+    display: inline-block;
+    color: darkblue;
+}
+td, p, h4 {
+	font-size: 10px !important;
+}
+.tableheaders {
+	padding: .1em;
+	background-color: #ddd;
+	border: none;
+	line-height: 0.9em;
+}
+.tablecontent {
+	padding: .1em ;
+	background-color: ;
+	border: 1px #000;
+	line-height: 1em ;
+	font-size: 10px !important;
+}
+.tablecontentlist {
+	padding: .1em;
+	background-color: #FFF;
+	border: 1px #000;
+	line-height: 1.2em;
+	font-size: 10px !important;
+}
+.wbfooter {
+	background-color: #C00;
+	color:#FFF;
+	border: none;
+    height: 10px;
+}
+
+.imgProject{
+height: 150px;
+}
+
+.trHeader td {
+    height: 30px;
+}
+
+.trFooter td {
+    height: 10px;
+}
+
+.trActionName td {
+    height: 60px;
+}
+
+.trActionTools td {
+    height: 50px;
+}
+
+

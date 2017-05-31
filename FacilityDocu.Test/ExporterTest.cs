@@ -25,7 +25,7 @@ namespace FacilityDocu.Test
         [TestMethod]
         public void HtmlFileToPdfFileTest()
         {
-            string html = File.ReadAllText(@"E:\Works\Projects\Oliver\Code\FacilityDocu\FacilityDocu.UI.WPF\HtmlOutputExample.html");
+            string html = File.ReadAllText(@"C:\Users\risky\Desktop\Monitor\HtmlOutputExample.html");
             var config = new PdfGenerateConfig();
             config.PageOrientation = PageOrientation.Landscape;
             config.PageSize = PageSize.A4;
