@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheArtOfDev.HtmlRenderer.Core;
 using TheArtOfDev.HtmlRenderer.PdfSharp;
 
 namespace FacilityDocu.Test
@@ -29,7 +30,8 @@ namespace FacilityDocu.Test
             var config = new PdfGenerateConfig();
             config.PageOrientation = PageOrientation.Landscape;
             config.PageSize = PageSize.A4;
-            config.SetMargins(0);
+            config.SetMargins(10);
+
             PdfDocument pdf = PdfGenerator.GeneratePdf(html, config);
             pdf.Save("document.pdf");
         }

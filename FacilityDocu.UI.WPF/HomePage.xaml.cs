@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -313,13 +314,37 @@ namespace FacilityDocLaptop
                 {
                     ActionDTO action = step.Actions[currentActionIndex];
 
+                    //txtAction.Document.Blocks.Clear();
+                    //txtAction.Document.Blocks.Add(new System.Windows.Documents.Paragraph(new Run(action.Name)));
                     txtAction.Document.Blocks.Clear();
-                    txtAction.Document.Blocks.Add(new System.Windows.Documents.Paragraph(new Run(action.Name)));
+                    try
+                    {
+                        MemoryStream stream = new MemoryStream(ASCIIEncoding.Default.GetBytes(action.Name));
+                        txtAction.Selection.Load(stream, DataFormats.Xaml);
+                    }
+                    catch (Exception ex)
+                    {
+
+                        txtAction.Document.Blocks.Add(new System.Windows.Documents.Paragraph(new Run(action.Name)));
+                    }
 
                     EnableNameWarning();
 
-                    txtActionDetails.Document.Blocks.Clear();
-                    txtActionDetails.Document.Blocks.Add(new System.Windows.Documents.Paragraph(new Run(action.Description)));
+                    //txtActionDetails.Document.Blocks.Clear();
+                    //txtActionDetails.Document.Blocks.Add(new System.Windows.Documents.Paragraph(new Run(action.Description)));
+
+                    txtActionDetails.Document.Blocks.Clear();                   
+                    try
+                    {
+                        MemoryStream stream = new MemoryStream(ASCIIEncoding.Default.GetBytes(action.Description));
+                        txtActionDetails.Selection.Load(stream, DataFormats.Xaml);
+                    }
+                    catch(Exception ex)
+                    {
+                        
+                        txtActionDetails.Document.Blocks.Add(new System.Windows.Documents.Paragraph(new Run(action.Description)));
+                    }
+
 
                     EnableActionDetailsWarning();
 
@@ -521,8 +546,17 @@ namespace FacilityDocLaptop
                 action.People = string.Join(Data.SEPERATOR.ToString(), SelectedPeople.Select(p => $"{p.Name}{Data.SUBSEPERATOR}{p.ResourceCount}"));
                 action.Machines = string.Join(Data.SEPERATOR.ToString(), SelectedMachines.Select(p => $"{p.Name}{Data.SUBSEPERATOR}{p.ResourceCount}"));
 
-                action.Name = new TextRange(txtAction.Document.ContentStart, txtAction.Document.ContentEnd).Text;
-                action.Description = new TextRange(txtActionDetails.Document.ContentStart, txtActionDetails.Document.ContentEnd).Text;
+                TextRange trActionName = new TextRange(txtAction.Document.ContentStart, txtAction.Document.ContentEnd);
+                MemoryStream msActionName = new MemoryStream();
+                trActionName.Save(msActionName, DataFormats.Xaml);
+                action.Name = ASCIIEncoding.Default.GetString(msActionName.ToArray());
+                //action.Name = new TextRange(txtAction.Document.ContentStart, txtAction.Document.ContentEnd).Text;
+
+                TextRange trActionDescription = new TextRange(txtActionDetails.Document.ContentStart, txtActionDetails.Document.ContentEnd);
+                MemoryStream msActionDescription = new MemoryStream();
+                trActionDescription.Save(msActionDescription, DataFormats.Xaml);
+                action.Description = ASCIIEncoding.Default.GetString(msActionDescription.ToArray());
+                //action.Description = new TextRange(txtActionDetails.Document.ContentStart, txtActionDetails.Document.ContentEnd).Text;
 
                 action.IsAnalysis = chkRiskAnalysis.IsChecked.Value;
 
@@ -622,7 +656,7 @@ namespace FacilityDocLaptop
             {
                 int counter = 1;
 
-                if((new FileInfo(i)).Length > 5242880)
+                if ((new FileInfo(i)).Length > 5242880)
                 {
                     MessageBox.Show("File(s) should be less than 5MB in size.");
                     return;

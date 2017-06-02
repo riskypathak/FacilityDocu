@@ -26,7 +26,7 @@ namespace FacilityDocu.UI.Utilities
                 var config = new PdfGenerateConfig();
                 config.PageOrientation = PageOrientation.Landscape;
                 config.PageSize = PdfSharp.PageSize.A4;
-                config.SetMargins(0);
+                config.SetMargins(5);
 
                 PdfDocument outputPDFDocument = new PdfDocument();
 
@@ -58,74 +58,75 @@ namespace FacilityDocu.UI.Utilities
                                 htmlLayout.Replace("<!--=%MODULENAME%-->", $"Chapter {moduleIndex}. {module.Name}");
                                 htmlLayout.Replace("<!--=%STEPNAME%-->", $"Step {moduleIndex}.{stepIndex} {step.Name}");
 
-                                htmlLayout.Replace("<!--=%ACTIONNAME%-->", $"{actionIndex}. {action.Name}");
-                                htmlLayout.Replace("<!--=%ACTIONDESC%-->", action.Description.Trim(new char[2] { ' ', '\n' }).Replace("\n", "<br />"));
+                                htmlLayout.Replace("<!--=%ACTIONNAME%-->", $"{actionIndex}. {action.Name.Replace("Run>", "span>").Replace("Foreground=\"#FFFF0000\"", "style=\"color: red\"")}");
+                                htmlLayout.Replace("<!--=%ACTIONDESC%-->", action.Description.Replace("Run>", "span>").Replace("Foreground=\"#FFFF0000\"", "class=\"redfont\""));
+
                                 htmlLayout.Replace("<!--=%ACTIONDIMENSIONS%-->", action.Dimensions.Replace("\n", "<br />"));
 
-                                StringBuilder machineHtml = new StringBuilder("<ul>");
+                                StringBuilder machineHtml = new StringBuilder();
                                 foreach (string machine in action.Machines.Split(new char[1] { Data.SEPERATOR }, StringSplitOptions.RemoveEmptyEntries))
                                 {
                                     string[] vals = machine.Split(new char[1] { Data.SUBSEPERATOR });
-                                    machineHtml.Append($"<li>{vals[0]} - {vals[1]}</li>");
+                                    machineHtml.Append($"• {vals[0]} - {vals[1]}<br/>");
                                 }
-                                htmlLayout.Replace("<!--=%ACTIONMACHINES%-->", machineHtml.ToString() + "</ul>");
+                                htmlLayout.Replace("<!--=%ACTIONMACHINES%-->", machineHtml.ToString());
 
-                                StringBuilder peopleHtml = new StringBuilder("<ul>");
+                                StringBuilder peopleHtml = new StringBuilder();
                                 foreach (string people in action.People.Split(new char[1] { Data.SEPERATOR }, StringSplitOptions.RemoveEmptyEntries))
                                 {
                                     string[] vals = people.Split(new char[1] { Data.SUBSEPERATOR });
-                                    peopleHtml.Append($"<li>{vals[0]} - {vals[1]}</li>");
+                                    peopleHtml.Append($"• {vals[0]} - {vals[1]}<br/>");
                                 }
-                                htmlLayout.Replace("<!--=%ACTIONPEOPLE%-->", peopleHtml.ToString() + "</ul>");
+                                htmlLayout.Replace("<!--=%ACTIONPEOPLE%-->", peopleHtml.ToString());
 
-                                StringBuilder toolHtml = new StringBuilder("<ul>");
+                                StringBuilder toolHtml = new StringBuilder();
                                 foreach (string tool in action.Tools.Split(new char[1] { Data.SEPERATOR }, StringSplitOptions.RemoveEmptyEntries))
                                 {
-                                    toolHtml.Append($"<li>{tool}</li>");
+                                    toolHtml.Append($"•  {tool}<br/>");
                                 }
-                                htmlLayout.Replace("<!--=%ACTIONTOOLS%-->", toolHtml.ToString() + "</ul>");
+                                htmlLayout.Replace("<!--=%ACTIONTOOLS%-->", toolHtml.ToString());
 
-                                StringBuilder lgHtml = new StringBuilder("<ul>");
+                                StringBuilder lgHtml = new StringBuilder();
                                 foreach (string lg in action.LiftingGears.Split(new char[1] { Data.SEPERATOR }, StringSplitOptions.RemoveEmptyEntries))
                                 {
-                                    lgHtml.Append($"<li>{lg}</li>");
+                                    lgHtml.Append($"•  {lg}<br/>");
                                 }
-                                htmlLayout.Replace("<!--=%ACTIONLIFTINGGEARS%-->", lgHtml.ToString() + "</ul>");
+                                htmlLayout.Replace("<!--=%ACTIONLIFTINGGEARS%-->", lgHtml.ToString());
 
 
-                                StringBuilder riskHtml = new StringBuilder("<ul>");
+                                StringBuilder riskHtml = new StringBuilder();
                                 foreach (string risk in action.Risks.Split(new char[1] { Data.SEPERATOR }, StringSplitOptions.RemoveEmptyEntries))
                                 {
-                                    riskHtml.Append($"<li>{risk}</li>");
+                                    riskHtml.Append($"•  {risk}<br/>");
                                 }
-                                htmlLayout.Replace("<!--=%ACTIONRISKS%-->", riskHtml.ToString() + "</ul>");
+                                htmlLayout.Replace("<!--=%ACTIONRISKS%-->", riskHtml.ToString());
 
-
+                                IList<ImageDTO> images = action.Images.Where(a => a.Used).ToList();
                                 StringBuilder imageHtml = new StringBuilder();
                                 int imageIndex = 1;
 
-                                if (action.Images.Count >= imageIndex)
+                                if (images.Count >= imageIndex)
                                 {
                                     imageHtml.Append("<tr>");
                                     for (imageIndex = 1; imageIndex <= 3; imageIndex++)
                                     {
-                                        if (action.Images.Count >= imageIndex)
+                                        if (images.Count >= imageIndex)
                                         {
-                                            ImageDTO image = action.Images[imageIndex - 1];
-                                            imageHtml.Append($"<td><img class=\"imgProject\" src=\"{image.Path}\" /></td>");
+                                            ImageDTO image = images[imageIndex - 1];
+                                            imageHtml.Append($"<td class=\"imgProject\"><img class=\"imgProject\" src=\"{image.Path}\" /></td>");
                                         }
                                     }
                                     imageHtml.Append("</tr>");
                                 }
-                                if (action.Images.Count >= imageIndex)
+                                if (images.Count >= imageIndex)
                                 {
                                     imageHtml.Append("<tr>");
                                     for (imageIndex = 4; imageIndex <= 6; imageIndex++)
                                     {
-                                        if (action.Images.Count >= imageIndex)
+                                        if (images.Count >= imageIndex)
                                         {
-                                            ImageDTO image = action.Images[imageIndex - 1];
-                                            imageHtml.Append($"<td><img class=\"imgProject\" src=\"{image.Path}\" /></td>");
+                                            ImageDTO image = images[imageIndex - 1];
+                                            imageHtml.Append($"<td class=\"imgProject\"><img class=\"imgProject\" src=\"{image.Path}\" /></td>");
                                         }
                                     }
                                     imageHtml.Append("</tr>");
@@ -133,13 +134,17 @@ namespace FacilityDocu.UI.Utilities
 
                                 htmlLayout.Replace("<!--=%ACTIONIMAGES%-->", imageHtml.ToString());
 
-                                StringBuilder attachmentHtml = new StringBuilder("<ul>");
+                                StringBuilder attachmentHtml = new StringBuilder();
                                 foreach (AttachmentDTO attach in action.Attachments)
                                 {
-                                    attachmentHtml.Append($"<li>{Path.GetFileName(attach.Path)}</li>");
+                                    try
+                                    {
+                                        attachmentHtml.Append($"• {Path.GetFileName(attach.Path)}<br/>");
+                                    }
+                                    catch (Exception ex) { }
                                 }
 
-                                htmlLayout.Replace("<!--=%ACTIONATTACHMENTS%-->", attachmentHtml.ToString() + "</ul>");
+                                htmlLayout.Replace("<!--=%ACTIONATTACHMENTS%-->", attachmentHtml.ToString());
 
                                 if (action.IsAnalysis)
                                 {
@@ -171,11 +176,14 @@ namespace FacilityDocu.UI.Utilities
 
                                 foreach (AttachmentDTO attach in action.Attachments)
                                 {
-                                    inputDocument = PdfReader.Open(attach.Path, PdfDocumentOpenMode.Import);
-
-                                    foreach(PdfPage aPage in inputDocument.Pages)
+                                    if (File.Exists(attach.Path))
                                     {
-                                        outputPDFDocument.AddPage(aPage);
+                                        inputDocument = PdfReader.Open(attach.Path, PdfDocumentOpenMode.Import);
+
+                                        foreach (PdfPage aPage in inputDocument.Pages)
+                                        {
+                                            outputPDFDocument.AddPage(aPage);
+                                        }
                                     }
                                 }
                             }
@@ -263,8 +271,8 @@ namespace FacilityDocu.UI.Utilities
                                 $"<a href=\"{rigIndex}_{moduleIndex}_{stepIndex}_{previousActionIndex}.html\" class=\"previous\">&#8249;</a>&nbsp;&nbsp;" +
                                 $"<a href=\"{rigIndex}_{moduleIndex}_{stepIndex}_{nextActionIndex}.html\" class=\"next\">&#8250;</a>");
 
-                            htmlLayout.Replace("<!--=%ACTIONNAME%-->", $"{actionIndex}. {action.Name}");
-                            htmlLayout.Replace("<!--=%ACTIONDESC%-->", action.Description.Replace("\n", "<br />"));
+                            htmlLayout.Replace("<!--=%ACTIONNAME%-->", $"{actionIndex}. {action.Name.Replace("Run>", "span>").Replace("Foreground=\"#FFFF0000\"", "style=\"color: red\"")}");
+                            htmlLayout.Replace("<!--=%ACTIONDESC%-->", action.Description.Replace("Run>", "span>").Replace("Foreground=\"#FFFF0000\"", "style=\"color: red\""));
                             htmlLayout.Replace("<!--=%ACTIONDIMENSIONS%-->", action.Dimensions.Replace("\n", "<br />"));
 
                             StringBuilder machineHtml = new StringBuilder();
@@ -307,22 +315,30 @@ namespace FacilityDocu.UI.Utilities
 
 
                             StringBuilder imageHtml = new StringBuilder();
-                            foreach (ImageDTO image in action.Images)
+                            foreach (ImageDTO image in action.Images.Where(i=>i.Used))
                             {
-                                //Copy image path to content
-                                File.Copy(image.Path, Path.Combine(contentFolderPath, Path.GetFileName(image.Path)), true);
+                                try
+                                {
+                                    //Copy image path to content
+                                    File.Copy(image.Path, Path.Combine(contentFolderPath, Path.GetFileName(image.Path)), true);
 
-                                imageHtml.Append($"<div class=\"rdimg\"><a rel=\"rigduco\" href=\"./Content/{ Path.GetFileName(image.Path)}\" class=\"swipebox\" title=\"{Path.GetFileName(image.Path)}\"><img class=\"imgProject\" src=\"./Content/{Path.GetFileName(image.Path)}\" /></a></div>");
+                                    imageHtml.Append($"<div class=\"rdimg\"><a rel=\"rigduco\" href=\"./Content/{ Path.GetFileName(image.Path)}\" class=\"swipebox\" title=\"{Path.GetFileName(image.Path)}\"><img class=\"imgProject\" src=\"./Content/{Path.GetFileName(image.Path)}\" /></a></div>");
+                                }
+                                catch (Exception ex) { }
                             }
                             htmlLayout.Replace("<!--=%ACTIONIMAGES%-->", imageHtml.ToString());
 
                             StringBuilder attachmentHtml = new StringBuilder();
                             foreach (AttachmentDTO attach in action.Attachments)
                             {
-                                //Copy image path to content
-                                File.Copy(attach.Path, Path.Combine(contentFolderPath, Path.GetFileName(attach.Path)), true);
+                                try
+                                {
+                                    //Copy image path to content
+                                    File.Copy(attach.Path, Path.Combine(contentFolderPath, Path.GetFileName(attach.Path)), true);
 
-                                attachmentHtml.Append($"<a href=\"./Content/{Path.GetFileName(attach.Path)}\" target=\"newwindow\">{attach.Name}</a><br />");
+                                    attachmentHtml.Append($"<a href=\"./Content/{Path.GetFileName(attach.Path)}\" target=\"newwindow\">{attach.Name}</a><br />");
+                                }
+                                catch(Exception ex) { }
                             }
 
                             htmlLayout.Replace("<!--=%ACTIONATTACHMENTS%-->", attachmentHtml.ToString());

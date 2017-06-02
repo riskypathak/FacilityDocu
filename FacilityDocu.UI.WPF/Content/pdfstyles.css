@@ -1,8 +1,6 @@
 ﻿body {
-	font-family: Verdana !important;
-    height: 595px;
-    width: 842px;
-	/* to centre page on screen*/
+    font-family: Verdana !important;
+    /* to centre page on screen*/
     margin-left: auto;
     margin-right: auto;
     background-color: white;
@@ -11,48 +9,38 @@
     word-wrap: break-word;
 }
 
-ul, li{
-	text-align:left;
+.redfont {
+    border-spacing: 0px;
+    color: red;
 }
+
 table {
-	border: 1px #000000;
 }
+
 h1, h2, h3 {
     display: inline-block;
     color: darkblue;
 }
+
 td, p, h4 {
-	font-size: 10px !important;
+    font-size: 10px !important;
 }
-.tableheaders {
-	padding: .1em;
-	background-color: #ddd;
-	border: none;
-	line-height: 0.9em;
-}
+
 .tablecontent {
-	padding: .1em ;
-	background-color: ;
-	border: 1px #000;
-	line-height: 1em ;
-	font-size: 10px !important;
+    text-align: left;
 }
-.tablecontentlist {
-	padding: .1em;
-	background-color: #FFF;
-	border: 1px #000;
-	line-height: 1.2em;
-	font-size: 10px !important;
-}
+
 .wbfooter {
-	background-color: #C00;
-	color:#FFF;
-	border: none;
+    background-color: #C00;
+    color: #FFF;
+    border: none;
     height: 10px;
 }
 
-.imgProject{
-height: 150px;
+.imgProject {
+    height: 132px;
+    vertical-align: top;
+    text-align: left;
 }
 
 .trHeader td {
@@ -63,12 +51,36 @@ height: 150px;
     height: 10px;
 }
 
-.trActionName td {
+.trActionName {
     height: 60px;
+    word-break: break-all;
+    text-overflow: clip;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
 }
 
-.trActionTools td {
-    height: 50px;
+.trActionTool {
+    height: 75px;
+    word-break: break-all;
+    text-overflow: clip;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
 }
 
+.trAnalysis {
+    height: 125px;
+    word-break: break-all;
+    text-overflow: clip;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+}
 
+.noborder {
+    border: none;
+}

@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="<!--=%STYLEPATH%-->">
 </head>
 <body>
-    <table width="100%">
+    <table cellspacing="0" cellpadding="2" width="98%">
         <tr class="trHeader">
             <td align="left">
                 <img src="<!--=%LOGOPATH%-->" />
@@ -21,13 +21,13 @@
             </td>
         </tr>
         <tr>
-            <td colspan="3">
-                <table width="100%" align="center" border="1">
+            <td valign="top" colspan="3">
+                <table cellspacing="0" cellpadding="2" width="100%" height="100%" align="center" border="1">
                     <tr>
-                        <td width="20%"></td>
-                        <td width="10%"></td>
-                        <td width="50%"></td>
-                        <td width="20%"></td>
+                        <td class="noborder" width="20%"></td>
+                        <td class="noborder" width="10%"></td>
+                        <td class="noborder" width="50%"></td>
+                        <td class="noborder" width="20%"></td>
                     </tr>
                     <tr>
                         <td colspan="4" align="left">
@@ -41,75 +41,61 @@
                         <td colspan="2"><b>Detail:</b></td>
                         <td><b>Dimensions:</b></td>
                     </tr>
-                    <tr class="trActionName">
-                        <td valign="top">
-                            <!--=%ACTIONNAME%-->
-                        </td>
-                        <td colspan="2" valign="top" align="left">
+                    <tr>
+                        <td class="trActionName" valign="top"><!--=%ACTIONNAME%--></td>
+                        <td colspan="2" valign="top" align="left" class="trActionName">
                             <!--=%ACTIONDESC%-->
                         </td>
-                        <td valign="top"><!--=%ACTIONDIMENSIONS%--></td>
+                        <td valign="top" class="trActionName"><!--=%ACTIONDIMENSIONS%--></td>
                     </tr>
 
-                    <tr class="trActionMain">
-                        <td colspan="2">
-                            <table border="1">
+                    <tr>
+                        <td colspan="2" valign="top">
+                            <table cellspacing="0" cellpadding="2" width="100%" height="100%" border="1">
                                 <tr>
-                                    <td><b>Resources:</b></td>
-                                    <td><b>Tools:</b></td>
+                                    <td width="50%"><b>Resources:</b></td>
+                                    <td width="50%"><b>Tools:</b></td>
                                 </tr>
-                                <tr class="trActionTools">
-                                    <td valign="top">
-                                        <!--=%ACTIONPEOPLE%-->
-                                    </td>
-                                    <td valign="top">
-                                        <!--=%ACTIONTOOLS%-->
-                                    </td>
+                                <tr>
+                                    <td valign="top" class="trActionTool"><!--=%ACTIONPEOPLE%--></td>
+                                    <td valign="top" class="trActionTool"><!--=%ACTIONTOOLS%--></td>
                                 </tr>
                                 <tr>
                                     <td><b>Machines:</b></td>
                                     <td><b>Lifting Gears:</b></td>
                                 </tr>
-                                <tr class="trActionTools">
-                                    <td valign="top">
-                                        <!--=%ACTIONMACHINES%-->
-                                    </td>
-                                    <td valign="top">
-                                        <!--=%ACTIONLIFTINGGEARS%-->
-                                    </td>
+                                <tr>
+                                    <td valign="top" class="trActionTool"><!--=%ACTIONMACHINES%--></td>
+                                    <td valign="top" class="trActionTool"><!--=%ACTIONLIFTINGGEARS%--></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"><b>Risks</b></td>
                                 </tr>
-                                <tr class="trActionTools">
-                                    <td valign="top" colspan="2">
-                                        <!--=%ACTIONRISKS%-->
-                                    </td>
+                                <tr>
+                                    <td valign="top" colspan="2" class="trActionTool"><!--=%ACTIONRISKS%--></td>
                                 </tr>
                             </table>
                         </td>
                         <td colspan="2" valign="top">
-                            <table align="center" width="95%">
+                            <table align="center" cellspacing="0" cellpadding="2" width="100%" height="100%">
                                 <tr><td></td><td></td><td></td></tr>
                                 <!--=%ACTIONIMAGES%-->
                             </table>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2"><b>Attachments:</b></td>
-                        <td colspan="2"><b>HAZARD IDENTIFICATION &amp;  RISK ASSESSMENT (HIRA):</b></td>
+                        <td><b>Attachments:</b></td>
+                        <td colspan="3"><b>HAZARD IDENTIFICATION &amp;  RISK ASSESSMENT (HIRA):</b></td>
                     </tr>
                     <tr>
-                        <td colspan="2" valign="top" align="center">
-                            <!--=%ACTIONATTACHMENTS%-->
-                        </td>
-                        <td colspan="2">
-                            <table width="95%" border="1">
+                        <td valign="top" class="trAnalysis"><!--=%ACTIONATTACHMENTS%--></td>
+                        <td colspan="3" valign="top">
+                            <table cellspacing="0" cellpadding="2" width="100%" height="100%" border="1">
                                 <tr>
-                                    <td width="20%"><b>Activity</b></td>
-                                    <td width="30%"><b>Hazard</b></td>
+                                    <td width="15%"><b>Activity</b></td>
+                                    <td width="25%"><b>Hazard</b></td>
                                     <td width="10%"><b>Risk</b></td>
-                                    <td width="30%"><b>Control Measure</b></td>
+                                    <td width="40%"><b>Control Measure</b></td>
                                     <td width="10%"><b>Responsible</b></td>
                                 </tr>
                                 <!--=%ACTIONHIRA%-->
@@ -119,9 +105,9 @@
                 </table>
             </td>
         </tr>
-        <tr>
+        <tr class="trFooter">
             <td class="wbfooter" colspan="2">www.wagenborg.com</td>
-            <td class="wbfooter"><!--=%PROJECTDETAILS%--></td>
+            <td class="wbfooter" align="right"><!--=%PROJECTDETAILS%--></td>
         </tr>
     </table>
 </body>
