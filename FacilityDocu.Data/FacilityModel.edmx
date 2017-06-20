@@ -89,7 +89,7 @@
           <Property Name="Risks" Type="varchar(max)" />
           <Property Name="Dimensions" Type="varchar(max)" />
           <Property Name="LiftingGears" Type="varchar(max)" />
-          <Property Name="ActionName" Type="varchar" MaxLength="500" />
+          <Property Name="ActionName" Type="varchar" MaxLength="5000" />
           <Property Name="Description" Type="varchar(max)" />
           <Property Name="ActionNameWarning" Type="bit" />
           <Property Name="ActionDescriptionWarning" Type="bit" />
@@ -384,7 +384,6 @@
           <EntitySet Name="Projects" EntityType="TabletApp_DatabaseModel.Project" />
           <EntitySet Name="ProjectActionAttachments" EntityType="TabletApp_DatabaseModel.ProjectActionAttachment" />
           <EntitySet Name="ProjectActionImages" EntityType="TabletApp_DatabaseModel.ProjectActionImage" />
-          <EntitySet Name="ProjectDetails" EntityType="TabletApp_DatabaseModel.ProjectDetail" />
           <EntitySet Name="Resources" EntityType="TabletApp_DatabaseModel.Resource" />
           <EntitySet Name="RigTypes" EntityType="TabletApp_DatabaseModel.RigType" />
           <EntitySet Name="RiskAnalysis" EntityType="TabletApp_DatabaseModel.RiskAnalysi" />
@@ -416,6 +415,7 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
+          <EntitySet Name="ProjectDetails" EntityType="TabletApp_DatabaseModel.ProjectDetail" />
           <AssociationSet Name="FK_PD_P" Association="TabletApp_DatabaseModel.FK_PD_P">
             <End Role="Project" EntitySet="Projects" />
             <End Role="ProjectDetail" EntitySet="ProjectDetails" />
@@ -440,7 +440,7 @@
             <End Role="ProjectDetail" EntitySet="ProjectDetails" />
             <End Role="RiskAnalysi" EntitySet="RiskAnalysis" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="Attachment">
           <Key>
             <PropertyRef Name="AttachmentID" />
@@ -526,35 +526,6 @@
           <Property Name="IsUsed" Type="Boolean" />
           <NavigationProperty Name="Image" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Image__47DBAE45" FromRole="ProjectActionImage" ToRole="Image" />
           <NavigationProperty Name="ProjectDetail" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__48CFD27E" FromRole="ProjectActionImage" ToRole="ProjectDetail" />
-        </EntityType>
-        <EntityType Name="ProjectDetail">
-          <Key>
-            <PropertyRef Name="ProjectDetailID" />
-          </Key>
-          <Property Name="ProjectDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProjectID" Type="Int32" />
-          <Property Name="StepID" Type="Int32" />
-          <Property Name="Risks" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Dimensions" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="LiftingGears" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="ActionName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="ActionNameWarning" Type="Boolean" />
-          <Property Name="ActionDescriptionWarning" Type="Boolean" />
-          <Property Name="ImportantActionname" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="ImportantActionDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="IsAnalysis" Type="Boolean" Nullable="false" />
-          <Property Name="PublishedBy" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="PublishedDate" Type="DateTime" Precision="3" />
-          <Property Name="Tools" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="People" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="Machines" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Project" Relationship="TabletApp_DatabaseModel.FK_PD_P" FromRole="ProjectDetail" ToRole="Project" />
-          <NavigationProperty Name="ProjectActionAttachments" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__46E78A0C" FromRole="ProjectDetail" ToRole="ProjectActionAttachment" />
-          <NavigationProperty Name="ProjectActionImages" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__48CFD27E" FromRole="ProjectDetail" ToRole="ProjectActionImage" />
-          <NavigationProperty Name="User" Relationship="TabletApp_DatabaseModel.FK__ProjectDe__Publi__49C3F6B7" FromRole="ProjectDetail" ToRole="User" />
-          <NavigationProperty Name="Step" Relationship="TabletApp_DatabaseModel.FK__ProjectDe__StepI__4AB81AF0" FromRole="ProjectDetail" ToRole="Step" />
-          <NavigationProperty Name="RiskAnalysis" Relationship="TabletApp_DatabaseModel.FK__RiskAnaly__Proje__4CA06362" FromRole="ProjectDetail" ToRole="RiskAnalysi" />
         </EntityType>
         <EntityType Name="Resource">
           <Key>
@@ -693,6 +664,35 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ProjectDetail">
+          <Key>
+            <PropertyRef Name="ProjectDetailID" />
+          </Key>
+          <Property Name="ProjectDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectID" Type="Int32" />
+          <Property Name="StepID" Type="Int32" />
+          <Property Name="Risks" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Dimensions" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="LiftingGears" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ActionName" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ActionNameWarning" Type="Boolean" />
+          <Property Name="ActionDescriptionWarning" Type="Boolean" />
+          <Property Name="ImportantActionname" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ImportantActionDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsAnalysis" Type="Boolean" Nullable="false" />
+          <Property Name="PublishedBy" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PublishedDate" Type="DateTime" Precision="3" />
+          <Property Name="Tools" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="People" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Machines" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Project" Relationship="TabletApp_DatabaseModel.FK_PD_P" FromRole="ProjectDetail" ToRole="Project" />
+          <NavigationProperty Name="ProjectActionAttachments" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__46E78A0C" FromRole="ProjectDetail" ToRole="ProjectActionAttachment" />
+          <NavigationProperty Name="ProjectActionImages" Relationship="TabletApp_DatabaseModel.FK__ProjectAc__Proje__48CFD27E" FromRole="ProjectDetail" ToRole="ProjectActionImage" />
+          <NavigationProperty Name="User" Relationship="TabletApp_DatabaseModel.FK__ProjectDe__Publi__49C3F6B7" FromRole="ProjectDetail" ToRole="User" />
+          <NavigationProperty Name="Step" Relationship="TabletApp_DatabaseModel.FK__ProjectDe__StepI__4AB81AF0" FromRole="ProjectDetail" ToRole="Step" />
+          <NavigationProperty Name="RiskAnalysis" Relationship="TabletApp_DatabaseModel.FK__RiskAnaly__Proje__4CA06362" FromRole="ProjectDetail" ToRole="RiskAnalysi" />
+        </EntityType>
         <Association Name="FK_PD_P">
           <End Type="TabletApp_DatabaseModel.Project" Role="Project" Multiplicity="0..1" />
           <End Type="TabletApp_DatabaseModel.ProjectDetail" Role="ProjectDetail" Multiplicity="*" />
@@ -853,30 +853,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ProjectDetails">
-            <EntityTypeMapping TypeName="TabletApp_DatabaseModel.ProjectDetail">
-              <MappingFragment StoreEntitySet="ProjectDetail">
-                <ScalarProperty Name="Machines" ColumnName="Machines" />
-                <ScalarProperty Name="People" ColumnName="People" />
-                <ScalarProperty Name="Tools" ColumnName="Tools" />
-                <ScalarProperty Name="PublishedDate" ColumnName="PublishedDate" />
-                <ScalarProperty Name="PublishedBy" ColumnName="PublishedBy" />
-                <ScalarProperty Name="IsAnalysis" ColumnName="IsAnalysis" />
-                <ScalarProperty Name="ImportantActionDescription" ColumnName="ImportantActionDescription" />
-                <ScalarProperty Name="ImportantActionname" ColumnName="ImportantActionname" />
-                <ScalarProperty Name="ActionDescriptionWarning" ColumnName="ActionDescriptionWarning" />
-                <ScalarProperty Name="ActionNameWarning" ColumnName="ActionNameWarning" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ActionName" ColumnName="ActionName" />
-                <ScalarProperty Name="LiftingGears" ColumnName="LiftingGears" />
-                <ScalarProperty Name="Dimensions" ColumnName="Dimensions" />
-                <ScalarProperty Name="Risks" ColumnName="Risks" />
-                <ScalarProperty Name="StepID" ColumnName="StepID" />
-                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
-                <ScalarProperty Name="ProjectDetailID" ColumnName="ProjectDetailID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Resources">
             <EntityTypeMapping TypeName="TabletApp_DatabaseModel.Resource">
               <MappingFragment StoreEntitySet="Resource">
@@ -940,6 +916,30 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProjectDetails">
+            <EntityTypeMapping TypeName="TabletApp_DatabaseModel.ProjectDetail">
+              <MappingFragment StoreEntitySet="ProjectDetail">
+                <ScalarProperty Name="Machines" ColumnName="Machines" />
+                <ScalarProperty Name="People" ColumnName="People" />
+                <ScalarProperty Name="Tools" ColumnName="Tools" />
+                <ScalarProperty Name="PublishedDate" ColumnName="PublishedDate" />
+                <ScalarProperty Name="PublishedBy" ColumnName="PublishedBy" />
+                <ScalarProperty Name="IsAnalysis" ColumnName="IsAnalysis" />
+                <ScalarProperty Name="ImportantActionDescription" ColumnName="ImportantActionDescription" />
+                <ScalarProperty Name="ImportantActionname" ColumnName="ImportantActionname" />
+                <ScalarProperty Name="ActionDescriptionWarning" ColumnName="ActionDescriptionWarning" />
+                <ScalarProperty Name="ActionNameWarning" ColumnName="ActionNameWarning" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ActionName" ColumnName="ActionName" />
+                <ScalarProperty Name="LiftingGears" ColumnName="LiftingGears" />
+                <ScalarProperty Name="Dimensions" ColumnName="Dimensions" />
+                <ScalarProperty Name="Risks" ColumnName="Risks" />
+                <ScalarProperty Name="StepID" ColumnName="StepID" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="ProjectDetailID" ColumnName="ProjectDetailID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
