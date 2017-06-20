@@ -30,7 +30,7 @@ namespace FacilityDocu.Test
             var config = new PdfGenerateConfig();
             config.PageOrientation = PageOrientation.Landscape;
             config.PageSize = PageSize.A4;
-            config.SetMargins(10);
+            config.SetMargins(5);
 
             PdfDocument pdf = PdfGenerator.GeneratePdf(html, config);
             pdf.Save("document.pdf");

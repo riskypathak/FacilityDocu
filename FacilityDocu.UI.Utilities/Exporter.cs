@@ -82,14 +82,14 @@ namespace FacilityDocu.UI.Utilities
                                 StringBuilder toolHtml = new StringBuilder();
                                 foreach (string tool in action.Tools.Split(new char[1] { Data.SEPERATOR }, StringSplitOptions.RemoveEmptyEntries))
                                 {
-                                    toolHtml.Append($"•  {tool}<br/>");
+                                    toolHtml.Append($"• {tool}<br/>");
                                 }
                                 htmlLayout.Replace("<!--=%ACTIONTOOLS%-->", toolHtml.ToString());
 
                                 StringBuilder lgHtml = new StringBuilder();
                                 foreach (string lg in action.LiftingGears.Split(new char[1] { Data.SEPERATOR }, StringSplitOptions.RemoveEmptyEntries))
                                 {
-                                    lgHtml.Append($"•  {lg}<br/>");
+                                    lgHtml.Append($"• {lg}<br/>");
                                 }
                                 htmlLayout.Replace("<!--=%ACTIONLIFTINGGEARS%-->", lgHtml.ToString());
 
@@ -97,7 +97,7 @@ namespace FacilityDocu.UI.Utilities
                                 StringBuilder riskHtml = new StringBuilder();
                                 foreach (string risk in action.Risks.Split(new char[1] { Data.SEPERATOR }, StringSplitOptions.RemoveEmptyEntries))
                                 {
-                                    riskHtml.Append($"•  {risk}<br/>");
+                                    riskHtml.Append($"• {risk}<br/>");
                                 }
                                 htmlLayout.Replace("<!--=%ACTIONRISKS%-->", riskHtml.ToString());
 

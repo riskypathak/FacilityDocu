@@ -645,7 +645,7 @@
                                                 <Image Source="Assets\remove.jpg" />
                                             </Button>
                                         </StackPanel>
-                                        <ContentControl Width="150" Height="150" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="3" Content="{Binding Image}"/>
+                                        <ContentControl ToolTip="{Binding Comments}" Width="150" Height="150" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="3" Content="{Binding Image}"/>
                                     </StackPanel>
                                 </StackPanel>
                             </DataTemplate>

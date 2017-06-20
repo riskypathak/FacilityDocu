@@ -24,6 +24,8 @@ namespace FacilityDocLaptop
         public string ImageID { get; set; }
         public System.Windows.Controls.Image Image { get; set; }
         public string Description { get; set; }
+
+        public string Comments { get; set; }
     }
 
     public partial class HomePage : Window
@@ -501,7 +503,9 @@ namespace FacilityDocLaptop
                     imagename.Source = bitmap;
                     bitmap.EndInit();
 
-                    Images.Add(new ImageModel() { ImageID = image.ImageID, Image = imagename, Description = image.Description });
+                    var comments = string.Join("\n\n", image.Comments.Select(i => $"{i.CommentedAt.ToString("dd MMM, HH:mm")}: {i.Text}"));
+
+                    Images.Add(new ImageModel() { ImageID = image.ImageID, Image = imagename, Description = image.Description, Comments =  comments});
                 }
                 catch (Exception ex)
                 {

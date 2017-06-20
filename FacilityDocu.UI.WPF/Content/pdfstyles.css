@@ -1,5 +1,5 @@
 ﻿body {
-    font-family: Verdana !important;
+    font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif !important;
     /* to centre page on screen*/
     margin-left: auto;
     margin-right: auto;
@@ -7,6 +7,7 @@
     text-align: left;
     text-overflow: ellipsis;
     word-wrap: break-word;
+    border-width: thin;
 }
 
 .redfont {
@@ -24,10 +25,16 @@ h1, h2, h3 {
 
 td, p, h4 {
     font-size: 10px !important;
+    border-width: thin;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: normal;
+    word-break: normal;
 }
 
 .tablecontent {
     text-align: left;
+    border-width: thin;
 }
 
 .wbfooter {
@@ -53,32 +60,38 @@ td, p, h4 {
 
 .trActionName {
     height: 60px;
-    word-break: break-all;
-    text-overflow: clip;
     overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: normal;
+    word-break: normal;
     display: inline-block;
     vertical-align: top;
     text-align: left;
+    border-width: thin;
 }
 
 .trActionTool {
     height: 75px;
-    word-break: break-all;
-    text-overflow: clip;
     overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: normal;
+    word-break: normal;
     display: inline-block;
     vertical-align: top;
     text-align: left;
+    border-width: thin;
 }
 
 .trAnalysis {
     height: 125px;
-    word-break: break-all;
-    text-overflow: clip;
     overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: normal;
+    word-break: normal;
     display: inline-block;
     vertical-align: top;
     text-align: left;
+    border-width: thin;
 }
 
 .noborder {
