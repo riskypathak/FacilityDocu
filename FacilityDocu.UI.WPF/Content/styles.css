@@ -1,20 +1,402 @@
-﻿body {
-    background-color: powderblue;
-    font-size: small;
+﻿html, body {
+    height: 100%
+}
+
+.wrapper {
+    min-height: 50%;
+    position: relative;
+}
+
+.full {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%
+}
+
+body, td, th {
+    font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
+}
+
+body {
+    background-color: white;
+    font-size: 1em;
     margin: 0;
     padding: 0;
     text-align: left;
 }
 
+.full {
+    backface-color: green;
+    margin-top: 50px;
+    padding: 0;
+    margin-bottom: 1%;
+}
+
+.menu {
+    z-index: 990;
+    height: 50px;
+    width: 96%;
+    background-color: white;
+    position: fixed;
+}
+
+.behindMenu {
+    height: 50px;
+    width: 100%;
+}
+
+.logo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 150px;
+    height: 50px;
+}
+
+.content {
+    background-color: yellow;
+}
+
+.menumiddle {
+    position: fixed;
+    top: -10px;
+    right: 200px;
+}
+
+.menuright {
+    position: fixed;
+    top: -10px;
+    right: 50px;
+}
+
+.fullwidth {
+    position: relative;
+    clear: both;
+    width: 100%;
+}
+
+.onethird {
+    position: relative;
+    float: left;
+    width: 40%;
+    font-size: 1em;
+    padding-left: 1%;
+    min-height: 30%;
+    overflow: auto;
+    -moz-box-sizing: border-box;
+}
+
+.twothird {
+    position: relative;
+    float: left;
+    width: 57%;
+    border: solid #ddd;
+    border-width: 2px 0px 0px 2px;
+    padding: .2%;
+    font-size: 1em;
+    margin-right: 1%;
+    height: 10%;
+}
+
+.StepHeader {
+    width: 96%;
+    margin: 0.1em 0.1em 0.1em 1em;
+    height: 1.2em;
+    font-size: 1.2em;
+    margin-bottom: 25px;
+}
+
+.ActionHeader {
+    clear: both;
+    float: left;
+    width: 17%;
+    padding: 0.25% .5% .5% .5%;
+    height: .8em;
+    margin-left: 1%;
+    margin-right: 2px;
+    font-size: 1.2em;
+    border: none 1px #000000;
+    background-color: #ccc;
+    color: #000;
+    font-weight: 500;
+    vertical-align: middle;
+}
+
+.DetailHeader {
+    float: left;
+    width: 57%;
+    padding: .25% .5% .5% .5%;
+    height: .8em;
+    margin-right: 2px;
+    font-size: 1.2em;
+    border: none 1px #000000;
+    background-color: #ccc;
+    color: #000;
+    font-weight: 500;
+}
+
+.DimensionHeader {
+    float: left;
+    width: 21%;
+    padding: .25% .5% .5% .5%;
+    height: .8em;
+    font-size: 1.2em;
+    border: none 1px #000000;
+    background-color: #ccc;
+    color: #000;
+    font-weight: 500;
+}
+
+.ActionDetail {
+    clear: both;
+    float: left;
+    width: 17%;
+    padding: 0.5% .5% 1.5% .5%;
+    height: 25%;
+    margin-left: 1%;
+    font-size: 1em;
+    border: none #000000;
+    border-width: 0px 0px 1px 1px;
+}
+
+.DetailDetail {
+    float: left;
+    width: 57%;
+    padding: 0.5% .5% 1.5% .5%;
+    height: 25%;
+    font-size: .8em;
+    border: none #000000;
+    overflow-y: auto;
+    border-width: 0px 1px 1px 1px;
+}
+
+.DimensionDetail {
+    float: left;
+    width: 21%;
+    padding: 0.5% .5% 1.5% .5%;
+    height: 25%;
+    font-size: 1em;
+    border: none #000000;
+    border-width: 0px 1px 1px 0px;
+}
+
+.ResourcesHeader {
+    clear: both;
+    display: table;
+    float: left;
+    width: 40%;
+    padding: .5% .5% .75% 1%;
+    height: 1%;
+    margin-right: 2px;
+    font-size: 1em;
+    border: none 1px #000000;
+    background-color: #ccc;
+    color: #000;
+    font-weight: 500;
+}
+
+.ToolsHeader {
+    float: left;
+    width: 56%;
+    padding: .5% .5% .75% 1%;
+    height: 1%;
+    margin-right: 2px;
+    font-size: 1em;
+    border: none 1px #000000;
+    background-color: #ccc;
+    color: #000;
+    font-weight: 500;
+}
+
+.ResourcesDetail {
+    clear: both;
+    float: left;
+    display: table-cell;
+    width: 40%;
+    padding: .2% .2% .2% 2%;
+    min-height: 100%;
+    font-size: .8em;
+    border: solid #000000;
+    border-width: 0px 0px 0px 0px;
+}
+
+.ToolsDetail {
+    display: table-cell;
+    float: left;
+    width: 54%;
+    padding: .2% .2% .2% 2%;
+    min-height: 100%;
+    font-size: .8em;
+    border: solid #000000;
+    border-width: 0px 0px 0px 0px;
+}
+
+.MachinesHeader {
+    clear: both;
+    display: table;
+    float: left;
+    width: 40%;
+    padding: .5% .5% .75% 1%;
+    height: 1%;
+    margin-right: 2px;
+    font-size: 1em;
+    border: none 1px #000000;
+    background-color: #ccc;
+    color: #000;
+    font-weight: 500;
+}
+
+.LiftingGearHeader {
+    float: left;
+    display: table-cell;
+    width: 56%;
+    padding: .5% .5% .75% 1%;
+    height: 1%;
+    font-size: 1em;
+    border: none 1px #000000;
+    background-color: #ccc;
+    color: #000;
+    font-weight: 500;
+}
+
+.MachinesDetail {
+    clear: both;
+    float: left;
+    display: table-cell;
+    width: 40%;
+    padding: .2% .2% .2% 2%;
+    min-height: 100%;
+    font-size: .8em;
+    border: solid #000000;
+    border-width: 0px 0px 0px 0px;
+}
+
+.LiftingGearDetail {
+    display: table-cell;
+    float: left;
+    width: 54%;
+    padding: .2% .2% .2% 2%;
+    min-height: 100%;
+    font-size: .8em;
+    border: solid #000000;
+    border-width: 0px 0px 0px 0px;
+}
+
+.RisksHeader {
+    clear: both;
+    float: left;
+    width: 98%;
+    padding: .5% .5% .75% 1%;
+    height: 1%;
+    font-size: 1em;
+    border: none 1px #000000;
+    background-color: #ccc;
+    color: #000;
+    font-weight: 500;
+}
+
+.RisksDetail {
+    float: left;
+    width: 96%;
+    padding: .2% .2% .2% 2%;
+    min-height: 100%;
+    font-size: .8em;
+    border: solid #000000;
+    border-width: 0px 0px 0px 0px;
+}
+
+.AttachementHeader {
+    clear: both;
+    float: left;
+    width: 98%;
+    padding: .5% .5% .75% 1%;
+    height: 1%;
+    font-size: 1em;
+    border: none 1px #000000;
+    background-color: #ccc;
+    color: #000;
+    font-weight: 500;
+}
+
+.AttachementDetail {
+    display: table-cell;
+    float: left;
+    width: 48%;
+    padding: .2% .2% .2% 2%;
+    min-height: 100%;
+    font-size: 1em;
+    border: solid #000000;
+    border-width: 0px 0px 0px 0px;
+}
+
+ul, li {
+    padding: 4px 2px, 2px, 2px;
+    margin: 1px;
+}
+
+ul {
+    padding-left: 5px;
+}
+
+#HRA {
+    padding: 0px;
+}
+
+    #HRA td, p {
+        padding: 3px;
+        font-size: 0.8em;
+        border: none;
+    }
+
+.HRAHeader {
+    float: left;
+    width: 96%;
+    padding: .0px;
+    height: .5%;
+    background-color: #ccc;
+}
+
+#HRA table {
+    border: none;
+}
+
+#HRA h3 {
+    font-size: 1.3em;
+    color: #000;
+    font-weight: 500;
+    padding-left: 1%;
+    line-height: 1em;
+    margin: .3%;
+}
+
 h1, h2, h3 {
     display: inline-block;
+    font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
     color: darkblue;
+}
+
+td, p, h4 {
+    font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
+    line-height: 1.2em;
+    padding: 0;
+    margin: 0;
+}
+
+h2 {
+    font-size: 1.1em;
+}
+
+h4 {
+    font-size: 1.1em;
 }
 
 a {
     text-decoration: none;
     display: inline-block;
     padding: 8px 16px;
+    font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
 }
 
     a:hover {
@@ -34,6 +416,40 @@ a {
 .round {
     border-radius: 50%;
 }
+
+/*
+table {
+	border: 1px #000000;
+	cellspacing:0;
+	cellpadding:0;
+}
+
+.tableheaders {
+	font-family: Gill Sans, Gill Sans MT, Myriad Pro, DejaVu Sans Condensed, Helvetica, Arial,"sans-serif";
+	padding: .4em;
+	font-size: 1.6em;
+	background-color: #ddd;
+	border: none;
+	line-height: 1.2em;
+}
+.tablecontent {
+	font-family: Gill Sans, Gill Sans MT, Myriad Pro, DejaVu Sans Condensed, Helvetica, Arial,"sans-serif";
+	padding: .5em ;
+	font-size: 1em ;
+	background-color: ;
+	border: 1px #000;
+	line-height: 1.2em ;
+}
+.tablecontentlist {
+	font-family: Gill Sans, Gill Sans MT, Myriad Pro, DejaVu Sans Condensed, Helvetica, Arial,"sans-serif";
+	padding: .5em;
+	font-size: 1em;
+	background-color: #FFF;
+	border: 1px #000;
+	line-height: 1.2em;
+}
+
+
 
 /*MENU STYLE START*/
 
@@ -56,7 +472,7 @@ a {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 200px;
+    min-width: 350px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
@@ -68,11 +484,12 @@ a {
         text-decoration: none;
         display: block;
         text-align: left;
+        font-size: small;
     }
 
         /* Change color of dropdown links on hover */
         .dropdown-content a:hover {
-            background-color: #f1f1f1
+            background-color: #f1f1f1;
         }
 
 /* Show the dropdown menu on hover */
@@ -90,15 +507,13 @@ a {
 /*Picure Style START*/
 /* Just some base styles not needed for example to function */
 
-.imgProject{
-    width:200px;
-
+.imgProject {
 }
 
 .overlay {
     width: 100%;
     height: 100%;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     display: none;
@@ -113,14 +528,66 @@ a {
     }
 
     .overlay img {
-        padding: 10px;
+        padding: 20px;
         -webkit-border-radius: 10px;
         -moz-border-radius: 10px;
         background: #ffffff;
+        max-height: 80%;
+        max-width: 80%;
     }
 
     .overlay:target {
         display: table;
     }
 
-    /*Picture Style END*/
+.picwrapper {
+    min-height: 50%;
+    height: 25%
+}
+
+.piccontainer {
+    position: relative;
+    width: 91%;
+    height: 100%;
+}
+
+.rdimg {
+    float: left;
+    width: 25%;
+    height: 33%;
+    background-color: white;
+}
+/*Picture Style END*/
+.wbfooter {
+    clear: both;
+    width: 92%;
+    font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
+    padding: .8em;
+    margin: 0;
+    padding-left: 2em;
+    font-size: 1.2em;
+    background-color: #C00;
+    color: #FFF;
+    border: none;
+    line-height: 1%;
+    bottom: 0px;
+}
+
+.wbfooterRight {
+    float: right;
+    width: 40%;
+    font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
+    font-size: 0.8em;
+    background-color: #C00;
+    color: #FFF;
+    text-align: right;
+    margin-right: 3%;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.HRAtableheaders {
+}

@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheArtOfDev.HtmlRenderer.Core;
 using TheArtOfDev.HtmlRenderer.PdfSharp;
 
 namespace FacilityDocu.Test
@@ -25,11 +26,12 @@ namespace FacilityDocu.Test
         [TestMethod]
         public void HtmlFileToPdfFileTest()
         {
-            string html = File.ReadAllText(@"E:\Works\Projects\Oliver\Code\FacilityDocu\FacilityDocu.UI.WPF\HtmlOutputExample.html");
+            string html = File.ReadAllText(@"C:\Users\risky\Desktop\Monitor\HtmlOutputExample.html");
             var config = new PdfGenerateConfig();
             config.PageOrientation = PageOrientation.Landscape;
             config.PageSize = PageSize.A4;
-            config.SetMargins(0);
+            config.SetMargins(5);
+
             PdfDocument pdf = PdfGenerator.GeneratePdf(html, config);
             pdf.Save("document.pdf");
         }

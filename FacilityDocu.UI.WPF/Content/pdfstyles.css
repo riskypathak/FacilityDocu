@@ -1,0 +1,99 @@
+﻿body {
+    font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif !important;
+    /* to centre page on screen*/
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    text-align: left;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    border-width: thin;
+}
+
+.redfont {
+    border-spacing: 0px;
+    color: red;
+}
+
+table {
+}
+
+h1, h2, h3 {
+    display: inline-block;
+    color: darkblue;
+}
+
+td, p, h4 {
+    font-size: 10px !important;
+    border-width: thin;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: normal;
+    word-break: normal;
+}
+
+.tablecontent {
+    text-align: left;
+    border-width: thin;
+}
+
+.wbfooter {
+    background-color: #C00;
+    color: #FFF;
+    border: none;
+    height: 10px;
+}
+
+.imgProject {
+    height: 132px;
+    vertical-align: top;
+    text-align: left;
+}
+
+.trHeader td {
+    height: 30px;
+}
+
+.trFooter td {
+    height: 10px;
+}
+
+.trActionName {
+    height: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: normal;
+    word-break: normal;
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    border-width: thin;
+}
+
+.trActionTool {
+    height: 75px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: normal;
+    word-break: normal;
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    border-width: thin;
+}
+
+.trAnalysis {
+    height: 125px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: normal;
+    word-break: normal;
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    border-width: thin;
+}
+
+.noborder {
+    border: none;
+}

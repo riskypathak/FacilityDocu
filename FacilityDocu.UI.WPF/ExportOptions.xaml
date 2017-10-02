@@ -18,15 +18,10 @@
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
         <TextBlock FontSize="40" Foreground="#FFADDDFF" Text="Export Options" Grid.Row="1"></TextBlock>
-        
+
         <StackPanel Orientation="Horizontal" Grid.Row="3">
             <Label VerticalAlignment="Center" Foreground="#FFD5DEF0" FontSize="20" FontWeight="Bold" Content="Export Format: "></Label>
             <ComboBox FontSize="20" Width="200" ItemsSource="{Binding AllExportFormats}" SelectedItem="{Binding SelectedExportFormat}"></ComboBox>
-        </StackPanel>
-
-        <StackPanel Orientation="Horizontal" Grid.Row="5">
-            <Label VerticalAlignment="Center" Foreground="#FFD5DEF0" FontSize="20" FontWeight="Bold" Content="Orientation: "></Label>
-            <ComboBox FontSize="20" Width="200" ItemsSource="{Binding AllPageLayouts}" SelectedItem="{Binding SelectedPageLayout}"></ComboBox>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Grid.Row="7">

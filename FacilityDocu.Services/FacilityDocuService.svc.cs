@@ -122,7 +122,10 @@ namespace FacilityDocu.Services
                 }
                 else if (masterData.First().Type == "People")
                 {
-                    //See Delete later
+                    IList<int> idsToDelete = masterData.Select(m => m.Id).ToList();
+                    //Get all those which are not present in input
+                    var itemsToDelete = context.Resources.Where(l => l.Type == "People" && !idsToDelete.Contains(l.ResourceID)).ToList();
+                    context.Resources.RemoveRange(itemsToDelete);
 
                     //Add new
                     masterData.Where(m => m.Id == 0).ToList().ForEach(m => context.Resources.Add(new Resource() { ResourceName = m.Description, Type = "People" }));
@@ -132,7 +135,10 @@ namespace FacilityDocu.Services
                 }
                 else if (masterData.First().Type == "Machine")
                 {
-                    //See Delete later
+                    IList<int> idsToDelete = masterData.Select(m => m.Id).ToList();
+                    //Get all those which are not present in input
+                    var itemsToDelete = context.Resources.Where(l => l.Type == "Machine" && !idsToDelete.Contains(l.ResourceID)).ToList();
+                    context.Resources.RemoveRange(itemsToDelete);
 
                     //Add new
                     masterData.Where(m => m.Id == 0).ToList().ForEach(m => context.Resources.Add(new Resource() { ResourceName = m.Description, Type = "Machine" }));
@@ -142,7 +148,11 @@ namespace FacilityDocu.Services
                 }
                 else if (masterData.First().Type == "Tools")
                 {
-                    //Won't to deleting work as it will efect existing
+                    IList<int> idsToDelete = masterData.Select(m => m.Id).ToList();
+                    //Get all those which are not present in input
+                    var itemsToDelete = context.Tools.Where(l => !idsToDelete.Contains(l.ToolID)).ToList();
+                    context.Tools.RemoveRange(itemsToDelete);
+
                     //Add new
                     masterData.Where(m => m.Id == 0).ToList().ForEach(m => context.Tools.Add(new Tool() { ToolName = m.Description }));
 

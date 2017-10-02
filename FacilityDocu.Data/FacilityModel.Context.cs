@@ -33,7 +33,6 @@ namespace FacilityDocu.Data
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<ProjectActionAttachment> ProjectActionAttachments { get; set; }
         public virtual DbSet<ProjectActionImage> ProjectActionImages { get; set; }
-        public virtual DbSet<ProjectDetail> ProjectDetails { get; set; }
         public virtual DbSet<Resource> Resources { get; set; }
         public virtual DbSet<RigType> RigTypes { get; set; }
         public virtual DbSet<RiskAnalysi> RiskAnalysis { get; set; }
@@ -41,5 +40,6 @@ namespace FacilityDocu.Data
         public virtual DbSet<Step> Steps { get; set; }
         public virtual DbSet<Tool> Tools { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<ProjectDetail> ProjectDetails { get; set; }
     }
 }

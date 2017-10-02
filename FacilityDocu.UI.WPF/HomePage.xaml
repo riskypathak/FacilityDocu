@@ -461,9 +461,9 @@
                         <Grid Background="Blue">
                             <StackPanel Orientation="Vertical">
                                 <StackPanel  Orientation="Horizontal">
-                                    <Label FontSize="24" Content="{Binding SelectedType}"></Label>
-                                    <Button Content="Other" Width="50" Command="{Binding ShowOtherPopUpActionCommand}"></Button>
-                                    <Button Content="Close" Width="50" Command="{Binding ClosePopUpActionCommand}"></Button>
+                                    <Label FontSize="18" FontWeight="Bold" Content="{Binding SelectedType}"></Label>
+                                    <Button VerticalAlignment="Center" Content="Other" Width="50" Command="{Binding ShowOtherPopUpActionCommand}"></Button>
+                                    <Button VerticalAlignment="Center" Content="Close" Width="50" Command="{Binding ClosePopUpActionCommand}"></Button>
                                 </StackPanel>
                                 <ComboBox FontSize="18" ItemsSource="{Binding AllActionItems}" SelectedItem="{Binding SelectedActionItem}">
                                     <ComboBox.Style>
@@ -645,7 +645,7 @@
                                                 <Image Source="Assets\remove.jpg" />
                                             </Button>
                                         </StackPanel>
-                                        <ContentControl Width="150" Height="150" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="3" Content="{Binding Image}"/>
+                                        <ContentControl ToolTip="{Binding Comments}" Width="150" Height="150" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="3" Content="{Binding Image}"/>
                                     </StackPanel>
                                 </StackPanel>
                             </DataTemplate>
