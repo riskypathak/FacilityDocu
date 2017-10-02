@@ -98,10 +98,34 @@ namespace Tablet_App
             {
                 XElement xStepAction = new XElement("action");
                 xStepActions.Add(xStepAction);
+
+                string actionName = "";
+                string actionDescription = "";
+
+                if (stepAction.Name.Contains("xaml"))
+                {
+                    XElement xname = XElement.Parse(stepAction.Name);
+                    actionName = xname.Value;
+                }
+                else
+                {
+                    actionName = stepAction.Name;
+                }
+
+                if (stepAction.Description.Contains("xaml"))
+                {
+                    XElement xdesc = XElement.Parse(stepAction.Description);
+                    actionDescription = xdesc.Value;
+                }
+                else
+                {
+                    actionDescription = stepAction.Description;
+                }
+
                 xStepAction.Add(new XElement("id", stepAction.ActionID));
                 xStepAction.Add(new XElement("number", count.ToString("00")));
-                xStepAction.Add(new XElement("name", stepAction.Name));
-                xStepAction.Add(new XElement("description", stepAction.Description));
+                xStepAction.Add(new XElement("name", actionName));
+                xStepAction.Add(new XElement("description", actionDescription));
                 WriteImage(stepAction.Images, xStepAction);
                 count++;
             }

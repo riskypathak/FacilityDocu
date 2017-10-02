@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Windows.Media.MediaProperties;
 using System.Diagnostics;
+using Windows.Devices.Enumeration;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -141,7 +142,22 @@ namespace Tablet_App
             try
             {
                 media = new MediaCapture();
-                await media.InitializeAsync();
+
+                var devices = await DeviceInformation.FindAllAsync(DeviceClass.VideoCapture); 
+                //getting all camera devices and then will select last device
+
+                if (devices.Count > 1)
+                {
+                    await media.InitializeAsync(new MediaCaptureInitializationSettings
+                    {
+                        VideoDeviceId = devices[1].Id
+                    });
+                }
+                else
+                {
+                    await media.InitializeAsync();
+                }
+
                 this.capturePreview.Source = media;
                 await media.StartPreviewAsync();
                 capturePreview.IsTapEnabled = true;

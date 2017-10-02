@@ -18,7 +18,7 @@
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxPackageDir>C:\Users\RiskyDev\Desktop\Tablet\</AppxPackageDir>
     <AppxBundlePlatforms>neutral</AppxBundlePlatforms>
-    <PackageCertificateThumbprint>3408E4C9BCB7548FBB5FB5B03528386647E63A96</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>3197EDA6DCE953497737E01F26C484185AE6AE21</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
