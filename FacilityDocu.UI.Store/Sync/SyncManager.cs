@@ -77,7 +77,8 @@ namespace Tablet_App
 
         public SyncManager()
         {
-            string strUri = "http://tlof.no-ip.biz:9876/FacilityDocu/FacilityDocuService.svc";
+            //string strUri = "http://tlof.no-ip.biz:9876/FacilityDocu/FacilityDocuService.svc";
+            string strUri = "http://localhost:51256/FacilityDocuService.svc";
             BasicHttpBinding binding = new BasicHttpBinding();
             binding.MaxReceivedMessageSize = 2147483647;
             binding.MaxBufferSize = 2147483647;
@@ -109,7 +110,8 @@ namespace Tablet_App
             Data.SYNC_PROCESS = true;
             foreach (var projectID in ProjectIDs)
             {
-                ProjectXmlWriter.Write(service.GetProjectDetailsAsync(projectID).Result);
+                var projectDto = await service.GetProjectDetailsAsync(projectID);
+                await ProjectXmlWriter.Write(projectDto);
             }
             Data.SYNC_PROCESS = false;
         }

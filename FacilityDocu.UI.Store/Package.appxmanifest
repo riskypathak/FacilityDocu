@@ -1,50 +1,45 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
+<?xml version="1.0" encoding="utf-8"?>
+<Package
+      xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+      xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+      xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+      IgnorableNamespaces="uap mp">
   <Identity Name="PhotoDocu" Publisher="CN=RiskyDev" Version="1.0.0.43" />
+
+      <mp:PhoneIdentity PhoneProductId="906fe313-332d-46ac-8bd7-99f70e2cec7e" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
   <Properties>
     <DisplayName>PhotoDocu</DisplayName>
     <PublisherDisplayName>RiskyPathak</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
-  <Prerequisites>
-    <OSMinVersion>6.3.0</OSMinVersion>
-    <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
-  </Prerequisites>
+  <Dependencies>
+        <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+      </Dependencies>
   <Resources>
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Tablet_App.App">
-      <m2:VisualElements DisplayName="PhotoDocu" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="PhotoDocu" ForegroundText="light" BackgroundColor="#464646">
-        <m2:SplashScreen Image="Assets\SplashScreen.png" />
-        <m2:InitialRotationPreference>
-          <m2:Rotation Preference="landscape" />
-        </m2:InitialRotationPreference>
-      </m2:VisualElements>
-      <Extensions>
-        <Extension Category="windows.search" />
-        <Extension Category="windows.fileTypeAssociation">
-          <FileTypeAssociation Name="backupbilestorage">
-            <EditFlags OpenIsSafe="true" AlwaysUnsafe="true" />
-            <SupportedFileTypes>
-              <FileType>.jpg</FileType>
-              <FileType>.xml</FileType>
-            </SupportedFileTypes>
-          </FileTypeAssociation>
-        </Extension>
-      </Extensions>
+      <uap:VisualElements DisplayName="PhotoDocu" Square150x150Logo="Assets\Logo.png" 
+                          Square44x44Logo="Assets\SmallLogo.png" 
+                          Description="PhotoDocu"  BackgroundColor="#464646">
+        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:InitialRotationPreference>
+          <uap:Rotation Preference="landscape" />
+        </uap:InitialRotationPreference>
+      </uap:VisualElements>
     </Application>
   </Applications>
   <Capabilities>
     <Capability Name="internetClient" />
     <Capability Name="internetClientServer" />
-    <Capability Name="picturesLibrary" />
-    <Capability Name="removableStorage" />
-    <Capability Name="enterpriseAuthentication" />
-    <Capability Name="musicLibrary" />
+    <uap:Capability Name="picturesLibrary" />
+    <uap:Capability Name="removableStorage" />
+    <uap:Capability Name="enterpriseAuthentication" />
+    <uap:Capability Name="musicLibrary" />
     <Capability Name="privateNetworkClientServer" />
-    <Capability Name="videosLibrary" />
-    <Capability Name="sharedUserCertificates" />
+    <uap:Capability Name="videosLibrary" />
+    <uap:Capability Name="sharedUserCertificates" />
     <DeviceCapability Name="webcam" />
     <DeviceCapability Name="microphone" />
     <DeviceCapability Name="proximity" />
