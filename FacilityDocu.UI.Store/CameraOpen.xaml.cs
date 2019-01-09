@@ -69,18 +69,20 @@ namespace Tablet_App
 
         private async void capturePreview_Tapped(object sender, TappedRoutedEventArgs e)
         {
+
+
             try
             {
                 StorageFolder imagesFolder = await StorageFolder.GetFolderFromPathAsync(Data.ImagesPath);
 
                 string imageID = DateTime.Now.ToString("yyyyMMddHHmmssfff");
                 string fileName = string.Format("{0}.jpg", imageID);
-               // CameraCaptureUIMaxPhotoResolution.HighestAvailable ;
-               
+                // CameraCaptureUIMaxPhotoResolution.HighestAvailable ;
+
                 Windows.Media.MediaProperties.ImageEncodingProperties imgProperties = Windows.Media.MediaProperties.ImageEncodingProperties.CreateJpeg();
                 imgProperties.Height = 1024;
                 imgProperties.Width = 1280;
-          
+
                 StorageFile file = await imagesFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
 
                 await media.CapturePhotoToStorageFileAsync(imgProperties, file);
@@ -91,7 +93,7 @@ namespace Tablet_App
                     BitmapImage bitmapImage = new BitmapImage();
                     await bitmapImage.SetSourceAsync(fileStream);
                     preview_pic.Source = bitmapImage;
-                    
+
 
                     currentImage = new ImageDTO()
                     {
@@ -109,7 +111,7 @@ namespace Tablet_App
 
                 IStorageFolder backupFolder = await StorageFolder.GetFolderFromPathAsync(Data.BackupPath);
                 await file.CopyAsync(backupFolder, file.Name, NameCollisionOption.ReplaceExisting);
-                
+
                 //Copying original file too
                 await file.CopyAsync(backupFolder, originalFileName, NameCollisionOption.ReplaceExisting);
 
@@ -139,37 +141,49 @@ namespace Tablet_App
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            try
+            StorageFolder imagesFolder = await StorageFolder.GetFolderFromPathAsync(Data.ImagesPath);
+            StorageFile file = await imagesFolder.GetFileAsync("abc.jpg");
+            using (IRandomAccessStream fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read))
             {
-                media = new MediaCapture();
-
-                var devices = await DeviceInformation.FindAllAsync(DeviceClass.VideoCapture); 
-                //getting all camera devices and then will select last device
-
-                if (devices.Count > 1)
-                {
-                    await media.InitializeAsync(new MediaCaptureInitializationSettings
-                    {
-                        VideoDeviceId = devices[1].Id
-                    });
-                }
-                else
-                {
-                    await media.InitializeAsync();
-                }
-
-                this.capturePreview.Source = media;
-                await media.StartPreviewAsync();
-                capturePreview.IsTapEnabled = true;
-
-                var captureUI = new Windows.Media.Capture.CameraCaptureUI();
-                captureUI.PhotoSettings.MaxResolution = Windows.Media.Capture.CameraCaptureUIMaxPhotoResolution.HighestAvailable;
-
+                // Set the image source to the selected bitmap
+                BitmapImage bitmapImage = new BitmapImage();
+                await bitmapImage.SetSourceAsync(fileStream);
+                preview_pic.Source = bitmapImage;
+                gdvPreview.Visibility = Visibility.Visible;
+                ChangeScreenControls();
+                return;
             }
-            catch
-            {
-                ScreenMessage.Show("Error loading Camera Device");
-            }
+            //try
+            //{
+            //    media = new MediaCapture();
+
+            //    var devices = await DeviceInformation.FindAllAsync(DeviceClass.VideoCapture); 
+            //    //getting all camera devices and then will select last device
+
+            //    if (devices.Count > 1)
+            //    {
+            //        await media.InitializeAsync(new MediaCaptureInitializationSettings
+            //        {
+            //            VideoDeviceId = devices[1].Id
+            //        });
+            //    }
+            //    else
+            //    {
+            //        await media.InitializeAsync();
+            //    }
+
+            //    this.capturePreview.Source = media;
+            //    await media.StartPreviewAsync();
+            //    capturePreview.IsTapEnabled = true;
+
+            //    var captureUI = new Windows.Media.Capture.CameraCaptureUI();
+            //    captureUI.PhotoSettings.MaxResolution = Windows.Media.Capture.CameraCaptureUIMaxPhotoResolution.HighestAvailable;
+
+            //}
+            //catch
+            //{
+            //    ScreenMessage.Show("Error loading Camera Device");
+            //}
         }
 
         private void btnBack_Copy_Tapped(object sender, TappedRoutedEventArgs e)
