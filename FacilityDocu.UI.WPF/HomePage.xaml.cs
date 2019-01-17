@@ -739,16 +739,16 @@ namespace FacilityDocLaptop
             {
                 if (Helper.isInternetAvailable())
                 {
-                    imgSync.Source = new BitmapImage(new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "sync.jpg")));
-                    imgTemplate.Source = new BitmapImage(new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "template.png")));
+                    //imgSync.Source = new BitmapImage(new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "sync.jpg")));
+                    //imgTemplate.Source = new BitmapImage(new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "template.png")));
 
                     btnSync.IsEnabled = true;
                     btnTemplate.IsEnabled = true;
                 }
                 else
                 {
-                    imgSync.Source = new BitmapImage(new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "syncdisable.png")));
-                    imgTemplate.Source = new BitmapImage(new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "templatedisable.png")));
+                    //imgSync.Source = new BitmapImage(new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "syncdisable.png")));
+                    //imgTemplate.Source = new BitmapImage(new Uri(System.IO.Path.Combine(Data.ASSETS_PATH, "templatedisable.png")));
 
                     btnSync.IsEnabled = false;
                     btnTemplate.IsEnabled = false;

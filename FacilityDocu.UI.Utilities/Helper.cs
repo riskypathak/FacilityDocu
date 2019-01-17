@@ -1,18 +1,10 @@
 ﻿using FacilityDocu.DTO;
 using FacilityDocu.UI.Utilities.Services;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
-using Pechkin;
-using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.ServiceModel;
 using System.Xml.Linq;
-using TheArtOfDev.HtmlRenderer.PdfSharp;
 
 namespace FacilityDocu.UI.Utilities
 {
