@@ -43,8 +43,7 @@ namespace FacilityDocLaptop
                     else if (SelectedType == "Risks") SelectedRisks.Add(selectedTool);
                     else if (SelectedType == "People") SelectedPeople.Add(new ResourceDTO() { Name = selectedTool, ResourceCount = "1" });
                     else if (SelectedType == "Machines") SelectedMachines.Add(new ResourceDTO() { Name = selectedTool, ResourceCount = "1" });
-
-
+                    
                     IsPopUpActionOpen = false;
                 }
                 RaisePropertyChanged("SelectedActionItem");

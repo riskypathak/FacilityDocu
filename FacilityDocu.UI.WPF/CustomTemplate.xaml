@@ -22,14 +22,14 @@
         <TextBlock FontSize="40" Foreground="#FFADDDFF" Text="New Template" Grid.Row="1" Grid.Column="1"></TextBlock>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="3" Orientation="Horizontal" >
             <TextBlock HorizontalAlignment="Left" FontSize="20" Foreground="White" Text="Select Rig: "></TextBlock>
-            <ComboBox SelectionChanged="cmbRig_SelectionChanged" VerticalAlignment="Top" HorizontalAlignment="Right" Height="25" Name="cmbRig" Width="100"></ComboBox>
+            <ComboBox SelectionChanged="cmbRig_SelectionChanged" VerticalAlignment="Top" HorizontalAlignment="Right" Height="35" FontSize="16" Name="cmbRig" Width="100"></ComboBox>
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="1">
             <TextBlock Foreground="#FFD5DEF0" FontSize="20" FontWeight="Bold" Text="Modules"></TextBlock>
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Orientation="Horizontal" >
                 <TextBlock HorizontalAlignment="Left" FontSize="20" Foreground="White" Text="New Module: "/>
-                <TextBox FontSize="20" Width="200" x:Name="txtNewModule"/>
+                <TextBox FontSize="20" Width="175" x:Name="txtNewModule"/>
                 <Button FontSize="20" Click="btnAddModule_Click"  Name="btnAddModule" Content="Add"></Button>
             </StackPanel>
             <ListBox Background="#FF383838" Foreground="White"  Height="300" x:Name="lstModules" MinHeight="200" SelectionMode="Single" SelectionChanged="lstModules_SelectionChanged" >
@@ -73,13 +73,13 @@
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="5" Grid.Column="1" >
-            <TextBlock Foreground="White" FontSize="30" Text="Template Name "></TextBlock>
-            <TextBox FontSize="30" Name="txtName"/>
+            <TextBlock Foreground="White" FontSize="20" Text="Template Name "></TextBlock>
+            <TextBox FontSize="20" Name="txtName"/>
         </StackPanel>
         
-        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal"  Grid.Row="5" Grid.Column="3">
-            <Button Click="btnSave_Click" Content="Save "  Name="btnSave" FontSize="30"></Button>
-            <Button Click="btnCancel_Click" Content=" Cancel" Name="btnCancel" FontSize="30"></Button>
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal"  Grid.Row="5" Grid.Column="3" Grid.RowSpan="6">
+            <Button Click="btnSave_Click" Margin="0,0,2,0" Content="Save "  Name="btnSave" FontSize="20"></Button>
+            <Button Click="btnCancel_Click" Content=" Cancel" Name="btnCancel" FontSize="20"></Button>
         </StackPanel>
     </Grid>
 </Window>

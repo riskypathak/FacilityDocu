@@ -756,7 +756,12 @@ namespace FacilityDocLaptop
             }
         }
 
-        private void btnCreate_Click_1(object sender, RoutedEventArgs e)
+        private void btnCancel_Click_1(object sender, RoutedEventArgs e)
+        {
+            gdvNew.Visibility = Visibility.Collapsed;
+        }
+
+            private void btnCreate_Click_1(object sender, RoutedEventArgs e)
         {
             if ((cmbTemplates.SelectedItem as ProjectDTO) == null
                 || string.IsNullOrEmpty(txtNewProjectName.Text))
@@ -1249,6 +1254,11 @@ namespace FacilityDocLaptop
                 txtAnalysisRisk.Text = Helper.GetRisk(cmbAnalysisL.Text, (e.AddedItems[0] as ContentControl).Content.ToString(), out bgColor);
                 txtAnalysisRisk.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(bgColor);
             }
+        }
+
+        private void BtnLogout_Click(object sender, RoutedEventArgs e)
+        {
+            MakeVisible(gridLogin);
         }
     }
 }
