@@ -168,7 +168,7 @@ namespace FacilityDocLaptop
         {
             SyncManager manager = new SyncManager();
             manager.DownloadMasterData();
-
+            
             this.ShowPopUpDimensionCommand = new RelayCommand(o => { IsPopUpDimensionOpen = true; }, o => true);
             this.OKPopUpDimensionCommand = new RelayCommand(o => OKPopUpDimensionCommandExecute(), o => true);
             this.CancelPopUpDimensionCommand = new RelayCommand(o => { IsPopUpDimensionOpen = false; }, o => true);

@@ -50,7 +50,6 @@ namespace FacilityDocLaptop
 
             _dispatcherTimer.Tick += new EventHandler(DispatcherTimer_Tick);
             _dispatcherTimer.Interval = new TimeSpan(0, 0, 60);
-
             PartialInit();
         }
 
@@ -140,7 +139,10 @@ namespace FacilityDocLaptop
 
             homePage.Title = "RigDocu - New Project";
 
-            gdvNew.Visibility = Visibility.Visible;
+            if (gdvNew.Visibility == Visibility.Collapsed)
+                gdvNew.Visibility = Visibility.Visible;
+            else
+                gdvNew.Visibility = Visibility.Collapsed;
         }
 
         private static IList<ProjectDTO> GetProjectsFromLocal()
@@ -399,16 +401,20 @@ namespace FacilityDocLaptop
                     if (IsAnalysisIndexCorrect())
                     {
                         RiskAnalysisDTO analysis = action.RiskAnalysis[currentAnalysisIndex];
-                        txtAnalysisActivity.Text = analysis.Activity;
+                        TextRange trAnalysisActivity = new TextRange(txtAnalysisActivity.Document.ContentStart, txtAnalysisActivity.Document.ContentEnd);
+                        trAnalysisActivity.Text = analysis.Activity;
                         cmbAnalysisL.Text = analysis.L.ToString();
                         cmbAnalysisS.Text = analysis.S.ToString();
-                        txtAnalysisControl.Text = analysis.Controls;
-                        txtAnalysisDanger.Text = analysis.Activity;
+                        TextRange trAnalysisControl = new TextRange(txtAnalysisControl.Document.ContentStart, txtAnalysisControl.Document.ContentEnd);
+                        trAnalysisControl.Text = analysis.Controls;
+                        TextRange trAnalysisDanger = new TextRange(txtAnalysisDanger.Document.ContentStart, txtAnalysisDanger.Document.ContentEnd);
+                        trAnalysisDanger.Text = analysis.Activity;
                         string bgColor;
-                        txtAnalysisRisk.Text = Helper.GetRisk(cmbAnalysisL.Text, cmbAnalysisS.Text, out bgColor);
+                        TextRange trAnalysisRisk = new TextRange(txtAnalysisRisk.Document.ContentStart, txtAnalysisRisk.Document.ContentEnd);
+                        trAnalysisRisk.Text = Helper.GetRisk(cmbAnalysisL.Text, cmbAnalysisS.Text, out bgColor);
                         txtAnalysisRisk.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(bgColor);
-
-                        txtAnalysisResponsible.Text = analysis.Responsible.ToString();
+                        TextRange trAnalysisResponsible = new TextRange(txtAnalysisResponsible.Document.ContentStart, txtAnalysisResponsible.Document.ContentEnd);
+                        trAnalysisResponsible.Text = analysis.Responsible.ToString();
 
                         txtActivityNumbers.Text = string.Format("{0}/{1}", currentAnalysisIndex + 1, action.RiskAnalysis.Count());
                     }
@@ -419,13 +425,18 @@ namespace FacilityDocLaptop
 
                     if (Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].RiskAnalysis.Count() == 0)
                     {
-                        txtAnalysisActivity.Text = string.Empty;
+                        TextRange trAnalysisActivity = new TextRange(txtAnalysisActivity.Document.ContentStart, txtAnalysisActivity.Document.ContentEnd);
+                        trAnalysisActivity.Text = string.Empty;
                         cmbAnalysisS.Text = string.Empty;
-                        txtAnalysisControl.Text = string.Empty;
-                        txtAnalysisDanger.Text = string.Empty;
+                        TextRange trAnalysisControl = new TextRange(txtAnalysisControl.Document.ContentStart, txtAnalysisControl.Document.ContentEnd);
+                        trAnalysisControl.Text = string.Empty;
+                        TextRange trAnalysisDanger = new TextRange(txtAnalysisDanger.Document.ContentStart, txtAnalysisDanger.Document.ContentEnd);
+                        trAnalysisDanger.Text = string.Empty;
                         cmbAnalysisL.Text = string.Empty;
-                        txtAnalysisRisk.Text = string.Empty;
-                        txtAnalysisResponsible.Text = string.Empty;
+                        TextRange trAnalysisRisk = new TextRange(txtAnalysisRisk.Document.ContentStart, txtAnalysisRisk.Document.ContentEnd);
+                        trAnalysisRisk.Text = string.Empty;
+                        TextRange trAnalysisResponsible = new TextRange(txtAnalysisResponsible.Document.ContentStart, txtAnalysisResponsible.Document.ContentEnd);
+                        trAnalysisResponsible.Text = string.Empty;
                         txtActivityNumbers.Visibility = System.Windows.Visibility.Collapsed;
                     }
                 }
@@ -577,13 +588,16 @@ namespace FacilityDocLaptop
             {
                 RiskAnalysisDTO analysis = Data.CURRENT_RIG.Modules[currentModuleIndex].Steps[currentStepIndex].Actions[currentActionIndex].
                     RiskAnalysis[currentAnalysisIndex];
-
-                analysis.Activity = txtAnalysisActivity.Text;
-                analysis.Danger = txtAnalysisDanger.Text;
+                TextRange trAnalysisActivity = new TextRange(txtAnalysisActivity.Document.ContentStart, txtAnalysisActivity.Document.ContentEnd);
+                analysis.Activity = trAnalysisActivity.Text;
+                TextRange trAnalysisDanger = new TextRange(txtAnalysisDanger.Document.ContentStart, txtAnalysisDanger.Document.ContentEnd);
+                analysis.Danger = trAnalysisDanger.Text;
                 analysis.L = cmbAnalysisL.Text;
                 analysis.S = string.IsNullOrEmpty(cmbAnalysisS.Text) ? 0 : Convert.ToInt16(cmbAnalysisS.Text);
-                analysis.Controls = txtAnalysisControl.Text;
-                analysis.Responsible = txtAnalysisResponsible.Text;
+                TextRange trAnalysisControl = new TextRange(txtAnalysisControl.Document.ContentStart, txtAnalysisControl.Document.ContentEnd);
+                analysis.Controls = trAnalysisControl.Text;
+                TextRange trAnalysisResponsible = new TextRange(txtAnalysisResponsible.Document.ContentStart, txtAnalysisResponsible.Document.ContentEnd);
+                analysis.Responsible = trAnalysisResponsible.Text;
             }
         }
 
@@ -1241,7 +1255,8 @@ namespace FacilityDocLaptop
             if (e.AddedItems.Count > 0)
             {
                 string bgColor;
-                txtAnalysisRisk.Text = Helper.GetRisk((e.AddedItems[0] as ContentControl).Content.ToString(), cmbAnalysisS.Text, out bgColor);
+                TextRange trAnalysisRisk = new TextRange(txtAnalysisRisk.Document.ContentStart, txtAnalysisRisk.Document.ContentEnd);
+                trAnalysisRisk.Text = Helper.GetRisk((e.AddedItems[0] as ContentControl).Content.ToString(), cmbAnalysisS.Text, out bgColor);
                 txtAnalysisRisk.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(bgColor);
             }
         }
@@ -1251,7 +1266,8 @@ namespace FacilityDocLaptop
             if (e.AddedItems.Count > 0)
             {
                 string bgColor;
-                txtAnalysisRisk.Text = Helper.GetRisk(cmbAnalysisL.Text, (e.AddedItems[0] as ContentControl).Content.ToString(), out bgColor);
+                TextRange trAnalysisRisk = new TextRange(txtAnalysisRisk.Document.ContentStart, txtAnalysisRisk.Document.ContentEnd);
+                trAnalysisRisk.Text = Helper.GetRisk(cmbAnalysisL.Text, (e.AddedItems[0] as ContentControl).Content.ToString(), out bgColor);
                 txtAnalysisRisk.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(bgColor);
             }
         }
@@ -1259,6 +1275,31 @@ namespace FacilityDocLaptop
         private void BtnLogout_Click(object sender, RoutedEventArgs e)
         {
             MakeVisible(gridLogin);
+        }
+
+        private void mniAnalysisActivity_Click_1(object sender, RoutedEventArgs e)
+        {
+            txtAnalysisActivity.Selection.ApplyPropertyValue(RichTextBox.ForegroundProperty, Brushes.Red);
+        }
+
+        private void mniAnalysisDanger_Click_1(object sender, RoutedEventArgs e)
+        {
+            txtAnalysisDanger.Selection.ApplyPropertyValue(RichTextBox.ForegroundProperty, Brushes.Red);
+        }
+
+        private void mniAnalysisRisk_Click_1(object sender, RoutedEventArgs e)
+        {
+            txtAnalysisRisk.Selection.ApplyPropertyValue(RichTextBox.ForegroundProperty, Brushes.Red);
+        }
+
+        private void mniAnalysisControl_Click_1(object sender, RoutedEventArgs e)
+        {
+            txtAnalysisControl.Selection.ApplyPropertyValue(RichTextBox.ForegroundProperty, Brushes.Red);
+        }
+
+        private void mniAnalysisResponsible_Click_1(object sender, RoutedEventArgs e)
+        {
+            txtAnalysisResponsible.Selection.ApplyPropertyValue(RichTextBox.ForegroundProperty, Brushes.Red);
         }
     }
 }

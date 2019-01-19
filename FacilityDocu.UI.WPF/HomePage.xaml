@@ -19,7 +19,9 @@
     <DockPanel Margin="10">
         <Menu Name="dpnMenu" DockPanel.Dock="Top" Visibility="Collapsed">
             <MenuItem Header="File">
+                <MenuItem Name="mniGoBack" Click="btnBack_Click_1"  Header="Back" />
                 <MenuItem Name="mniExit" Click="mniExit_Click_1" Header="Exit" />
+                <MenuItem Name="mniLogout" Click="mniLogout_Click_1" Header="Log Out" HorizontalAlignment="Right" />
             </MenuItem>
             <MenuItem Header="Rig Type">
                 <MenuItem Name="mniUp" Click="MenuItem_Click_1"  CommandParameter="1" Header="Rig Up" />
@@ -35,8 +37,6 @@
                 </MenuItem>
                 <MenuItem Header="Publish" Click="btnPublish_Click" />
             </MenuItem>
-            <MenuItem Name="mniGoBack" Click="btnBack_Click_1"  Header="Back" />
-            <MenuItem Name="mniLogout" Click="mniLogout_Click_1" Header="Log Out" HorizontalAlignment="Right" />
         </Menu>
         <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="grid">
             <Grid x:Name="gridLogin" Visibility="Visible">
@@ -75,7 +75,7 @@
                     </Grid.RowDefinitions>
                     <!--<TextBlock Grid.ColumnSpan="2" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"  FontSize="30" Foreground="#FFD5DEF0"/>-->
                     <TextBlock Grid.Column="0" Grid.Row="2" Text="User Name: " Foreground="White" FontSize="20"/>
-                    <TextBox Grid.Column="1" Grid.Row="2" x:Name="userName" FontFamily="Segoe UI Light" Margin="0,0,0,0" Height="35" Width="200" FontSize="20"/>
+                    <TextBox Grid.Column="1" Grid.Row="2" x:Name="userName" Margin="0,0,0,0" Height="35" Width="200" FontSize="20"/>
                     <TextBlock Grid.Column="0" Grid.Row="4" Text="Password: " Foreground="White" FontSize="20"/>
                     <PasswordBox Grid.Column="2" Grid.Row="4" x:Name="password" AllowDrop="True" Height="35" Margin="0,0,0,0" Width="200" FontSize="20"/>
                     <Button IsDefault="True" Grid.Column="2" Grid.Row="6" Content="Login" Click="login_Click" Height="40" Width="200" FontSize="20"/>
@@ -98,23 +98,28 @@
                     <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" TextWrapping="Wrap" Text="Home" FontSize="40"/>
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="18,0,0,0" Grid.Column="0" Grid.Row="0" TextWrapping="Wrap" Text="Home" FontSize="40"/>
 
-                <StackPanel Orientation="Horizontal" Grid.Column="4" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Grid.Column="4" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top">
 
-                    <Button ToolTipService.ToolTip="Sync" x:Name="btnSync" Click="btnSync_Click_1" Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
+                    <Button Grid.Row="2" Grid.Column="0" Margin="0,0,0,0" x:Name="NewProject_btn" ToolTipService.ToolTip="Create New Project"  HorizontalAlignment="Left" VerticalAlignment="Top" Click="NewProject_btn_Click"
+                        Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
+                        <materialDesign:PackIcon Kind="Create" />
+                    </Button>
+
+                    <Button ToolTipService.ToolTip="Sync" x:Name="btnSync" Click="btnSync_Click_1" Margin="2,0,0,0" Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
                         <materialDesign:PackIcon Kind="CloudSync" Height="24" Width="24" />
                     </Button>
 
-                    <Button ToolTipService.ToolTip="New Template" x:Name="btnTemplate" Click="btnTemplate_Click" Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
+                    <Button ToolTipService.ToolTip="New Template" x:Name="btnTemplate" Click="btnTemplate_Click" Margin="2,0,0,0" Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
                         <materialDesign:PackIcon Kind="NewBox" Height="24" Width="24" />
                     </Button>
 
-                    <Button ToolTipService.ToolTip="Import Project Xml" x:Name="btnImportXml" Click="btnImportXml_Click" Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
+                    <Button ToolTipService.ToolTip="Import Project Xml" x:Name="btnImportXml" Click="btnImportXml_Click" Margin="2,0,0,0" Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
                         <materialDesign:PackIcon Kind="Import" Height="24" Width="24" />
                     </Button>
 
-                    <Button ToolTipService.ToolTip="Config Settings" x:Name="btnAdmin" Click="btnAdmin_Click" Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
+                    <Button ToolTipService.ToolTip="Config Settings" x:Name="btnAdmin" Click="btnAdmin_Click" Margin="2,0,0,0" Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
                         <!--<Button.Style>
                             <Style TargetType="Button">
                                 <Setter Property="Visibility" Value="Collapsed"></Setter>
@@ -128,18 +133,32 @@
                         <materialDesign:PackIcon Kind="Settings" Height="24" Width="24" />
                     </Button>
 
-                    <Button ToolTipService.ToolTip="Logout" x:Name="btnLogout" Click="BtnLogout_Click" Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
+                    <Button ToolTipService.ToolTip="Logout" x:Name="btnLogout" Click="BtnLogout_Click" Margin="2,0,0,0" Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
                         <materialDesign:PackIcon Kind="Logout" Height="24" Width="24" />
                     </Button>
 
                 </StackPanel>
 
-                <Button Grid.Row="2" Grid.Column="0" x:Name="NewProject_btn" ToolTipService.ToolTip="Create New Project"  HorizontalAlignment="Left" VerticalAlignment="Top" Click="NewProject_btn_Click"
-                        Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
-                    <materialDesign:PackIcon Kind="Create" />
-                </Button>
+                <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical" Margin="5,0,0,0" Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="4" >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock TextWrapping="Wrap" Margin="15,0,0,0" Text="Current Projects" Foreground="White" FontSize="24" FontWeight="Bold"/>
+                    </StackPanel>
+                    <ListView  x:Name="lsvProjects" SelectionMode="Single" FontSize="17" SelectionChanged="listView_SelectionChanged_1" Height="200" VerticalAlignment="Top">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="0" DisplayMemberBinding="{Binding ProjectID }"/>
+                                <GridViewColumn Header="Project Name" DisplayMemberBinding="{Binding Description }"/>
+                                <GridViewColumn Header="Created By" DisplayMemberBinding="{Binding CreatedBy.UserName}"/>
+                                <GridViewColumn Header="Created Time" DisplayMemberBinding="{Binding CreationDate}"/>
+                                <GridViewColumn Header="Updated By" DisplayMemberBinding="{Binding LastUpdatedBy.UserName }"/>
+                                <GridViewColumn Header="Updated Time" DisplayMemberBinding="{Binding LastUpdatedAt}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
 
-                <Grid Grid.Row="2" Grid.Column="2" x:Name="gdvNew" Visibility="Collapsed" >
+
+                <Grid Grid.Row="2" Grid.Column="2" x:Name="gdvNew" Visibility="Collapsed" Background="#FF5C6368" Style="{StaticResource gdvNew}" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="Auto"/>
@@ -158,56 +177,42 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
+
                     <TextBlock TextWrapping="Wrap" Text="Templates" Foreground="White" FontSize="20" FontWeight="Bold" Grid.Row="1" Grid.Column="1"/>
-                    <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Name="cmbTemplates" Grid.Row="3" Grid.Column="1">
+                    <ComboBox HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="200" Name="cmbTemplates" Grid.Row="1" Grid.Column="3">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Description}"/>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <TextBlock TextWrapping="Wrap" Text="Project Name:" Foreground="White" FontSize="20" FontWeight="Bold" Grid.Row="1" Grid.Column="3"/>
-                    <TextBox x:Name="txtNewProjectName" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Grid.Row="3" Grid.Column="3"/>
+                    <TextBlock TextWrapping="Wrap" Text="Project Name:" Foreground="White" FontSize="20" FontWeight="Bold" Grid.Row="3" Grid.Column="1" />
+                    <TextBox x:Name="txtNewProjectName" Margin="10,0,0,0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Grid.Row="3" Grid.Column="3"/>
 
                     <TextBlock TextWrapping="Wrap" Text="Client:" Foreground="White" FontSize="20" FontWeight="Bold" Grid.Row="5" Grid.Column="1"/>
-                    <TextBox x:Name="txtNewProjectClient" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Grid.Row="5" Grid.Column="3"/>
+                    <TextBox x:Name="txtNewProjectClient" Margin="10,0,0,0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Grid.Row="5" Grid.Column="3"/>
 
                     <TextBlock TextWrapping="Wrap" Text="Location:" Foreground="White" FontSize="20" FontWeight="Bold" Grid.Row="6" Grid.Column="1"/>
-                    <TextBox x:Name="txtNewProjectLocation" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Grid.Row="6" Grid.Column="3"/>
+                    <TextBox x:Name="txtNewProjectLocation" Margin="10,0,0,0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Grid.Row="6" Grid.Column="3"/>
 
                     <TextBlock TextWrapping="Wrap" Text="Persons:" Foreground="White" FontSize="20" FontWeight="Bold" Grid.Row="7" Grid.Column="1"/>
-                    <TextBox x:Name="txtNewProjectPersons" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Grid.Row="7" Grid.Column="3"/>
+                    <TextBox x:Name="txtNewProjectPersons" Margin="10,0,0,0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Grid.Row="7" Grid.Column="3"/>
 
                     <TextBlock TextWrapping="Wrap" Text="Project No:" Foreground="White" FontSize="20" FontWeight="Bold" Grid.Row="8" Grid.Column="1"/>
-                    <TextBox x:Name="txtNewProjectProjectNo" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Grid.Row="8" Grid.Column="3"/>
+                    <TextBox x:Name="txtNewProjectProjectNo" Margin="10,0,0,0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Grid.Row="8" Grid.Column="3"/>
 
-                    <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="5" Grid.RowSpan="4" HorizontalAlignment="Right">
-                        <Button Grid.Row="3" Grid.Column="5" Grid.RowSpan="4" Click="btnCreate_Click_1"  x:Name="btnCreate" Content="Create" Height="40" Width="100" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="15" />
-                        <Button Grid.Row="3" Grid.Column="5" Grid.RowSpan="4" Click="btnCancel_Click_1"  x:Name="btnCancel" Content="Cancel" Height="40" Width="100" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="15" />
+                    <StackPanel Orientation="Horizontal" Grid.Row="9" Margin="0,10,0,0" Grid.Column="3" Grid.ColumnSpan="4" HorizontalAlignment="Center">
+                        <Button Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="4" Click="btnCreate_Click_1" Margin="0,0,2,0"  x:Name="btnCreate" Content="Create" Height="40" Width="100" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="15" />
+                        <Button Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="4" Click="btnCancel_Click_1"  x:Name="btnCancel" Content="Cancel" Height="40" Width="100" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="15" />
                     </StackPanel>
                 </Grid>
-
-                <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical" Margin="50,0,0,0" Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="4">
-                    <TextBlock TextWrapping="Wrap" Text="Current Projects" Foreground="White" FontSize="24" FontWeight="Bold"/>
-                    <ListView  x:Name="lsvProjects" SelectionMode="Single" FontSize="17" SelectionChanged="listView_SelectionChanged_1" Height="200" VerticalAlignment="Top">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Width="0" DisplayMemberBinding="{Binding ProjectID }"/>
-                                <GridViewColumn Header="Project Name" DisplayMemberBinding="{Binding Description }"/>
-                                <GridViewColumn Header="Created By" DisplayMemberBinding="{Binding CreatedBy.UserName}"/>
-                                <GridViewColumn Header="Created Time" DisplayMemberBinding="{Binding CreationDate}"/>
-                                <GridViewColumn Header="Updated By" DisplayMemberBinding="{Binding LastUpdatedBy.UserName }"/>
-                                <GridViewColumn Header="Updated Time" DisplayMemberBinding="{Binding LastUpdatedAt}"/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </StackPanel>
 
                 <Popup StaysOpen="False"  Placement="MousePoint" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" Name="popNewTemplate" IsOpen="False" Height="120" Width="230">
                     <ScrollViewer  VerticalScrollBarVisibility="Visible" MaxHeight="200">
                         <Grid Background="#FF5C6368">
-                            <StackPanel  Orientation="Vertical">
+                            <StackPanel  Orientation="Vertical" Margin="5,0,0,0">
                                 <TextBlock x:Name="tbNewTemplate" Text="Add Template" FontSize="16"></TextBlock>
                                 <RadioButton Name="rdbNewTemplate" IsChecked="True" Margin="0,10,0,0" GroupName="grpNewTemplate" Content="New Template"></RadioButton>
                                 <StackPanel Orientation="Horizontal">
@@ -278,7 +283,7 @@
                         </Grid>
                     </StackPanel>
 
-                    <StackPanel Orientation="Vertical" Grid.Column="3">
+                    <StackPanel Orientation="Vertical" Grid.Column="2" Grid.ColumnSpan="3">
                         <TextBlock x:Name="txtRigType" Text="{Binding ElementName=RigType, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="36" FontWeight="Bold" Height="50" Foreground="White" />
                         <StackPanel Width="400" HorizontalAlignment="Left" Margin="2,2,2,2" Background="#FF383838" Orientation="Horizontal">
                             <TextBlock Text="Chapter: " FontSize="20" FontWeight="Bold" Foreground="White"/>
@@ -318,9 +323,10 @@
                         </ScrollViewer>
                     </Popup>
 
+
                     <Grid Grid.Column="5">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="15"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="10"/>
                             <RowDefinition Height="*"/>
@@ -338,7 +344,7 @@
                             <ColumnDefinition Width="10"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Name="txbAutoSave" VerticalAlignment="Center" FontSize="11" Grid.Row="0" Grid.Column="5" Foreground="White" FontStyle="Italic"/>
-                        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1" Grid.RowSpan="1" Grid.Column="4" Grid.ColumnSpan="5">
                             <TextBlock VerticalAlignment="Center" Text="Logged in as: " FontSize="12"/>
                             <TextBlock VerticalAlignment="Center" x:Name="txtUser" Text="123" FontSize="15" Foreground="White"/>
                         </StackPanel>
@@ -372,6 +378,8 @@
                         <ColumnDefinition Width="5"/>
                     </Grid.ColumnDefinitions>
 
+                    <Border BorderBrush="Orange"  Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" BorderThickness="2">
+                    </Border>
                     <Grid Grid.Column="1" Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -395,7 +403,7 @@
                                 </TransformGroup>
                             </TextBlock.RenderTransform>
                         </TextBlock>
-                        <RichTextBox Height="Auto" Width="150" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="3"  x:Name="txtAction" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <RichTextBox Height="Auto" Width="150" HorizontalAlignment="Stretch" Margin="0,0,0,3" VerticalAlignment="Stretch" BorderThickness="3"  x:Name="txtAction" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                             <RichTextBox.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem x:Name="mniImportnat"  Header="Important" Click="mniImportnat_Click_1" />
@@ -408,19 +416,23 @@
                         </RichTextBox>
                     </StackPanel>
 
+                    
                     <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal">
                         <Button Style="{StaticResource AddButtonStyle}"  x:Name="btnActionAdd" Click="btnActionAdd_Click_1" Content="Add New" HorizontalAlignment="Center"/>
                         <Button Style="{StaticResource RemoveButtonStyle}" x:Name="btnActionDelete" Click="btnActionDelete_Click_1" Content="Delete"/>
                     </StackPanel>
+
+                    <Border BorderBrush="Orange"  Grid.Column="3" Grid.Row="1" Grid.RowSpan="3" BorderThickness="2">
+                    </Border>
                     <Grid Grid.Column="3" Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Row="0" Text="Details" FontSize="20"/>
+                        <TextBlock  VerticalAlignment="Bottom" Margin="3,0,0,0" Foreground="White" Grid.Row="0" Text="Details" FontSize="20"/>
                         <Image Grid.Row="1" HorizontalAlignment="Right" x:Name="btnWarningActionDescription" Height="28" Width="32" Stretch="Fill" MouseDown="btnWarningActionDescription_MouseDown_1"/>
                     </Grid>
-                    <RichTextBox VerticalAlignment="Stretch" Height="Auto" Width="355" Grid.Column="3" Grid.Row="3" BorderThickness="3"  x:Name="txtActionDetails"   HorizontalAlignment="Left" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <RichTextBox VerticalAlignment="Stretch" Height="Auto" Width="355" Margin="3,0,3,3" Grid.Column="3" Grid.Row="3" BorderThickness="3"  x:Name="txtActionDetails"   HorizontalAlignment="Left" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                         <RichTextBox.ContextMenu>
                             <ContextMenu>
                                 <MenuItem x:Name="mniDetailImportnat"  Header="Important" Click="mniDetailImportnat_Click_1" />
@@ -432,13 +444,16 @@
                         </FlowDocument>
                     </RichTextBox>
 
+                    <Border BorderBrush="Orange"  Grid.Column="5" Grid.Row="1" Grid.RowSpan="3" BorderThickness="2">
+                        <StackPanel></StackPanel>
+                    </Border>
                     <Grid Grid.Column="5" Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="0" HorizontalAlignment="Left" Text="Lifting Gears" FontSize="20"/>
-                        <Button  VerticalAlignment="Bottom" Style="{StaticResource AddButtonStyle}" Grid.Column="1" Command="{Binding ShowPopUpLiftingGearCommand}" Content="Add" HorizontalAlignment="Right"/>
+                        <TextBlock  VerticalAlignment="Bottom" Foreground="White" Margin="3,0,0,0" Grid.Column="0" HorizontalAlignment="Left" Text="Lifting Gears" FontSize="20"/>
+                        <Button  VerticalAlignment="Bottom" Style="{StaticResource AddButtonStyle}" Margin="0,0,3,0" Grid.Column="1" Command="{Binding ShowPopUpLiftingGearCommand}" Content="Add" HorizontalAlignment="Right"/>
                     </Grid>
 
                     <ListBox Grid.Column="5" Grid.Row="3" Height="Auto" VerticalAlignment="Stretch" ItemsSource="{Binding SelectedLiftingGears}">
@@ -453,21 +468,35 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
 
+
+                    <Border BorderBrush="Orange"  Grid.Column="7" Grid.Row="1" Grid.RowSpan="3" BorderThickness="2">
+                    </Border>
                     <Grid Grid.Column="7" Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="0" HorizontalAlignment="Left" Text="Tools" FontSize="20"/>
-                        <Button  VerticalAlignment="Bottom" Style="{StaticResource AddButtonStyle}" Grid.Column="1" Content="Add" HorizontalAlignment="Right" Command="{Binding ShowPopUpToolCommand}"/>
+                        <TextBlock  VerticalAlignment="Bottom" Foreground="White" Margin="3,0,0,0" Grid.Column="0" HorizontalAlignment="Left" Text="Tools" FontSize="20"/>
+                        <Button  VerticalAlignment="Bottom" Style="{StaticResource AddButtonStyle}" Margin="0,0,3,0" Grid.Column="1" Content="Add" HorizontalAlignment="Right" Command="{Binding ShowPopUpToolCommand}"/>
                     </Grid>
+                    <ListBox Grid.Column="7" Grid.Row="3" ItemsSource="{Binding SelectedActionItems}"  Height="Auto" VerticalAlignment="Stretch">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Style="{StaticResource DeleteButtonStyle}" CommandParameter="{Binding}" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=RemoveToolCommand}">
+                                    </Button>
+                                    <TextBlock Text="{Binding}"></TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
 
                     <Popup StaysOpen="False" Placement="MousePoint" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" IsOpen="{Binding IsPopUpActionOpen}" Width="300">
                         <Grid Background="Blue">
                             <StackPanel Orientation="Vertical">
                                 <StackPanel  Orientation="Horizontal">
                                     <Label FontSize="18" FontWeight="Bold" Content="{Binding SelectedType}"></Label>
-                                    <Button VerticalAlignment="Center" Margin="0,0,2,0" Content="Other" Width="80" Command="{Binding ShowOtherPopUpActionCommand}"></Button>
+                                    <Button VerticalAlignment="Center" Margin="20,0,2,0" Content="Other" Width="80" Command="{Binding ShowOtherPopUpActionCommand}"></Button>
                                     <Button VerticalAlignment="Center" Content="Close" Width="80" Command="{Binding ClosePopUpActionCommand}"></Button>
                                 </StackPanel>
                                 <ComboBox FontSize="18" ItemsSource="{Binding AllActionItems}" SelectedItem="{Binding SelectedActionItem}">
@@ -500,32 +529,21 @@
                         </Grid>
                     </Popup>
 
-                    <ListBox Grid.Column="7" Grid.Row="3" ItemsSource="{Binding SelectedActionItems}"  Height="Auto" VerticalAlignment="Stretch">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Button Style="{StaticResource DeleteButtonStyle}" CommandParameter="{Binding}" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=RemoveToolCommand}">
-                                    </Button>
-                                    <TextBlock Text="{Binding}"></TextBlock>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-
+                    <Border BorderBrush="Orange"  Grid.Column="9" Grid.Row="1" Grid.RowSpan="3" BorderThickness="2">
+                    </Border>
                     <Grid Grid.Column="9" Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="0" HorizontalAlignment="Left" Text="Dimensions" FontSize="20"/>
-                        <Button  VerticalAlignment="Bottom" Style="{StaticResource AddButtonStyle}" Grid.Column="1" Command="{Binding ShowPopUpDimensionCommand}" Content="Add" HorizontalAlignment="Right"/>
+                        <TextBlock  VerticalAlignment="Bottom" Foreground="White" Margin="3,0,0,0" Grid.Column="0" HorizontalAlignment="Left" Text="Dimensions" FontSize="20"/>
+                        <Button  VerticalAlignment="Bottom" Style="{StaticResource AddButtonStyle}" Margin="0,0,3,0" Grid.Column="1" Command="{Binding ShowPopUpDimensionCommand}" Content="Add" HorizontalAlignment="Right"/>
                     </Grid>
-
                     <TextBox IsReadOnly="True" Grid.Column="9" Grid.Row="3" Text="{Binding Dimension, Mode=OneWay}"/>
 
                     <Popup StaysOpen="False" Placement="MousePoint" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" IsOpen="{Binding IsPopUpDimensionOpen, UpdateSourceTrigger=PropertyChanged}" Height="250" Width="250">
                         <ScrollViewer VerticalScrollBarVisibility="Visible" MaxHeight="250">
-                            <Grid Background="White">
+                            <Grid Background="Blue">
                                 <StackPanel  Orientation="Vertical">
                                     <TextBlock x:Name="tbDimension" Text="Add Dimension" FontSize="16" Visibility="Collapsed"></TextBlock>
                                     <StackPanel Orientation="Horizontal">
@@ -562,14 +580,16 @@
                         </ScrollViewer>
                     </Popup>
 
-
+                    <Border BorderBrush="Orange"  Grid.Column="11" Grid.Row="1" Grid.RowSpan="3" BorderThickness="2">
+                        <StackPanel></StackPanel>
+                    </Border>
                     <Grid Grid.Column="11" Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="0" HorizontalAlignment="Left" Text="Risks" FontSize="20"/>
-                        <Button  VerticalAlignment="Bottom" Style="{StaticResource AddButtonStyle}" Grid.Column="1" Command="{Binding ShowPopUpRiskCommand}" Content="Add" HorizontalAlignment="Right"/>
+                        <TextBlock  VerticalAlignment="Bottom" Foreground="White" Margin="3,0,0,0" Grid.Column="0" HorizontalAlignment="Left" Text="Risks" FontSize="20"/>
+                        <Button  VerticalAlignment="Bottom" Style="{StaticResource AddButtonStyle}" Margin="0,0,3,0" Grid.Column="1" Command="{Binding ShowPopUpRiskCommand}" Content="Add" HorizontalAlignment="Right"/>
                     </Grid>
 
                     <ListBox Grid.Column="11" Grid.Row="3" Height="Auto" VerticalAlignment="Stretch" ItemsSource="{Binding SelectedRisks}">
@@ -584,7 +604,7 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
 
-                    <TextBlock Margin="23,19,179,-10" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Width="184" Background="#FF1D2040" Grid.Column="9" Grid.Row="5"  Text="Resources" FontSize="20" Foreground="White" Grid.RowSpan="2"/>
+                    <TextBlock Margin="26,19,179,-7" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Width="184" Background="Orange" Grid.Column="9" Grid.Row="5"  Text="Resources" FontSize="20" Foreground="White" Grid.RowSpan="2"/>
 
                 </Grid>
 
@@ -606,21 +626,23 @@
                         <ColumnDefinition Width="5"/>
                     </Grid.ColumnDefinitions>
 
+                    <Border BorderBrush="Orange" BorderThickness="2" Grid.Column="1" Grid.Row="1" Grid.RowSpan="3">
+                    </Border>
                     <Grid Grid.Column="1" Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Pictures Preview" FontSize="20" Foreground="White"/>
-                        <Button Style="{StaticResource AddButtonStyle}" HorizontalAlignment="Right" Grid.Column="1" x:Name="btnAddImages" Click="btnAddImages_Click_1" Content="Add Pictures" />
+                        <TextBlock Grid.Column="0" Text="Pictures Preview" FontSize="20" Margin="3,0,0,0" Foreground="White"/>
+                        <Button Style="{StaticResource AddButtonStyle}" HorizontalAlignment="Right" Grid.Column="1" Margin="0,0,3,0" x:Name="btnAddImages" Click="btnAddImages_Click_1" Content="Add Pictures" />
                     </Grid>
 
-                    <Popup StaysOpen="False" Placement="MousePoint" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" Name="popImage" IsOpen="False" Height="400" Width="200">
+                    <Popup StaysOpen="False" Placement="MousePoint" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" Name="popImage" IsOpen="False" Height="200" Width="200">
                         <ScrollViewer VerticalScrollBarVisibility="Visible">
-                            <Grid Background="White">
+                            <Grid Background="Blue">
                                 <StackPanel  Orientation="Vertical">
                                     <StackPanel Orientation="Horizontal">
-                                        <Button x:Name="btnImageA" Margin="0,0,2,0" Content="OK" Click="btnImageA_Click_1"></Button>
+                                        <Button x:Name="btnImageA" Margin="2,0,2,0" Content="OK" Click="btnImageA_Click_1"></Button>
                                         <Button x:Name="btnImageC" Content="Cancel" Click="btnImageC_Click_1"></Button>
                                     </StackPanel>
                                     <ListBox SelectionMode="Multiple" Name="lstAddImages">
@@ -640,14 +662,14 @@
                     </Popup>
 
 
-                    <ListBox ScrollViewer.HorizontalScrollBarVisibility="Visible" x:Name="lstPictures" Grid.Column="1" Grid.Row="3">
+                    <ListBox ScrollViewer.HorizontalScrollBarVisibility="Visible" x:Name="lstPictures" Margin="3,3,3,3" Grid.Column="1" Grid.Row="3">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
                                     <StackPanel Orientation="Vertical">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                                             <TextBlock Text="{Binding Description}"></TextBlock>
-                                            <Button CommandParameter="{Binding ImageID}" Click="btnRemoveImage_Click_1"  Name="btnRemoveImage">
+                                            <Button CommandParameter="{Binding ImageID}" Style="{StaticResource DeleteButtonStyle}" Click="btnRemoveImage_Click_1"  Name="btnRemoveImage">
                                                 <materialDesign:PackIcon Kind="Remove"/>
                                             </Button>
                                         </StackPanel>
@@ -663,19 +685,21 @@
                         </ListBox.ItemsPanel>
                     </ListBox>
 
+                    <Border BorderBrush="Orange" BorderThickness="2" Grid.Column="3" Grid.Row="1" Grid.RowSpan="3">
+                    </Border>
                     <Grid Grid.Column="3" Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Attachments" FontSize="20" Foreground="White"/>
-                        <Button Style="{StaticResource AddButtonStyle}" Grid.Column="1" Click="btnAddAttachments_Click_1" x:Name="btnAddAttachments" Content="Add" />
+                        <TextBlock Grid.Column="0" Text="Attachments" Margin="3,0,0,0" FontSize="20" Foreground="White"/>
+                        <Button Style="{StaticResource AddButtonStyle}" Margin="0,0,3,0" Grid.Column="1" Click="btnAddAttachments_Click_1" x:Name="btnAddAttachments" Content="Add" />
                     </Grid>
                     <ListBox x:Name="lstAttachments" Grid.Column="3" Grid.Row="3" >
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock MouseDown="TextBlock_MouseDown_1" TextDecorations="Underline" Foreground="Blue" Tag="{Binding AttachmentID}" Width="100" Text="{Binding Name}"></TextBlock>
+                                    <TextBlock MouseDown="TextBlock_MouseDown_1" TextDecorations="Underline" Margin="3,0,0,0" Foreground="Blue" Tag="{Binding AttachmentID}" Width="100" Text="{Binding Name}"></TextBlock>
                                     <Button Name="btnRemoveAttachment" Click="btnRemoveAttachment_Click_1"  CommandParameter="{Binding AttachmentID}" Height="20" Width="20">
                                         <materialDesign:PackIcon Kind="Remove"/>
                                     </Button>
@@ -684,6 +708,7 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
 
+                    
                     <Grid Grid.Column="5" Grid.Row="1" Grid.RowSpan="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="117*" />
@@ -697,22 +722,26 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
+                        <Border BorderBrush="Orange" BorderThickness="2" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="3">
+                        </Border>
                         <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="0" HorizontalAlignment="Left" Text="People" FontSize="20"/>
-                            <Button  VerticalAlignment="Bottom" Style="{StaticResource AddButtonStyle}" Grid.Column="1" Content="Add" HorizontalAlignment="Right" Command="{Binding ShowPopUpPeopleCommand}"/>
+                            <TextBlock  VerticalAlignment="Bottom" Foreground="White" Margin="3,0,0,0" Grid.Column="0" HorizontalAlignment="Left" Text="People" FontSize="20"/>
+                            <Button  VerticalAlignment="Bottom" Style="{StaticResource AddButtonStyle}" Margin="0,0,3,0" Grid.Column="1" Content="Add" HorizontalAlignment="Right" Command="{Binding ShowPopUpPeopleCommand}"/>
                         </Grid>
 
+                        <Border BorderBrush="Orange" BorderThickness="2" Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="3">
+                        </Border>
                         <Grid Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock  VerticalAlignment="Bottom" Foreground="White" Grid.Column="0" HorizontalAlignment="Left" Text="Machines" FontSize="20"/>
-                            <Button  VerticalAlignment="Bottom" Style="{StaticResource AddButtonStyle}" Grid.Column="1" Content="Add" HorizontalAlignment="Right" Command="{Binding ShowPopUpMachineCommand}"/>
+                            <TextBlock  VerticalAlignment="Bottom" Foreground="White" Margin="3,0,0,0" Grid.Column="0" HorizontalAlignment="Left" Text="Machines" FontSize="20"/>
+                            <Button  VerticalAlignment="Bottom" Style="{StaticResource AddButtonStyle}" Margin="0,0,3,0" Grid.Column="1" Content="Add" HorizontalAlignment="Right" Command="{Binding ShowPopUpMachineCommand}"/>
                         </Grid>
 
                         <ListBox Name="lstActionResourcesP" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding SelectedPeople}">
@@ -781,17 +810,38 @@
                         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Activity / Aspect" FontSize="20" Foreground="White"/>
                         <Button Margin="5,0,5,0" x:Name="btAnalysisRight" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}"  FontFamily="Marlett" FontSize="20" Content="4" BorderBrush="{x:Null}" Foreground="#FFC6D625" Background="{x:Null}" Click="btAnalysisRight_Click_1"  />
                     </StackPanel>
-                    <TextBox Grid.Row="5" Grid.Column="1" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" x:Name="txtAnalysisActivity"   TextWrapping="Wrap"  SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <!--<TextBox Grid.Row="5" Grid.Column="1" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" x:Name="txtAnalysisActivity1" Visibility="Collapsed"   TextWrapping="Wrap"  SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>-->
+                    <RichTextBox VerticalAlignment="Stretch" Height="Auto" Width="355" Grid.Row="5" Grid.Column="1" BorderThickness="3" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" x:Name="txtAnalysisActivity"   HorizontalAlignment="Left" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <RichTextBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem x:Name="mniAnalysisActivity"  Header="Important" Click="mniAnalysisActivity_Click_1" />
+                            </ContextMenu>
+                        </RichTextBox.ContextMenu>
+                        <FlowDocument>
+                            <Paragraph>
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
                     <StackPanel Orientation="Horizontal" Grid.Row="7" Grid.Column="1">
                         <Button Style="{StaticResource AddButtonStyle}"   HorizontalAlignment="Left" x:Name="btnAnalysisAdd" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Click="btnAnalysisAdd_Click_1"  Content="Add New" />
                         <Button Style="{StaticResource RemoveButtonStyle}" x:Name="btnAnalysisDelete" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Click="btnAnalysisDelete_Click_1"  Content="Delete"/>
                     </StackPanel>
 
                     <TextBlock  Grid.Row="3" Grid.Column="3" TextWrapping="Wrap" Text="Hazard / Consequence"  FontSize="20" Foreground="White"/>
-                    <TextBox Grid.Row="5" Grid.Column="3" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" x:Name="txtAnalysisDanger"  TextWrapping="Wrap" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
-
+                    <!--<TextBox Grid.Row="5" Grid.Column="3" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" x:Name="txtAnalysisDanger1" Visibility="Collapsed" TextWrapping="Wrap" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>-->
+                    <RichTextBox x:Name="txtAnalysisDanger" VerticalAlignment="Stretch" Height="Auto" Width="355" Grid.Row="5" Grid.Column="3" BorderThickness="3" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" HorizontalAlignment="Left" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <RichTextBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem x:Name="mniAnalysisDanger"  Header="Important" Click="mniAnalysisDanger_Click_1" />
+                            </ContextMenu>
+                        </RichTextBox.ContextMenu>
+                        <FlowDocument>
+                            <Paragraph>
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
                     <TextBlock Grid.Row="3" Grid.Column="5"  Text="L (Likelihood)"  FontSize="20" HorizontalAlignment="Center" Foreground="White"/>
-                    <ComboBox Name="cmbAnalysisL" SelectionChanged="cmbAnalysisL_SelectionChanged"  FontSize="32" Grid.Row="5" Grid.Column="5" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}">
+                    <ComboBox Name="cmbAnalysisL" SelectionChanged="cmbAnalysisL_SelectionChanged" Margin="0,20,0,0" FontSize="32" Grid.Row="5" Grid.Column="5" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}">
                         <ComboBoxItem Content="A"></ComboBoxItem >
                         <ComboBoxItem Content="B"></ComboBoxItem >
                         <ComboBoxItem Content="C"></ComboBoxItem >
@@ -801,7 +851,7 @@
 
 
                     <TextBlock Grid.Row="3" Grid.Column="7"  Text="S (Severity)"  FontSize="20" HorizontalAlignment="Center" Foreground="White"/>
-                    <ComboBox Name="cmbAnalysisS" SelectionChanged="cmbAnalysisS_SelectionChanged"  FontSize="32" Grid.Row="5" Grid.Column="7" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}">
+                    <ComboBox Name="cmbAnalysisS" SelectionChanged="cmbAnalysisS_SelectionChanged" Margin="0,20,0,0" FontSize="32" Grid.Row="5" Grid.Column="7" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}">
                         <ComboBoxItem Content="1"></ComboBoxItem >
                         <ComboBoxItem Content="2"></ComboBoxItem >
                         <ComboBoxItem Content="3"></ComboBoxItem >
@@ -810,14 +860,46 @@
                     </ComboBox>
 
                     <TextBlock Grid.Row="3" Grid.Column="9"  Text="Risk"  FontSize="20" Foreground="White"/>
-                    <TextBox FontSize="32"  Grid.Row="5" IsReadOnly="True" Grid.Column="9" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisRisk"    SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <!--<TextBox FontSize="32"  Grid.Row="5" IsReadOnly="True" Grid.Column="9" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisRisk1"  Visibility="Collapsed"  SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>-->
+                    <RichTextBox x:Name="txtAnalysisRisk" FontSize="32" VerticalAlignment="Stretch" Height="Auto" Width="355" Grid.Row="5" Grid.Column="9" BorderThickness="3" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" HorizontalAlignment="Left" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <RichTextBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem x:Name="mniAnalysisRisk"  Header="Important" Click="mniAnalysisRisk_Click_1" />
+                            </ContextMenu>
+                        </RichTextBox.ContextMenu>
+                        <FlowDocument>
+                            <Paragraph>
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
 
                     <TextBlock Grid.Row="3" Grid.Column="11" TextWrapping="Wrap" Text="Control Measure"   FontSize="20" Foreground="White" />
-                    <TextBox Grid.Row="5" Grid.Column="11" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisControl"   SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <!--<TextBox Grid.Row="5" Grid.Column="11" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisControl1" Visibility="Collapsed"  SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>-->
+                    <RichTextBox x:Name="txtAnalysisControl" VerticalAlignment="Stretch" Height="Auto" Width="355" Grid.Row="5" Grid.Column="11" BorderThickness="3" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" HorizontalAlignment="Left" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <RichTextBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem x:Name="mniAnalysisControl"  Header="Important" Click="mniAnalysisControl_Click_1" />
+                            </ContextMenu>
+                        </RichTextBox.ContextMenu>
+                        <FlowDocument>
+                            <Paragraph>
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
 
                     <TextBlock Grid.Row="3" Grid.Column="13" TextWrapping="Wrap" Text="Responsible"  FontSize="20" Foreground="White"/>
-                    <TextBox IsReadOnly="True" Grid.Row="5" Grid.Column="13" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Name="txtAnalysisResponsible"  SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
-
+                    <!--<TextBox IsReadOnly="True" Grid.Row="5" Grid.Column="13" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" Visibility="Collapsed" Name="txtAnalysisResponsible1"  SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>-->
+                    <RichTextBox x:Name="txtAnalysisResponsible" VerticalAlignment="Stretch" Height="Auto" Width="355" Grid.Row="5" Grid.Column="13" BorderThickness="3" IsEnabled="{Binding ElementName=chkRiskAnalysis, Path=IsChecked}" HorizontalAlignment="Left" SpellCheck.IsEnabled="True" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <RichTextBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem x:Name="mniAnalysisResponsible"  Header="Important" Click="mniAnalysisResponsible_Click_1" />
+                            </ContextMenu>
+                        </RichTextBox.ContextMenu>
+                        <FlowDocument>
+                            <Paragraph>
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
                 </Grid>
 
             </Grid>
